@@ -1,9 +1,5 @@
 class AppException implements Exception {
-  const AppException({
-    required this.message,
-    this.code,
-    this.stackTrace,
-  });
+  const AppException({required this.message, this.code, this.stackTrace});
 
   final String message;
   final String? code;

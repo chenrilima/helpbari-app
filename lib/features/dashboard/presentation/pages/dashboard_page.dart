@@ -18,16 +18,13 @@ class DashboardPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: AppSpacing.md),
-            Text(
-              'HelpBari',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
+            Text('HelpBari', style: Theme.of(context).textTheme.headlineLarge),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Seu companheiro na jornada bariátrica.',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.xl),
             const HBCard(
@@ -43,7 +40,8 @@ class DashboardPage extends StatelessWidget {
             const DashboardMetricCard(
               title: 'Peso atual',
               value: 'Ainda não informado',
-              description: 'Cadastre seu primeiro peso para iniciar o histórico.',
+              description:
+                  'Cadastre seu primeiro peso para iniciar o histórico.',
               icon: Icons.monitor_weight_outlined,
             ),
             const SizedBox(height: AppSpacing.md),
@@ -77,10 +75,7 @@ class _WelcomeContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Fundação criada',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        Text('Fundação criada', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: AppSpacing.sm),
         Text(
           'Agora temos tema, tokens visuais, responsividade, cards reutilizáveis e estrutura inicial por features.',
