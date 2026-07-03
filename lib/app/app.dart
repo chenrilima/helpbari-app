@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../features/dashboard/presentation/pages/dashboard_page.dart';
-import 'app/theme/app_theme.dart';
+import 'router/app_router.dart';
+import 'theme/app_theme.dart';
 
 class HelpBariApp extends StatelessWidget {
   const HelpBariApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'HelpBari',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      home: const DashboardPage(),
+      routerConfig: appRouter,
     );
   }
 }
