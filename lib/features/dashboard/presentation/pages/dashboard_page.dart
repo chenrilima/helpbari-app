@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:helpbari/theme/app_colors.dart';
-import 'package:helpbari/theme/app_spacing.dart';
+
+import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/app_spacing.dart';
 import '../../../../shared/widgets/hb_card.dart';
+import '../../../../shared/widgets/hb_responsive_page.dart';
+import '../../../../shared/widgets/hb_section_header.dart';
+import '../widgets/dashboard_metric_card.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -9,109 +13,78 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: AppSpacing.lg),
-              Text(
-                'HelpBari',
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                'Seu companheiro na jornada bariátrica.',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              HBCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Fundação do app criada',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      'Agora o HelpBari já possui tema, tokens visuais, widget base e estrutura inicial por features.',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              const _DashboardPreviewCard(),
-            ],
-          ),
+      body: HBResponsivePage(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: AppSpacing.md),
+            Text(
+              'HelpBari',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Seu companheiro na jornada bariátrica.',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            const HBCard(
+              backgroundColor: AppColors.primaryLight,
+              child: _WelcomeContent(),
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            const HBSectionHeader(
+              title: 'Resumo de hoje',
+              subtitle: 'Acompanhe os principais pontos da sua rotina.',
+            ),
+            const SizedBox(height: AppSpacing.md),
+            const DashboardMetricCard(
+              title: 'Peso atual',
+              value: 'Ainda não informado',
+              description: 'Cadastre seu primeiro peso para iniciar o histórico.',
+              icon: Icons.monitor_weight_outlined,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            const DashboardMetricCard(
+              title: 'Água hoje',
+              value: '0 ml',
+              description: 'Sua meta diária aparecerá aqui.',
+              icon: Icons.water_drop_outlined,
+              iconBackgroundColor: AppColors.secondaryLight,
+              iconColor: AppColors.secondary,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            const DashboardMetricCard(
+              title: 'Vitaminas',
+              value: 'Nenhuma cadastrada',
+              description: 'Configure lembretes para sua rotina diária.',
+              icon: Icons.medication_liquid_outlined,
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _DashboardPreviewCard extends StatelessWidget {
-  const _DashboardPreviewCard();
+class _WelcomeContent extends StatelessWidget {
+  const _WelcomeContent();
 
   @override
   Widget build(BuildContext context) {
-    return const HBCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _PreviewItem(
-            label: 'Peso atual',
-            value: 'Ainda não informado',
-          ),
-          SizedBox(height: AppSpacing.md),
-          _PreviewItem(
-            label: 'Água hoje',
-            value: '0 ml',
-          ),
-          SizedBox(height: AppSpacing.md),
-          _PreviewItem(
-            label: 'Vitaminas',
-            value: 'Nenhuma vitamina cadastrada',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PreviewItem extends StatelessWidget {
-  const _PreviewItem({
-    required this.label,
-    required this.value,
-  });
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: 10,
-          height: 10,
-          decoration: const BoxDecoration(
-            color: AppColors.primary,
-            shape: BoxShape.circle,
-          ),
+        Text(
+          'Fundação criada',
+          style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: Theme.of(context).textTheme.bodyMedium),
-              const SizedBox(height: AppSpacing.xs),
-              Text(value, style: Theme.of(context).textTheme.titleMedium),
-            ],
-          ),
+        const SizedBox(height: AppSpacing.sm),
+        Text(
+          'Agora temos tema, tokens visuais, responsividade, cards reutilizáveis e estrutura inicial por features.',
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
     );

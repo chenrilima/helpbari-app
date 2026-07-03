@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../features/dashboard/presentation/pages/dashboard_page.dart';
-import 'theme/app_theme.dart';
+import 'app/theme/app_theme.dart';
 
 class HelpBariApp extends StatelessWidget {
   const HelpBariApp({super.key});
