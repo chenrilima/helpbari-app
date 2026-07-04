@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:helpbari/features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
@@ -25,8 +26,8 @@ final appRouter = GoRouter(
       builder: (context, state) => const SignUpPage(),
     ),
     GoRoute(
-      path: AppRoutes.showcase,
-      builder: (context, state) => const ShowcasePage(),
-    ),
+  path: AppRoutes.showcase,
+  builder: (context, state) => const ShowcasePage(),
+),
   ],
 );
