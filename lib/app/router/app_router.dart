@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:helpbari/features/showcase/presentation/pages/showcase_page.dart';
+import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
