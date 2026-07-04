@@ -89,8 +89,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         final text = value?.trim() ?? '';
 
                         if (text.isEmpty) return 'Informe seu e-mail.';
-                        if (!text.contains('@'))
+                        if (!text.contains('@')) {
                           return 'Informe um e-mail válido.';
+                        }
 
                         return null;
                       },
@@ -103,8 +104,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         final text = value ?? '';
 
                         if (text.isEmpty) return 'Informe sua senha.';
-                        if (text.length < 6)
+                        if (text.length < 6) {
                           return 'A senha deve ter pelo menos 6 caracteres.';
+                        }
 
                         return null;
                       },

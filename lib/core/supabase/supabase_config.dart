@@ -14,7 +14,7 @@ abstract final class SupabaseConfig {
 
     await Supabase.initialize(
       url: Environment.supabaseUrl,
-      anonKey: Environment.supabaseAnonKey,
+      publishableKey: Environment.supabaseAnonKey,
     );
 
     AppLogger.info('Supabase initialized successfully');
