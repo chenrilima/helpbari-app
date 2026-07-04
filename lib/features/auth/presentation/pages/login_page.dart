@@ -56,75 +56,68 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       }
     });
 
-    return Scaffold(
-      body: HBResponsivePage(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: AppSpacing.xl),
-            const _LoginHeader(),
-            const SizedBox(height: AppSpacing.xl),
-            HBCard(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    HBTextField(
-                      controller: _emailController,
-                      label: 'E-mail',
-                      hint: 'seuemail@exemplo.com',
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        final text = value?.trim() ?? '';
+    return HBPage(
+      header: const _LoginHeader(),
+      children: [
+        HBCard(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                HBTextField(
+                  controller: _emailController,
+                  label: 'E-mail',
+                  hint: 'seuemail@exemplo.com',
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    final text = value?.trim() ?? '';
 
-                        if (text.isEmpty) {
-                          return 'Informe seu e-mail.';
-                        }
+                    if (text.isEmpty) {
+                      return 'Informe seu e-mail.';
+                    }
 
-                        if (!text.contains('@')) {
-                          return 'Informe um e-mail válido.';
-                        }
+                    if (!text.contains('@')) {
+                      return 'Informe um e-mail válido.';
+                    }
 
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    HBPasswordField(
-                      controller: _passwordController,
-                      textInputAction: TextInputAction.done,
-                      validator: (value) {
-                        if ((value ?? '').isEmpty) {
-                          return 'Informe sua senha.';
-                        }
-
-                        return null;
-                      },
-                      onFieldSubmitted: (_) => _signIn(),
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-                    HBButton(
-                      label: 'Entrar',
-                      isLoading: isLoading,
-                      onPressed: _signIn,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    TextButton(
-                      onPressed: () => context.go(AppRoutes.signUp),
-                      child: const Text('Ainda não tenho conta'),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    TextButton(
-                      onPressed: null,
-                      child: const Text('Entrar com Google em breve'),
-                    ),
-                  ],
+                    return null;
+                  },
                 ),
-              ),
+                const HBGap.md(),
+                HBPasswordField(
+                  controller: _passwordController,
+                  textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    if ((value ?? '').isEmpty) {
+                      return 'Informe sua senha.';
+                    }
+
+                    return null;
+                  },
+                  onFieldSubmitted: (_) => _signIn(),
+                ),
+                const HBGap.lg(),
+                HBButton(
+                  label: 'Entrar',
+                  isLoading: isLoading,
+                  onPressed: _signIn,
+                ),
+                const HBGap.md(),
+                TextButton(
+                  onPressed: () => context.go(AppRoutes.signUp),
+                  child: const Text('Ainda não tenho conta'),
+                ),
+                const HBGap.sm(),
+                TextButton(
+                  onPressed: null,
+                  child: const Text('Entrar com Google em breve'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -144,19 +137,19 @@ class _LoginHeader extends StatelessWidget {
             color: AppColors.primaryLight,
             borderRadius: BorderRadius.circular(24),
           ),
-          child: const Icon(
+          child: const HBIcon(
             Icons.favorite_rounded,
             color: AppColors.primary,
             size: 32,
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
-        Text(
+        const HBGap.lg(),
+        HBText(
           'Bem-vindo ao HelpBari',
           style: Theme.of(context).textTheme.headlineLarge,
         ),
-        const SizedBox(height: AppSpacing.sm),
-        Text(
+        const HBGap.sm(),
+        HBText(
           'Acesse sua conta para acompanhar sua evolução, rotina e saúde em um só lugar.',
           style: Theme.of(
             context,

@@ -50,86 +50,90 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         case AuthFailure(:final message):
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(message)));
+          ).showSnackBar(SnackBar(content: HBText(message)));
         default:
           break;
       }
     });
 
-    return Scaffold(
-      body: HBResponsivePage(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: AppSpacing.xl),
-            Text(
-              'Criar conta',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Comece sua jornada no HelpBari com uma conta segura.',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            HBCard(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    HBTextField(
-                      controller: _emailController,
-                      label: 'E-mail',
-                      hint: 'seuemail@exemplo.com',
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        final text = value?.trim() ?? '';
+    return HBPage(
+      header: const _SignUpHeader(),
+      children: [
+        HBCard(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                HBTextField(
+                  controller: _emailController,
+                  label: 'E-mail',
+                  hint: 'seuemail@exemplo.com',
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    final text = value?.trim() ?? '';
 
-                        if (text.isEmpty) return 'Informe seu e-mail.';
-                        if (!text.contains('@')) {
-                          return 'Informe um e-mail válido.';
-                        }
+                    if (text.isEmpty) return 'Informe seu e-mail.';
+                    if (!text.contains('@')) {
+                      return 'Informe um e-mail válido.';
+                    }
 
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    HBPasswordField(
-                      controller: _passwordController,
-                      textInputAction: TextInputAction.done,
-                      validator: (value) {
-                        final text = value ?? '';
-
-                        if (text.isEmpty) return 'Informe sua senha.';
-                        if (text.length < 6) {
-                          return 'A senha deve ter pelo menos 6 caracteres.';
-                        }
-
-                        return null;
-                      },
-                      onFieldSubmitted: (_) => _signUp(),
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-                    HBButton(
-                      label: 'Criar conta',
-                      isLoading: isLoading,
-                      onPressed: _signUp,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    TextButton(
-                      onPressed: () => context.go(AppRoutes.login),
-                      child: const Text('Já tenho uma conta'),
-                    ),
-                  ],
+                    return null;
+                  },
                 ),
-              ),
+                const HBGap.md(),
+                HBPasswordField(
+                  controller: _passwordController,
+                  textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    final text = value ?? '';
+
+                    if (text.isEmpty) return 'Informe sua senha.';
+                    if (text.length < 6) {
+                      return 'A senha deve ter pelo menos 6 caracteres.';
+                    }
+
+                    return null;
+                  },
+                  onFieldSubmitted: (_) => _signUp(),
+                ),
+                const HBGap.lg(),
+                HBButton(
+                  label: 'Criar conta',
+                  isLoading: isLoading,
+                  onPressed: _signUp,
+                ),
+                const HBGap.md(),
+                TextButton(
+                  onPressed: () => context.go(AppRoutes.login),
+                  child: const HBText('Já tenho uma conta'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
+    );
+  }
+}
+
+class _SignUpHeader extends StatelessWidget {
+  const _SignUpHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HBText('Criar conta', style: Theme.of(context).textTheme.headlineLarge),
+        const HBGap.sm(),
+        HBText(
+          'Comece sua jornada no HelpBari com uma conta segura.',
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
+        ),
+      ],
     );
   }
 }
