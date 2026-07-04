@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../app/theme/app_breakpoints.dart';
-import '../../app/theme/app_spacing.dart';
+import '../../../app/theme/app_breakpoints.dart';
+import '../../../app/theme/app_spacing.dart';
 
 class HBResponsivePage extends StatelessWidget {
   const HBResponsivePage({

@@ -7,9 +7,9 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../shared/widgets/forms/hb_password_field.dart';
 import '../../../../shared/widgets/forms/hb_text_field.dart';
-import '../../../../shared/widgets/hb_button.dart';
-import '../../../../shared/widgets/hb_card.dart';
-import '../../../../shared/widgets/hb_responsive_page.dart';
+import '../../../../shared/widgets/button/hb_button.dart';
+import '../../../../shared/widgets/card/hb_card.dart';
+import '../../../../shared/widgets/layout/hb_responsive_page.dart';
 import '../viewmodels/auth_providers.dart';
 import '../states/auth_state.dart';
 

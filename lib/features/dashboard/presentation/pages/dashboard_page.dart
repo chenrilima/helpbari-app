@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:helpbari/shared/widgets/hb_section_header.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
-import '../../../../shared/widgets/hb_card.dart';
-import '../../../../shared/widgets/hb_responsive_page.dart';
-import '../../../../shared/widgets/hb_section_header.dart';
+import '../../../../shared/widgets/card/hb_card.dart';
+import '../../../../shared/widgets/layout/hb_responsive_page.dart';
 import '../widgets/dashboard_metric_card.dart';
 
 class DashboardPage extends StatelessWidget {
