@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/widgets/layout/hb_section.dart';
-import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_spacing.dart';
-import '../../../../shared/widgets/card/hb_card.dart';
-import '../../../../shared/widgets/layout/hb_responsive_page.dart';
+
+import '../../../../design_system/design_system.dart';
 import '../widgets/dashboard_metric_card.dart';
 
 class DashboardPage extends StatelessWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../app/theme/app_sizes.dart';
-import '../../../app/theme/app_radius.dart';
-import '../../../app/theme/app_spacing.dart';
+
+import '../../design_system.dart';
 
 class HBButton extends StatelessWidget {
   const HBButton({

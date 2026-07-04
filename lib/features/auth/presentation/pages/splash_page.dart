@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
-import '../../../../app/theme/app_spacing.dart';
+import '../../../../design_system/design_system.dart';
 import '../viewmodels/auth_providers.dart';
 import '../states/auth_state.dart';
 

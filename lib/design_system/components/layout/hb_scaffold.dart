@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/app_spacing.dart';
-import 'hb_responsive_page.dart';
+import '../../design_system.dart';
 
 class HBScaffold extends StatelessWidget {
   const HBScaffold({

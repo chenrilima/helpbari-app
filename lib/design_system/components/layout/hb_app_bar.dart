@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../app/theme/app_colors.dart';
+import '../../design_system.dart';
 
 class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HBAppBar({

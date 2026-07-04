@@ -3,13 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
-import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_spacing.dart';
-import '../../../../shared/widgets/forms/hb_password_field.dart';
-import '../../../../shared/widgets/forms/hb_text_field.dart';
-import '../../../../shared/widgets/button/hb_button.dart';
-import '../../../../shared/widgets/card/hb_card.dart';
-import '../../../../shared/widgets/layout/hb_responsive_page.dart';
+import '../../../../design_system/design_system.dart';
+
 import '../viewmodels/auth_providers.dart';
 import '../states/auth_state.dart';
 

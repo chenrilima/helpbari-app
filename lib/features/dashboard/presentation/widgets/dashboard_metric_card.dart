@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_radius.dart';
-import '../../../../app/theme/app_spacing.dart';
+import '../../../../design_system/design_system.dart';
 
 class DashboardMetricCard extends StatelessWidget {
   const DashboardMetricCard({

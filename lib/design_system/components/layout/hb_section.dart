@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../app/theme/app_spacing.dart';
+import '../../design_system.dart';
 
 class HBSection extends StatelessWidget {
   const HBSection({
