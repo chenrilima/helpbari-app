@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../design_system/design_system.dart';
-import '../widgets/dashboard_metric_card.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -33,28 +32,28 @@ class DashboardPage extends StatelessWidget {
               subtitle: 'Acompanhe os principais pontos da sua rotina.',
               child: Column(
                 children: [
-                  DashboardMetricCard(
+                  HBMetricCard(
                     title: 'Peso atual',
                     value: 'Ainda não informado',
                     description:
                         'Cadastre seu primeiro peso para iniciar o histórico.',
-                    icon: Icons.monitor_weight_outlined,
+                    icon: AppIcons.weight,
                   ),
                   SizedBox(height: AppSpacing.md),
-                  DashboardMetricCard(
+                  HBMetricCard(
                     title: 'Água hoje',
                     value: '0 ml',
                     description: 'Sua meta diária aparecerá aqui.',
-                    icon: Icons.water_drop_outlined,
+                    icon: AppIcons.water,
                     iconBackgroundColor: AppColors.secondaryLight,
                     iconColor: AppColors.secondary,
                   ),
                   SizedBox(height: AppSpacing.md),
-                  DashboardMetricCard(
+                  HBMetricCard(
                     title: 'Vitaminas',
                     value: 'Nenhuma cadastrada',
                     description: 'Configure lembretes para sua rotina diária.',
-                    icon: Icons.medication_liquid_outlined,
+                    icon: AppIcons.vitamin,
                   ),
                 ],
               ),

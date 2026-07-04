@@ -56,16 +56,8 @@ class ShowcasePage extends StatelessWidget {
               ],
             ),
           ),
-          const HBGap.md(),
-          const HBMetricCard(
-            title: 'Água hoje',
-            value: '1,2 L',
-            description: 'Meta diária: 2 L',
-            icon: AppIcons.water,
-            iconBackgroundColor: AppColors.secondaryLight,
-            iconColor: AppColors.secondary,
-          ),
-          const SizedBox(height: AppSpacing.xl),
+
+          const HBGap.xl(),
           const HBSection(
             title: 'Feedback',
             subtitle: 'Estados de carregamento e vazio.',
