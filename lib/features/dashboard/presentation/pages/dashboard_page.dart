@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpbari/shared/widgets/hb_section_header.dart';
-
+import '../../../../shared/widgets/layout/hb_section.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../shared/widgets/card/hb_card.dart';
@@ -32,33 +31,36 @@ class DashboardPage extends StatelessWidget {
               child: _WelcomeContent(),
             ),
             const SizedBox(height: AppSpacing.xl),
-            const HBSectionHeader(
+            const HBSection(
               title: 'Resumo de hoje',
               subtitle: 'Acompanhe os principais pontos da sua rotina.',
-            ),
-            const SizedBox(height: AppSpacing.md),
-            const DashboardMetricCard(
-              title: 'Peso atual',
-              value: 'Ainda não informado',
-              description:
-                  'Cadastre seu primeiro peso para iniciar o histórico.',
-              icon: Icons.monitor_weight_outlined,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            const DashboardMetricCard(
-              title: 'Água hoje',
-              value: '0 ml',
-              description: 'Sua meta diária aparecerá aqui.',
-              icon: Icons.water_drop_outlined,
-              iconBackgroundColor: AppColors.secondaryLight,
-              iconColor: AppColors.secondary,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            const DashboardMetricCard(
-              title: 'Vitaminas',
-              value: 'Nenhuma cadastrada',
-              description: 'Configure lembretes para sua rotina diária.',
-              icon: Icons.medication_liquid_outlined,
+              child: Column(
+                children: [
+                  DashboardMetricCard(
+                    title: 'Peso atual',
+                    value: 'Ainda não informado',
+                    description:
+                        'Cadastre seu primeiro peso para iniciar o histórico.',
+                    icon: Icons.monitor_weight_outlined,
+                  ),
+                  SizedBox(height: AppSpacing.md),
+                  DashboardMetricCard(
+                    title: 'Água hoje',
+                    value: '0 ml',
+                    description: 'Sua meta diária aparecerá aqui.',
+                    icon: Icons.water_drop_outlined,
+                    iconBackgroundColor: AppColors.secondaryLight,
+                    iconColor: AppColors.secondary,
+                  ),
+                  SizedBox(height: AppSpacing.md),
+                  DashboardMetricCard(
+                    title: 'Vitaminas',
+                    value: 'Nenhuma cadastrada',
+                    description: 'Configure lembretes para sua rotina diária.',
+                    icon: Icons.medication_liquid_outlined,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
