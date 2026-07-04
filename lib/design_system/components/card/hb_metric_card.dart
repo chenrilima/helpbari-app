@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/theme.dart';
 import '../../primitives/primitives.dart';
+import '../../theme/theme.dart';
 
 class HBMetricCard extends StatelessWidget {
   const HBMetricCard({
