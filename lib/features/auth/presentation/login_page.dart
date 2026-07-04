@@ -10,7 +10,6 @@ import '../../../../app/theme/app_spacing.dart';
 import '../../../../shared/widgets/hb_card.dart';
 import '../../../../shared/widgets/hb_responsive_page.dart';
 
-
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -33,7 +32,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> _signIn() async {
     if (!_formKey.currentState!.validate()) return;
 
-    await ref.read(authViewModelProvider.notifier).signInWithEmailAndPassword(
+    await ref
+        .read(authViewModelProvider.notifier)
+        .signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
@@ -49,9 +50,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         case AuthAuthenticated():
           context.go(AppRoutes.dashboard);
         case AuthFailure(:final message):
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
         default:
           break;
       }
@@ -63,16 +64,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: AppSpacing.xl),
-            Text(
-              'Entrar',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
+            Text('Entrar', style: Theme.of(context).textTheme.headlineLarge),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Acesse sua conta para acompanhar sua jornada.',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.xl),
             HBCard(
@@ -107,9 +105,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       controller: _passwordController,
                       obscureText: true,
                       textInputAction: TextInputAction.done,
-                      decoration: const InputDecoration(
-                        labelText: 'Senha',
-                      ),
+                      decoration: const InputDecoration(labelText: 'Senha'),
                       validator: (value) {
                         if ((value ?? '').isEmpty) {
                           return 'Informe sua senha.';
@@ -125,12 +121,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       child: FilledButton(
                         onPressed: isLoading ? null : _signIn,
                         child: const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
                       ),
                     ),
                   ],
