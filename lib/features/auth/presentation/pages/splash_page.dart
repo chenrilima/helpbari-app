@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../viewmodels/auth_providers.dart';
-import '../viewmodels/auth_state.dart';
+import '../states/auth_state.dart';
 
 class SplashPage extends ConsumerWidget {
   const SplashPage({super.key});

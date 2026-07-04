@@ -3,7 +3,7 @@ import 'package:helpbari/features/auth/data/repositories/supabase_auth_repositor
 
 import '../../../../core/supabase/supabase_client_provider.dart';
 import '../../domain/repositories/auth_repository.dart';
-import 'auth_state.dart';
+import '../states/auth_state.dart';
 import 'auth_view_model.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

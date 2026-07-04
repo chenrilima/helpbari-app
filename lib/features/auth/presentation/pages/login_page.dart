@@ -11,7 +11,7 @@ import '../../../../shared/widgets/hb_button.dart';
 import '../../../../shared/widgets/hb_card.dart';
 import '../../../../shared/widgets/hb_responsive_page.dart';
 import '../viewmodels/auth_providers.dart';
-import '../viewmodels/auth_state.dart';
+import '../states/auth_state.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});

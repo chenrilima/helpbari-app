@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/result/result.dart';
 import '../../domain/repositories/auth_repository.dart';
 import 'auth_providers.dart';
-import 'auth_state.dart';
+import '../states/auth_state.dart';
 
 class AuthViewModel extends Notifier<AuthState> {
   late final AuthRepository _repository;
