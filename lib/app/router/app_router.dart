@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
-import 'package:helpbari/features/auth/presentation/pages/login_page.dart';
-import 'package:helpbari/features/auth/presentation/pages/sign_up_page.dart';
-
+import '../../features/showcase/presentation/pages/showcase_page.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
-import '../../features/dashboard/presentation/pages/dashboard_page.dart';
+import '../../features/home/presentation/pages/dashboard_page.dart';
 import 'app_routes.dart';
 
 final appRouter = GoRouter(
@@ -24,6 +24,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.signUp,
       builder: (context, state) => const SignUpPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.showcase,
+      builder: (context, state) => const ShowcasePage(),
     ),
   ],
 );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../app/theme/app_radius.dart';
-import '../../app/theme/app_spacing.dart';
+import '../../design_system.dart';
 
 class HBButton extends StatelessWidget {
   const HBButton({
@@ -19,7 +18,7 @@ class HBButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 52,
+      height: AppSizes.buttonHeight,
       child: FilledButton(
         onPressed: isLoading ? null : onPressed,
         style: FilledButton.styleFrom(

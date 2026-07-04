@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
-import '../../../../app/theme/app_spacing.dart';
+import '../../../../design_system/design_system.dart';
 import '../viewmodels/auth_providers.dart';
 import '../states/auth_state.dart';
 
@@ -27,28 +27,25 @@ class SplashPage extends ConsumerWidget {
       }
     });
 
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'HelpBari',
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Text(
-                'Preparando sua jornada...',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              const CircularProgressIndicator(),
-            ],
-          ),
+    return HBPage(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            HBText(
+              'HelpBari',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            const HBGap.md(),
+            HBText(
+              'Preparando sua jornada...',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const HBGap.xl(),
+            const HBLoading(),
+          ],
         ),
-      ),
+      ],
     );
   }
 }
