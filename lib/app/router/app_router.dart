@@ -24,5 +24,9 @@ final appRouter = GoRouter(
       path: AppRoutes.signUp,
       builder: (context, state) => const SignUpPage(),
     ),
+    GoRoute(
+      path: AppRoutes.showcase,
+      builder: (context, state) => const ShowcasePage(),
+    ),
   ],
 );
