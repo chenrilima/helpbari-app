@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpbari/app/theme/app_sizes.dart';
-
+import '../../app/theme/app_sizes.dart';
 import '../../app/theme/app_radius.dart';
 import '../../app/theme/app_spacing.dart';
 
