@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:helpbari/features/auth/presentation/viewmodels/auth_providers.dart';
 import 'package:helpbari/features/auth/presentation/viewmodels/auth_state.dart';
 
-import '../../../../app/router/app_routes.dart';
-import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_spacing.dart';
-import '../../../../shared/widgets/hb_card.dart';
-import '../../../../shared/widgets/hb_responsive_page.dart';
+import '../../../../../app/router/app_routes.dart';
+import '../../../../../app/theme/app_colors.dart';
+import '../../../../../app/theme/app_spacing.dart';
+import '../../../../../shared/widgets/hb_card.dart';
+import '../../../../../shared/widgets/hb_responsive_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -120,11 +120,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       width: double.infinity,
                       child: FilledButton(
                         onPressed: isLoading ? null : _signIn,
-                        child: const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
+                        child: isLoading
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text('Entrar'),
                       ),
                     ),
                   ],
