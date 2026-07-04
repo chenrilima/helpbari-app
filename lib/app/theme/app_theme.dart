@@ -34,9 +34,7 @@ abstract final class AppTheme {
         color: AppColors.textSecondary,
         fontWeight: FontWeight.w500,
       ),
-      hintStyle: const TextStyle(
-        color: AppColors.textDisabled,
-      ),
+      hintStyle: const TextStyle(color: AppColors.textDisabled),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
         borderSide: const BorderSide(color: AppColors.border),
@@ -47,10 +45,7 @@ abstract final class AppTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
-        borderSide: const BorderSide(
-          color: AppColors.primary,
-          width: 1.4,
-        ),
+        borderSide: const BorderSide(color: AppColors.primary, width: 1.4),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -58,10 +53,7 @@ abstract final class AppTheme {
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
-        borderSide: const BorderSide(
-          color: AppColors.danger,
-          width: 1.4,
-        ),
+        borderSide: const BorderSide(color: AppColors.danger, width: 1.4),
       ),
     );
   }
@@ -73,10 +65,7 @@ abstract final class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
         ),
-        textStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-        ),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
       ),
     );
   }
