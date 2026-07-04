@@ -6,3 +6,4 @@ export 'components/layout/layout.dart';
 export 'theme/theme.dart';
 export 'foundations/foundations.dart';
 export 'primitives/primitives.dart';
+export 'primitives/hb_metric_card.dart';
