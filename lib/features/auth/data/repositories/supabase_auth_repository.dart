@@ -31,6 +31,44 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<Result<AuthUser>> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _client.auth.signUp(
+        email: email,
+        password: password,
+      );
+
+      final user = response.user;
+
+      if (user == null) {
+        return const Failure(
+          AppException(message: 'Não foi possível criar sua conta.'),
+        );
+      }
+
+      return Success(AuthUser(id: user.id, email: user.email));
+    } on AuthException catch (error, stackTrace) {
+      return Failure(
+        AppException(
+          message: error.message,
+          code: error.statusCode,
+          stackTrace: stackTrace,
+        ),
+      );
+    } catch (error, stackTrace) {
+      return Failure(
+        AppException(
+          message: 'Erro inesperado ao criar conta.',
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Result<AuthUser>> signInWithEmailAndPassword({
     required String email,
     required String password,

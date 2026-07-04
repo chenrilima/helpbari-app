@@ -40,6 +40,25 @@ class AuthViewModel extends Notifier<AuthState> {
     }
   }
 
+  Future<void> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    state = const AuthLoading();
+
+    final result = await _repository.signUpWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    switch (result) {
+      case Success(:final data):
+        state = AuthAuthenticated(data);
+      case Failure(:final exception):
+        state = AuthFailure(exception.message);
+    }
+  }
+
   Future<void> signOut() async {
     state = const AuthLoading();
 

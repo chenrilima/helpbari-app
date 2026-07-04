@@ -13,14 +13,14 @@ import '../../../../shared/widgets/hb_responsive_page.dart';
 import '../viewmodels/auth_providers.dart';
 import '../viewmodels/auth_state.dart';
 
-class LoginPage extends ConsumerStatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends ConsumerStatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  ConsumerState<LoginPage> createState() => _LoginPageState();
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> {
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -32,12 +32,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _signIn() async {
+  Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) return;
 
     await ref
         .read(authViewModelProvider.notifier)
-        .signInWithEmailAndPassword(
+        .signUpWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
@@ -67,7 +67,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: AppSpacing.xl),
-            const _LoginHeader(),
+            Text(
+              'Criar conta',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Comece sua jornada no HelpBari com uma conta segura.',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
+            ),
             const SizedBox(height: AppSpacing.xl),
             HBCard(
               child: Form(
@@ -83,13 +93,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       validator: (value) {
                         final text = value?.trim() ?? '';
 
-                        if (text.isEmpty) {
-                          return 'Informe seu e-mail.';
-                        }
-
-                        if (!text.contains('@')) {
+                        if (text.isEmpty) return 'Informe seu e-mail.';
+                        if (!text.contains('@'))
                           return 'Informe um e-mail válido.';
-                        }
 
                         return null;
                       },
@@ -99,29 +105,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       controller: _passwordController,
                       textInputAction: TextInputAction.done,
                       validator: (value) {
-                        if ((value ?? '').isEmpty) {
-                          return 'Informe sua senha.';
-                        }
+                        final text = value ?? '';
+
+                        if (text.isEmpty) return 'Informe sua senha.';
+                        if (text.length < 6)
+                          return 'A senha deve ter pelo menos 6 caracteres.';
 
                         return null;
                       },
-                      onFieldSubmitted: (_) => _signIn(),
+                      onFieldSubmitted: (_) => _signUp(),
                     ),
                     const SizedBox(height: AppSpacing.lg),
                     HBButton(
-                      label: 'Entrar',
+                      label: 'Criar conta',
                       isLoading: isLoading,
-                      onPressed: _signIn,
+                      onPressed: _signUp,
                     ),
                     const SizedBox(height: AppSpacing.md),
                     TextButton(
-                      onPressed: () => context.go(AppRoutes.signUp),
-                      child: const Text('Ainda não tenho conta'),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    TextButton(
-                      onPressed: null,
-                      child: const Text('Entrar com Google em breve'),
+                      onPressed: () => context.go(AppRoutes.login),
+                      child: const Text('Já tenho uma conta'),
                     ),
                   ],
                 ),
@@ -130,44 +133,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _LoginHeader extends StatelessWidget {
-  const _LoginHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(
-            color: AppColors.primaryLight,
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: const Icon(
-            Icons.favorite_rounded,
-            color: AppColors.primary,
-            size: 32,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        Text(
-          'Bem-vindo ao HelpBari',
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Text(
-          'Acesse sua conta para acompanhar sua evolução, rotina e saúde em um só lugar.',
-          style: Theme.of(
-            context,
-          ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
-        ),
-      ],
     );
   }
 }
