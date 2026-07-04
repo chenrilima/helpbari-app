@@ -61,55 +61,53 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     return Scaffold(
       body: HBResponsivePage(
-  child: Form(
-    key: _formKey,
-    child: Column(
-      children: [
-        HBTextField(
-          controller: _emailController,
-          label: 'E-mail',
-          hint: 'seuemail@exemplo.com',
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
-          validator: (value) {
-            final text = value?.trim() ?? '';
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              HBTextField(
+                controller: _emailController,
+                label: 'E-mail',
+                hint: 'seuemail@exemplo.com',
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                validator: (value) {
+                  final text = value?.trim() ?? '';
 
-            if (text.isEmpty) {
-              return 'Informe seu e-mail.';
-            }
+                  if (text.isEmpty) {
+                    return 'Informe seu e-mail.';
+                  }
 
-            if (!text.contains('@')) {
-              return 'Informe um e-mail válido.';
-            }
+                  if (!text.contains('@')) {
+                    return 'Informe um e-mail válido.';
+                  }
 
-            return null;
-          },
+                  return null;
+                },
+              ),
+              const SizedBox(height: AppSpacing.md),
+              HBPasswordField(
+                controller: _passwordController,
+                textInputAction: TextInputAction.done,
+                validator: (value) {
+                  if ((value ?? '').isEmpty) {
+                    return 'Informe sua senha.';
+                  }
+
+                  return null;
+                },
+                onFieldSubmitted: (_) => _signIn(),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              HBButton(
+                label: 'Entrar',
+                isLoading: isLoading,
+                onPressed: _signIn,
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: AppSpacing.md),
-        HBPasswordField(
-          controller: _passwordController,
-          textInputAction: TextInputAction.done,
-          validator: (value) {
-            if ((value ?? '').isEmpty) {
-              return 'Informe sua senha.';
-            }
-
-            return null;
-          },
-          onFieldSubmitted: (_) => _signIn(),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        HBButton(
-          label: 'Entrar',
-          isLoading: isLoading,
-          onPressed: _signIn,
-        ),
-      ],
-    ),
-  ),
-),
+      ),
     );
   }
 }
-
-
