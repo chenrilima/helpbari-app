@@ -7,60 +7,67 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: HBResponsivePage(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: AppSpacing.md),
-            Text('HelpBari', style: Theme.of(context).textTheme.headlineLarge),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Seu companheiro na jornada bariátrica.',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            const HBCard(
-              backgroundColor: AppColors.primaryLight,
-              child: _WelcomeContent(),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            const HBSection(
-              title: 'Resumo de hoje',
-              subtitle: 'Acompanhe os principais pontos da sua rotina.',
-              child: Column(
-                children: [
-                  HBMetricCard(
-                    title: 'Peso atual',
-                    value: 'Ainda não informado',
-                    description:
-                        'Cadastre seu primeiro peso para iniciar o histórico.',
-                    icon: AppIcons.weight,
-                  ),
-                  SizedBox(height: AppSpacing.md),
-                  HBMetricCard(
-                    title: 'Água hoje',
-                    value: '0 ml',
-                    description: 'Sua meta diária aparecerá aqui.',
-                    icon: AppIcons.water,
-                    iconBackgroundColor: AppColors.secondaryLight,
-                    iconColor: AppColors.secondary,
-                  ),
-                  SizedBox(height: AppSpacing.md),
-                  HBMetricCard(
-                    title: 'Vitaminas',
-                    value: 'Nenhuma cadastrada',
-                    description: 'Configure lembretes para sua rotina diária.',
-                    icon: AppIcons.vitamin,
-                  ),
-                ],
-              ),
-            ),
-          ],
+    return const HBPage(
+      header: _DashboardHeader(),
+      children: [
+        HBCard(
+          backgroundColor: AppColors.primaryLight,
+          child: _WelcomeContent(),
         ),
-      ),
+        HBGap.xl(),
+        HBSection(
+          title: 'Resumo de hoje',
+          subtitle: 'Acompanhe os principais pontos da sua rotina.',
+          child: Column(
+            children: [
+              HBMetricCard(
+                title: 'Peso atual',
+                value: 'Ainda não informado',
+                description:
+                    'Cadastre seu primeiro peso para iniciar o histórico.',
+                icon: AppIcons.weight,
+              ),
+              HBGap.md(),
+              HBMetricCard(
+                title: 'Água hoje',
+                value: '0 ml',
+                description: 'Sua meta diária aparecerá aqui.',
+                icon: AppIcons.water,
+                iconBackgroundColor: AppColors.secondaryLight,
+                iconColor: AppColors.secondary,
+              ),
+              HBGap.md(),
+              HBMetricCard(
+                title: 'Vitaminas',
+                value: 'Nenhuma cadastrada',
+                description: 'Configure lembretes para sua rotina diária.',
+                icon: AppIcons.vitamin,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DashboardHeader extends StatelessWidget {
+  const _DashboardHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HBText('HelpBari', style: Theme.of(context).textTheme.headlineLarge),
+        const HBGap.sm(),
+        HBText(
+          'Seu companheiro na jornada bariátrica.',
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
+        ),
+      ],
     );
   }
 }
@@ -73,9 +80,12 @@ class _WelcomeContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Fundação criada', style: Theme.of(context).textTheme.titleLarge),
-        const SizedBox(height: AppSpacing.sm),
-        Text(
+        HBText(
+          'Fundação criada',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const HBGap.sm(),
+        HBText(
           'Agora temos tema, tokens visuais, responsividade, cards reutilizáveis e estrutura inicial por features.',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
