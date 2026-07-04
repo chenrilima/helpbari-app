@@ -24,4 +24,6 @@ abstract final class AppIcons {
 
   static const visibility = Icons.visibility_outlined;
   static const visibilityOff = Icons.visibility_off_outlined;
+
+  static const empty = Icons.inbox_outlined;
 }
