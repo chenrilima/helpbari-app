@@ -34,7 +34,36 @@ class ShowcasePage extends StatelessWidget {
           const HBSection(
             title: 'Cards',
             subtitle: 'Container padrão para agrupamento de conteúdo.',
-            child: HBCard(child: Text('Este é um card padrão do HelpBari.')),
+            child: Column(
+              children: [
+                HBCard(child: HBText('Este é um card padrão do HelpBari.')),
+                HBGap.lg(),
+                HBMetricCard(
+                  title: 'Peso atual',
+                  value: '94,8 kg',
+                  description: 'Atualizado hoje',
+                  icon: AppIcons.weight,
+                ),
+                HBGap.md(),
+                HBMetricCard(
+                  title: 'Água hoje',
+                  value: '1,2 L',
+                  description: 'Meta diária: 2 L',
+                  icon: AppIcons.water,
+                  iconBackgroundColor: AppColors.secondaryLight,
+                  iconColor: AppColors.secondary,
+                ),
+              ],
+            ),
+          ),
+          const HBGap.md(),
+          const HBMetricCard(
+            title: 'Água hoje',
+            value: '1,2 L',
+            description: 'Meta diária: 2 L',
+            icon: AppIcons.water,
+            iconBackgroundColor: AppColors.secondaryLight,
+            iconColor: AppColors.secondary,
           ),
           const SizedBox(height: AppSpacing.xl),
           const HBSection(
