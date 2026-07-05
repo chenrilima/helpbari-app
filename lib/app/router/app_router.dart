@@ -9,7 +9,7 @@ import '../../features/home/presentation/pages/dashboard_page.dart';
 import 'app_routes.dart';
 
 final appRouter = GoRouter(
-  initialLocation: AppRoutes.splash,
+  initialLocation: AppRoutes.profile,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
