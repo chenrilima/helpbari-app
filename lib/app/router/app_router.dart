@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import '../../features/profile/presentation/pages/complete_profile_page.dart';
+import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
@@ -28,6 +30,14 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.showcase,
       builder: (context, state) => const ShowcasePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.profile,
+      builder: (context, state) => const ProfilePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.completeProfile,
+      builder: (context, state) => const CompleteProfilePage(),
     ),
   ],
 );
