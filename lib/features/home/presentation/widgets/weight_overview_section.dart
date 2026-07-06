@@ -12,11 +12,13 @@ class WeightOverviewSection extends StatelessWidget {
   const WeightOverviewSection({
     required this.latestRecord,
     required this.hasRecords,
+    this.progressMessage,
     super.key,
   });
 
   final WeightRecord? latestRecord;
   final bool hasRecords;
+  final String? progressMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +29,18 @@ class WeightOverviewSection extends StatelessWidget {
           child: latestRecord != null
               ? WeightSummaryCard(
                   record: latestRecord!,
+                  description: progressMessage,
                   onTap: () => context.push(AppRoutes.weight),
                 )
               : const HBEmptyState(
                   title: 'Nenhum peso registrado',
                   description:
                       'Registre seu primeiro peso para acompanhar sua evolução.',
-                  icon: Icons.monitor_weight_outlined,
+                  icon: AppIcons.weight,
                 ),
         ),
-
         if (hasRecords) ...[
           const HBGap.xl(),
-
           const HomeSection(title: 'Evolução', child: WeightChartWidget()),
         ],
       ],

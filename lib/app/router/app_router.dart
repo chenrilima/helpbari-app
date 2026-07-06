@@ -1,17 +1,17 @@
 import 'package:go_router/go_router.dart';
+import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
-import '../../features/home/presentation/pages/dashboard_page.dart';
 import '../../features/weight/presentation/pages/register_weight_page.dart';
 import '../../features/weight/presentation/pages/weight_page.dart';
 import 'app_routes.dart';
 
 final appRouter = GoRouter(
-  initialLocation: AppRoutes.weight,
+  initialLocation: AppRoutes.home,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
@@ -22,8 +22,8 @@ final appRouter = GoRouter(
       builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
-      path: AppRoutes.dashboard,
-      builder: (context, state) => const DashboardPage(),
+      path: AppRoutes.home,
+      builder: (context, state) => const HomePage(),
     ),
     GoRoute(
       path: AppRoutes.signUp,

@@ -46,7 +46,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       switch (next) {
         case AuthAuthenticated():
-          context.go(AppRoutes.dashboard);
+          context.go(AppRoutes.home);
         case AuthFailure(:final message):
           ScaffoldMessenger.of(
             context,

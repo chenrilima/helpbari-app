@@ -21,7 +21,7 @@ class HomeHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HBText(
-          '$greeting, $userName 👋',
+          '$greeting, $userName',
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const HBGap.sm(),
