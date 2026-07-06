@@ -1,5 +1,4 @@
-import 'package:helpbari/core/domain/entity.dart';
-
+import '../../../../core/domain/entity.dart';
 import '../value_objects/value_objects.dart';
 
 class Profile extends Entity {
@@ -39,4 +38,15 @@ class Profile extends Entity {
   final String email;
 
   final AppDate createdAt;
+
+  int get age => birthDate.age;
+
+  int get daysSinceSurgery {
+    final now = DateTime.now();
+    return now.difference(surgeryDate.value).inDays;
+  }
+
+  Bmi get initialBmi {
+    return Bmi.calculate(weight: initialWeight, height: height);
+  }
 }

@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../models/create_profile_form.dart';
+import '../../../../app/router/app_routes.dart';
 import '../../../../design_system/design_system.dart';
+import '../../domain/value_objects/value_objects.dart';
+import '../providers/profile_view_model_provider.dart';
 
-class CompleteProfilePage extends StatefulWidget {
+class CompleteProfilePage extends ConsumerStatefulWidget {
   const CompleteProfilePage({super.key});
 
   @override
-  State<CompleteProfilePage> createState() => _CompleteProfilePageState();
+  ConsumerState<CompleteProfilePage> createState() =>
+      _CompleteProfilePageState();
 }
 
-class _CompleteProfilePageState extends State<CompleteProfilePage> {
+class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _heightController = TextEditingController();
   final _initialWeightController = TextEditingController();
   final _targetWeightController = TextEditingController();
+  SurgeryType _selectedSurgeryType = SurgeryType.other;
+  DateTime? _birthDate;
+  DateTime? _surgeryDate;
 
   @override
   void dispose() {
@@ -25,8 +34,59 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     super.dispose();
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
+
+    if (_birthDate == null || _surgeryDate == null) return;
+
+    final targetWeightText = _targetWeightController.text.trim();
+
+    final form = CreateProfileForm(
+      name: _nameController.text.trim(),
+      email: 'local@helpbari.app',
+      birthDate: _birthDate!,
+      height: int.parse(_heightController.text.trim()),
+      initialWeight: double.parse(
+        _initialWeightController.text.trim().replaceAll(',', '.'),
+      ),
+      targetWeight: targetWeightText.isEmpty
+          ? null
+          : double.parse(targetWeightText.replaceAll(',', '.')),
+      surgeryDate: _surgeryDate!,
+      surgeryType: _selectedSurgeryType,
+    );
+
+    await ref.read(profileViewModelProvider.notifier).createProfile(form);
+
+    if (!mounted) return;
+
+    context.go(AppRoutes.profile);
+  }
+
+  Future<void> _selectBirthDate() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime(1990),
+      firstDate: DateTime(1940),
+      lastDate: DateTime.now(),
+    );
+
+    if (date == null) return;
+
+    setState(() => _birthDate = date);
+  }
+
+  Future<void> _selectSurgeryDate() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+
+    if (date == null) return;
+
+    setState(() => _surgeryDate = date);
   }
 
   @override
@@ -114,6 +174,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                     return null;
                   },
                 ),
+
                 const HBGap.md(),
                 HBTextField(
                   controller: _targetWeightController,
@@ -141,6 +202,40 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                     return null;
                   },
                   onFieldSubmitted: (_) => _submit(),
+                ),
+                const HBGap.md(),
+                HBButton(
+                  label: _birthDate == null
+                      ? 'Selecionar data de nascimento'
+                      : 'Nascimento: ${_birthDate!.day}/${_birthDate!.month}/${_birthDate!.year}',
+                  onPressed: _selectBirthDate,
+                ),
+                const HBGap.md(),
+                HBButton(
+                  label: _surgeryDate == null
+                      ? 'Selecionar data da cirurgia'
+                      : 'Cirurgia: ${_surgeryDate!.day}/${_surgeryDate!.month}/${_surgeryDate!.year}',
+                  onPressed: _selectSurgeryDate,
+                ),
+                const HBGap.md(),
+                DropdownButtonFormField<SurgeryType>(
+                  initialValue: _selectedSurgeryType,
+                  decoration: const InputDecoration(
+                    labelText: 'Tipo de cirurgia',
+                  ),
+                  items: SurgeryType.values.map((type) {
+                    return DropdownMenuItem<SurgeryType>(
+                      value: type,
+                      child: HBText(type.label),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value == null) return;
+
+                    setState(() {
+                      _selectedSurgeryType = value;
+                    });
+                  },
                 ),
                 const HBGap.xl(),
                 HBButton(label: 'Salvar perfil', onPressed: _submit),

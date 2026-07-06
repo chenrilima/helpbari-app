@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/profile_view_model_provider.dart';
 
@@ -67,6 +68,42 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         HBMetricCard(
           title: 'Peso inicial',
           value: profile.initialWeight.formatted,
+          icon: AppIcons.weight,
+        ),
+        const HBGap.md(),
+        HBMetricCard(
+          title: 'Tipo de cirurgia',
+          value: profile.surgeryType.label,
+          icon: AppIcons.info,
+        ),
+        const HBGap.md(),
+        HBMetricCard(
+          title: 'Nascimento',
+          value: AppDateFormatter.short(profile.birthDate.value),
+          icon: AppIcons.info,
+        ),
+        const HBGap.md(),
+        HBMetricCard(
+          title: 'Data da cirurgia',
+          value: AppDateFormatter.short(profile.surgeryDate.value),
+          icon: AppIcons.info,
+        ),
+        const HBGap.md(),
+        HBMetricCard(
+          title: 'Idade',
+          value: '${profile.age} anos',
+          icon: AppIcons.profile,
+        ),
+        const HBGap.md(),
+        HBMetricCard(
+          title: 'Dias desde a cirurgia',
+          value: '${profile.daysSinceSurgery} dias',
+          icon: AppIcons.info,
+        ),
+        const HBGap.md(),
+        HBMetricCard(
+          title: 'IMC inicial',
+          value: profile.initialBmi.formatted,
           icon: AppIcons.weight,
         ),
       ],
