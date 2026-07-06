@@ -62,7 +62,7 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
 
     if (!mounted) return;
 
-    context.pop();
+    context.pop(true);
   }
 
   @override

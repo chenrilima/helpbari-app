@@ -28,7 +28,7 @@ class WeightTile extends StatelessWidget {
                 ),
 
                 HBText(
-                  AppDateFormatter.short(record.recordedAt.value),
+                  AppDateFormatter.shortWithTime(record.recordedAt.value),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
 

@@ -6,7 +6,11 @@ class FakeWeightRepository implements WeightRepository {
 
   @override
   Future<List<WeightRecord>> getHistory() async {
-    return List.unmodifiable(_records);
+    final records = [..._records];
+
+    records.sort((a, b) => b.recordedAt.value.compareTo(a.recordedAt.value));
+
+    return List.unmodifiable(records);
   }
 
   @override
