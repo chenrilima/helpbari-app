@@ -1,13 +1,18 @@
 import 'package:go_router/go_router.dart';
+import '../../features/profile/presentation/pages/complete_profile_page.dart';
+import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/home/presentation/pages/dashboard_page.dart';
+import '../../features/weight/presentation/pages/register_weight_page.dart';
+import '../../features/weight/presentation/pages/weight_history_page.dart';
+import '../../features/weight/presentation/pages/weight_page.dart';
 import 'app_routes.dart';
 
 final appRouter = GoRouter(
-  initialLocation: AppRoutes.splash,
+  initialLocation: AppRoutes.weight,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
@@ -28,6 +33,20 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.showcase,
       builder: (context, state) => const ShowcasePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.profile,
+      builder: (context, state) => const ProfilePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.completeProfile,
+      builder: (context, state) => const CompleteProfilePage(),
+    ),
+    GoRoute(path: AppRoutes.weight, builder: (_, __) => const WeightPage()),
+
+    GoRoute(
+      path: AppRoutes.registerWeight,
+      builder: (_, __) => const RegisterWeightPage(),
     ),
   ],
 );

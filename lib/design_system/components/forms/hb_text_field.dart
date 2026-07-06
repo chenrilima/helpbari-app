@@ -10,6 +10,7 @@ class HBTextField extends StatelessWidget {
     this.textInputAction,
     this.validator,
     this.onFieldSubmitted,
+    this.maxLines,
   });
 
   final TextEditingController controller;
@@ -19,6 +20,7 @@ class HBTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onFieldSubmitted;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class HBTextField extends StatelessWidget {
       textInputAction: textInputAction,
       validator: validator,
       onFieldSubmitted: onFieldSubmitted,
+      maxLines: maxLines,
       decoration: InputDecoration(labelText: label, hintText: hint),
     );
   }
