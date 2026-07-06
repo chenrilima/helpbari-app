@@ -45,7 +45,7 @@ class _WeightPageState extends ConsumerState<WeightPage> {
 
         const HBGap.md(),
 
-        if (state.records.isEmpty)
+        if (!state.hasRecords)
           const HBEmptyState(
             title: 'Nenhum peso registrado',
             description:
@@ -67,8 +67,14 @@ class _WeightPageState extends ConsumerState<WeightPage> {
 
         HBButton(
           label: 'Registrar novo peso',
-          onPressed: () {
-            context.push(AppRoutes.registerWeight);
+          onPressed: () async {
+            final created = await context.push<bool>(AppRoutes.registerWeight);
+
+            if (!mounted || created != true) {
+              return;
+            }
+
+            await ref.read(weightViewModelProvider.notifier).loadHistory();
           },
         ),
       ],

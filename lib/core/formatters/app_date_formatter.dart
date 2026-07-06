@@ -8,4 +8,13 @@ class AppDateFormatter {
 
     return '$day/$month/$year';
   }
+
+  static String shortWithTime(DateTime date) {
+    final formattedDate = short(date);
+
+    final hour = date.hour.toString().padLeft(2, '0');
+    final minute = date.minute.toString().padLeft(2, '0');
+
+    return '$formattedDate • $hour:$minute';
+  }
 }

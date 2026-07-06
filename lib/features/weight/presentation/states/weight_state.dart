@@ -30,4 +30,6 @@ class WeightState {
 
     return records.first;
   }
+
+  bool get hasRecords => records.isNotEmpty;
 }
