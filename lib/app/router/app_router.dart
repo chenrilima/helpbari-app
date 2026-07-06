@@ -7,7 +7,6 @@ import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/home/presentation/pages/dashboard_page.dart';
 import '../../features/weight/presentation/pages/register_weight_page.dart';
-import '../../features/weight/presentation/pages/weight_history_page.dart';
 import '../../features/weight/presentation/pages/weight_page.dart';
 import 'app_routes.dart';
 
@@ -42,11 +41,11 @@ final appRouter = GoRouter(
       path: AppRoutes.completeProfile,
       builder: (context, state) => const CompleteProfilePage(),
     ),
-    GoRoute(path: AppRoutes.weight, builder: (_, __) => const WeightPage()),
+    GoRoute(path: AppRoutes.weight, builder: (_, _) => const WeightPage()),
 
     GoRoute(
       path: AppRoutes.registerWeight,
-      builder: (_, __) => const RegisterWeightPage(),
+      builder: (_, _) => const RegisterWeightPage(),
     ),
   ],
 );

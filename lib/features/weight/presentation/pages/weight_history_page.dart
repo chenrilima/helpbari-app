@@ -44,7 +44,7 @@ class _WeightHistoryPageState extends ConsumerState<WeightHistoryPage> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: state.records.length,
-          separatorBuilder: (_, __) => const HBGap.md(),
+          separatorBuilder: (_, _) => const HBGap.md(),
           itemBuilder: (_, index) {
             return WeightTile(record: state.records[index]);
           },
