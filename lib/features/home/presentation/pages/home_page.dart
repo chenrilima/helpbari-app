@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../design_system/design_system.dart';
+import '../../../water/presentation/widgets/water_overview_section.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/home_header.dart';
 import '../widgets/progress_banner.dart';
@@ -20,9 +21,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      ref.read(homeViewModelProvider.notifier).loadHome();
-    });
+    Future.microtask(_loadHome);
+  }
+
+  Future<void> _loadHome() async {
+    await ref.read(homeViewModelProvider.notifier).loadHome();
   }
 
   @override
@@ -37,7 +40,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     return HBPage(
       children: [
-        HomeHeader(userName: state.userName),
+        HomeHeader(userName: state.profile?.name ?? 'Olá'),
         const ProgressBanner(
           title: 'Continue assim! 💜',
           message:
@@ -48,9 +51,15 @@ class _HomePageState extends ConsumerState<HomePage> {
           latestRecord: state.latestWeightRecord,
           hasRecords: state.hasWeightRecords,
           progressMessage: state.formattedWeightLost,
+          onRefresh: _loadHome,
         ),
         const HBGap.xl(),
-        const QuickActionsSection(),
+        WaterOverviewSection(
+          totalTodayInMl: state.totalWaterTodayInMl,
+          onRefresh: _loadHome,
+        ),
+        const HBGap.xl(),
+        QuickActionsSection(onRefresh: _loadHome),
       ],
     );
   }

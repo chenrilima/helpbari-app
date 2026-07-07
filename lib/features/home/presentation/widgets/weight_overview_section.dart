@@ -13,12 +13,19 @@ class WeightOverviewSection extends StatelessWidget {
     required this.latestRecord,
     required this.hasRecords,
     this.progressMessage,
+    this.onRefresh,
     super.key,
   });
 
   final WeightRecord? latestRecord;
   final bool hasRecords;
   final String? progressMessage;
+  final Future<void> Function()? onRefresh;
+
+  Future<void> _openWeight(BuildContext context) async {
+    await context.push(AppRoutes.weight);
+    await onRefresh?.call();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +37,7 @@ class WeightOverviewSection extends StatelessWidget {
               ? WeightSummaryCard(
                   record: latestRecord!,
                   description: progressMessage,
-                  onTap: () => context.push(AppRoutes.weight),
+                  onTap: () => _openWeight(context),
                 )
               : const HBEmptyState(
                   title: 'Nenhum peso registrado',

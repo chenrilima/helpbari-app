@@ -8,4 +8,6 @@ abstract final class AppRoutes {
   static const completeProfile = '/complete-profile';
   static const weight = '/weight';
   static const registerWeight = '/register-weight';
+  static const water = '/water';
+  static const registerWater = '/register-water';
 }

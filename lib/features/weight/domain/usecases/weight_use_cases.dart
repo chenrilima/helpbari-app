@@ -1,18 +1,34 @@
-import 'delete_weight_use_case.dart';
-import 'get_weight_history_use_case.dart';
-import 'register_weight_use_case.dart';
-import 'update_weight_use_case.dart';
+import '../entities/entities.dart';
+import '../models/weight_summary.dart';
+import '../repositories/weight_repository.dart';
 
 class WeightUseCases {
-  const WeightUseCases({
-    required this.getHistory,
-    required this.register,
-    required this.update,
-    required this.delete,
-  });
+  const WeightUseCases(this._repository);
 
-  final GetWeightHistoryUseCase getHistory;
-  final RegisterWeightUseCase register;
-  final UpdateWeightUseCase update;
-  final DeleteWeightUseCase delete;
+  final WeightRepository _repository;
+
+  Future<List<WeightRecord>> getHistory() {
+    return _repository.getHistory();
+  }
+
+  Future<void> register(WeightRecord record) {
+    return _repository.register(record);
+  }
+
+  Future<void> update(WeightRecord record) {
+    return _repository.update(record);
+  }
+
+  Future<void> delete(String id) {
+    return _repository.delete(id);
+  }
+
+  Future<WeightSummary> getSummary() async {
+    final history = await _repository.getHistory();
+
+    return WeightSummary(
+      latestRecord: history.isEmpty ? null : history.first,
+      hasRecords: history.isNotEmpty,
+    );
+  }
 }

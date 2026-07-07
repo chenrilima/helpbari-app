@@ -8,11 +8,13 @@ class HBButton extends StatelessWidget {
     required this.onPressed,
     super.key,
     this.isLoading = false,
+    this.icon,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final bool isLoading;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
