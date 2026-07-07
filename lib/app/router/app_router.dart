@@ -6,6 +6,8 @@ import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
+import '../../features/water/presentation/pages/register_water_page.dart';
+import '../../features/water/presentation/pages/water_page.dart';
 import '../../features/weight/presentation/pages/register_weight_page.dart';
 import '../../features/weight/presentation/pages/weight_page.dart';
 import 'app_routes.dart';
@@ -46,6 +48,11 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.registerWeight,
       builder: (_, _) => const RegisterWeightPage(),
+    ),
+    GoRoute(path: AppRoutes.water, builder: (_, __) => const WaterPage()),
+    GoRoute(
+      path: AppRoutes.registerWater,
+      builder: (_, __) => const RegisterWaterPage(),
     ),
   ],
 );

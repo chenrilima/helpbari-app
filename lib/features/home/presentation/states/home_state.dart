@@ -7,12 +7,14 @@ class HomeState {
     this.latestWeightRecord,
     this.hasWeightRecords = false,
     this.isLoading = false,
+    this.totalWaterTodayInMl = 0,
   });
 
   final Profile? profile;
   final WeightRecord? latestWeightRecord;
   final bool hasWeightRecords;
   final bool isLoading;
+  final int totalWaterTodayInMl;
 
   String get userName => profile?.name ?? 'Olá';
 
@@ -50,12 +52,14 @@ class HomeState {
     WeightRecord? latestWeightRecord,
     bool? hasWeightRecords,
     bool? isLoading,
+    int? totalWaterTodayInMl,
   }) {
     return HomeState(
       profile: profile ?? this.profile,
       latestWeightRecord: latestWeightRecord ?? this.latestWeightRecord,
       hasWeightRecords: hasWeightRecords ?? this.hasWeightRecords,
       isLoading: isLoading ?? this.isLoading,
+      totalWaterTodayInMl: totalWaterTodayInMl ?? this.totalWaterTodayInMl,
     );
   }
 }

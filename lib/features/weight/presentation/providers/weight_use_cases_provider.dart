@@ -6,10 +6,5 @@ import 'weight_repository_provider.dart';
 final weightUseCasesProvider = Provider<WeightUseCases>((ref) {
   final repository = ref.read(weightRepositoryProvider);
 
-  return WeightUseCases(
-    getHistory: GetWeightHistoryUseCase(repository),
-    register: RegisterWeightUseCase(repository),
-    update: UpdateWeightUseCase(repository),
-    delete: DeleteWeightUseCase(repository),
-  );
+  return WeightUseCases(repository);
 });
