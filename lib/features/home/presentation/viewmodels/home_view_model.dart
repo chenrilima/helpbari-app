@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../profile/domain/entities/profile.dart';
+import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../profile/presentation/providers/profile_use_case_providers.dart';
-import '../../../water/domain/usecases/water_use_cases.dart';
+import '../../../vitamins/domain/usecases/vitamin_use_cases.dart';
+import '../../../vitamins/presentation/providers/vitamin_use_cases_provider.dart';
+import '../../../water/domain/usecases/use_cases.dart';
 import '../../../water/presentation/providers/water_use_cases_provider.dart';
 import '../../../weight/domain/models/weight_summary.dart';
 import '../../../weight/domain/usecases/use_cases.dart';
@@ -14,12 +16,14 @@ class HomeViewModel extends Notifier<HomeState> {
   late final ProfileUseCases _profileUseCases;
   late final WeightUseCases _weightUseCases;
   late final WaterUseCases _waterUseCases;
+  late final VitaminUseCases _vitaminUseCases;
 
   @override
   HomeState build() {
     _profileUseCases = ref.read(profileUseCasesProvider);
     _weightUseCases = ref.read(weightUseCasesProvider);
     _waterUseCases = ref.read(waterUseCasesProvider);
+    _vitaminUseCases = ref.read(vitaminUseCasesProvider);
 
     return const HomeState();
   }
@@ -31,15 +35,20 @@ class HomeViewModel extends Notifier<HomeState> {
       _profileUseCases.getProfile(),
       _weightUseCases.getSummary(),
       _waterUseCases.getTodayTotalInMl(),
+      _vitaminUseCases.getPendingCount(),
     ]);
 
-    final summary = results[1] as WeightSummary;
+    final profile = results[0] as Profile?;
+    final weightSummary = results[1] as WeightSummary;
+    final totalWaterToday = results[2] as int;
+    final pendingVitaminsCount = results[3] as int;
 
     state = state.copyWith(
-      profile: results[0] as Profile?,
-      latestWeightRecord: summary.latestRecord,
-      hasWeightRecords: summary.hasRecords,
-      totalWaterTodayInMl: results[2] as int,
+      profile: profile,
+      latestWeightRecord: weightSummary.latestRecord,
+      hasWeightRecords: weightSummary.hasRecords,
+      totalWaterTodayInMl: totalWaterToday,
+      pendingVitaminsCount: pendingVitaminsCount,
       isLoading: false,
     );
   }

@@ -42,8 +42,8 @@ class QuickActionsSection extends StatelessWidget {
             QuickActionCard(
               icon: AppIcons.vitamin,
               title: 'Vitaminas',
-              subtitle: 'Em breve',
-              onTap: () {},
+              subtitle: 'Abrir',
+              onTap: () => _open(context, AppRoutes.vitamins),
             ),
           ],
         ),
