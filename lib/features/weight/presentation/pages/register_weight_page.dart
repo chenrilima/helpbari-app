@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../app/router/app_routes.dart';
 import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../design_system/design_system.dart';
 import '../models/create_weight_form.dart';

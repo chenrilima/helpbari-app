@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../design_system/design_system.dart';
+import '../providers/home_view_model_provider.dart';
+import '../widgets/home_header.dart';
+import '../widgets/progress_banner.dart';
+import '../widgets/quick_actions_section.dart';
+import '../widgets/weight_overview_section.dart';
+
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      ref.read(homeViewModelProvider.notifier).loadHome();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(homeViewModelProvider);
+
+    if (state.isLoading) {
+      return const HBPage(
+        children: [HBLoading(message: 'Carregando sua jornada...')],
+      );
+    }
+
+    return HBPage(
+      children: [
+        HomeHeader(userName: state.userName),
+        const ProgressBanner(
+          title: 'Continue assim! 💜',
+          message:
+              'Cada registro ajuda você a acompanhar sua evolução e manter o foco.',
+        ),
+        const HBGap.xl(),
+        WeightOverviewSection(
+          latestRecord: state.latestWeightRecord,
+          hasRecords: state.hasWeightRecords,
+          progressMessage: state.formattedWeightLost,
+        ),
+        const HBGap.xl(),
+        const QuickActionsSection(),
+      ],
+    );
+  }
+}
