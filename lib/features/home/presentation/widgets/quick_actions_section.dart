@@ -45,6 +45,13 @@ class QuickActionsSection extends StatelessWidget {
               subtitle: 'Abrir',
               onTap: () => _open(context, AppRoutes.vitamins),
             ),
+            const HBGap.md(),
+            QuickActionCard(
+              icon: AppIcons.calendar,
+              title: 'Consultas',
+              subtitle: 'Agendar',
+              onTap: () => _open(context, AppRoutes.appointments),
+            ),
           ],
         ),
       ),

@@ -10,6 +10,7 @@ class HBEmptyState extends StatelessWidget {
     super.key,
     this.actionLabel,
     this.onActionPressed,
+    this.onTap,
   });
 
   final String title;
@@ -17,6 +18,7 @@ class HBEmptyState extends StatelessWidget {
   final IconData icon;
   final String? actionLabel;
   final VoidCallback? onActionPressed;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
