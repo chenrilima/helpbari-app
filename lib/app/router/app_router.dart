@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import '../../features/appointments/presentation/pages/appointments_page.dart';
+import '../../features/appointments/presentation/pages/register_appointment_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
@@ -63,6 +65,14 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.registerVitamin,
       builder: (context, state) => const RegisterVitaminPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.registerAppointment,
+      builder: (context, state) => const RegisterAppointmentPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.appointments,
+      builder: (context, state) => const AppointmentsPage(),
     ),
   ],
 );

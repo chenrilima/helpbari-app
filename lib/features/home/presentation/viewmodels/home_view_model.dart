@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../../appointments/domain/models/appointment_summary.dart';
+import '../../../appointments/domain/usecases/use_cases.dart';
+import '../../../appointments/presentation/providers/appointment_use_cases_provider.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../profile/presentation/providers/profile_use_case_providers.dart';
@@ -17,6 +19,7 @@ class HomeViewModel extends Notifier<HomeState> {
   late final WeightUseCases _weightUseCases;
   late final WaterUseCases _waterUseCases;
   late final VitaminUseCases _vitaminUseCases;
+  late final AppointmentUseCases _appointmentUseCases;
 
   @override
   HomeState build() {
@@ -24,6 +27,7 @@ class HomeViewModel extends Notifier<HomeState> {
     _weightUseCases = ref.read(weightUseCasesProvider);
     _waterUseCases = ref.read(waterUseCasesProvider);
     _vitaminUseCases = ref.read(vitaminUseCasesProvider);
+    _appointmentUseCases = ref.read(appointmentUseCasesProvider);
 
     return const HomeState();
   }
@@ -36,19 +40,26 @@ class HomeViewModel extends Notifier<HomeState> {
       _weightUseCases.getSummary(),
       _waterUseCases.getTodayTotalInMl(),
       _vitaminUseCases.getPendingCount(),
+      _appointmentUseCases.getSummary(),
     ]);
 
     final profile = results[0] as Profile?;
+
     final weightSummary = results[1] as WeightSummary;
+
     final totalWaterToday = results[2] as int;
-    final pendingVitaminsCount = results[3] as int;
+
+    final pendingVitamins = results[3] as int;
+
+    final appointmentSummary = results[4] as AppointmentSummary;
 
     state = state.copyWith(
       profile: profile,
       latestWeightRecord: weightSummary.latestRecord,
       hasWeightRecords: weightSummary.hasRecords,
       totalWaterTodayInMl: totalWaterToday,
-      pendingVitaminsCount: pendingVitaminsCount,
+      pendingVitaminsCount: pendingVitamins,
+      nextAppointment: appointmentSummary.nextAppointment,
       isLoading: false,
     );
   }

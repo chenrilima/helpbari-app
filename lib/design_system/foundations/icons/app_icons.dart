@@ -26,4 +26,6 @@ abstract final class AppIcons {
   static const visibilityOff = Icons.visibility_off_outlined;
 
   static const empty = Icons.inbox_outlined;
+
+  static const calendar = Icons.calendar_month_outlined;
 }

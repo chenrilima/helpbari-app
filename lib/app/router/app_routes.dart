@@ -12,4 +12,6 @@ abstract final class AppRoutes {
   static const registerWater = '/register-water';
   static const vitamins = '/vitamins';
   static const registerVitamin = '/register-vitamin';
+  static const appointments = '/appointments';
+  static const registerAppointment = '/register-appointment';
 }
