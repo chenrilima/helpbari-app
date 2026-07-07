@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/appointment_overview_section.dart';
+import '../widgets/exam_overview_section.dart';
 import '../widgets/home_header.dart';
 import '../widgets/progress_banner.dart';
 import '../widgets/quick_actions_section.dart';
@@ -71,6 +72,8 @@ class _HomePageState extends ConsumerState<HomePage> {
           nextAppointment: state.nextAppointment,
           onRefresh: _loadHome,
         ),
+        const HBGap.xl(),
+        ExamOverviewSection(latestExam: state.latestExam, onRefresh: _loadHome),
 
         const HBGap.xl(),
         QuickActionsSection(onRefresh: _loadHome),

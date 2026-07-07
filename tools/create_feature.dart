@@ -18,10 +18,9 @@ void main(List<String> args) {
   final files = <String, String>{
     '$base/domain/entities/$singular.dart': _entityTemplate(pascalFeature),
     '$base/domain/entities/entities.dart': "export '$singular.dart';\n",
-'$base/README.md': _featureReadmeTemplate(feature, pascalFeature),
-'$base/CHANGELOG.md': _featureChangelogTemplate(pascalFeature),
-'$base/feature.md': _featureDocTemplate(feature, pascalFeature),
-
+    '$base/README.md': _featureReadmeTemplate(feature, pascalFeature),
+    '$base/CHANGELOG.md': _featureChangelogTemplate(pascalFeature),
+    '$base/feature.md': _featureDocTemplate(feature, pascalFeature),
 
     '$base/domain/repositories/${singular}_repository.dart':
         _repositoryTemplate(pascalFeature),
@@ -61,6 +60,15 @@ void main(List<String> args) {
     ),
     '$base/presentation/widgets/${singular}_summary_card.dart':
         _summaryCardTemplate(pascalFeature),
+    '$base/domain/value_objects/value_objects.dart':
+        "export '${singular}_name.dart';\n"
+        "export '${singular}_date.dart';\n",
+
+    '$base/domain/value_objects/${singular}_name.dart':
+        _nameValueObjectTemplate(pascalFeature),
+
+    '$base/domain/value_objects/${singular}_date.dart':
+        _dateValueObjectTemplate(pascalFeature),
   };
 
   for (final entry in files.entries) {
@@ -94,13 +102,10 @@ import '../../../../core/domain/entity.dart';
 class $name extends Entity {
   const $name({
     required this.id,
-    required this.title,
   });
 
   @override
   final String id;
-
-  final String title;
 }
 ''';
 }
@@ -199,6 +204,8 @@ class ${name}State {
   final bool isLoading;
 
   bool get hasItems => items.isNotEmpty;
+  $name? get latestItem =>
+    items.isEmpty ? null : items.first;
 
   ${name}State copyWith({
     List<$name>? items,
@@ -250,16 +257,12 @@ final ${singular}ViewModelProvider =
 String _viewModelTemplate(String name, String singular) {
   return '''
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../providers/${singular}_use_cases_provider.dart';
 import '../states/${singular}_state.dart';
 
 class ${name}ViewModel extends Notifier<${name}State> {
-  final _uuid = const Uuid();
-
   late final ${name}UseCases _useCases;
 
   @override
@@ -278,16 +281,6 @@ class ${name}ViewModel extends Notifier<${name}State> {
       items: items,
       isLoading: false,
     );
-  }
-
-  Future<void> createItem(String title) async {
-    final item = $name(
-      id: _uuid.v4(),
-      title: title,
-    );
-
-    await _useCases.save(item);
-    await loadItems();
   }
 }
 ''';
@@ -484,5 +477,61 @@ Descrever a responsabilidade da feature `$feature`.
 - Definir tabela.
 - Definir campos.
 - Definir políticas RLS.
+''';
+}
+
+String _nameValueObjectTemplate(String name) {
+  return '''
+class ${name}Name {
+  const ${name}Name._(
+    this.value,
+  );
+
+  final String value;
+
+  static ${name}Name? create(
+    String value,
+  ) {
+    final trimmed = value.trim();
+
+    if (trimmed.length < 2) {
+      return null;
+    }
+
+    return ${name}Name._(
+      trimmed,
+    );
+  }
+
+  @override
+  String toString() {
+    return value;
+  }
+}
+''';
+}
+
+String _dateValueObjectTemplate(String name) {
+  return '''
+class ${name}Date {
+  const ${name}Date(
+    this.value,
+  );
+
+  final DateTime value;
+
+  String get formatted {
+    final day = value.day.toString().padLeft(2, '0');
+    final month = value.month.toString().padLeft(2, '0');
+    final year = value.year.toString();
+
+    return '\$day/\$month/\$year';
+  }
+
+  @override
+  String toString() {
+    return formatted;
+  }
+}
 ''';
 }

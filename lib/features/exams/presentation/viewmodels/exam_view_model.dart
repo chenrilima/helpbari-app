@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
+import '../../domain/value_objects/value_objects.dart';
 import '../providers/exam_use_cases_provider.dart';
 import '../states/exam_state.dart';
 
@@ -26,10 +27,27 @@ class ExamViewModel extends Notifier<ExamState> {
     state = state.copyWith(items: items, isLoading: false);
   }
 
-  Future<void> createItem(String title) async {
-    final item = Exam(id: _uuid.v4(), title: title);
+  Future<void> createExam({
+    required String name,
+    required DateTime examDate,
+    String? laboratory,
+    String? notes,
+    String? filePath,
+  }) async {
+    final examName = ExamName.create(name);
 
-    await _useCases.save(item);
+    if (examName == null) return;
+
+    final exam = Exam(
+      id: _uuid.v4(),
+      name: examName,
+      examDate: ExamDate(examDate),
+      laboratory: laboratory,
+      notes: notes,
+      attachmentPath: filePath,
+    );
+
+    await _useCases.save(exam);
     await loadItems();
   }
 }

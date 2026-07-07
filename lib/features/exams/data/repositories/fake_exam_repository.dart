@@ -2,29 +2,33 @@ import '../../domain/entities/entities.dart';
 import '../../domain/repositories/repositories.dart';
 
 class FakeExamRepository implements ExamRepository {
-  final List<Exam> _items = [];
+  final List<Exam> _exams = [];
 
   @override
   Future<List<Exam>> getAll() async {
-    return List.unmodifiable(_items);
+    final exams = [..._exams];
+
+    exams.sort((a, b) => b.examDate.value.compareTo(a.examDate.value));
+
+    return List.unmodifiable(exams);
   }
 
   @override
-  Future<void> save(Exam item) async {
-    _items.add(item);
+  Future<void> save(Exam exam) async {
+    _exams.add(exam);
   }
 
   @override
-  Future<void> update(Exam item) async {
-    final index = _items.indexWhere((element) => element.id == item.id);
+  Future<void> update(Exam exam) async {
+    final index = _exams.indexWhere((item) => item.id == exam.id);
 
     if (index == -1) return;
 
-    _items[index] = item;
+    _exams[index] = exam;
   }
 
   @override
   Future<void> delete(String id) async {
-    _items.removeWhere((item) => item.id == id);
+    _exams.removeWhere((item) => item.id == id);
   }
 }
