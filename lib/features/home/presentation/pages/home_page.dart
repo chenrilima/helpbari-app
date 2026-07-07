@@ -7,6 +7,7 @@ import '../providers/home_view_model_provider.dart';
 import '../widgets/home_header.dart';
 import '../widgets/progress_banner.dart';
 import '../widgets/quick_actions_section.dart';
+import '../widgets/vitamins_overview_section.dart';
 import '../widgets/weight_overview_section.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -56,6 +57,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         const HBGap.xl(),
         WaterOverviewSection(
           totalTodayInMl: state.totalWaterTodayInMl,
+          onRefresh: _loadHome,
+        ),
+        const HBGap.xl(),
+        VitaminsOverviewSection(
+          pendingCount: state.pendingVitaminsCount,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),

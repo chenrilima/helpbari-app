@@ -6,6 +6,8 @@ import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
+import '../../features/vitamins/presentation/pages/register_vitamin_page.dart';
+import '../../features/vitamins/presentation/pages/vitamins_page.dart';
 import '../../features/water/presentation/pages/register_water_page.dart';
 import '../../features/water/presentation/pages/water_page.dart';
 import '../../features/weight/presentation/pages/register_weight_page.dart';
@@ -53,6 +55,14 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.registerWater,
       builder: (_, __) => const RegisterWaterPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.vitamins,
+      builder: (context, state) => const VitaminsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.registerVitamin,
+      builder: (context, state) => const RegisterVitaminPage(),
     ),
   ],
 );
