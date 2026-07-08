@@ -28,4 +28,5 @@ abstract final class AppIcons {
   static const empty = Icons.inbox_outlined;
 
   static const calendar = Icons.calendar_month_outlined;
+  static const health = Icons.health_and_safety_outlined;
 }

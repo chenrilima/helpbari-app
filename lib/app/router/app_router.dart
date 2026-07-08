@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
 import '../../features/appointments/presentation/pages/appointments_page.dart';
 import '../../features/appointments/presentation/pages/register_appointment_page.dart';
+import '../../features/exams/presentation/pages/exams_page.dart';
+import '../../features/exams/presentation/pages/register_exam_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
@@ -73,6 +75,14 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.appointments,
       builder: (context, state) => const AppointmentsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.exams,
+      builder: (context, state) => const ExamsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.registerExam,
+      builder: (context, state) => const RegisterExamPage(),
     ),
   ],
 );
