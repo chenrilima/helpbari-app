@@ -13,6 +13,7 @@ class HomeState {
     this.totalWaterTodayInMl = 0,
     this.pendingVitaminsCount = 0,
     this.isLoading = false,
+    this.pendingMedicationsCount = 0,
   });
 
   final Profile? profile;
@@ -23,6 +24,7 @@ class HomeState {
   final int totalWaterTodayInMl;
   final int pendingVitaminsCount;
   final bool isLoading;
+  final int pendingMedicationsCount;
 
   double? get weightLost {
     final profile = this.profile;
@@ -57,6 +59,7 @@ class HomeState {
     int? totalWaterTodayInMl,
     int? pendingVitaminsCount,
     bool? isLoading,
+    int? pendingMedicationsCount,
   }) {
     return HomeState(
       profile: profile ?? this.profile,
@@ -67,6 +70,8 @@ class HomeState {
       totalWaterTodayInMl: totalWaterTodayInMl ?? this.totalWaterTodayInMl,
       pendingVitaminsCount: pendingVitaminsCount ?? this.pendingVitaminsCount,
       isLoading: isLoading ?? this.isLoading,
+      pendingMedicationsCount:
+          pendingMedicationsCount ?? this.pendingMedicationsCount,
     );
   }
 }

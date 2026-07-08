@@ -337,7 +337,7 @@ class _${name}sPageState extends ConsumerState<${name}sPage> {
               final item = state.items[index];
 
               return HBCard(
-                child: HBText(item.title),
+                child: HBText(item.id),
               );
             },
           ),
@@ -390,7 +390,7 @@ class ${name}Tile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HBCard(
-      child: HBText(item.title),
+      child: HBText(item.id),
     );
   }
 }

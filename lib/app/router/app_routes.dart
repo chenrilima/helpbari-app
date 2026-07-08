@@ -17,4 +17,6 @@ abstract final class AppRoutes {
   static const exams = '/exams';
   static const registerExam = '/register-exam';
   static const progress = '/progress';
+  static const medications = '/medications';
+  static const registerMedication = '/register-medication';
 }
