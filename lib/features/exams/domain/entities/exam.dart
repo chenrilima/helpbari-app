@@ -40,7 +40,7 @@ class Exam extends Entity {
       examDate: examDate ?? this.examDate,
       laboratory: laboratory ?? this.laboratory,
       notes: notes ?? this.notes,
-      attachmentPath: attachmentPath ?? this.attachmentPath,
+      attachmentPath: attachmentPath ?? attachmentPath,
     );
   }
 }

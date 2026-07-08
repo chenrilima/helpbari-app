@@ -67,6 +67,10 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
   @override
   Widget build(BuildContext context) {
     return HBPage(
+      appBar: const HBAppBar(
+        title: 'Registrar peso',
+        subtitle: 'Acompanhe sua evolução',
+      ),
       children: [
         HBCard(
           child: Form(
@@ -74,17 +78,6 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HBText(
-                  'Registrar peso',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                const HBGap.sm(),
-                HBText(
-                  'Registre seu peso para acompanhar sua evolução.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const HBGap.xl(),
-
                 HBTextField(
                   controller: _weightController,
                   label: 'Peso',

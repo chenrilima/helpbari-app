@@ -10,6 +10,7 @@ class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.leading,
     this.centerTitle = false,
+    this.automaticallyImplyLeading = true,
   });
 
   final String title;
@@ -17,6 +18,7 @@ class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final Widget? leading;
   final bool centerTitle;
+  final bool automaticallyImplyLeading;
 
   @override
   Size get preferredSize => Size.fromHeight(subtitle == null ? 64 : 76);
@@ -28,16 +30,32 @@ class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       centerTitle: centerTitle,
+      automaticallyImplyLeading: automaticallyImplyLeading,
       leading: leading,
       actions: actions,
       title: Column(
         crossAxisAlignment: centerTitle
             ? CrossAxisAlignment.center
             : CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(title, style: Theme.of(context).textTheme.titleMedium),
-          if (subtitle != null)
-            Text(subtitle!, style: Theme.of(context).textTheme.bodyMedium),
+          HBText(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          if (subtitle != null) ...[
+            const HBGap.xs(),
+            HBText(
+              subtitle!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+            ),
+          ],
         ],
       ),
     );

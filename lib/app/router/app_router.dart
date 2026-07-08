@@ -56,10 +56,10 @@ final appRouter = GoRouter(
       path: AppRoutes.registerWeight,
       builder: (_, _) => const RegisterWeightPage(),
     ),
-    GoRoute(path: AppRoutes.water, builder: (_, __) => const WaterPage()),
+    GoRoute(path: AppRoutes.water, builder: (_, _) => const WaterPage()),
     GoRoute(
       path: AppRoutes.registerWater,
-      builder: (_, __) => const RegisterWaterPage(),
+      builder: (_, _) => const RegisterWaterPage(),
     ),
     GoRoute(
       path: AppRoutes.vitamins,

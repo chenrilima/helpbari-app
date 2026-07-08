@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/appointment_view_model_provider.dart';
 import '../widgets/appointment_summary_card.dart';
@@ -30,11 +30,8 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
     final state = ref.watch(appointmentViewModelProvider);
 
     return HBPage(
+      appBar: const HBAppBar(title: 'Consultas'),
       children: [
-        HBText('Consultas', style: Theme.of(context).textTheme.headlineMedium),
-
-        const HBGap.sm(),
-
         HBText(
           'Acompanhe suas consultas médicas.',
           style: Theme.of(
@@ -64,7 +61,7 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: state.appointments.length,
-            separatorBuilder: (_, __) => const HBGap.md(),
+            separatorBuilder: (_, _) => const HBGap.md(),
             itemBuilder: (_, index) {
               final appointment = state.appointments[index];
 
@@ -88,14 +85,15 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
 
         HBButton(
           label: 'Agendar consulta',
-          onPressed: () async {
-            await context.push(AppRoutes.registerAppointment);
-
-            if (!mounted) return;
-
-            await ref
-                .read(appointmentViewModelProvider.notifier)
-                .loadAppointments();
+          onPressed: () {
+            context.pushAndRefresh(
+              AppRoutes.registerAppointment,
+              onRefresh: () {
+                return ref
+                    .read(appointmentViewModelProvider.notifier)
+                    .loadAppointments();
+              },
+            );
           },
         ),
       ],

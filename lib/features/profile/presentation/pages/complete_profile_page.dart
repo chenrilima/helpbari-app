@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../models/create_profile_form.dart';
+
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../design_system/design_system.dart';
 import '../../domain/value_objects/value_objects.dart';
+import '../models/create_profile_form.dart';
 import '../providers/profile_view_model_provider.dart';
 
 class CompleteProfilePage extends ConsumerStatefulWidget {
@@ -21,6 +23,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   final _heightController = TextEditingController();
   final _initialWeightController = TextEditingController();
   final _targetWeightController = TextEditingController();
+
   SurgeryType _selectedSurgeryType = SurgeryType.other;
   DateTime? _birthDate;
   DateTime? _surgeryDate;
@@ -37,7 +40,12 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    if (_birthDate == null || _surgeryDate == null) return;
+    if (_birthDate == null || _surgeryDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Selecione as datas para continuar.')),
+      );
+      return;
+    }
 
     final targetWeightText = _targetWeightController.text.trim();
 
@@ -97,6 +105,10 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   @override
   Widget build(BuildContext context) {
     return HBPage(
+      appBar: const HBAppBar(
+        title: 'Completar perfil',
+        subtitle: 'Personalize sua jornada',
+      ),
       children: [
         HBCard(
           child: Form(
@@ -105,13 +117,15 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HBText(
-                  'Complete seu perfil',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  'Dados principais',
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const HBGap.sm(),
                 HBText(
-                  'Essas informações ajudarão o HelpBari a acompanhar sua evolução de forma personalizada.',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  'Essas informações ajudarão o HelpBari a acompanhar sua evolução.',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
                 ),
                 const HBGap.xl(),
                 HBTextField(
@@ -179,7 +193,6 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                     return null;
                   },
                 ),
-
                 const HBGap.md(),
                 HBTextField(
                   controller: _targetWeightController,
@@ -212,14 +225,14 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                 HBButton(
                   label: _birthDate == null
                       ? 'Selecionar data de nascimento'
-                      : 'Nascimento: ${_birthDate!.day}/${_birthDate!.month}/${_birthDate!.year}',
+                      : 'Nascimento: ${AppDateFormatter.short(_birthDate!)}',
                   onPressed: _selectBirthDate,
                 ),
                 const HBGap.md(),
                 HBButton(
                   label: _surgeryDate == null
                       ? 'Selecionar data da cirurgia'
-                      : 'Cirurgia: ${_surgeryDate!.day}/${_surgeryDate!.month}/${_surgeryDate!.year}',
+                      : 'Cirurgia: ${AppDateFormatter.short(_surgeryDate!)}',
                   onPressed: _selectSurgeryDate,
                 ),
                 const HBGap.md(),

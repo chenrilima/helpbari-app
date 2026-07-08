@@ -60,19 +60,11 @@ class _RegisterVitaminPageState extends ConsumerState<RegisterVitaminPage> {
     final formattedMinute = _selectedTime.minute.toString().padLeft(2, '0');
 
     return HBPage(
+      appBar: const HBAppBar(
+        title: 'Cadastrar vitamina',
+        subtitle: 'Acompanhe seus suplementos diários',
+      ),
       children: [
-        HBText(
-          'Cadastrar vitamina',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        const HBGap.sm(),
-        HBText(
-          'Informe o suplemento e o horário que costuma tomar.',
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-        ),
-        const HBGap.xl(),
         HBCard(
           child: Form(
             key: _formKey,

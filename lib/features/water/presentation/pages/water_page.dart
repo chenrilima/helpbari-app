@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/water_view_model_provider.dart';
 import '../widgets/water_progress_card.dart';
@@ -21,9 +21,18 @@ class _WaterPageState extends ConsumerState<WaterPage> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      ref.read(waterViewModelProvider.notifier).loadHistory();
-    });
+    Future.microtask(_loadHistory);
+  }
+
+  Future<void> _loadHistory() async {
+    await ref.read(waterViewModelProvider.notifier).loadHistory();
+  }
+
+  Future<void> _openRegisterWater() async {
+    await context.pushAndRefresh(
+      AppRoutes.registerWater,
+      onRefresh: _loadHistory,
+    );
   }
 
   @override
@@ -31,17 +40,17 @@ class _WaterPageState extends ConsumerState<WaterPage> {
     final state = ref.watch(waterViewModelProvider);
 
     return HBPage(
+      appBar: const HBAppBar(
+        title: 'Água',
+        subtitle: 'Acompanhe sua hidratação',
+      ),
       children: [
         WaterSummaryCard(totalToday: state.formattedToday),
         const HBGap.lg(),
-
         WaterProgressCard(currentMl: state.totalTodayInMl),
         const HBGap.xl(),
-
         HBText('Histórico', style: Theme.of(context).textTheme.titleLarge),
-
         const HBGap.md(),
-
         if (!state.hasRecords)
           const HBEmptyState(
             title: 'Nenhum registro encontrado',
@@ -53,26 +62,13 @@ class _WaterPageState extends ConsumerState<WaterPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: state.records.length,
-            separatorBuilder: (_, __) => const HBGap.md(),
+            separatorBuilder: (_, _) => const HBGap.md(),
             itemBuilder: (_, index) {
               return WaterTile(record: state.records[index]);
             },
           ),
-
         const HBGap.xl(),
-
-        HBButton(
-          label: 'Registrar água',
-          onPressed: () async {
-            await context.push(AppRoutes.registerWater);
-
-            if (!mounted) {
-              return;
-            }
-
-            await ref.read(waterViewModelProvider.notifier).loadHistory();
-          },
-        ),
+        HBButton(label: 'Registrar água', onPressed: _openRegisterWater),
       ],
     );
   }

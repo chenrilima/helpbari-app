@@ -17,11 +17,13 @@ class HBLoading extends StatelessWidget {
           children: [
             const CircularProgressIndicator(),
             if (message != null) ...[
-              const SizedBox(height: AppSpacing.md),
-              Text(
+              const HBGap.md(),
+              HBText(
                 message!,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
           ],
