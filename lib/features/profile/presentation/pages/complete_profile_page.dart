@@ -60,7 +60,12 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
 
     if (!mounted) return;
 
-    context.go(AppRoutes.profile);
+    if (context.canPop()) {
+      context.pop(true);
+      return;
+    }
+
+    context.go(AppRoutes.home);
   }
 
   Future<void> _selectBirthDate() async {
