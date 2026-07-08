@@ -33,30 +33,37 @@ class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: automaticallyImplyLeading,
       leading: leading,
       actions: actions,
-      title: Column(
-        crossAxisAlignment: centerTitle
-            ? CrossAxisAlignment.center
-            : CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          HBText(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          if (subtitle != null) ...[
-            const HBGap.xs(),
+      iconTheme: const IconThemeData(
+        color: AppColors.textPrimary,
+        size: AppSizes.iconMd,
+      ),
+      title: Semantics(
+        header: true,
+        child: Column(
+          crossAxisAlignment: centerTitle
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
             HBText(
-              subtitle!,
+              title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
+            if (subtitle != null) ...[
+              const HBGap.xs(),
+              HBText(
+                subtitle!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

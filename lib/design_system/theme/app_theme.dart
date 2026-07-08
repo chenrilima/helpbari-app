@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 import 'app_radius.dart';
+import 'app_sizes.dart';
 import 'app_spacing.dart';
 
 abstract final class AppTheme {
@@ -12,12 +13,15 @@ abstract final class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
         primary: AppColors.primary,
+        onPrimary: AppColors.onPrimary,
         secondary: AppColors.secondary,
+        onSecondary: AppColors.onSecondary,
         surface: AppColors.surface,
         error: AppColors.danger,
       ),
       inputDecorationTheme: _inputDecorationTheme,
       filledButtonTheme: _filledButtonTheme,
+      switchTheme: _switchTheme,
       textTheme: _textTheme,
     );
   }
@@ -35,6 +39,10 @@ abstract final class AppTheme {
         fontWeight: FontWeight.w500,
       ),
       hintStyle: const TextStyle(color: AppColors.textDisabled),
+      errorStyle: const TextStyle(
+        color: AppColors.danger,
+        fontWeight: FontWeight.w500,
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
         borderSide: const BorderSide(color: AppColors.border),
@@ -61,12 +69,35 @@ abstract final class AppTheme {
   static FilledButtonThemeData get _filledButtonTheme {
     return FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        minimumSize: const Size.fromHeight(52),
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.onPrimary,
+        disabledBackgroundColor: AppColors.disabled,
+        disabledForegroundColor: AppColors.textDisabled,
+        minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
         ),
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
       ),
+    );
+  }
+
+  static SwitchThemeData get _switchTheme {
+    return SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.onPrimary;
+        }
+
+        return AppColors.textDisabled;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.primary;
+        }
+
+        return AppColors.disabled;
+      }),
     );
   }
 
@@ -117,6 +148,12 @@ abstract final class AppTheme {
       bodyMedium: TextStyle(
         fontSize: 14,
         height: 1.45,
+        fontWeight: FontWeight.w400,
+        color: AppColors.textSecondary,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 12,
+        height: 1.35,
         fontWeight: FontWeight.w400,
         color: AppColors.textSecondary,
       ),

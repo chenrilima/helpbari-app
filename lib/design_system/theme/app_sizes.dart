@@ -1,6 +1,9 @@
 abstract final class AppSizes {
   static const buttonHeight = 52.0;
+  static const buttonMinTapTarget = 48.0;
+
   static const inputHeight = 56.0;
+  static const inputMinTapTarget = 48.0;
 
   static const iconXs = 16.0;
   static const iconSm = 20.0;

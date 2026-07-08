@@ -8,24 +8,44 @@ class HBCard extends StatelessWidget {
     super.key,
     this.padding = const EdgeInsets.all(AppSpacing.lg),
     this.backgroundColor = AppColors.surface,
+    this.borderColor = AppColors.border,
+    this.onTap,
+    this.semanticLabel,
   });
 
   final Widget child;
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
+  final Color borderColor;
+  final VoidCallback? onTap;
+  final String? semanticLabel;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final content = Container(
       width: double.infinity,
       padding: padding,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: borderColor),
         boxShadow: AppShadows.soft,
       ),
       child: child,
+    );
+
+    if (onTap == null) {
+      return content;
+    }
+
+    return Semantics(
+      button: true,
+      label: semanticLabel,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        onTap: onTap,
+        child: content,
+      ),
     );
   }
 }
