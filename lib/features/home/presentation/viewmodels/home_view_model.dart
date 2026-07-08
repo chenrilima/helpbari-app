@@ -6,6 +6,9 @@ import '../../../appointments/presentation/providers/appointment_use_cases_provi
 import '../../../exams/domain/models/models.dart';
 import '../../../exams/domain/usecases/use_cases.dart';
 import '../../../exams/presentation/providers/exam_use_cases_provider.dart';
+import '../../../meals/domain/models/meal_summary.dart';
+import '../../../meals/domain/usecases/meal_use_cases.dart';
+import '../../../meals/presentation/providers/meal_use_cases_provider.dart';
 import '../../../medications/domain/models/models.dart';
 import '../../../medications/domain/usecases/medication_use_cases.dart';
 import '../../../medications/presentation/providers/medication_use_cases_provider.dart';
@@ -29,6 +32,7 @@ class HomeViewModel extends Notifier<HomeState> {
   late final AppointmentUseCases _appointmentUseCases;
   late final ExamUseCases _examUseCases;
   late final MedicationUseCases _medicationUseCases;
+  late final MealUseCases _mealUseCases;
 
   @override
   HomeState build() {
@@ -39,6 +43,7 @@ class HomeViewModel extends Notifier<HomeState> {
     _appointmentUseCases = ref.read(appointmentUseCasesProvider);
     _examUseCases = ref.read(examUseCasesProvider);
     _medicationUseCases = ref.read(medicationUseCasesProvider);
+    _mealUseCases = ref.read(mealUseCasesProvider);
 
     return const HomeState();
   }
@@ -54,6 +59,7 @@ class HomeViewModel extends Notifier<HomeState> {
       _appointmentUseCases.getSummary(),
       _examUseCases.getSummary(),
       _medicationUseCases.getSummary(),
+      _mealUseCases.getSummary(),
     ]);
 
     final profile = results[0] as Profile?;
@@ -63,6 +69,7 @@ class HomeViewModel extends Notifier<HomeState> {
     final appointmentSummary = results[4] as AppointmentSummary;
     final examSummary = results[5] as ExamSummary;
     final medicationSummary = results[6] as MedicationSummary;
+    final mealSummary = results[7] as MealSummary;
 
     state = state.copyWith(
       profile: profile,
@@ -74,6 +81,8 @@ class HomeViewModel extends Notifier<HomeState> {
       latestExam: examSummary.latestExam,
       isLoading: false,
       pendingMedicationsCount: medicationSummary.pendingCount,
+      todayMealsCount: mealSummary.todayCount,
+      totalProteinToday: mealSummary.totalProteinToday,
     );
   }
 }

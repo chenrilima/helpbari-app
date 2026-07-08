@@ -1,9 +1,11 @@
 import 'package:go_router/go_router.dart';
+import 'package:helpbari/features/meals/presentation/pages/meals_page.dart';
 import '../../features/appointments/presentation/pages/appointments_page.dart';
 import '../../features/appointments/presentation/pages/register_appointment_page.dart';
 import '../../features/exams/presentation/pages/exams_page.dart';
 import '../../features/exams/presentation/pages/register_exam_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/meals/presentation/pages/register_meal_page.dart';
 import '../../features/medications/presentation/pages/medications_page.dart';
 import '../../features/medications/presentation/pages/register_medication_page.dart';
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
@@ -98,6 +100,14 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.registerMedication,
       builder: (context, state) => const RegisterMedicationPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.meals,
+      builder: (context, state) => const MealsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.registerMeals,
+      builder: (context, state) => const RegisterMealPage(),
     ),
   ],
 );
