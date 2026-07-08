@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/progress_view_model_provider.dart';
 import '../widgets/progress_metric_card.dart';
@@ -27,11 +27,10 @@ class _ProgressPageState extends ConsumerState<ProgressPage> {
   }
 
   Future<void> _openCompleteProfile() async {
-    await context.push(AppRoutes.completeProfile);
-
-    if (!mounted) return;
-
-    await _loadProgress();
+    await context.pushAndRefresh(
+      AppRoutes.completeProfile,
+      onRefresh: _loadProgress,
+    );
   }
 
   @override
@@ -40,6 +39,7 @@ class _ProgressPageState extends ConsumerState<ProgressPage> {
 
     if (state.isLoading) {
       return const HBPage(
+        appBar: HBAppBar(title: 'Evolução'),
         children: [HBLoading(message: 'Carregando sua evolução...')],
       );
     }
@@ -48,31 +48,25 @@ class _ProgressPageState extends ConsumerState<ProgressPage> {
 
     if (summary == null) {
       return HBPage(
+        appBar: const HBAppBar(title: 'Evolução'),
         children: [
           HBEmptyState(
             title: 'Complete seu perfil',
             description: 'Precisamos do seu perfil para calcular sua evolução.',
             icon: AppIcons.profile,
             actionLabel: 'Completar perfil',
-            onActionPressed: () {
-              context.push(AppRoutes.completeProfile);
-            },
+            onActionPressed: _openCompleteProfile,
           ),
         ],
       );
     }
 
     return HBPage(
+      appBar: const HBAppBar(
+        title: 'Evolução',
+        subtitle: 'Indicadores da sua jornada',
+      ),
       children: [
-        HBText('Evolução', style: Theme.of(context).textTheme.headlineMedium),
-        const HBGap.sm(),
-        HBText(
-          'Acompanhe os principais indicadores da sua jornada.',
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-        ),
-        const HBGap.xl(),
         ProgressMetricCard(
           title: 'Peso atual',
           value: summary.formattedCurrentWeight,

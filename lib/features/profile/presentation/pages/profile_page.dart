@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/profile_view_model_provider.dart';
@@ -30,12 +30,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     if (state.isLoading) {
       return const HBPage(
+        appBar: HBAppBar(title: 'Perfil'),
         children: [HBLoading(message: 'Carregando perfil...')],
       );
     }
 
     if (state.profile == null) {
       return HBPage(
+        appBar: const HBAppBar(
+          title: 'Perfil',
+          subtitle: 'Suas informações pessoais',
+        ),
         children: [
           HBEmptyState(
             title: 'Complete seu perfil',
@@ -43,7 +48,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 'Precisamos de algumas informações para personalizar sua jornada.',
             icon: AppIcons.profile,
             actionLabel: 'Completar perfil',
-            onActionPressed: () => context.go(AppRoutes.completeProfile),
+            onActionPressed: () {
+              context.pushAndRefresh(
+                AppRoutes.completeProfile,
+                onRefresh: () {
+                  return ref
+                      .read(profileViewModelProvider.notifier)
+                      .loadProfile();
+                },
+              );
+            },
           ),
         ],
       );
@@ -52,6 +66,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final profile = state.profile!;
 
     return HBPage(
+      appBar: const HBAppBar(
+        title: 'Perfil',
+        subtitle: 'Suas informações bariátricas',
+      ),
       children: [
         HBMetricCard(
           title: 'Nome',

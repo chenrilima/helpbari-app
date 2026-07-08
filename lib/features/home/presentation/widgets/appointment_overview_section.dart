@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../appointments/domain/entities/entities.dart';
 import '../../../appointments/presentation/widgets/appointment_summary_card.dart';
@@ -18,8 +18,7 @@ class AppointmentOverviewSection extends StatelessWidget {
   final Future<void> Function()? onRefresh;
 
   Future<void> _openAppointments(BuildContext context) async {
-    await context.push(AppRoutes.appointments);
-    await onRefresh?.call();
+    await context.pushAndRefresh(AppRoutes.appointments, onRefresh: onRefresh);
   }
 
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/exam_view_model_provider.dart';
 import '../widgets/exam_summary_card.dart';
@@ -30,11 +30,8 @@ class _ExamsPageState extends ConsumerState<ExamsPage> {
     final state = ref.watch(examViewModelProvider);
 
     return HBPage(
+      appBar: const HBAppBar(title: 'Exames'),
       children: [
-        HBText('Exames', style: Theme.of(context).textTheme.headlineMedium),
-
-        const HBGap.sm(),
-
         HBText(
           'Acompanhe seus exames realizados.',
           style: Theme.of(
@@ -64,7 +61,7 @@ class _ExamsPageState extends ConsumerState<ExamsPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: state.items.length,
-            separatorBuilder: (_, __) => const HBGap.md(),
+            separatorBuilder: (_, _) => const HBGap.md(),
             itemBuilder: (_, index) {
               return ExamTile(exam: state.items[index]);
             },
@@ -74,12 +71,13 @@ class _ExamsPageState extends ConsumerState<ExamsPage> {
 
         HBButton(
           label: 'Cadastrar exame',
-          onPressed: () async {
-            await context.push(AppRoutes.registerExam);
-
-            if (!mounted) return;
-
-            await ref.read(examViewModelProvider.notifier).loadItems();
+          onPressed: () {
+            context.pushAndRefresh(
+              AppRoutes.registerExam,
+              onRefresh: () {
+                return ref.read(examViewModelProvider.notifier).loadItems();
+              },
+            );
           },
         ),
       ],

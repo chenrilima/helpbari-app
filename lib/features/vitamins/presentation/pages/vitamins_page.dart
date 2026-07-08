@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/vitamin_view_model_provider.dart';
 import '../widgets/vitamin_tile.dart';
@@ -29,9 +29,8 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
     final state = ref.watch(vitaminViewModelProvider);
 
     return HBPage(
+      appBar: const HBAppBar(title: 'Cadastro de vitaminas'),
       children: [
-        HBText('Vitaminas', style: Theme.of(context).textTheme.headlineMedium),
-        const HBGap.sm(),
         HBText(
           'Acompanhe seus suplementos diários.',
           style: Theme.of(
@@ -51,7 +50,7 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: state.vitamins.length,
-            separatorBuilder: (_, __) => const HBGap.md(),
+            separatorBuilder: (_, _) => const HBGap.md(),
             itemBuilder: (_, index) {
               final vitamin = state.vitamins[index];
 
@@ -73,12 +72,15 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
         const HBGap.xl(),
         HBButton(
           label: 'Cadastrar vitamina',
-          onPressed: () async {
-            await context.push(AppRoutes.registerVitamin);
-
-            if (!mounted) return;
-
-            await ref.read(vitaminViewModelProvider.notifier).loadVitamins();
+          onPressed: () {
+            context.pushAndRefresh(
+              AppRoutes.registerVitamin,
+              onRefresh: () {
+                return ref
+                    .read(vitaminViewModelProvider.notifier)
+                    .loadVitamins();
+              },
+            );
           },
         ),
       ],

@@ -71,14 +71,11 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
         '${_selectedDate.year}';
 
     return HBPage(
+      appBar: const HBAppBar(
+        title: 'Cadastrar exame',
+        subtitle: 'Acompanhe seus exames realizados',
+      ),
       children: [
-        HBText(
-          'Cadastrar exame',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-
-        const HBGap.xl(),
-
         HBCard(
           child: Form(
             key: _formKey,

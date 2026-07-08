@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/weight_view_model_provider.dart';
 import '../widgets/weight_chart_widget.dart';
@@ -21,9 +21,19 @@ class _WeightPageState extends ConsumerState<WeightPage> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      ref.read(weightViewModelProvider.notifier).loadHistory();
-    });
+    Future.microtask(_loadHistory);
+  }
+
+  Future<void> _loadHistory() async {
+    await ref.read(weightViewModelProvider.notifier).loadHistory();
+  }
+
+  Future<void> _openRegisterWeight() async {
+    await context.pushAndRefresh<bool>(
+      AppRoutes.registerWeight,
+      onRefresh: _loadHistory,
+      shouldRefresh: (created) => created == true,
+    );
   }
 
   @override
@@ -31,26 +41,22 @@ class _WeightPageState extends ConsumerState<WeightPage> {
     final state = ref.watch(weightViewModelProvider);
 
     return HBPage(
+      appBar: const HBAppBar(title: 'Peso', subtitle: 'Acompanhe sua evolução'),
       children: [
         if (state.latestRecord != null) ...[
           WeightSummaryCard(record: state.latestRecord!),
           const HBGap.lg(),
         ],
-
         const WeightChartWidget(),
-
         const HBGap.xl(),
-
         HBText('Histórico', style: Theme.of(context).textTheme.titleLarge),
-
         const HBGap.md(),
-
         if (!state.hasRecords)
           const HBEmptyState(
             title: 'Nenhum peso registrado',
             description:
                 'Registre seu primeiro peso para acompanhar sua evolução.',
-            icon: Icons.monitor_weight_outlined,
+            icon: AppIcons.weight,
           )
         else
           ListView.separated(
@@ -62,21 +68,8 @@ class _WeightPageState extends ConsumerState<WeightPage> {
               return WeightTile(record: state.records[index]);
             },
           ),
-
         const HBGap.xl(),
-
-        HBButton(
-          label: 'Registrar novo peso',
-          onPressed: () async {
-            final created = await context.push<bool>(AppRoutes.registerWeight);
-
-            if (!mounted || created != true) {
-              return;
-            }
-
-            await ref.read(weightViewModelProvider.notifier).loadHistory();
-          },
-        ),
+        HBButton(label: 'Registrar novo peso', onPressed: _openRegisterWeight),
       ],
     );
   }

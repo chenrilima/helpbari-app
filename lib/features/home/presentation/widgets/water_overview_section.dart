@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../home/presentation/widgets/home_section.dart';
 import '../../../water/presentation/widgets/water_progress_card.dart';
@@ -17,8 +17,7 @@ class WaterOverviewSection extends StatelessWidget {
   final Future<void> Function()? onRefresh;
 
   Future<void> _openWater(BuildContext context) async {
-    await context.push(AppRoutes.water);
-    await onRefresh?.call();
+    await context.pushAndRefresh(AppRoutes.water, onRefresh: onRefresh);
   }
 
   @override

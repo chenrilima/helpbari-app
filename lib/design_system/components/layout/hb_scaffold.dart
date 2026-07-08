@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../design_system.dart';
 
 class HBScaffold extends StatelessWidget {
@@ -9,6 +10,7 @@ class HBScaffold extends StatelessWidget {
     this.padding = const EdgeInsets.all(AppSpacing.lg),
     this.appBar,
     this.floatingActionButton,
+    this.resizeToAvoidBottomInset,
   });
 
   final Widget child;
@@ -16,6 +18,7 @@ class HBScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final PreferredSizeWidget? appBar;
   final Widget? floatingActionButton;
+  final bool? resizeToAvoidBottomInset;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class HBScaffold extends StatelessWidget {
       backgroundColor: backgroundColor,
       appBar: appBar,
       floatingActionButton: floatingActionButton,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       body: HBResponsivePage(padding: padding, child: child),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import 'home_section.dart';
 import 'quick_action_card.dart';
@@ -11,9 +11,8 @@ class QuickActionsSection extends StatelessWidget {
 
   final Future<void> Function()? onRefresh;
 
-  Future<void> _open(BuildContext context, String route) async {
-    await context.push(route);
-    await onRefresh?.call();
+  Future<void> _open(BuildContext context, String route) {
+    return context.pushAndRefresh(route, onRefresh: onRefresh);
   }
 
   @override

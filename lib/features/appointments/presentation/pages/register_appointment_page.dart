@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/appointment_view_model_provider.dart';
 
@@ -15,16 +16,13 @@ class RegisterAppointmentPage extends ConsumerStatefulWidget {
 
 class _RegisterAppointmentPageState
     extends ConsumerState<RegisterAppointmentPage> {
+  final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
-
   final _doctorController = TextEditingController();
-
   final _locationController = TextEditingController();
-
   final _notesController = TextEditingController();
 
   DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
-
   TimeOfDay _selectedTime = const TimeOfDay(hour: 9, minute: 0);
 
   @override
@@ -33,7 +31,6 @@ class _RegisterAppointmentPageState
     _doctorController.dispose();
     _locationController.dispose();
     _notesController.dispose();
-
     super.dispose();
   }
 
@@ -47,9 +44,7 @@ class _RegisterAppointmentPageState
 
     if (date == null) return;
 
-    setState(() {
-      _selectedDate = date;
-    });
+    setState(() => _selectedDate = date);
   }
 
   Future<void> _pickTime() async {
@@ -60,12 +55,12 @@ class _RegisterAppointmentPageState
 
     if (time == null) return;
 
-    setState(() {
-      _selectedTime = time;
-    });
+    setState(() => _selectedTime = time);
   }
 
   Future<void> _save() async {
+    if (!_formKey.currentState!.validate()) return;
+
     final date = DateTime(
       _selectedDate.year,
       _selectedDate.month,
@@ -77,11 +72,11 @@ class _RegisterAppointmentPageState
     await ref
         .read(appointmentViewModelProvider.notifier)
         .createAppointment(
-          title: _titleController.text,
+          title: _titleController.text.trim(),
           date: date,
-          doctorName: _doctorController.text,
-          location: _locationController.text,
-          notes: _notesController.text,
+          doctorName: _doctorController.text.trim(),
+          location: _locationController.text.trim(),
+          notes: _notesController.text.trim(),
         );
 
     if (!mounted) return;
@@ -92,50 +87,71 @@ class _RegisterAppointmentPageState
   @override
   Widget build(BuildContext context) {
     return HBPage(
+      appBar: const HBAppBar(
+        title: 'Cadastrar consulta',
+        subtitle: 'Acompanhe suas consultas médicas',
+      ),
       children: [
-        HBText(
-          'Nova consulta',
-          style: Theme.of(context).textTheme.headlineMedium,
+        HBCard(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                HBTextField(
+                  controller: _titleController,
+                  label: 'Título',
+                  hint: 'Ex: Retorno com cirurgião',
+                  textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    final text = value?.trim() ?? '';
+
+                    if (text.isEmpty) {
+                      return 'Informe o título da consulta.';
+                    }
+
+                    if (text.length < 3) {
+                      return 'Informe um título válido.';
+                    }
+
+                    return null;
+                  },
+                ),
+                const HBGap.md(),
+                HBTextField(
+                  controller: _doctorController,
+                  label: 'Médico',
+                  hint: 'Ex: Dr. João',
+                  textInputAction: TextInputAction.next,
+                ),
+                const HBGap.md(),
+                HBTextField(
+                  controller: _locationController,
+                  label: 'Local',
+                  hint: 'Ex: Hospital ou clínica',
+                  textInputAction: TextInputAction.next,
+                ),
+                const HBGap.md(),
+                HBButton(
+                  label: 'Data: ${AppDateFormatter.short(_selectedDate)}',
+                  onPressed: _pickDate,
+                ),
+                const HBGap.md(),
+                HBButton(
+                  label: 'Hora: ${_selectedTime.format(context)}',
+                  onPressed: _pickTime,
+                ),
+                const HBGap.md(),
+                HBTextField(
+                  controller: _notesController,
+                  label: 'Observações',
+                  maxLines: 3,
+                ),
+                const HBGap.xl(),
+                HBButton(label: 'Salvar consulta', onPressed: _save),
+              ],
+            ),
+          ),
         ),
-
-        const HBGap.xl(),
-
-        HBTextField(controller: _titleController, label: 'Título'),
-
-        const HBGap.md(),
-
-        HBTextField(controller: _doctorController, label: 'Médico'),
-
-        const HBGap.md(),
-
-        HBTextField(controller: _locationController, label: 'Local'),
-
-        const HBGap.md(),
-
-        HBButton(
-          label:
-              'Data: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-          onPressed: _pickDate,
-        ),
-
-        const HBGap.md(),
-
-        HBButton(
-          label: 'Hora: ${_selectedTime.format(context)}',
-          onPressed: _pickTime,
-        ),
-
-        const HBGap.md(),
-
-        HBTextField(
-          controller: _notesController,
-          label: 'Observações',
-          maxLines: 3,
-        ),
-
-        const HBGap.xl(),
-
-        HBButton(label: 'Salvar', onPressed: _save),
       ],
     );
   }

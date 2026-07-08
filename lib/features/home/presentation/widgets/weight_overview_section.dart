@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
 import '../../../../design_system/design_system.dart';
@@ -7,6 +6,7 @@ import '../../../weight/domain/entities/entities.dart';
 import '../../../weight/presentation/widgets/weight_chart_widget.dart';
 import '../../../weight/presentation/widgets/weight_summary_card.dart';
 import 'home_section.dart';
+import '../../../../core/extensions/context_navigation_extension.dart';
 
 class WeightOverviewSection extends StatelessWidget {
   const WeightOverviewSection({
@@ -23,8 +23,7 @@ class WeightOverviewSection extends StatelessWidget {
   final Future<void> Function()? onRefresh;
 
   Future<void> _openWeight(BuildContext context) async {
-    await context.push(AppRoutes.weight);
-    await onRefresh?.call();
+    await context.pushAndRefresh(AppRoutes.weight, onRefresh: onRefresh);
   }
 
   @override
