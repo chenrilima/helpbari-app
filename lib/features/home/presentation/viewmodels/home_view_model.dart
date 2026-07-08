@@ -6,6 +6,9 @@ import '../../../appointments/presentation/providers/appointment_use_cases_provi
 import '../../../exams/domain/models/models.dart';
 import '../../../exams/domain/usecases/use_cases.dart';
 import '../../../exams/presentation/providers/exam_use_cases_provider.dart';
+import '../../../medications/domain/models/models.dart';
+import '../../../medications/domain/usecases/medication_use_cases.dart';
+import '../../../medications/presentation/providers/medication_use_cases_provider.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../profile/presentation/providers/profile_use_case_providers.dart';
@@ -25,6 +28,7 @@ class HomeViewModel extends Notifier<HomeState> {
   late final VitaminUseCases _vitaminUseCases;
   late final AppointmentUseCases _appointmentUseCases;
   late final ExamUseCases _examUseCases;
+  late final MedicationUseCases _medicationUseCases;
 
   @override
   HomeState build() {
@@ -34,6 +38,7 @@ class HomeViewModel extends Notifier<HomeState> {
     _vitaminUseCases = ref.read(vitaminUseCasesProvider);
     _appointmentUseCases = ref.read(appointmentUseCasesProvider);
     _examUseCases = ref.read(examUseCasesProvider);
+    _medicationUseCases = ref.read(medicationUseCasesProvider);
 
     return const HomeState();
   }
@@ -48,6 +53,7 @@ class HomeViewModel extends Notifier<HomeState> {
       _vitaminUseCases.getPendingCount(),
       _appointmentUseCases.getSummary(),
       _examUseCases.getSummary(),
+      _medicationUseCases.getSummary(),
     ]);
 
     final profile = results[0] as Profile?;
@@ -56,6 +62,7 @@ class HomeViewModel extends Notifier<HomeState> {
     final pendingVitamins = results[3] as int;
     final appointmentSummary = results[4] as AppointmentSummary;
     final examSummary = results[5] as ExamSummary;
+    final medicationSummary = results[6] as MedicationSummary;
 
     state = state.copyWith(
       profile: profile,
@@ -66,6 +73,7 @@ class HomeViewModel extends Notifier<HomeState> {
       nextAppointment: appointmentSummary.nextAppointment,
       latestExam: examSummary.latestExam,
       isLoading: false,
+      pendingMedicationsCount: medicationSummary.pendingCount,
     );
   }
 }
