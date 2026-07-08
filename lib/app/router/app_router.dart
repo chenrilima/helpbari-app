@@ -6,6 +6,7 @@ import '../../features/exams/presentation/pages/register_exam_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/progress/presentation/pages/progress_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
@@ -83,6 +84,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.registerExam,
       builder: (context, state) => const RegisterExamPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.progress,
+      builder: (context, state) => const ProgressPage(),
     ),
   ],
 );
