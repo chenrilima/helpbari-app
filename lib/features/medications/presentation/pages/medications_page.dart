@@ -47,7 +47,7 @@ class _MedicationsPageState extends ConsumerState<MedicationsPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: state.medications.length,
-            separatorBuilder: (_, __) => const HBGap.md(),
+            separatorBuilder: (_, _) => const HBGap.md(),
             itemBuilder: (_, index) {
               final medication = state.medications[index];
 
