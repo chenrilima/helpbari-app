@@ -11,6 +11,7 @@ import '../../features/medications/presentation/pages/register_medication_page.d
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/progress/presentation/pages/progress_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
@@ -109,5 +110,6 @@ final appRouter = GoRouter(
       path: AppRoutes.registerMeals,
       builder: (context, state) => const RegisterMealPage(),
     ),
+    GoRoute(path: AppRoutes.settings, builder: (_, __) => const SettingsPage()),
   ],
 );

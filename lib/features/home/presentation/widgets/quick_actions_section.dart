@@ -86,6 +86,13 @@ class QuickActionsSection extends StatelessWidget {
               subtitle: 'Cadastrar',
               onTap: () => _open(context, AppRoutes.meals),
             ),
+            const HBGap.md(),
+            QuickActionCard(
+              icon: Icons.settings_outlined,
+              title: 'Configurações',
+              subtitle: 'Abrir',
+              onTap: () => _open(context, AppRoutes.settings),
+            ),
           ],
         ),
       ),

@@ -21,4 +21,5 @@ abstract final class AppRoutes {
   static const registerMedication = '/register-medication';
   static const meals = '/meals';
   static const registerMeals = '/mealsRegister';
+  static const settings = '/settings';
 }
