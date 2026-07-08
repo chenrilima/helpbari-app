@@ -17,6 +17,7 @@ class HBMetricCard extends StatelessWidget {
     this.trailing,
     this.badge,
     this.onTap,
+    this.semanticLabel,
   });
 
   final String title;
@@ -30,6 +31,7 @@ class HBMetricCard extends StatelessWidget {
   final Widget? trailing;
   final Widget? badge;
   final VoidCallback? onTap;
+  final String? semanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +48,16 @@ class HBMetricCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (icon != null) ...[
-            Container(
-              width: AppSizes.avatarMd,
-              height: AppSizes.avatarMd,
-              decoration: BoxDecoration(
-                color: iconBackgroundColor ?? AppColors.primaryLight,
-                borderRadius: BorderRadius.circular(AppRadius.md),
+            ExcludeSemantics(
+              child: Container(
+                width: AppSizes.avatarMd,
+                height: AppSizes.avatarMd,
+                decoration: BoxDecoration(
+                  color: iconBackgroundColor ?? AppColors.primaryLight,
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                ),
+                child: HBIcon(icon!, color: iconColor ?? AppColors.primary),
               ),
-              child: HBIcon(icon!, color: iconColor ?? AppColors.primary),
             ),
             const HBGap.horizontal(AppSpacing.md),
           ],
@@ -83,12 +87,21 @@ class HBMetricCard extends StatelessWidget {
       ),
     );
 
-    if (onTap == null) return content;
+    if (onTap == null) {
+      return Semantics(
+        label: semanticLabel ?? '$title, $value',
+        child: content,
+      );
+    }
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppRadius.lg),
-      child: content,
+    return Semantics(
+      button: true,
+      label: semanticLabel ?? '$title, $value',
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: content,
+      ),
     );
   }
 }

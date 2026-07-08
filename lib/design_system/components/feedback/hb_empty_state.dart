@@ -11,6 +11,7 @@ class HBEmptyState extends StatelessWidget {
     this.actionLabel,
     this.onActionPressed,
     this.onTap,
+    this.semanticLabel,
   });
 
   final String title;
@@ -19,6 +20,7 @@ class HBEmptyState extends StatelessWidget {
   final String? actionLabel;
   final VoidCallback? onActionPressed;
   final VoidCallback? onTap;
+  final String? semanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +29,20 @@ class HBEmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: AppSizes.avatarLg,
-            height: AppSizes.avatarLg,
-            decoration: BoxDecoration(
-              color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(AppRadius.lg),
+          ExcludeSemantics(
+            child: Container(
+              width: AppSizes.avatarLg,
+              height: AppSizes.avatarLg,
+              decoration: BoxDecoration(
+                color: AppColors.primaryLight,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              child: Icon(
+                icon,
+                color: AppColors.primary,
+                size: AppSizes.iconLg,
+              ),
             ),
-            child: Icon(icon, color: AppColors.primary, size: AppSizes.iconLg),
           ),
           const HBGap.lg(),
           HBText(
@@ -58,15 +66,21 @@ class HBEmptyState extends StatelessWidget {
       ),
     );
 
+    final wrappedContent = Semantics(
+      label: semanticLabel ?? '$title. $description',
+      button: onTap != null,
+      child: content,
+    );
+
     if (onTap == null) {
-      return Center(child: content);
+      return Center(child: wrappedContent);
     }
 
     return Center(
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.lg),
         onTap: onTap,
-        child: content,
+        child: wrappedContent,
       ),
     );
   }

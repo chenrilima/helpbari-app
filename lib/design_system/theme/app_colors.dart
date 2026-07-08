@@ -4,9 +4,11 @@ abstract final class AppColors {
   static const primary = Color(0xFF7C6BE8);
   static const primaryDark = Color(0xFF5042B8);
   static const primaryLight = Color(0xFFEDEAFF);
+  static const onPrimary = Color(0xFFFFFFFF);
 
   static const secondary = Color(0xFF46B7A5);
   static const secondaryLight = Color(0xFFE8F8F5);
+  static const onSecondary = Color(0xFFFFFFFF);
 
   static const background = Color(0xFFF8F7FC);
   static const surface = Color(0xFFFFFFFF);
@@ -21,4 +23,5 @@ abstract final class AppColors {
   static const info = Color(0xFF4A90E2);
 
   static const border = Color(0xFFE7E4EF);
+  static const disabled = Color(0xFFE1DDEB);
 }
