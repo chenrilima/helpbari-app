@@ -12,13 +12,25 @@ class AuthViewModel extends Notifier<AuthState> {
   AuthState build() {
     _useCases = ref.watch(authUseCasesProvider);
     ref.listen(authStateChangesProvider, (previous, next) {
-      if (state is AuthLoading) return;
+      if (state is AuthLoading || state is AuthPasswordRecoveryReady) return;
 
       switch (next) {
         case AsyncData(:final value):
           state = value == null
               ? const AuthUnauthenticated()
               : AuthAuthenticated(value);
+        case AsyncError(:final error):
+          state = AuthFailure(error.toString());
+        case AsyncLoading():
+          break;
+      }
+    });
+    ref.listen(passwordRecoveryChangesProvider, (previous, next) {
+      switch (next) {
+        case AsyncData(:final value):
+          if (value) {
+            state = const AuthPasswordRecoveryReady();
+          }
         case AsyncError(:final error):
           state = AuthFailure(error.toString());
         case AsyncLoading():
@@ -81,6 +93,19 @@ class AuthViewModel extends Notifier<AuthState> {
     switch (result) {
       case Success():
         state = AuthPasswordRecoverySent(email);
+      case Failure(:final exception):
+        state = AuthFailure(exception.message);
+    }
+  }
+
+  Future<void> updatePassword({required String password}) async {
+    state = const AuthLoading();
+
+    final result = await _useCases.updatePassword(password: password);
+
+    switch (result) {
+      case Success(:final data):
+        state = AuthPasswordUpdated(data);
       case Failure(:final exception):
         state = AuthFailure(exception.message);
     }

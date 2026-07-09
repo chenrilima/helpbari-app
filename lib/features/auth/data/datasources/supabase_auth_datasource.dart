@@ -67,6 +67,18 @@ class SupabaseAuthDatasource implements AuthDatasource {
   }
 
   @override
+  Future<UserResponse> updatePassword({required String password}) {
+    return _interceptorRunner.run(
+      context: const SupabaseRequestContext(
+        operation: 'auth.updateUser.password',
+        metadata: {'requiresAuth': true},
+      ),
+      request: () =>
+          _client.auth.updateUser(UserAttributes(password: password)),
+    );
+  }
+
+  @override
   Future<bool> signInWithGoogle({required String redirectTo}) {
     return _interceptorRunner.run(
       context: const SupabaseRequestContext(

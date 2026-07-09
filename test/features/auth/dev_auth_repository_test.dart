@@ -54,5 +54,18 @@ void main() {
       expect(repository.currentUser, same(previousUser));
       expect(repository.hasSession, isTrue);
     });
+
+    test('updates password and keeps authenticated user', () async {
+      final repository = DevAuthRepository();
+      addTearDown(repository.dispose);
+
+      final result = await repository.updatePassword(
+        password: 'newPassword123',
+      );
+
+      expect(result, isA<Success>());
+      expect(repository.currentUser?.id, 'dev-user');
+      expect(repository.hasSession, isTrue);
+    });
   });
 }

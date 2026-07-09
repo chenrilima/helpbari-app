@@ -23,8 +23,19 @@ class SupabaseAuthRepository implements AuthRepository {
   @override
   Stream<AuthUser?> get authStateChanges {
     return _datasource.authStateChanges.map((event) {
+      if (event.event == AuthChangeEvent.passwordRecovery) {
+        return currentUser;
+      }
+
       return event.session?.user.toDomain();
     });
+  }
+
+  @override
+  Stream<bool> get passwordRecoveryChanges {
+    return _datasource.authStateChanges
+        .where((event) => event.event == AuthChangeEvent.passwordRecovery)
+        .map((event) => event.session != null);
   }
 
   @override
@@ -77,6 +88,37 @@ class SupabaseAuthRepository implements AuthRepository {
       return const Success(null);
     } catch (error, stackTrace) {
       return Failure(SupabaseErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  @override
+  Future<Result<AuthUser>> updatePassword({required String password}) async {
+    if (_datasource.currentSession == null) {
+      return Failure(
+        const domain_failures.AuthFailure(
+          message:
+              'Link de recuperação inválido ou expirado. Solicite um novo e-mail.',
+          code: 'password_recovery_session_missing',
+        ).toException(),
+      );
+    }
+
+    try {
+      final response = await _datasource.updatePassword(password: password);
+
+      return _authUserResult(
+        response.user,
+        emptyUserMessage: 'Não foi possível atualizar sua senha.',
+      );
+    } catch (error, stackTrace) {
+      return Failure(
+        SupabaseErrorMapper.map(
+          error,
+          stackTrace,
+          fallbackMessage:
+              'Não foi possível atualizar sua senha. Solicite um novo link.',
+        ),
+      );
     }
   }
 

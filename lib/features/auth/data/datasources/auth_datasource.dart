@@ -22,6 +22,8 @@ abstract interface class AuthDatasource {
     required String redirectTo,
   });
 
+  Future<UserResponse> updatePassword({required String password});
+
   Future<bool> signInWithGoogle({required String redirectTo});
 
   Future<void> signOut();

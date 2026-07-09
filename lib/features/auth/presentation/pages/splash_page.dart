@@ -17,7 +17,10 @@ class SplashPage extends ConsumerWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       switch (authState) {
         case AuthAuthenticated():
+        case AuthPasswordUpdated():
           context.go(AppRoutes.home);
+        case AuthPasswordRecoveryReady():
+          context.go(AppRoutes.resetPassword);
         case AuthUnauthenticated():
         case AuthPasswordRecoverySent():
         case AuthFailure():
