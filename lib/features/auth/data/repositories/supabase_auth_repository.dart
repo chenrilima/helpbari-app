@@ -1,32 +1,29 @@
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
 
+import '../../../../core/config/environment.dart';
 import '../../../../core/failures/failures.dart' as domain_failures;
 import '../../../../core/result/result.dart';
+import '../../../../core/supabase/supabase_error_mapper.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../datasources/auth_datasource.dart';
+import '../mappers/auth_user_mapper.dart';
 
 class SupabaseAuthRepository implements AuthRepository {
-  const SupabaseAuthRepository(this._client);
+  const SupabaseAuthRepository(this._datasource);
 
-  final SupabaseClient _client;
+  final AuthDatasource _datasource;
 
   @override
-  AuthUser? get currentUser {
-    final user = _client.auth.currentUser;
+  AuthUser? get currentUser => _datasource.currentUser?.toDomain();
 
-    if (user == null) return null;
-
-    return AuthUser(id: user.id, email: user.email);
-  }
+  @override
+  bool get hasSession => _datasource.currentSession != null;
 
   @override
   Stream<AuthUser?> get authStateChanges {
-    return _client.auth.onAuthStateChange.map((event) {
-      final user = event.session?.user;
-
-      if (user == null) return null;
-
-      return AuthUser(id: user.id, email: user.email);
+    return _datasource.authStateChanges.map((event) {
+      return event.session?.user.toDomain();
     });
   }
 
@@ -36,36 +33,17 @@ class SupabaseAuthRepository implements AuthRepository {
     required String password,
   }) async {
     try {
-      final response = await _client.auth.signUp(
+      final response = await _datasource.signUpWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      final user = response.user;
-
-      if (user == null) {
-        return Failure(
-          const domain_failures.StorageFailure(
-            message: 'Não foi possível criar sua conta.',
-            code: 'auth_empty_user',
-          ).toException(),
-        );
-      }
-
-      return Success(AuthUser(id: user.id, email: user.email));
-    } on AuthException catch (error, stackTrace) {
-      return Failure(
-        domain_failures.StorageFailure(
-          message: error.message,
-          code: error.statusCode,
-        ).toException(stackTrace: stackTrace),
+      return _authUserResult(
+        response.user,
+        emptyUserMessage: 'Não foi possível criar sua conta.',
       );
     } catch (error, stackTrace) {
-      return Failure(
-        const domain_failures.UnexpectedFailure(
-          message: 'Erro inesperado ao criar conta.',
-        ).toException(stackTrace: stackTrace),
-      );
+      return Failure(SupabaseErrorMapper.map(error, stackTrace));
     }
   }
 
@@ -75,50 +53,55 @@ class SupabaseAuthRepository implements AuthRepository {
     required String password,
   }) async {
     try {
-      final response = await _client.auth.signInWithPassword(
+      final response = await _datasource.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      final user = response.user;
-
-      if (user == null) {
-        return Failure(
-          const domain_failures.StorageFailure(
-            message: 'Não foi possível autenticar o usuário.',
-            code: 'auth_empty_user',
-          ).toException(),
-        );
-      }
-
-      return Success(AuthUser(id: user.id, email: user.email));
-    } on AuthException catch (error, stackTrace) {
-      return Failure(
-        domain_failures.StorageFailure(
-          message: error.message,
-          code: error.statusCode,
-        ).toException(stackTrace: stackTrace),
+      return _authUserResult(
+        response.user,
+        emptyUserMessage: 'Não foi possível autenticar o usuário.',
       );
     } catch (error, stackTrace) {
-      return Failure(
-        const domain_failures.UnexpectedFailure(
-          message: 'Erro inesperado ao entrar.',
-        ).toException(stackTrace: stackTrace),
+      return Failure(SupabaseErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  @override
+  Future<Result<void>> signInWithGoogle() async {
+    try {
+      await _datasource.signInWithGoogle(
+        redirectTo: Environment.appRedirectUrl,
       );
+      return const Success(null);
+    } catch (error, stackTrace) {
+      return Failure(SupabaseErrorMapper.map(error, stackTrace));
     }
   }
 
   @override
   Future<Result<void>> signOut() async {
     try {
-      await _client.auth.signOut();
+      await _datasource.signOut();
       return const Success(null);
     } catch (error, stackTrace) {
+      return Failure(SupabaseErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  Result<AuthUser> _authUserResult(
+    User? user, {
+    required String emptyUserMessage,
+  }) {
+    if (user == null) {
       return Failure(
-        const domain_failures.UnexpectedFailure(
-          message: 'Erro inesperado ao sair.',
-        ).toException(stackTrace: stackTrace),
+        domain_failures.AuthFailure(
+          message: emptyUserMessage,
+          code: 'auth_empty_user',
+        ).toException(),
       );
     }
+
+    return Success(user.toDomain());
   }
 }
