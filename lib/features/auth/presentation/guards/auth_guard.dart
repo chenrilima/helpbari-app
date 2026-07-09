@@ -9,6 +9,7 @@ class AuthGuard {
     AppRoutes.onboarding,
     AppRoutes.login,
     AppRoutes.signUp,
+    AppRoutes.resetPassword,
   };
 
   static String? redirect({
@@ -22,6 +23,7 @@ class AuthGuard {
       AuthLoading() => location == AppRoutes.splash ? null : AppRoutes.splash,
       AuthAuthenticated() => isPublicRoute ? AppRoutes.home : null,
       AuthUnauthenticated() ||
+      AuthPasswordRecoverySent() ||
       AuthFailure() => isPublicRoute ? null : AppRoutes.login,
     };
   }

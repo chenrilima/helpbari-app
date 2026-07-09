@@ -19,6 +19,7 @@ class SplashPage extends ConsumerWidget {
         case AuthAuthenticated():
           context.go(AppRoutes.home);
         case AuthUnauthenticated():
+        case AuthPasswordRecoverySent():
         case AuthFailure():
           context.go(AppRoutes.login);
         case AuthInitial():

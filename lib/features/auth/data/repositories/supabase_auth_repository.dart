@@ -68,6 +68,19 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<Result<void>> resetPasswordForEmail({required String email}) async {
+    try {
+      await _datasource.resetPasswordForEmail(
+        email: email,
+        redirectTo: Environment.appRedirectUrl,
+      );
+      return const Success(null);
+    } catch (error, stackTrace) {
+      return Failure(SupabaseErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  @override
   Future<Result<void>> signInWithGoogle() async {
     try {
       await _datasource.signInWithGoogle(

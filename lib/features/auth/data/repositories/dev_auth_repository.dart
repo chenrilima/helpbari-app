@@ -44,6 +44,11 @@ class DevAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<Result<void>> resetPasswordForEmail({required String email}) async {
+    return const Success(null);
+  }
+
+  @override
   Future<Result<void>> signInWithGoogle() async {
     const user = AuthUser(
       id: 'dev-google-user',

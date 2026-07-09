@@ -47,6 +47,7 @@ final authUseCasesProvider = Provider<AuthUseCases>((ref) {
     watchAuthState: WatchAuthStateUseCase(repository),
     signInWithEmailAndPassword: SignInWithEmailAndPasswordUseCase(repository),
     signUpWithEmailAndPassword: SignUpWithEmailAndPasswordUseCase(repository),
+    resetPasswordForEmail: ResetPasswordForEmailUseCase(repository),
     signInWithGoogle: SignInWithGoogleUseCase(repository),
     signOut: SignOutUseCase(repository),
   );
@@ -59,3 +60,12 @@ final authStateChangesProvider = StreamProvider<AuthUser?>((ref) {
 final authViewModelProvider = NotifierProvider<AuthViewModel, AuthState>(
   AuthViewModel.new,
 );
+
+final authSessionProvider = Provider<AuthUser?>((ref) {
+  final authState = ref.watch(authViewModelProvider);
+
+  return switch (authState) {
+    AuthAuthenticated(:final user) => user,
+    _ => null,
+  };
+});

@@ -18,6 +18,8 @@ abstract interface class AuthRepository {
     required String password,
   });
 
+  Future<Result<void>> resetPasswordForEmail({required String email});
+
   Future<Result<void>> signInWithGoogle();
 
   Future<Result<void>> signOut();

@@ -73,6 +73,19 @@ class AuthViewModel extends Notifier<AuthState> {
     }
   }
 
+  Future<void> resetPasswordForEmail({required String email}) async {
+    state = const AuthLoading();
+
+    final result = await _useCases.resetPasswordForEmail(email: email);
+
+    switch (result) {
+      case Success():
+        state = AuthPasswordRecoverySent(email);
+      case Failure(:final exception):
+        state = AuthFailure(exception.message);
+    }
+  }
+
   Future<void> signOut() async {
     state = const AuthLoading();
 

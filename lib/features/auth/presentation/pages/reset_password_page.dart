@@ -8,34 +8,29 @@ import '../../../../design_system/design_system.dart';
 import '../states/auth_state.dart';
 import '../viewmodels/auth_providers.dart';
 
-class SignUpPage extends ConsumerStatefulWidget {
-  const SignUpPage({super.key});
+class ResetPasswordPage extends ConsumerStatefulWidget {
+  const ResetPasswordPage({super.key});
 
   @override
-  ConsumerState<SignUpPage> createState() => _SignUpPageState();
+  ConsumerState<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
-class _SignUpPageState extends ConsumerState<SignUpPage> {
+class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
-  Future<void> _signUp() async {
+  Future<void> _resetPassword() async {
     if (!_formKey.currentState!.validate()) return;
 
     await ref
         .read(authViewModelProvider.notifier)
-        .signUpWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        );
+        .resetPasswordForEmail(email: _emailController.text.trim());
   }
 
   @override
@@ -45,8 +40,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       switch (next) {
-        case AuthAuthenticated():
-          context.go(AppRoutes.home);
+        case AuthPasswordRecoverySent():
+          HBSnackBar.success(
+            context,
+            message: 'Enviamos as instruções de recuperação para seu e-mail.',
+          );
+          context.go(AppRoutes.login);
         case AuthFailure(:final message):
           HBSnackBar.error(context, message: message);
         default:
@@ -56,9 +55,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
     return HBLoadingOverlay(
       isLoading: isLoading,
-      message: 'Criando conta...',
+      message: 'Enviando instruções...',
       child: HBPage(
-        header: const _SignUpHeader(),
+        header: const _ResetPasswordHeader(),
         children: [
           HBCard(
             child: Form(
@@ -70,28 +69,22 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     label: 'E-mail',
                     hint: 'seuemail@exemplo.com',
                     keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    validator: AppValidators.email,
-                  ),
-                  const HBGap.md(),
-                  HBPasswordField(
-                    controller: _passwordController,
                     textInputAction: TextInputAction.done,
-                    validator: AppValidators.newPassword,
-                    onFieldSubmitted: (_) => _signUp(),
+                    validator: AppValidators.email,
+                    onFieldSubmitted: (_) => _resetPassword(),
                   ),
                   const HBGap.lg(),
                   HBButton(
-                    label: 'Criar conta',
+                    label: 'Recuperar senha',
                     isLoading: isLoading,
-                    onPressed: _signUp,
+                    onPressed: _resetPassword,
                   ),
                   const HBGap.md(),
                   TextButton(
                     onPressed: isLoading
                         ? null
                         : () => context.go(AppRoutes.login),
-                    child: const HBText('Já tenho uma conta'),
+                    child: const HBText('Voltar para login'),
                   ),
                 ],
               ),
@@ -103,18 +96,21 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   }
 }
 
-class _SignUpHeader extends StatelessWidget {
-  const _SignUpHeader();
+class _ResetPasswordHeader extends StatelessWidget {
+  const _ResetPasswordHeader();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        HBText('Criar conta', style: Theme.of(context).textTheme.headlineLarge),
+        HBText(
+          'Recuperar senha',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
         const HBGap.sm(),
         HBText(
-          'Comece sua jornada no HelpBari com uma conta segura.',
+          'Informe o e-mail da sua conta para receber as instruções de recuperação.',
           style: Theme.of(
             context,
           ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),

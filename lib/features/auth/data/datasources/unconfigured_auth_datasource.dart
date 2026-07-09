@@ -40,6 +40,14 @@ class UnconfiguredAuthDatasource implements AuthDatasource {
   }
 
   @override
+  Future<void> resetPasswordForEmail({
+    required String email,
+    required String redirectTo,
+  }) {
+    throw _exception;
+  }
+
+  @override
   Future<bool> signInWithGoogle({required String redirectTo}) {
     throw _exception;
   }

@@ -8,6 +8,7 @@ class AuthUseCases {
     required this.watchAuthState,
     required this.signInWithEmailAndPassword,
     required this.signUpWithEmailAndPassword,
+    required this.resetPasswordForEmail,
     required this.signInWithGoogle,
     required this.signOut,
   });
@@ -16,6 +17,7 @@ class AuthUseCases {
   final WatchAuthStateUseCase watchAuthState;
   final SignInWithEmailAndPasswordUseCase signInWithEmailAndPassword;
   final SignUpWithEmailAndPasswordUseCase signUpWithEmailAndPassword;
+  final ResetPasswordForEmailUseCase resetPasswordForEmail;
   final SignInWithGoogleUseCase signInWithGoogle;
   final SignOutUseCase signOut;
 }
@@ -65,6 +67,16 @@ class SignUpWithEmailAndPasswordUseCase {
       email: email,
       password: password,
     );
+  }
+}
+
+class ResetPasswordForEmailUseCase {
+  const ResetPasswordForEmailUseCase(this._repository);
+
+  final AuthRepository _repository;
+
+  Future<Result<void>> call({required String email}) {
+    return _repository.resetPasswordForEmail(email: email);
   }
 }
 

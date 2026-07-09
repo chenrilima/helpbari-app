@@ -23,6 +23,7 @@ import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../core/supabase/session/session_manager_provider.dart';
 import '../../features/auth/presentation/guards/auth_guard.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/reset_password_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
@@ -40,6 +41,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   );
 
   ref.listen(onboardingViewModelProvider, (previous, next) {
+    refreshListenable.notify();
+  });
+
+  ref.listen(authViewModelProvider, (previous, next) {
     refreshListenable.notify();
   });
 
@@ -84,6 +89,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.signUp,
         builder: (context, state) => const SignUpPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.resetPassword,
+        builder: (context, state) => const ResetPasswordPage(),
       ),
       GoRoute(
         path: AppRoutes.showcase,
