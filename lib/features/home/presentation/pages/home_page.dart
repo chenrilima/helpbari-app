@@ -46,11 +46,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     return HBPage(
       children: [
         HomeHeader(userName: state.profile?.name ?? 'Olá'),
-        const ProgressBanner(
-          title: 'Continue assim! 💜',
-          message:
-              'Cada registro ajuda você a acompanhar sua evolução e manter o foco.',
-        ),
+        ProgressBanner(title: state.bannerTitle, message: state.bannerMessage),
         const HBGap.xl(),
         WeightOverviewSection(
           latestRecord: state.latestWeightRecord,
@@ -61,32 +57,42 @@ class _HomePageState extends ConsumerState<HomePage> {
         const HBGap.xl(),
         WaterOverviewSection(
           totalTodayInMl: state.totalWaterTodayInMl,
+          goalMl: state.dailySummary?.waterGoalMl ?? 2000,
+          subtitle: state.waterMessage,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),
         VitaminsOverviewSection(
           pendingCount: state.pendingVitaminsCount,
+          subtitle: state.vitaminsMessage,
           onRefresh: _loadHome,
         ),
 
         const HBGap.xl(),
         MedicationOverviewSection(
           pendingCount: state.pendingMedicationsCount,
+          subtitle: state.medicationsMessage,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),
         MealOverviewSection(
           todayCount: state.todayMealsCount,
           totalProteinToday: state.totalProteinToday,
+          subtitle: state.mealsMessage,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),
         AppointmentOverviewSection(
           nextAppointment: state.nextAppointment,
+          subtitle: state.appointmentMessage,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),
-        ExamOverviewSection(latestExam: state.latestExam, onRefresh: _loadHome),
+        ExamOverviewSection(
+          latestExam: state.latestExam,
+          subtitle: state.examMessage,
+          onRefresh: _loadHome,
+        ),
 
         const HBGap.xl(),
         QuickActionsSection(onRefresh: _loadHome),

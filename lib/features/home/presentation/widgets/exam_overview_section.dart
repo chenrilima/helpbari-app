@@ -10,11 +10,13 @@ import '../../../home/presentation/widgets/home_section.dart';
 class ExamOverviewSection extends StatelessWidget {
   const ExamOverviewSection({
     required this.latestExam,
+    this.subtitle = 'Acompanhe seus exames realizados.',
     this.onRefresh,
     super.key,
   });
 
   final Exam? latestExam;
+  final String subtitle;
   final Future<void> Function()? onRefresh;
 
   Future<void> _openExams(BuildContext context) async {
@@ -25,7 +27,7 @@ class ExamOverviewSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return HomeSection(
       title: 'Exames',
-      subtitle: 'Acompanhe seus exames realizados.',
+      subtitle: subtitle,
       child: latestExam != null
           ? Semantics(
               button: true,

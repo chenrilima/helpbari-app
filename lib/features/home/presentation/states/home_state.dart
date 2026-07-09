@@ -1,4 +1,6 @@
+import '../../../../core/formatters/app_water_formatter.dart';
 import '../../../../core/formatters/app_weight_formatter.dart';
+import '../../../../core/health/health.dart';
 import '../../../appointments/domain/entities/entities.dart';
 import '../../../exams/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
@@ -17,6 +19,7 @@ class HomeState {
     this.pendingMedicationsCount = 0,
     this.todayMealsCount = 0,
     this.totalProteinToday = 0,
+    this.dailySummary,
   });
 
   final Profile? profile;
@@ -30,6 +33,7 @@ class HomeState {
   final int pendingMedicationsCount;
   final int todayMealsCount;
   final int totalProteinToday;
+  final DailySummary? dailySummary;
 
   double? get weightLost {
     final profile = this.profile;
@@ -55,6 +59,132 @@ class HomeState {
     return AppWeightFormatter.aboveInitial(value);
   }
 
+  String get bannerTitle {
+    final summary = dailySummary;
+
+    if (summary == null) return 'Continue assim! 💜';
+
+    if (summary.hydration.remainingMl > 0) {
+      return 'Hidratação em progresso';
+    }
+
+    if (summary.hasPendingMedications) {
+      return 'Medicamentos pendentes';
+    }
+
+    if (summary.hasRegisteredMeals) {
+      return 'Rotina registrada';
+    }
+
+    if (summary.hasNextAppointment) {
+      return 'Consulta agendada';
+    }
+
+    return 'Continue assim! 💜';
+  }
+
+  String get bannerMessage {
+    final summary = dailySummary;
+
+    if (summary == null) {
+      return 'Cada registro ajuda você a acompanhar sua evolução e manter o foco.';
+    }
+
+    if (summary.hydration.remainingMl > 0) {
+      final remaining = AppWaterFormatter.ml(summary.hydration.remainingMl);
+
+      return 'Faltam $remaining para sua meta de água.';
+    }
+
+    if (summary.hasPendingMedications) {
+      return summary.pendingMedications == 1
+          ? 'Você tem 1 medicamento pendente.'
+          : 'Você tem ${summary.pendingMedications} medicamentos pendentes.';
+    }
+
+    if (summary.hasRegisteredMeals) {
+      return summary.registeredMeals == 1
+          ? 'Você registrou 1 refeição hoje.'
+          : 'Você registrou ${summary.registeredMeals} refeições hoje.';
+    }
+
+    if (summary.hasNextAppointment) {
+      return 'Sua próxima consulta está agendada.';
+    }
+
+    return 'Cada registro ajuda você a acompanhar sua evolução e manter o foco.';
+  }
+
+  String get waterMessage {
+    final summary = dailySummary;
+
+    if (summary == null) return 'Sua hidratação de hoje.';
+
+    if (summary.waterGoalMl <= 0) return 'Sua hidratação de hoje.';
+
+    if (summary.hydration.remainingMl <= 0 && summary.waterGoalMl > 0) {
+      return 'Meta de água atingida hoje.';
+    }
+
+    return 'Faltam ${AppWaterFormatter.ml(summary.hydration.remainingMl)} para sua meta de água.';
+  }
+
+  String get vitaminsMessage {
+    final summary = dailySummary;
+
+    if (summary == null || !summary.hasPendingVitamins) {
+      return 'Nenhuma vitamina pendente hoje.';
+    }
+
+    return summary.pendingVitamins == 1
+        ? 'Você tem 1 vitamina pendente.'
+        : 'Você tem ${summary.pendingVitamins} vitaminas pendentes.';
+  }
+
+  String get medicationsMessage {
+    final summary = dailySummary;
+
+    if (summary == null || !summary.hasPendingMedications) {
+      return 'Nenhum medicamento pendente hoje.';
+    }
+
+    return summary.pendingMedications == 1
+        ? 'Você tem 1 medicamento pendente.'
+        : 'Você tem ${summary.pendingMedications} medicamentos pendentes.';
+  }
+
+  String get mealsMessage {
+    final summary = dailySummary;
+
+    if (summary == null || !summary.hasRegisteredMeals) {
+      return 'Nenhuma refeição registrada hoje.';
+    }
+
+    return summary.registeredMeals == 1
+        ? 'Você registrou 1 refeição hoje.'
+        : 'Você registrou ${summary.registeredMeals} refeições hoje.';
+  }
+
+  String get appointmentMessage {
+    final summary = dailySummary;
+
+    if (summary == null || !summary.hasNextAppointment) {
+      return 'Nenhuma consulta agendada.';
+    }
+
+    return 'Sua próxima consulta está agendada.';
+  }
+
+  String get examMessage {
+    final summary = dailySummary;
+
+    if (summary == null || !summary.hasLatestExam) {
+      return 'Nenhum exame cadastrado.';
+    }
+
+    return 'Seu último exame está registrado.';
+  }
+
   HomeState copyWith({
     Profile? profile,
     WeightRecord? latestWeightRecord,
@@ -67,6 +197,7 @@ class HomeState {
     int? pendingMedicationsCount,
     int? todayMealsCount,
     int? totalProteinToday,
+    DailySummary? dailySummary,
   }) {
     return HomeState(
       profile: profile ?? this.profile,
@@ -81,6 +212,7 @@ class HomeState {
           pendingMedicationsCount ?? this.pendingMedicationsCount,
       todayMealsCount: todayMealsCount ?? this.todayMealsCount,
       totalProteinToday: totalProteinToday ?? this.totalProteinToday,
+      dailySummary: dailySummary ?? this.dailySummary,
     );
   }
 }

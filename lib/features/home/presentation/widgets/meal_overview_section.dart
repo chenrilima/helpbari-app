@@ -10,12 +10,14 @@ class MealOverviewSection extends StatelessWidget {
   const MealOverviewSection({
     required this.todayCount,
     required this.totalProteinToday,
+    this.subtitle = 'Acompanhe sua alimentação de hoje.',
     this.onRefresh,
     super.key,
   });
 
   final int todayCount;
   final int totalProteinToday;
+  final String subtitle;
   final Future<void> Function()? onRefresh;
 
   Future<void> _openMeals(BuildContext context) async {
@@ -26,7 +28,7 @@ class MealOverviewSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return HomeSection(
       title: 'Refeições',
-      subtitle: 'Acompanhe sua alimentação de hoje.',
+      subtitle: subtitle,
       child: Semantics(
         button: true,
         label: 'Abrir refeições',
