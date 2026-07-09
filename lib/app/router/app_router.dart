@@ -107,9 +107,9 @@ final appRouter = GoRouter(
       builder: (context, state) => const MealsPage(),
     ),
     GoRoute(
-      path: AppRoutes.registerMeals,
+      path: AppRoutes.registerMeal,
       builder: (context, state) => const RegisterMealPage(),
     ),
-    GoRoute(path: AppRoutes.settings, builder: (_, __) => const SettingsPage()),
+    GoRoute(path: AppRoutes.settings, builder: (_, _) => const SettingsPage()),
   ],
 );

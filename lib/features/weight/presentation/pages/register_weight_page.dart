@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../models/create_weight_form.dart';
 import '../providers/weight_view_model_provider.dart';
@@ -60,6 +61,7 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
     await ref.read(weightViewModelProvider.notifier).registerWeight(form);
 
     if (!mounted) return;
+    HBSnackBar.success(context, message: 'Peso registrado com sucesso.');
 
     context.pop(true);
   }
@@ -85,21 +87,7 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  validator: (value) {
-                    final weight = double.tryParse(
-                      (value ?? '').replaceAll(',', '.'),
-                    );
-
-                    if (weight == null) {
-                      return 'Informe um peso válido.';
-                    }
-
-                    if (weight < 20 || weight > 500) {
-                      return 'Peso inválido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.weight,
                 ),
 
                 const HBGap.md(),

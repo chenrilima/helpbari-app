@@ -55,7 +55,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: state.meals.length,
-            separatorBuilder: (_, __) => const HBGap.md(),
+            separatorBuilder: (_, _) => const HBGap.md(),
             itemBuilder: (_, index) {
               return MealTile(meal: state.meals[index]);
             },
@@ -65,7 +65,7 @@ class _MealsPageState extends ConsumerState<MealsPage> {
           label: 'Cadastrar refeição',
           onPressed: () {
             context.pushAndRefresh(
-              AppRoutes.registerMeals,
+              AppRoutes.registerMeal,
               onRefresh: _loadMeals,
               shouldRefresh: (created) => created == true,
             );

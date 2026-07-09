@@ -30,6 +30,14 @@ class Medication extends Entity {
 
   String get formattedTime => scheduleTime.formatted;
 
+  String get statusDescription {
+    return switch (status) {
+      MedicationStatus.pending => 'Pendente',
+      MedicationStatus.taken => 'Tomado',
+      MedicationStatus.skipped => 'Ignorado',
+    };
+  }
+
   Medication markAsTaken() {
     return copyWith(status: MedicationStatus.taken);
   }

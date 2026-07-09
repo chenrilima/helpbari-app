@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../../domain/value_objects/value_objects.dart';
 import '../models/create_profile_form.dart';
@@ -41,8 +42,9 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
     if (!_formKey.currentState!.validate()) return;
 
     if (_birthDate == null || _surgeryDate == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Selecione as datas para continuar.')),
+      HBSnackBar.warning(
+        context,
+        message: 'Selecione as datas para continuar.',
       );
       return;
     }
@@ -133,19 +135,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                   label: 'Nome completo',
                   hint: 'Ex: Carlos Henrique',
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) {
-                      return 'Informe seu nome.';
-                    }
-
-                    if (text.length < 3) {
-                      return 'Informe um nome válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.profileName,
                 ),
                 const HBGap.md(),
                 HBTextField(
@@ -154,19 +144,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                   hint: 'Ex: 178',
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final height = int.tryParse(value?.trim() ?? '');
-
-                    if (height == null) {
-                      return 'Informe sua altura em centímetros.';
-                    }
-
-                    if (height < 80 || height > 250) {
-                      return 'Informe uma altura válida.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.height,
                 ),
                 const HBGap.md(),
                 HBTextField(
@@ -177,21 +155,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                     decimal: true,
                   ),
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final weight = double.tryParse(
-                      (value ?? '').trim().replaceAll(',', '.'),
-                    );
-
-                    if (weight == null) {
-                      return 'Informe seu peso inicial.';
-                    }
-
-                    if (weight < 20 || weight > 500) {
-                      return 'Informe um peso válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.weight,
                 ),
                 const HBGap.md(),
                 HBTextField(
@@ -202,23 +166,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                     decimal: true,
                   ),
                   textInputAction: TextInputAction.done,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) return null;
-
-                    final weight = double.tryParse(text.replaceAll(',', '.'));
-
-                    if (weight == null) {
-                      return 'Informe um peso objetivo válido.';
-                    }
-
-                    if (weight < 20 || weight > 500) {
-                      return 'Informe um peso objetivo válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.weight,
                   onFieldSubmitted: (_) => _submit(),
                 ),
                 const HBGap.md(),

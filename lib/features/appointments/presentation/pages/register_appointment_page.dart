@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/appointment_view_model_provider.dart';
 
@@ -81,6 +82,8 @@ class _RegisterAppointmentPageState
 
     if (!mounted) return;
 
+    HBSnackBar.success(context, message: 'Consulta cadastrada com sucesso.');
+
     context.pop(true);
   }
 
@@ -102,19 +105,7 @@ class _RegisterAppointmentPageState
                   label: 'Título',
                   hint: 'Ex: Retorno com cirurgião',
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) {
-                      return 'Informe o título da consulta.';
-                    }
-
-                    if (text.length < 3) {
-                      return 'Informe um título válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.title,
                 ),
                 const HBGap.md(),
                 HBTextField(

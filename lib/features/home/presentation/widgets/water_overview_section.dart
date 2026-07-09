@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
-import '../../../home/presentation/widgets/home_section.dart';
 import '../../../water/presentation/widgets/water_progress_card.dart';
+import 'home_section.dart';
 
 class WaterOverviewSection extends StatelessWidget {
   const WaterOverviewSection({

@@ -7,3 +7,4 @@ export 'theme/theme.dart';
 export 'foundations/foundations.dart';
 export 'primitives/primitives.dart';
 export 'templates/templates.dart';
+export 'components/feedback/hb_snack_bar.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/vitamin_view_model_provider.dart';
 
@@ -51,6 +52,8 @@ class _RegisterVitaminPageState extends ConsumerState<RegisterVitaminPage> {
 
     if (!mounted) return;
 
+    HBSnackBar.success(context, message: 'Vitamina cadastrada com sucesso.');
+
     context.pop(true);
   }
 
@@ -75,19 +78,7 @@ class _RegisterVitaminPageState extends ConsumerState<RegisterVitaminPage> {
                   label: 'Nome da vitamina',
                   hint: 'Ex: B12, Ferro, Multivitamínico',
                   textInputAction: TextInputAction.done,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) {
-                      return 'Informe o nome da vitamina.';
-                    }
-
-                    if (text.length < 2) {
-                      return 'Informe um nome válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.vitaminName,
                 ),
                 const HBGap.md(),
                 HBButton(

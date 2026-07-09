@@ -164,6 +164,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 final value = int.tryParse(controller.text.trim());
 
                 if (value == null || value < 500 || value > 6000) {
+                  HBSnackBar.warning(
+                    context,
+                    message: 'Informe uma meta entre 500 ml e 6000 ml.',
+                  );
+
                   return;
                 }
 

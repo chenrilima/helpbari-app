@@ -1,4 +1,5 @@
 import '../../../../core/domain/entity.dart';
+import '../../../../core/formatters/app_protein_formatter.dart';
 import '../value_objects/value_objects.dart';
 
 class Meal extends Entity {
@@ -31,9 +32,11 @@ class Meal extends Entity {
   bool get hasProteinInfo => proteinGrams != null && proteinGrams! > 0;
 
   String get formattedProtein {
-    if (!hasProteinInfo) return 'Proteína não informada';
+    if (!hasProteinInfo) {
+      return 'Proteína não informada';
+    }
 
-    return '$proteinGrams g de proteína';
+    return AppProteinFormatter.meal(proteinGrams!);
   }
 
   Meal copyWith({

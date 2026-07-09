@@ -32,7 +32,7 @@ class MedicationTile extends StatelessWidget {
                 ),
                 const HBGap.xs(),
                 HBText(
-                  '${medication.formattedTime} • ${medication.status.label}',
+                  '${medication.formattedTime} • ${medication.statusDescription}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),

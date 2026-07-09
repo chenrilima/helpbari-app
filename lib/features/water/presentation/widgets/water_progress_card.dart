@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/formatters/app_water_formatter.dart';
 import '../../../../design_system/design_system.dart';
 
 class WaterProgressCard extends StatelessWidget {
@@ -25,7 +26,7 @@ class WaterProgressCard extends StatelessWidget {
           const HBGap.md(),
 
           HBText(
-            '${(currentMl / 1000).toStringAsFixed(1)} L de ${(goalMl / 1000).toStringAsFixed(1)} L',
+            AppWaterFormatter.goal(currentMl: currentMl, goalMl: goalMl),
             style: Theme.of(context).textTheme.bodyLarge,
           ),
 
