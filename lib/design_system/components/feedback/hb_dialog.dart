@@ -101,6 +101,28 @@ abstract final class HBDialog {
     );
   }
 
+  static Future<T?> custom<T>(
+    BuildContext context, {
+    required String title,
+    required Widget content,
+    required List<Widget> actions,
+    bool barrierDismissible = true,
+    String? semanticLabel,
+  }) {
+    return showDialog<T>(
+      context: context,
+      barrierDismissible: barrierDismissible,
+      builder: (dialogContext) {
+        return _HBCustomDialogContent(
+          title: title,
+          content: content,
+          actions: actions,
+          semanticLabel: semanticLabel,
+        );
+      },
+    );
+  }
+
   static Future<void> _showMessage(
     BuildContext context, {
     required HBDialogType type,
@@ -121,6 +143,62 @@ abstract final class HBDialog {
           semanticLabel: semanticLabel,
         );
       },
+    );
+  }
+}
+
+class _HBCustomDialogContent extends StatelessWidget {
+  const _HBCustomDialogContent({
+    required this.title,
+    required this.content,
+    required this.actions,
+    this.semanticLabel,
+  });
+
+  final String title;
+  final Widget content;
+  final List<Widget> actions;
+  final String? semanticLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: AppColors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+      ),
+      child: Semantics(
+        scopesRoute: true,
+        namesRoute: true,
+        explicitChildNodes: true,
+        label: semanticLabel ?? title,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: AppSizes.pageMaxWidth),
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                HBText(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const HBGap.md(),
+                content,
+                const HBGap.lg(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: actions,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

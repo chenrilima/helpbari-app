@@ -146,43 +146,39 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final formKey = GlobalKey<FormState>();
     final controller = TextEditingController(text: currentGoal.toString());
 
-    final result = await showDialog<int>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Meta diária de água'),
-          content: Form(
-            key: formKey,
-            child: TextFormField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              validator: AppValidators.waterGoal,
-              decoration: const InputDecoration(
-                labelText: 'Meta em ml',
-                hintText: 'Ex: 2000',
-              ),
-            ),
+    final result = await HBDialog.custom<int>(
+      context,
+      title: 'Meta diária de água',
+      content: Form(
+        key: formKey,
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          validator: AppValidators.waterGoal,
+          decoration: const InputDecoration(
+            labelText: 'Meta em ml',
+            hintText: 'Ex: 2000',
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () {
-                final formState = formKey.currentState;
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            final formState = formKey.currentState;
 
-                if (formState == null || !formState.validate()) return;
+            if (formState == null || !formState.validate()) return;
 
-                final value = int.parse(controller.text.trim());
+            final value = int.parse(controller.text.trim());
 
-                Navigator.of(context).pop(value);
-              },
-              child: const Text('Salvar'),
-            ),
-          ],
-        );
-      },
+            Navigator.of(context).pop(value);
+          },
+          child: const Text('Salvar'),
+        ),
+      ],
     );
 
     if (result == null) return;
