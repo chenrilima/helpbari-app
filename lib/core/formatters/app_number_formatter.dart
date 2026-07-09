@@ -6,4 +6,8 @@ abstract final class AppNumberFormatter {
   static String percentage(num value) {
     return '${value.round()}%';
   }
+
+  static String goalProgress(num value) {
+    return '${percentage(value)} da meta';
+  }
 }

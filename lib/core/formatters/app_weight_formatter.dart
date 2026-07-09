@@ -18,4 +18,12 @@ abstract final class AppWeightFormatter {
 
     return 'Faltam ${kg(value)}';
   }
+
+  static String lostSinceStart(num value) {
+    return '${kg(value)} perdidos desde o início';
+  }
+
+  static String aboveInitial(num value) {
+    return '${kg(value.abs())} acima do peso inicial';
+  }
 }

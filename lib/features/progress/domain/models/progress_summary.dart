@@ -77,7 +77,7 @@ class ProgressSummary {
 
     if (value == null) return 'Meta não definida';
 
-    return '${AppNumberFormatter.percentage(value)} da meta';
+    return AppNumberFormatter.goalProgress(value);
   }
 
   String get formattedInitialBmi => profile.initialBmi.formatted;

@@ -49,10 +49,10 @@ class HomeState {
     if (value == 0) return 'Peso inicial mantido';
 
     if (value > 0) {
-      return '${AppWeightFormatter.kg(value)} perdidos desde o início';
+      return AppWeightFormatter.lostSinceStart(value);
     }
 
-    return '${AppWeightFormatter.kg(value.abs())} acima do peso inicial';
+    return AppWeightFormatter.aboveInitial(value);
   }
 
   HomeState copyWith({
