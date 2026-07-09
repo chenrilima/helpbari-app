@@ -143,6 +143,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     BuildContext context,
     int currentGoal,
   ) async {
+    final formKey = GlobalKey<FormState>();
     final controller = TextEditingController(text: currentGoal.toString());
 
     final result = await showDialog<int>(
@@ -150,12 +151,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Meta diária de água'),
-          content: TextField(
-            controller: controller,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Meta em ml',
-              hintText: 'Ex: 2000',
+          content: Form(
+            key: formKey,
+            child: TextFormField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              validator: AppValidators.waterGoal,
+              decoration: const InputDecoration(
+                labelText: 'Meta em ml',
+                hintText: 'Ex: 2000',
+              ),
             ),
           ),
           actions: [
@@ -165,15 +170,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
             TextButton(
               onPressed: () {
-                final validationMessage = AppValidators.waterGoal(
-                  controller.text,
-                );
+                final formState = formKey.currentState;
 
-                if (validationMessage != null) {
-                  HBSnackBar.warning(context, message: validationMessage);
-
-                  return;
-                }
+                if (formState == null || !formState.validate()) return;
 
                 final value = int.parse(controller.text.trim());
 

@@ -107,6 +107,7 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
                   controller: _notesController,
                   label: 'Observações (opcional)',
                   maxLines: 3,
+                  validator: AppValidators.optionalText,
                 ),
 
                 const HBGap.md(),

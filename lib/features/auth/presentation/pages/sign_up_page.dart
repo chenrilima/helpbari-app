@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
-
-import '../viewmodels/auth_providers.dart';
 import '../states/auth_state.dart';
+import '../viewmodels/auth_providers.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
@@ -70,31 +70,13 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   hint: 'seuemail@exemplo.com',
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) return 'Informe seu e-mail.';
-                    if (!text.contains('@')) {
-                      return 'Informe um e-mail válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.email,
                 ),
                 const HBGap.md(),
                 HBPasswordField(
                   controller: _passwordController,
                   textInputAction: TextInputAction.done,
-                  validator: (value) {
-                    final text = value ?? '';
-
-                    if (text.isEmpty) return 'Informe sua senha.';
-                    if (text.length < 6) {
-                      return 'A senha deve ter pelo menos 6 caracteres.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.newPassword,
                   onFieldSubmitted: (_) => _signUp(),
                 ),
                 const HBGap.lg(),

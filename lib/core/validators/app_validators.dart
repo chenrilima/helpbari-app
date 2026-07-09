@@ -10,6 +10,34 @@ abstract final class AppValidators {
     return null;
   }
 
+  static String? optionalText(String? _) {
+    return null;
+  }
+
+  static String? email(String? value) {
+    final text = value?.trim() ?? '';
+
+    if (text.isEmpty) return 'Informe seu e-mail.';
+    if (!text.contains('@')) return 'Informe um e-mail válido.';
+
+    return null;
+  }
+
+  static String? password(String? value) {
+    if ((value ?? '').isEmpty) return 'Informe sua senha.';
+
+    return null;
+  }
+
+  static String? newPassword(String? value) {
+    final text = value ?? '';
+
+    if (text.isEmpty) return 'Informe sua senha.';
+    if (text.length < 6) return 'A senha deve ter pelo menos 6 caracteres.';
+
+    return null;
+  }
+
   static String? name(String? value) {
     final text = value?.trim() ?? '';
 

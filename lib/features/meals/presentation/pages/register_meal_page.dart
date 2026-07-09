@@ -115,6 +115,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
                   controller: _notesController,
                   label: 'Observações',
                   maxLines: 3,
+                  validator: AppValidators.optionalText,
                 ),
                 const HBGap.xl(),
                 HBButton(label: 'Salvar refeição', onPressed: _submit),

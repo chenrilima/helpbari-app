@@ -106,6 +106,7 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
                 HBTextField(
                   controller: _laboratoryController,
                   label: 'Laboratório',
+                  validator: AppValidators.optionalText,
                 ),
 
                 const HBGap.md(),
@@ -118,6 +119,7 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
                   controller: _notesController,
                   label: 'Observações',
                   maxLines: 4,
+                  validator: AppValidators.optionalText,
                 ),
 
                 const HBGap.xl(),

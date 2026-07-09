@@ -127,6 +127,7 @@ class _RegisterAppointmentPageState
                   label: 'Médico',
                   hint: 'Ex: Dr. João',
                   textInputAction: TextInputAction.next,
+                  validator: AppValidators.optionalText,
                 ),
                 const HBGap.md(),
                 HBTextField(
@@ -134,6 +135,7 @@ class _RegisterAppointmentPageState
                   label: 'Local',
                   hint: 'Ex: Hospital ou clínica',
                   textInputAction: TextInputAction.next,
+                  validator: AppValidators.optionalText,
                 ),
                 const HBGap.md(),
                 HBButton(
@@ -150,6 +152,7 @@ class _RegisterAppointmentPageState
                   controller: _notesController,
                   label: 'Observações',
                   maxLines: 3,
+                  validator: AppValidators.optionalText,
                 ),
                 const HBGap.xl(),
                 HBButton(label: 'Salvar consulta', onPressed: _save),
