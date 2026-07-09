@@ -5,6 +5,7 @@ import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/vitamin_view_model_provider.dart';
+import '../widgets/vitamin_adherence_chart_widget.dart';
 import '../widgets/vitamin_tile.dart';
 
 class VitaminsPage extends ConsumerStatefulWidget {
@@ -37,6 +38,8 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
             context,
           ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
         ),
+        const HBGap.xl(),
+        const VitaminAdherenceChartWidget(),
         const HBGap.xl(),
         if (!state.hasVitamins)
           const HBEmptyState(
