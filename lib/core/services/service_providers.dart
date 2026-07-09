@@ -13,3 +13,9 @@ final clockServiceProvider = Provider<ClockService>((ref) {
 final loggerServiceProvider = Provider<LoggerService>((ref) {
   return const AppLoggerService();
 });
+
+final localNotificationServiceProvider = Provider<LocalNotificationService>((
+  ref,
+) {
+  return AppLocalNotificationService(logger: ref.read(loggerServiceProvider));
+});
