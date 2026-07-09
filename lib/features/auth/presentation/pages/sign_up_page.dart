@@ -48,9 +48,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         case AuthAuthenticated():
           context.go(AppRoutes.home);
         case AuthFailure(:final message):
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: HBText(message)));
+          HBSnackBar.error(context, message: message);
         default:
           break;
       }
