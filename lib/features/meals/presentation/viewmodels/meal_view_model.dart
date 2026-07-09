@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/services/clock_service.dart';
 import '../../../../core/services/logger_service.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/services/uuid_service.dart';
@@ -12,6 +13,7 @@ import '../states/meal_state.dart';
 class MealViewModel extends Notifier<MealState> {
   late final UuidService _uuidService;
   late final LoggerService _logger;
+  late final ClockService _clock;
   late final MealUseCases _useCases;
 
   @override
@@ -19,6 +21,7 @@ class MealViewModel extends Notifier<MealState> {
     _useCases = ref.read(mealUseCasesProvider);
     _uuidService = ref.read(uuidServiceProvider);
     _logger = ref.read(loggerServiceProvider);
+    _clock = ref.read(clockServiceProvider);
     return const MealState();
   }
 
@@ -45,7 +48,7 @@ class MealViewModel extends Notifier<MealState> {
       id: _uuidService.generate(),
       name: mealName,
       type: type,
-      mealDate: MealDate(mealDate),
+      mealDate: MealDate(mealDate, clock: _clock),
       notes: notes,
       proteinGrams: proteinGrams,
     );

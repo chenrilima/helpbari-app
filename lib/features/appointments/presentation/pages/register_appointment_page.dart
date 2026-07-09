@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/appointment_view_model_provider.dart';
@@ -23,8 +24,17 @@ class _RegisterAppointmentPageState
   final _locationController = TextEditingController();
   final _notesController = TextEditingController();
 
-  DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
+  late DateTime _selectedDate;
   TimeOfDay _selectedTime = const TimeOfDay(hour: 9, minute: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = ref
+        .read(clockServiceProvider)
+        .now()
+        .add(const Duration(days: 1));
+  }
 
   @override
   void dispose() {
@@ -36,9 +46,11 @@ class _RegisterAppointmentPageState
   }
 
   Future<void> _pickDate() async {
+    final now = ref.read(clockServiceProvider).now();
+
     final date = await showDatePicker(
       context: context,
-      firstDate: DateTime.now(),
+      firstDate: now,
       lastDate: DateTime(2100),
       initialDate: _selectedDate,
     );

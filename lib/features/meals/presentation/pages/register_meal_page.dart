@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -21,7 +22,13 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
   final _notesController = TextEditingController();
 
   MealType _selectedType = MealType.lunch;
-  final DateTime _selectedDate = DateTime.now();
+  late final DateTime _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = ref.read(clockServiceProvider).now();
+  }
 
   @override
   void dispose() {

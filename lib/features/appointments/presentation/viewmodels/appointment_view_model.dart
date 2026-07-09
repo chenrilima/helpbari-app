@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/services/clock_service.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/services/uuid_service.dart';
 import '../../domain/entities/entities.dart';
@@ -10,11 +11,13 @@ import '../states/appointment_state.dart';
 
 class AppointmentViewModel extends Notifier<AppointmentState> {
   late final UuidService _uuidService;
+  late final ClockService _clock;
   late final AppointmentUseCases _useCases;
 
   @override
   AppointmentState build() {
     _uuidService = ref.read(uuidServiceProvider);
+    _clock = ref.read(clockServiceProvider);
     _useCases = ref.read(appointmentUseCasesProvider);
 
     return const AppointmentState();
@@ -38,7 +41,7 @@ class AppointmentViewModel extends Notifier<AppointmentState> {
     final appointment = Appointment(
       id: _uuidService.generate(),
       title: title,
-      date: AppointmentDate(date),
+      date: AppointmentDate(date, clock: _clock),
       doctorName: doctorName,
       location: location,
       notes: notes,

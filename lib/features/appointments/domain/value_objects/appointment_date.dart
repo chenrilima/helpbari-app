@@ -1,9 +1,12 @@
+import '../../../../core/services/clock_service.dart';
+
 class AppointmentDate {
-  const AppointmentDate(this.value);
+  const AppointmentDate(this.value, {this.clock = const AppClockService()});
 
   final DateTime value;
+  final ClockService clock;
 
-  bool get isUpcoming => value.isAfter(DateTime.now());
+  bool get isUpcoming => value.isAfter(clock.now());
 
   String get formatted {
     final day = value.day.toString().padLeft(2, '0');

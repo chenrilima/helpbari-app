@@ -22,7 +22,7 @@ class WaterViewModel extends Notifier<WaterState> {
     _logger = ref.read(loggerServiceProvider);
     _uuidService = ref.read(uuidServiceProvider);
     _clock = ref.read(clockServiceProvider);
-    return const WaterState();
+    return WaterState(clock: _clock);
   }
 
   Future<void> loadHistory() async {
@@ -44,6 +44,7 @@ class WaterViewModel extends Notifier<WaterState> {
       id: _uuidService.generate(),
       amount: amount,
       recordedAt: _clock.now(),
+      clock: _clock,
     );
 
     await _useCases.save(record);
