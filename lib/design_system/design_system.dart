@@ -1,6 +1,9 @@
 export 'components/button/button.dart';
 export 'components/card/card.dart';
 export 'components/feedback/feedback.dart';
+export 'components/feedback/hb_bottom_sheet.dart';
+export 'components/feedback/hb_dialog.dart';
+export 'components/feedback/hb_loading_overlay.dart';
 export 'components/forms/forms.dart';
 export 'components/layout/layout.dart';
 export 'theme/theme.dart';

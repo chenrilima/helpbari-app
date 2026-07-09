@@ -13,6 +13,7 @@ void main(List<String> args) {
   final singular = args[1];
 
   final pascalFeature = _toPascalCase(singular);
+  final camelFeature = _toCamelCase(singular);
   final base = 'lib/features/$feature';
 
   final files = <String, String>{
@@ -21,6 +22,10 @@ void main(List<String> args) {
     '$base/README.md': _featureReadmeTemplate(feature, pascalFeature),
     '$base/CHANGELOG.md': _featureChangelogTemplate(pascalFeature),
     '$base/feature.md': _featureDocTemplate(feature, pascalFeature),
+    '$base/domain/models/${singular}_summary.dart': _summaryModelTemplate(
+      pascalFeature,
+    ),
+    '$base/domain/models/models.dart': "export '${singular}_summary.dart';\n",
 
     '$base/domain/repositories/${singular}_repository.dart':
         _repositoryTemplate(pascalFeature),
@@ -29,7 +34,6 @@ void main(List<String> args) {
 
     '$base/domain/usecases/${singular}_use_cases.dart': _useCasesTemplate(
       pascalFeature,
-      singular,
     ),
     '$base/domain/usecases/use_cases.dart':
         "export '${singular}_use_cases.dart';\n",
@@ -39,19 +43,18 @@ void main(List<String> args) {
 
     '$base/presentation/states/${singular}_state.dart': _stateTemplate(
       pascalFeature,
-      singular,
     ),
     '$base/presentation/providers/${singular}_use_cases_provider.dart':
-        _useCasesProviderTemplate(pascalFeature, feature, singular),
+        _useCasesProviderTemplate(pascalFeature, singular, camelFeature),
     '$base/presentation/providers/${singular}_view_model_provider.dart':
-        _viewModelProviderTemplate(pascalFeature, singular),
+        _viewModelProviderTemplate(pascalFeature, singular, camelFeature),
     '$base/presentation/viewmodels/${singular}_view_model.dart':
-        _viewModelTemplate(pascalFeature, singular),
+        _viewModelTemplate(pascalFeature, singular, camelFeature),
 
     '$base/presentation/pages/${feature}_page.dart': _pageTemplate(
       pascalFeature,
-      feature,
       singular,
+      camelFeature,
     ),
     '$base/presentation/pages/register_${singular}_page.dart':
         _registerPageTemplate(pascalFeature),
@@ -95,17 +98,60 @@ String _toPascalCase(String value) {
       .join();
 }
 
+String _toCamelCase(String value) {
+  final pascalCase = _toPascalCase(value);
+
+  return pascalCase[0].toLowerCase() + pascalCase.substring(1);
+}
+
 String _entityTemplate(String name) {
   return '''
 import '../../../../core/domain/entity.dart';
+import '../value_objects/value_objects.dart';
 
 class $name extends Entity {
   const $name({
     required this.id,
+    required this.name,
+    required this.createdAt,
   });
 
   @override
   final String id;
+
+  final ${name}Name name;
+
+  final ${name}Date createdAt;
+
+  String get formattedName => name.value;
+
+  String get formattedDate => createdAt.formatted;
+}
+''';
+}
+
+String _summaryModelTemplate(String name) {
+  return '''
+import '../entities/entities.dart';
+
+class ${name}Summary {
+  const ${name}Summary({
+    required this.latest$name,
+    required this.totalCount,
+    required this.hasItems,
+  });
+
+  final $name? latest$name;
+  final int totalCount;
+  final bool hasItems;
+
+  String get formattedTotalCount {
+    if (totalCount == 0) return 'Nenhum registro';
+
+    if (totalCount == 1) return '1 registro';
+
+    return '\$totalCount registros';
+  }
 }
 ''';
 }
@@ -161,9 +207,10 @@ class Fake${name}Repository implements ${name}Repository {
 ''';
 }
 
-String _useCasesTemplate(String name, String singular) {
+String _useCasesTemplate(String name) {
   return '''
 import '../entities/entities.dart';
+import '../models/models.dart';
 import '../repositories/repositories.dart';
 
 class ${name}UseCases {
@@ -186,11 +233,21 @@ class ${name}UseCases {
   Future<void> delete(String id) {
     return _repository.delete(id);
   }
+
+  Future<${name}Summary> getSummary() async {
+    final items = await _repository.getAll();
+
+    return ${name}Summary(
+      latest$name: items.isEmpty ? null : items.first,
+      totalCount: items.length,
+      hasItems: items.isNotEmpty,
+    );
+  }
 }
 ''';
 }
 
-String _stateTemplate(String name, String singular) {
+String _stateTemplate(String name) {
   return '''
 import '../../domain/entities/entities.dart';
 
@@ -220,7 +277,11 @@ class ${name}State {
 ''';
 }
 
-String _useCasesProviderTemplate(String name, String feature, String singular) {
+String _useCasesProviderTemplate(
+  String name,
+  String singular,
+  String camelName,
+) {
   return '''
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -228,46 +289,54 @@ import '../../data/repositories/fake_${singular}_repository.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../domain/usecases/use_cases.dart';
 
-final ${singular}RepositoryProvider = Provider<${name}Repository>((ref) {
+final ${camelName}RepositoryProvider = Provider<${name}Repository>((ref) {
   return Fake${name}Repository();
 });
 
-final ${singular}UseCasesProvider = Provider<${name}UseCases>((ref) {
+final ${camelName}UseCasesProvider = Provider<${name}UseCases>((ref) {
   return ${name}UseCases(
-    ref.read(${singular}RepositoryProvider),
+    ref.read(${camelName}RepositoryProvider),
   );
 });
 ''';
 }
 
-String _viewModelProviderTemplate(String name, String singular) {
+String _viewModelProviderTemplate(
+  String name,
+  String singular,
+  String camelName,
+) {
   return '''
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../states/${singular}_state.dart';
 import '../viewmodels/${singular}_view_model.dart';
 
-final ${singular}ViewModelProvider =
+final ${camelName}ViewModelProvider =
     NotifierProvider<${name}ViewModel, ${name}State>(
   ${name}ViewModel.new,
 );
 ''';
 }
 
-String _viewModelTemplate(String name, String singular) {
+String _viewModelTemplate(String name, String singular, String camelName) {
   return '''
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/services/logger_service.dart';
+import '../../../../core/services/service_providers.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../providers/${singular}_use_cases_provider.dart';
 import '../states/${singular}_state.dart';
 
 class ${name}ViewModel extends Notifier<${name}State> {
   late final ${name}UseCases _useCases;
+  late final LoggerService _logger;
 
   @override
   ${name}State build() {
-    _useCases = ref.read(${singular}UseCasesProvider);
+    _useCases = ref.read(${camelName}UseCasesProvider);
+    _logger = ref.read(loggerServiceProvider);
 
     return const ${name}State();
   }
@@ -275,24 +344,35 @@ class ${name}ViewModel extends Notifier<${name}State> {
   Future<void> loadItems() async {
     state = state.copyWith(isLoading: true);
 
-    final items = await _useCases.getAll();
+    try {
+      final items = await _useCases.getAll();
 
-    state = state.copyWith(
-      items: items,
-      isLoading: false,
-    );
+      state = state.copyWith(
+        items: items,
+        isLoading: false,
+      );
+    } catch (error, stackTrace) {
+      _logger.error(
+        'Erro ao carregar $singular',
+        error: error,
+        stackTrace: stackTrace,
+      );
+
+      state = state.copyWith(isLoading: false);
+    }
   }
 }
 ''';
 }
 
-String _pageTemplate(String name, String feature, String singular) {
+String _pageTemplate(String name, String singular, String camelName) {
   return '''
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../design_system/design_system.dart';
 import '../providers/${singular}_view_model_provider.dart';
+import '../widgets/${singular}_tile.dart';
 
 class ${name}sPage extends ConsumerStatefulWidget {
   const ${name}sPage({super.key});
@@ -307,21 +387,20 @@ class _${name}sPageState extends ConsumerState<${name}sPage> {
     super.initState();
 
     Future.microtask(() {
-      ref.read(${singular}ViewModelProvider.notifier).loadItems();
+      ref.read(${camelName}ViewModelProvider.notifier).loadItems();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(${singular}ViewModelProvider);
+    final state = ref.watch(${camelName}ViewModelProvider);
 
     return HBPage(
+      appBar: const HBAppBar(title: '$name'),
       children: [
-        HBText(
-          '$name',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        const HBGap.xl(),
+        if (state.isLoading)
+          const HBLoading(message: 'Carregando...')
+        else
         if (!state.hasItems)
           const HBEmptyState(
             title: 'Nenhum item encontrado',
@@ -332,13 +411,11 @@ class _${name}sPageState extends ConsumerState<${name}sPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: state.items.length,
-            separatorBuilder: (_, __) => const HBGap.md(),
+            separatorBuilder: (context, index) => const HBGap.md(),
             itemBuilder: (_, index) {
               final item = state.items[index];
 
-              return HBCard(
-                child: HBText(item.id),
-              );
+              return ${name}Tile(item: item);
             },
           ),
       ],
@@ -352,18 +429,59 @@ String _registerPageTemplate(String name) {
   return '''
 import 'package:flutter/material.dart';
 
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 
-class Register${name}Page extends StatelessWidget {
+class Register${name}Page extends StatefulWidget {
   const Register${name}Page({super.key});
+
+  @override
+  State<Register${name}Page> createState() => _Register${name}PageState();
+}
+
+class _Register${name}PageState extends State<Register${name}Page> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
+
+    HBSnackBar.info(
+      context,
+      message: 'Cadastro será implementado conforme a regra da feature.',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return HBPage(
+      appBar: const HBAppBar(title: 'Cadastrar $name'),
       children: [
-        HBText(
-          'Cadastrar $name',
-          style: Theme.of(context).textTheme.headlineMedium,
+        HBCard(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                HBTextField(
+                  controller: _nameController,
+                  label: 'Nome',
+                  textInputAction: TextInputAction.done,
+                  validator: AppValidators.name,
+                  onFieldSubmitted: (_) => _submit(),
+                ),
+                const HBGap.xl(),
+                HBButton(label: 'Salvar', onPressed: _submit),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -390,7 +508,22 @@ class ${name}Tile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HBCard(
-      child: HBText(item.id),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          HBText(
+            item.formattedName,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const HBGap.xs(),
+          HBText(
+            item.formattedDate,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+          ),
+        ],
+      ),
     );
   }
 }

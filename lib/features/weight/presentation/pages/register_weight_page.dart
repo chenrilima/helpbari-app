@@ -48,7 +48,9 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     final form = CreateWeightForm(
       weight: double.parse(_weightController.text.trim().replaceAll(',', '.')),

@@ -22,16 +22,21 @@ class HBCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = Container(
-      width: double.infinity,
-      padding: padding,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: borderColor),
-        boxShadow: AppShadows.soft,
+    final content = ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: onTap == null ? 0 : AppSizes.buttonMinTapTarget,
       ),
-      child: child,
+      child: Container(
+        width: double.infinity,
+        padding: padding,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: borderColor),
+          boxShadow: AppShadows.soft,
+        ),
+        child: child,
+      ),
     );
 
     if (onTap == null) {
@@ -40,6 +45,7 @@ class HBCard extends StatelessWidget {
 
     return Semantics(
       button: true,
+      enabled: true,
       label: semanticLabel,
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.lg),

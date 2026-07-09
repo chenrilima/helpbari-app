@@ -46,7 +46,9 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
   }
 
   Future<void> _save() async {
-    if (!_formKey.currentState!.validate()) {
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) {
       return;
     }
 

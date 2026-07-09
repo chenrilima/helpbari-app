@@ -1,3 +1,4 @@
+import '../../../../core/formatters/app_number_formatter.dart';
 import 'height.dart';
 import 'weight.dart';
 
@@ -33,7 +34,7 @@ class Bmi {
   }
 
   String get formatted {
-    return value.toStringAsFixed(1);
+    return AppNumberFormatter.decimal(value);
   }
 
   @override

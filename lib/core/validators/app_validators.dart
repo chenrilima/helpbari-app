@@ -69,6 +69,16 @@ abstract final class AppValidators {
     return null;
   }
 
+  static String? waterGoal(String? value) {
+    final waterGoal = int.tryParse(value?.trim() ?? '');
+
+    if (waterGoal == null || waterGoal < 500 || waterGoal > 6000) {
+      return 'Informe uma meta entre 500 ml e 6000 ml.';
+    }
+
+    return null;
+  }
+
   static String? title(String? value) {
     final text = value?.trim() ?? '';
 

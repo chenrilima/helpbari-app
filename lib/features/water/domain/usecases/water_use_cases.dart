@@ -1,10 +1,12 @@
+import '../../../../core/services/clock_service.dart';
 import '../entities/entities.dart';
 import '../repositories/water_repository.dart';
 
 class WaterUseCases {
-  const WaterUseCases(this._repository);
+  const WaterUseCases(this._repository, this._clock);
 
   final WaterRepository _repository;
+  final ClockService _clock;
 
   Future<void> save(WaterRecord record) {
     return _repository.save(record);
@@ -17,7 +19,7 @@ class WaterUseCases {
   Future<int> getTodayTotalInMl() async {
     final history = await _repository.getHistory();
 
-    final today = DateTime.now();
+    final today = _clock.now();
 
     return history
         .where(

@@ -40,7 +40,9 @@ class _RegisterVitaminPageState extends ConsumerState<RegisterVitaminPage> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     await ref
         .read(vitaminViewModelProvider.notifier)

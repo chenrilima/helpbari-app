@@ -46,7 +46,9 @@ class HBTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
-          prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
+          prefixIcon: prefixIcon == null
+              ? null
+              : ExcludeSemantics(child: Icon(prefixIcon)),
           suffixIcon: suffixIcon,
         ),
       ),

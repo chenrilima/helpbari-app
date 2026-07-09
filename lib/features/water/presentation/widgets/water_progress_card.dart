@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/formatters/app_number_formatter.dart';
 import '../../../../core/formatters/app_water_formatter.dart';
 import '../../../../design_system/design_system.dart';
 
@@ -43,7 +44,7 @@ class WaterProgressCard extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: HBText(
-              '${(progress * 100).round()}%',
+              AppNumberFormatter.percentage(progress * 100),
               style: Theme.of(
                 context,
               ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),

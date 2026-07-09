@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/formatters/app_water_formatter.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/setting_view_model_provider.dart';
 
@@ -49,7 +51,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(AppIcons.water),
                 title: const HBText('Meta diária de água'),
-                subtitle: HBText('${settings.dailyWaterGoalMl} ml por dia'),
+                subtitle: HBText(
+                  '${AppWaterFormatter.ml(settings.dailyWaterGoalMl)} por dia',
+                ),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   _showWaterGoalDialog(context, settings.dailyWaterGoalMl);
@@ -161,16 +165,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
             TextButton(
               onPressed: () {
-                final value = int.tryParse(controller.text.trim());
+                final validationMessage = AppValidators.waterGoal(
+                  controller.text,
+                );
 
-                if (value == null || value < 500 || value > 6000) {
-                  HBSnackBar.warning(
-                    context,
-                    message: 'Informe uma meta entre 500 ml e 6000 ml.',
-                  );
+                if (validationMessage != null) {
+                  HBSnackBar.warning(context, message: validationMessage);
 
                   return;
                 }
+
+                final value = int.parse(controller.text.trim());
 
                 Navigator.of(context).pop(value);
               },

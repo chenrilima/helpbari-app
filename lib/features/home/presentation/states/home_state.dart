@@ -1,3 +1,4 @@
+import '../../../../core/formatters/app_weight_formatter.dart';
 import '../../../appointments/domain/entities/entities.dart';
 import '../../../exams/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
@@ -48,10 +49,10 @@ class HomeState {
     if (value == 0) return 'Peso inicial mantido';
 
     if (value > 0) {
-      return '${value.toStringAsFixed(1)} kg perdidos desde o início';
+      return '${AppWeightFormatter.kg(value)} perdidos desde o início';
     }
 
-    return '${value.abs().toStringAsFixed(1)} kg acima do peso inicial';
+    return '${AppWeightFormatter.kg(value.abs())} acima do peso inicial';
   }
 
   HomeState copyWith({

@@ -43,7 +43,9 @@ class _RegisterMedicationPageState
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     await ref
         .read(medicationViewModelProvider.notifier)

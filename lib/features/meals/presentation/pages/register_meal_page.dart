@@ -32,9 +32,12 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     final proteinText = _proteinController.text.trim();
+    final proteinGrams = proteinText.isEmpty ? null : int.tryParse(proteinText);
 
     await ref
         .read(mealViewModelProvider.notifier)
@@ -42,7 +45,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
           name: _nameController.text.trim(),
           type: _selectedType,
           mealDate: _selectedDate,
-          proteinGrams: proteinText.isEmpty ? null : int.parse(proteinText),
+          proteinGrams: proteinGrams,
           notes: _notesController.text.trim(),
         );
 

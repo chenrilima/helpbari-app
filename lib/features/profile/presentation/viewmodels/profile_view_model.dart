@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/services/clock_service.dart';
+import '../../../../core/services/logger_service.dart';
+import '../../../../core/services/service_providers.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -9,11 +12,14 @@ import '../states/profile_state.dart';
 
 class ProfileViewModel extends Notifier<ProfileState> {
   late final ProfileUseCases _useCases;
+  late final LoggerService _logger;
+  late final ClockService _clock;
 
   @override
   ProfileState build() {
     _useCases = ref.read(profileUseCasesProvider);
-
+    _logger = ref.read(loggerServiceProvider);
+    _clock = ref.read(clockServiceProvider);
     return const ProfileState();
   }
 
@@ -57,14 +63,16 @@ class ProfileViewModel extends Notifier<ProfileState> {
         targetWeight: targetWeight,
         surgeryDate: AppDate(form.surgeryDate),
         surgeryType: form.surgeryType,
-        createdAt: AppDate(DateTime.now()),
+        createdAt: AppDate(_clock.now()),
       );
 
       await _useCases.saveProfile(profile);
+      _logger.info('Perfil Salvo.');
 
       state = state.copyWith(profile: profile, isLoading: false);
     } catch (error) {
       state = state.copyWith(isLoading: false, errorMessage: error.toString());
+      _logger.error('Não salvou o perfil');
     }
   }
 }

@@ -39,7 +39,9 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     if (_birthDate == null || _surgeryDate == null) {
       HBSnackBar.warning(
@@ -166,7 +168,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                     decimal: true,
                   ),
                   textInputAction: TextInputAction.done,
-                  validator: AppValidators.weight,
+                  validator: AppValidators.optionalWeight,
                   onFieldSubmitted: (_) => _submit(),
                 ),
                 const HBGap.md(),

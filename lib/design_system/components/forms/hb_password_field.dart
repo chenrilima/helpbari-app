@@ -8,6 +8,7 @@ class HBPasswordField extends StatefulWidget {
     this.textInputAction,
     this.validator,
     this.onFieldSubmitted,
+    this.semanticLabel,
   });
 
   final TextEditingController controller;
@@ -15,6 +16,7 @@ class HBPasswordField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onFieldSubmitted;
+  final String? semanticLabel;
 
   @override
   State<HBPasswordField> createState() => _HBPasswordFieldState();
@@ -29,20 +31,27 @@ class _HBPasswordFieldState extends State<HBPasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      obscureText: _obscureText,
-      textInputAction: widget.textInputAction,
-      validator: widget.validator,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      decoration: InputDecoration(
-        labelText: widget.label,
-        suffixIcon: IconButton(
-          onPressed: _toggleVisibility,
-          icon: Icon(
-            _obscureText
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
+    final visibilityLabel = _obscureText ? 'Mostrar senha' : 'Ocultar senha';
+
+    return Semantics(
+      textField: true,
+      label: widget.semanticLabel ?? widget.label,
+      child: TextFormField(
+        controller: widget.controller,
+        obscureText: _obscureText,
+        textInputAction: widget.textInputAction,
+        validator: widget.validator,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        decoration: InputDecoration(
+          labelText: widget.label,
+          suffixIcon: IconButton(
+            tooltip: visibilityLabel,
+            onPressed: _toggleVisibility,
+            icon: Icon(
+              _obscureText
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+            ),
           ),
         ),
       ),

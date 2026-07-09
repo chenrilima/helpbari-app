@@ -1,3 +1,5 @@
+import '../../../../core/formatters/app_weight_formatter.dart';
+
 class WeightValue {
   const WeightValue._(this.value);
 
@@ -13,7 +15,7 @@ class WeightValue {
     return WeightValue._(value);
   }
 
-  String get formatted => '${value.toStringAsFixed(1)} kg';
+  String get formatted => AppWeightFormatter.kg(value);
 
   @override
   String toString() => formatted;
