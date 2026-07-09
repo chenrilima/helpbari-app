@@ -5,6 +5,7 @@ import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/water_view_model_provider.dart';
+import '../widgets/water_chart_widget.dart';
 import '../widgets/water_progress_card.dart';
 import '../widgets/water_summary_card.dart';
 import '../widgets/water_tile.dart';
@@ -48,6 +49,8 @@ class _WaterPageState extends ConsumerState<WaterPage> {
         WaterSummaryCard(totalToday: state.formattedToday),
         const HBGap.lg(),
         WaterProgressCard(currentMl: state.totalTodayInMl),
+        const HBGap.xl(),
+        const WaterChartWidget(),
         const HBGap.xl(),
         HBText('Histórico', style: Theme.of(context).textTheme.titleLarge),
         const HBGap.md(),

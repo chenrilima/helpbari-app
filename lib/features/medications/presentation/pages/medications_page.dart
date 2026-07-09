@@ -5,6 +5,7 @@ import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/medication_view_model_provider.dart';
+import '../widgets/medication_adherence_chart_widget.dart';
 import '../widgets/medication_tile.dart';
 
 class MedicationsPage extends ConsumerStatefulWidget {
@@ -36,6 +37,8 @@ class _MedicationsPageState extends ConsumerState<MedicationsPage> {
         subtitle: 'Acompanhe sua rotina diária',
       ),
       children: [
+        const MedicationAdherenceChartWidget(),
+        const HBGap.xl(),
         if (!state.hasMedications)
           const HBEmptyState(
             title: 'Nenhum medicamento cadastrado',

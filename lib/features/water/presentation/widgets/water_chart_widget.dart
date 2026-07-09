@@ -4,30 +4,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../charts/charts.dart';
 
-class WeightChartWidget extends ConsumerStatefulWidget {
-  const WeightChartWidget({super.key});
+class WaterChartWidget extends ConsumerStatefulWidget {
+  const WaterChartWidget({super.key});
 
   @override
-  ConsumerState<WeightChartWidget> createState() => _WeightChartWidgetState();
+  ConsumerState<WaterChartWidget> createState() => _WaterChartWidgetState();
 }
 
-class _WeightChartWidgetState extends ConsumerState<WeightChartWidget> {
+class _WaterChartWidgetState extends ConsumerState<WaterChartWidget> {
   ChartPeriod _period = ChartPeriod.sevenDays;
 
   @override
   Widget build(BuildContext context) {
-    final series = ref.watch(weightChartSeriesProvider(_period));
+    final series = ref.watch(waterChartSeriesProvider(_period));
 
     return HBAsyncChartCard(
-      title: 'Evolução do peso',
-      subtitle: 'Registros do período selecionado',
+      title: 'Consumo de água',
+      subtitle: 'Total diário no período selecionado',
       period: _period,
       onPeriodChanged: (value) {
         setState(() => _period = value);
       },
       series: series,
-      color: AppColors.primary,
-      emptyIcon: AppIcons.weight,
+      color: AppColors.info,
+      emptyIcon: AppIcons.water,
     );
   }
 }

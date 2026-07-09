@@ -5,6 +5,7 @@ import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/progress_view_model_provider.dart';
+import '../widgets/health_score_chart_widget.dart';
 import '../widgets/progress_metric_card.dart';
 
 class ProgressPage extends ConsumerStatefulWidget {
@@ -98,6 +99,8 @@ class _ProgressPageState extends ConsumerState<ProgressPage> {
           value: '${summary.profile.daysSinceSurgery} dias',
           icon: Icons.calendar_month_outlined,
         ),
+        const HBGap.xl(),
+        const HealthScoreChartWidget(),
       ],
     );
   }
