@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/services/services.dart';
-import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
+import '../../application/appointment_reminder_service.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -12,14 +12,14 @@ import '../states/appointment_state.dart';
 class AppointmentViewModel extends Notifier<AppointmentState> {
   late final UuidService _uuidService;
   late final ClockService _clock;
-  late final LocalNotificationService _notifications;
+  late final AppointmentReminderService _reminders;
   late final AppointmentUseCases _useCases;
 
   @override
   AppointmentState build() {
     _uuidService = ref.read(uuidServiceProvider);
     _clock = ref.read(clockServiceProvider);
-    _notifications = ref.read(localNotificationServiceProvider);
+    _reminders = ref.read(appointmentReminderServiceProvider);
     _useCases = ref.read(appointmentUseCasesProvider);
 
     return const AppointmentState();
@@ -50,44 +50,22 @@ class AppointmentViewModel extends Notifier<AppointmentState> {
     );
 
     await _useCases.save(appointment);
-    await _scheduleReminderIfEnabled(appointment);
+    await _reminders.scheduleIfEnabled(appointment);
 
     await loadAppointments();
   }
 
   Future<void> complete(String id) async {
     await _useCases.markAsCompleted(id);
-    await _notifications.cancelPayload(
-      LocalNotificationPayload(
-        source: NotificationSource.appointment,
-        entityId: id,
-      ),
-    );
+    await _reminders.cancel(id);
 
     await loadAppointments();
   }
 
   Future<void> cancel(String id) async {
     await _useCases.cancel(id);
-    await _notifications.cancelPayload(
-      LocalNotificationPayload(
-        source: NotificationSource.appointment,
-        entityId: id,
-      ),
-    );
+    await _reminders.cancel(id);
 
     await loadAppointments();
-  }
-
-  Future<void> _scheduleReminderIfEnabled(Appointment appointment) async {
-    final settings = await ref.read(settingsUseCasesProvider).getSettings();
-
-    if (!settings.appointmentRemindersEnabled || !appointment.isUpcoming) {
-      return;
-    }
-
-    await _notifications.scheduleOnce(
-      NotificationSchedules.appointment(appointment),
-    );
   }
 }

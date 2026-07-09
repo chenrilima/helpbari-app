@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../design_system/design_system.dart';
+import '../../../auth/presentation/states/auth_state.dart';
+import '../../../auth/presentation/viewmodels/auth_providers.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/appointment_overview_section.dart';
 import '../widgets/exam_overview_section.dart';
@@ -34,9 +36,21 @@ class _HomePageState extends ConsumerState<HomePage> {
     await ref.read(homeViewModelProvider.notifier).loadHome();
   }
 
+  Future<void> _signOut() async {
+    await ref.read(authViewModelProvider.notifier).signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(homeViewModelProvider);
+    final authState = ref.watch(authViewModelProvider);
+    final isSigningOut = authState is AuthLoading;
+
+    ref.listen<AuthState>(authViewModelProvider, (previous, next) {
+      if (next case AuthFailure(:final message)) {
+        HBSnackBar.error(context, message: message);
+      }
+    });
 
     if (state.isLoading) {
       return const HBPage(
@@ -44,66 +58,83 @@ class _HomePageState extends ConsumerState<HomePage> {
       );
     }
 
-    return HBPage(
-      children: [
-        HomeHeader(userName: state.profile?.name ?? 'Olá'),
-        ProgressBanner(title: state.bannerTitle, message: state.bannerMessage),
-        if (state.dailySummary != null) ...[
-          const HBGap.xl(),
-          HealthScoreOverviewSection(
-            healthScore: state.dailySummary!.healthScore,
+    return HBLoadingOverlay(
+      isLoading: isSigningOut,
+      message: 'Saindo...',
+      child: HBPage(
+        appBar: HBAppBar(
+          title: 'HelpBari',
+          actions: [
+            IconButton(
+              tooltip: 'Sair',
+              onPressed: isSigningOut ? null : _signOut,
+              icon: const Icon(Icons.logout_rounded),
+            ),
+          ],
+        ),
+        children: [
+          HomeHeader(userName: state.profile?.name ?? 'Olá'),
+          ProgressBanner(
+            title: state.bannerTitle,
+            message: state.bannerMessage,
           ),
+          if (state.dailySummary != null) ...[
+            const HBGap.xl(),
+            HealthScoreOverviewSection(
+              healthScore: state.dailySummary!.healthScore,
+            ),
+          ],
+          const HBGap.xl(),
+          WeightOverviewSection(
+            latestRecord: state.latestWeightRecord,
+            hasRecords: state.hasWeightRecords,
+            progressMessage: state.formattedWeightLost,
+            onRefresh: _loadHome,
+          ),
+          const HBGap.xl(),
+          WaterOverviewSection(
+            totalTodayInMl: state.totalWaterTodayInMl,
+            goalMl: state.dailySummary?.waterGoalMl ?? 2000,
+            subtitle: state.waterMessage,
+            onRefresh: _loadHome,
+          ),
+          const HBGap.xl(),
+          VitaminsOverviewSection(
+            pendingCount: state.pendingVitaminsCount,
+            subtitle: state.vitaminsMessage,
+            onRefresh: _loadHome,
+          ),
+
+          const HBGap.xl(),
+          MedicationOverviewSection(
+            pendingCount: state.pendingMedicationsCount,
+            subtitle: state.medicationsMessage,
+            onRefresh: _loadHome,
+          ),
+          const HBGap.xl(),
+          MealOverviewSection(
+            todayCount: state.todayMealsCount,
+            totalProteinToday: state.totalProteinToday,
+            subtitle: state.mealsMessage,
+            onRefresh: _loadHome,
+          ),
+          const HBGap.xl(),
+          AppointmentOverviewSection(
+            nextAppointment: state.nextAppointment,
+            subtitle: state.appointmentMessage,
+            onRefresh: _loadHome,
+          ),
+          const HBGap.xl(),
+          ExamOverviewSection(
+            latestExam: state.latestExam,
+            subtitle: state.examMessage,
+            onRefresh: _loadHome,
+          ),
+
+          const HBGap.xl(),
+          QuickActionsSection(onRefresh: _loadHome),
         ],
-        const HBGap.xl(),
-        WeightOverviewSection(
-          latestRecord: state.latestWeightRecord,
-          hasRecords: state.hasWeightRecords,
-          progressMessage: state.formattedWeightLost,
-          onRefresh: _loadHome,
-        ),
-        const HBGap.xl(),
-        WaterOverviewSection(
-          totalTodayInMl: state.totalWaterTodayInMl,
-          goalMl: state.dailySummary?.waterGoalMl ?? 2000,
-          subtitle: state.waterMessage,
-          onRefresh: _loadHome,
-        ),
-        const HBGap.xl(),
-        VitaminsOverviewSection(
-          pendingCount: state.pendingVitaminsCount,
-          subtitle: state.vitaminsMessage,
-          onRefresh: _loadHome,
-        ),
-
-        const HBGap.xl(),
-        MedicationOverviewSection(
-          pendingCount: state.pendingMedicationsCount,
-          subtitle: state.medicationsMessage,
-          onRefresh: _loadHome,
-        ),
-        const HBGap.xl(),
-        MealOverviewSection(
-          todayCount: state.todayMealsCount,
-          totalProteinToday: state.totalProteinToday,
-          subtitle: state.mealsMessage,
-          onRefresh: _loadHome,
-        ),
-        const HBGap.xl(),
-        AppointmentOverviewSection(
-          nextAppointment: state.nextAppointment,
-          subtitle: state.appointmentMessage,
-          onRefresh: _loadHome,
-        ),
-        const HBGap.xl(),
-        ExamOverviewSection(
-          latestExam: state.latestExam,
-          subtitle: state.examMessage,
-          onRefresh: _loadHome,
-        ),
-
-        const HBGap.xl(),
-        QuickActionsSection(onRefresh: _loadHome),
-      ],
+      ),
     );
   }
 }

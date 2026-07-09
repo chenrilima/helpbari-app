@@ -1,62 +1,44 @@
-import '../../../features/appointments/domain/entities/entities.dart';
-import '../../../features/medications/domain/entities/entities.dart';
-import '../../../features/vitamins/domain/entities/entities.dart';
-import 'app_local_notification_service.dart';
 import 'local_notification_payload.dart';
 import 'local_notification_schedule.dart';
 
 abstract final class NotificationSchedules {
-  static LocalNotificationSchedule vitamin(Vitamin vitamin) {
-    final payload = LocalNotificationPayload(
-      source: NotificationSource.vitamin,
-      entityId: vitamin.id,
-    );
-
-    return LocalNotificationSchedule(
-      key: notificationKey(payload.source, payload.entityId),
-      title: 'Hora da vitamina',
-      body: 'Registre ${vitamin.formattedName}.',
-      scheduledAt: _todayAt(
-        hour: vitamin.scheduleTime.hour,
-        minute: vitamin.scheduleTime.minute,
-      ),
+  static LocalNotificationSchedule dailyReminder({
+    required NotificationSource source,
+    required String entityId,
+    required String title,
+    required String body,
+    required int hour,
+    required int minute,
+  }) {
+    return reminder(
+      source: source,
+      entityId: entityId,
+      title: title,
+      body: body,
+      scheduledAt: _todayAt(hour: hour, minute: minute),
       recurrence: LocalNotificationRecurrence.daily,
-      payload: payload,
     );
   }
 
-  static LocalNotificationSchedule medication(Medication medication) {
+  static LocalNotificationSchedule reminder({
+    required NotificationSource source,
+    required String entityId,
+    required String title,
+    required String body,
+    required DateTime scheduledAt,
+    LocalNotificationRecurrence recurrence = LocalNotificationRecurrence.none,
+  }) {
     final payload = LocalNotificationPayload(
-      source: NotificationSource.medication,
-      entityId: medication.id,
+      source: source,
+      entityId: entityId,
     );
 
     return LocalNotificationSchedule(
       key: notificationKey(payload.source, payload.entityId),
-      title: 'Hora do medicamento',
-      body: 'Registre ${medication.formattedName}.',
-      scheduledAt: _todayAt(
-        hour: medication.scheduleTime.hour,
-        minute: medication.scheduleTime.minute,
-      ),
-      recurrence: LocalNotificationRecurrence.daily,
-      payload: payload,
-    );
-  }
-
-  static LocalNotificationSchedule appointment(Appointment appointment) {
-    final payload = LocalNotificationPayload(
-      source: NotificationSource.appointment,
-      entityId: appointment.id,
-    );
-
-    return LocalNotificationSchedule(
-      key: notificationKey(payload.source, payload.entityId),
-      title: 'Consulta agendada',
-      body: appointment.location == null
-          ? appointment.title
-          : '${appointment.title} em ${appointment.location}',
-      scheduledAt: appointment.date.value,
+      title: title,
+      body: body,
+      scheduledAt: scheduledAt,
+      recurrence: recurrence,
       payload: payload,
     );
   }
@@ -66,4 +48,8 @@ abstract final class NotificationSchedules {
 
     return DateTime(now.year, now.month, now.day, hour, minute);
   }
+}
+
+String notificationKey(NotificationSource source, String entityId) {
+  return '${source.name}:$entityId';
 }

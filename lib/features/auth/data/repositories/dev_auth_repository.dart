@@ -28,6 +28,9 @@ class DevAuthRepository implements AuthRepository {
   }
 
   @override
+  Stream<bool> get passwordRecoveryChanges => const Stream.empty();
+
+  @override
   Future<Result<AuthUser>> signInWithEmailAndPassword({
     required String email,
     required String password,
@@ -41,6 +44,16 @@ class DevAuthRepository implements AuthRepository {
     required String password,
   }) async {
     return _authenticate(email);
+  }
+
+  @override
+  Future<Result<void>> resetPasswordForEmail({required String email}) async {
+    return const Success(null);
+  }
+
+  @override
+  Future<Result<AuthUser>> updatePassword({required String password}) async {
+    return Success(_currentUser ?? const AuthUser(id: 'dev-user', email: null));
   }
 
   @override

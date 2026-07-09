@@ -22,6 +22,22 @@ final class AuthUnauthenticated extends AuthState {
   const AuthUnauthenticated();
 }
 
+final class AuthPasswordRecoverySent extends AuthState {
+  const AuthPasswordRecoverySent(this.email);
+
+  final String email;
+}
+
+final class AuthPasswordRecoveryReady extends AuthState {
+  const AuthPasswordRecoveryReady();
+}
+
+final class AuthPasswordUpdated extends AuthState {
+  const AuthPasswordUpdated(this.user);
+
+  final AuthUser user;
+}
+
 final class AuthFailure extends AuthState {
   const AuthFailure(this.message);
 

@@ -8,6 +8,8 @@ abstract interface class AuthRepository {
 
   Stream<AuthUser?> get authStateChanges;
 
+  Stream<bool> get passwordRecoveryChanges;
+
   Future<Result<AuthUser>> signInWithEmailAndPassword({
     required String email,
     required String password,
@@ -17,6 +19,10 @@ abstract interface class AuthRepository {
     required String email,
     required String password,
   });
+
+  Future<Result<void>> resetPasswordForEmail({required String email});
+
+  Future<Result<AuthUser>> updatePassword({required String password});
 
   Future<Result<void>> signInWithGoogle();
 

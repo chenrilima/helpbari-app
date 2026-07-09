@@ -58,50 +58,63 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       }
     });
 
-    return HBPage(
-      header: const _LoginHeader(),
-      children: [
-        HBCard(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                HBTextField(
-                  controller: _emailController,
-                  label: 'E-mail',
-                  hint: 'seuemail@exemplo.com',
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  validator: AppValidators.email,
-                ),
-                const HBGap.md(),
-                HBPasswordField(
-                  controller: _passwordController,
-                  textInputAction: TextInputAction.done,
-                  validator: AppValidators.password,
-                  onFieldSubmitted: (_) => _signIn(),
-                ),
-                const HBGap.lg(),
-                HBButton(
-                  label: 'Entrar',
-                  isLoading: isLoading,
-                  onPressed: _signIn,
-                ),
-                const HBGap.md(),
-                TextButton(
-                  onPressed: () => context.go(AppRoutes.signUp),
-                  child: const Text('Ainda não tenho conta'),
-                ),
-                const HBGap.sm(),
-                TextButton(
-                  onPressed: isLoading ? null : _signInWithGoogle,
-                  child: const Text('Entrar com Google'),
-                ),
-              ],
+    return HBLoadingOverlay(
+      isLoading: isLoading,
+      message: 'Entrando...',
+      child: HBPage(
+        header: const _LoginHeader(),
+        children: [
+          HBCard(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  HBTextField(
+                    controller: _emailController,
+                    label: 'E-mail',
+                    hint: 'seuemail@exemplo.com',
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    validator: AppValidators.email,
+                  ),
+                  const HBGap.md(),
+                  HBPasswordField(
+                    controller: _passwordController,
+                    textInputAction: TextInputAction.done,
+                    validator: AppValidators.password,
+                    onFieldSubmitted: (_) => _signIn(),
+                  ),
+                  const HBGap.lg(),
+                  HBButton(
+                    label: 'Entrar',
+                    isLoading: isLoading,
+                    onPressed: _signIn,
+                  ),
+                  const HBGap.md(),
+                  TextButton(
+                    onPressed: isLoading
+                        ? null
+                        : () => context.go(AppRoutes.resetPassword),
+                    child: const Text('Esqueci minha senha'),
+                  ),
+                  const HBGap.sm(),
+                  TextButton(
+                    onPressed: isLoading
+                        ? null
+                        : () => context.go(AppRoutes.signUp),
+                    child: const Text('Ainda não tenho conta'),
+                  ),
+                  const HBGap.sm(),
+                  TextButton(
+                    onPressed: isLoading ? null : _signInWithGoogle,
+                    child: const Text('Entrar com Google'),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

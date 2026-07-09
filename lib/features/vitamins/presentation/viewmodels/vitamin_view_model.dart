@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/services/services.dart';
-import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
+import '../../application/vitamin_reminder_service.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/vitamin_use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -12,7 +12,7 @@ import '../states/vitamin_state.dart';
 class VitaminViewModel extends Notifier<VitaminState> {
   late final UuidService _uuidService;
   late final LoggerService _logger;
-  late final LocalNotificationService _notifications;
+  late final VitaminReminderService _reminders;
   late final VitaminUseCases _useCases;
 
   @override
@@ -20,7 +20,7 @@ class VitaminViewModel extends Notifier<VitaminState> {
     _useCases = ref.read(vitaminUseCasesProvider);
     _logger = ref.read(loggerServiceProvider);
     _uuidService = ref.read(uuidServiceProvider);
-    _notifications = ref.read(localNotificationServiceProvider);
+    _reminders = ref.read(vitaminReminderServiceProvider);
 
     return const VitaminState();
   }
@@ -52,7 +52,7 @@ class VitaminViewModel extends Notifier<VitaminState> {
     );
 
     await _useCases.save(vitamin);
-    await _scheduleReminderIfEnabled(vitamin);
+    await _reminders.scheduleIfEnabled(vitamin);
     await loadVitamins();
     _logger.info('Vitamina Criada.');
   }
@@ -71,15 +71,5 @@ class VitaminViewModel extends Notifier<VitaminState> {
   Future<void> resetStatus(String id) async {
     await _useCases.resetStatus(id);
     await loadVitamins();
-  }
-
-  Future<void> _scheduleReminderIfEnabled(Vitamin vitamin) async {
-    final settings = await ref.read(settingsUseCasesProvider).getSettings();
-
-    if (!settings.vitaminRemindersEnabled) return;
-
-    await _notifications.scheduleRecurring(
-      NotificationSchedules.vitamin(vitamin),
-    );
   }
 }
