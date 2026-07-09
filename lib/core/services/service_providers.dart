@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../database/database.dart';
 import 'services.dart';
 
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
@@ -13,6 +14,10 @@ final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
   return SharedPreferencesLocalStorageService(
     ref.watch(sharedPreferencesProvider),
   );
+});
+
+final localDatabaseProvider = Provider<LocalDatabase>((ref) {
+  return SharedPreferencesLocalDatabase(ref.watch(localStorageServiceProvider));
 });
 
 final uuidServiceProvider = Provider<UuidService>((ref) {
