@@ -132,14 +132,95 @@ void main() {
     final saved = await repository.getSettings();
     expect(saved.dailyWaterGoalMl, 2400);
   });
+
+  test(
+    'keeps remaining feature data after recreating local repositories',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final preferences = await SharedPreferences.getInstance();
+
+      final firstRun = _repositories(_databaseFromPreferences(preferences));
+
+      await firstRun.vitamins.save(_vitamin(id: 'vitamin-1', hour: 8));
+      await firstRun.medications.save(_medication(id: 'medication-1', hour: 9));
+      await firstRun.meals.save(
+        _meal(id: 'meal-1', date: DateTime(2026, 7, 9)),
+      );
+      await firstRun.appointments.save(
+        _appointment(id: 'appointment-1', date: DateTime(2026, 7, 10)),
+      );
+      await firstRun.exams.save(
+        _exam(id: 'exam-1', date: DateTime(2026, 7, 8)),
+      );
+      await firstRun.settings.saveSettings(
+        const AppSettings(
+          id: LocalSettingsDatasource.defaultSettingsId,
+          dailyWaterGoalMl: 2500,
+          vitaminRemindersEnabled: false,
+          medicationRemindersEnabled: false,
+          appointmentRemindersEnabled: false,
+          mealTrackingEnabled: false,
+        ),
+      );
+
+      final secondRun = _repositories(_databaseFromPreferences(preferences));
+
+      expect((await secondRun.vitamins.getAll()).single.id, 'vitamin-1');
+      expect((await secondRun.medications.getAll()).single.id, 'medication-1');
+      expect((await secondRun.meals.getAll()).single.id, 'meal-1');
+      expect(
+        (await secondRun.appointments.getAll()).single.id,
+        'appointment-1',
+      );
+      expect((await secondRun.exams.getAll()).single.id, 'exam-1');
+
+      final settings = await secondRun.settings.getSettings();
+      expect(settings.dailyWaterGoalMl, 2500);
+      expect(settings.vitaminRemindersEnabled, isFalse);
+      expect(settings.medicationRemindersEnabled, isFalse);
+      expect(settings.appointmentRemindersEnabled, isFalse);
+      expect(settings.mealTrackingEnabled, isFalse);
+    },
+  );
 }
 
 Future<LocalDatabase> _database() async {
   SharedPreferences.setMockInitialValues({});
   final preferences = await SharedPreferences.getInstance();
+
+  return _databaseFromPreferences(preferences);
+}
+
+LocalDatabase _databaseFromPreferences(SharedPreferences preferences) {
   final storage = SharedPreferencesLocalStorageService(preferences);
 
   return SharedPreferencesLocalDatabase(storage);
+}
+
+_LocalRepositories _repositories(LocalDatabase database) {
+  return _LocalRepositories(
+    vitamins: LocalVitaminRepository(
+      LocalVitaminDatasource(database: database, clock: const _FixedClock()),
+    ),
+    medications: LocalMedicationRepository(
+      LocalMedicationDatasource(database: database, clock: const _FixedClock()),
+    ),
+    meals: LocalMealRepository(
+      LocalMealDatasource(database: database, clock: const _FixedClock()),
+    ),
+    appointments: LocalAppointmentRepository(
+      LocalAppointmentDatasource(
+        database: database,
+        clock: const _FixedClock(),
+      ),
+    ),
+    exams: LocalExamRepository(
+      LocalExamDatasource(database: database, clock: const _FixedClock()),
+    ),
+    settings: LocalSettingsRepository(
+      LocalSettingsDatasource(database: database, clock: const _FixedClock()),
+    ),
+  );
 }
 
 Vitamin _vitamin({required String id, required int hour}) {
@@ -197,4 +278,22 @@ class _FixedClock implements ClockService {
 
   @override
   DateTime now() => DateTime(2026, 7, 9, 12);
+}
+
+class _LocalRepositories {
+  const _LocalRepositories({
+    required this.vitamins,
+    required this.medications,
+    required this.meals,
+    required this.appointments,
+    required this.exams,
+    required this.settings,
+  });
+
+  final LocalVitaminRepository vitamins;
+  final LocalMedicationRepository medications;
+  final LocalMealRepository meals;
+  final LocalAppointmentRepository appointments;
+  final LocalExamRepository exams;
+  final LocalSettingsRepository settings;
 }
