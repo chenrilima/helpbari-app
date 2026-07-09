@@ -8,6 +8,7 @@ import '../logger_service.dart';
 import 'local_notification_payload.dart';
 import 'local_notification_schedule.dart';
 import 'local_notification_service.dart';
+import 'notification_schedules.dart';
 
 @pragma('vm:entry-point')
 void localNotificationTapBackground(NotificationResponse response) {
@@ -242,8 +243,4 @@ extension on LocalNotificationSchedule {
       recurrence: recurrence,
     );
   }
-}
-
-String notificationKey(NotificationSource source, String entityId) {
-  return '${source.name}:$entityId';
 }
