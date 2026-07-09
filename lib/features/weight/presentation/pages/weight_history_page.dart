@@ -28,7 +28,7 @@ class _WeightHistoryPageState extends ConsumerState<WeightHistoryPage> {
 
     if (state.isLoading) {
       return const HBPage(
-        children: [Center(child: CircularProgressIndicator())],
+        children: [HBLoading(message: 'Carregando histórico de peso...')],
       );
     }
 
