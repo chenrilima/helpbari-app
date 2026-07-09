@@ -1,18 +1,32 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/result/result.dart';
-import '../../domain/repositories/auth_repository.dart';
-import 'auth_providers.dart';
+import '../../domain/usecases/use_cases.dart';
+import '../providers/auth_providers.dart';
 import '../states/auth_state.dart';
 
 class AuthViewModel extends Notifier<AuthState> {
-  late final AuthRepository _repository;
+  late final AuthUseCases _useCases;
 
   @override
   AuthState build() {
-    _repository = ref.watch(authRepositoryProvider);
+    _useCases = ref.watch(authUseCasesProvider);
+    ref.listen(authStateChangesProvider, (previous, next) {
+      if (state is AuthLoading) return;
 
-    final user = _repository.currentUser;
+      switch (next) {
+        case AsyncData(:final value):
+          state = value == null
+              ? const AuthUnauthenticated()
+              : AuthAuthenticated(value);
+        case AsyncError(:final error):
+          state = AuthFailure(error.toString());
+        case AsyncLoading():
+          break;
+      }
+    });
+
+    final user = _useCases.getCurrentUser();
 
     if (user == null) {
       return const AuthUnauthenticated();
@@ -27,7 +41,7 @@ class AuthViewModel extends Notifier<AuthState> {
   }) async {
     state = const AuthLoading();
 
-    final result = await _repository.signInWithEmailAndPassword(
+    final result = await _useCases.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -46,7 +60,7 @@ class AuthViewModel extends Notifier<AuthState> {
   }) async {
     state = const AuthLoading();
 
-    final result = await _repository.signUpWithEmailAndPassword(
+    final result = await _useCases.signUpWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -62,11 +76,24 @@ class AuthViewModel extends Notifier<AuthState> {
   Future<void> signOut() async {
     state = const AuthLoading();
 
-    final result = await _repository.signOut();
+    final result = await _useCases.signOut();
 
     switch (result) {
       case Success():
         state = const AuthUnauthenticated();
+      case Failure(:final exception):
+        state = AuthFailure(exception.message);
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    state = const AuthLoading();
+
+    final result = await _useCases.signInWithGoogle();
+
+    switch (result) {
+      case Success():
+        break;
       case Failure(:final exception):
         state = AuthFailure(exception.message);
     }

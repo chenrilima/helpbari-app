@@ -36,8 +36,28 @@ final class ValidationFailure extends Failure {
   const ValidationFailure({required super.message, super.code});
 }
 
+final class AuthFailure extends Failure {
+  const AuthFailure({required super.message, super.code});
+}
+
+final class NetworkFailure extends Failure {
+  const NetworkFailure({required super.message, super.code});
+}
+
 final class StorageFailure extends Failure {
   const StorageFailure({required super.message, super.code});
+}
+
+final class DatabaseFailure extends Failure {
+  const DatabaseFailure({required super.message, super.code});
+}
+
+final class RealtimeFailure extends Failure {
+  const RealtimeFailure({required super.message, super.code});
+}
+
+final class EdgeFunctionFailure extends Failure {
+  const EdgeFunctionFailure({required super.message, super.code});
 }
 
 final class UnexpectedFailure extends Failure {

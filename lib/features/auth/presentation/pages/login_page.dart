@@ -38,6 +38,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         );
   }
 
+  Future<void> _signInWithGoogle() async {
+    await ref.read(authViewModelProvider.notifier).signInWithGoogle();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authViewModelProvider);
@@ -90,8 +94,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const HBGap.sm(),
                 TextButton(
-                  onPressed: null,
-                  child: const Text('Entrar com Google em breve'),
+                  onPressed: isLoading ? null : _signInWithGoogle,
+                  child: const Text('Entrar com Google'),
                 ),
               ],
             ),
