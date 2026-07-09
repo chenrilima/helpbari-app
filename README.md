@@ -220,15 +220,15 @@ dart format .
 - [x] Integração com Supabase
 - [ ] Login com Google
 - [ ] Cadastro completo
-- [ ] Dashboard
-- [ ] Controle de hidratação
-- [ ] Controle alimentar
-- [ ] Registro de medicamentos
-- [ ] Histórico de evolução
-- [ ] Notificações
+- [x] Dashboard
+- [x] Controle de hidratação
+- [x] Controle alimentar
+- [x] Registro de medicamentos
+- [x] Histórico de evolução
+- [x] Notificações
 - [ ] Backup em nuvem
 - [ ] Internacionalização
-- [ ] Testes automatizados
+- [x] Testes automatizados
 - [ ] Publicação na Google Play
 
 ---
