@@ -24,6 +24,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Permitir o uso da câmera para anexar imagens.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Permitir o acesso à galeria para anexar imagens.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

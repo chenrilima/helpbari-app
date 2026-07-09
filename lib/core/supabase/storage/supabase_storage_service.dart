@@ -54,6 +54,19 @@ class SupabaseStorageService {
     );
   }
 
+  Future<Uint8List> downloadBinary({required String path, String? bucketId}) {
+    final bucketName = bucketId ?? defaultBucket;
+
+    return _interceptorRunner.run(
+      context: SupabaseRequestContext(
+        operation: 'storage.download',
+        bucket: bucketName,
+        metadata: {'requiresAuth': true},
+      ),
+      request: () => _client.storage.from(bucketName).download(path),
+    );
+  }
+
   String getPublicUrl({required String path, String? bucketId}) {
     return _client.storage.from(bucketId ?? defaultBucket).getPublicUrl(path);
   }
