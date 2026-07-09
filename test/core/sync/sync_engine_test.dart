@@ -1,0 +1,306 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:helpbari/core/services/clock_service.dart';
+import 'package:helpbari/core/sync/sync.dart';
+
+void main() {
+  group('SyncEngine', () {
+    test('pushes pending local operations and updates sync state', () async {
+      final repository = _FakeSyncableRepository(
+        pending: [
+          _operation(recordId: 'local-1', updatedAt: DateTime(2026, 7, 9, 10)),
+        ],
+      );
+      final stateRepository = _FakeSyncStateRepository();
+      final engine = SyncEngine(
+        stateRepository: stateRepository,
+        clock: const _FixedClock(),
+      );
+
+      final result = await engine.sync(
+        repositories: [repository],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.isSuccess, isTrue);
+      expect(result.pushed, 1);
+      expect(repository.pushed.map((operation) => operation.recordId), [
+        'local-1',
+      ]);
+      expect(repository.syncedIds, ['local-1']);
+      expect(stateRepository.state.lastPushAt, DateTime(2026, 7, 9, 12));
+      expect(stateRepository.state.userId, 'user-1');
+      expect(stateRepository.state.deviceId, 'device-1');
+    });
+
+    test('pulls remote operations using lastPullAt', () async {
+      final lastPullAt = DateTime(2026, 7, 8);
+      final remote = _operation(
+        recordId: 'remote-1',
+        updatedAt: DateTime(2026, 7, 9, 9),
+      );
+      final repository = _FakeSyncableRepository(remote: [remote]);
+      final stateRepository = _FakeSyncStateRepository(
+        initialState: SyncState(lastPullAt: lastPullAt),
+      );
+      final engine = SyncEngine(
+        stateRepository: stateRepository,
+        clock: const _FixedClock(),
+      );
+
+      final result = await engine.sync(
+        repositories: [repository],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.pulled, 1);
+      expect(repository.lastPullUpdatedAfter, lastPullAt);
+      expect(repository.appliedRemote.map((operation) => operation.recordId), [
+        'remote-1',
+      ]);
+      expect(stateRepository.state.lastPullAt, DateTime(2026, 7, 9, 12));
+    });
+
+    test('retries push failures before marking operation as failed', () async {
+      final operation = _operation(
+        recordId: 'retry-1',
+        updatedAt: DateTime(2026, 7, 9, 10),
+      );
+      final repository = _FakeSyncableRepository(
+        pending: [operation],
+        pushFailuresBeforeSuccess: 2,
+      );
+      final engine = SyncEngine(
+        stateRepository: _FakeSyncStateRepository(),
+        clock: const _FixedClock(),
+        maxRetries: 2,
+      );
+
+      final result = await engine.sync(
+        repositories: [repository],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.isSuccess, isTrue);
+      expect(result.pushed, 1);
+      expect(repository.pushAttempts, 3);
+      expect(repository.failedIds, isEmpty);
+    });
+
+    test('records error after retry limit is reached', () async {
+      final repository = _FakeSyncableRepository(
+        pending: [
+          _operation(recordId: 'failed-1', updatedAt: DateTime(2026, 7, 9, 10)),
+        ],
+        pushFailuresBeforeSuccess: 3,
+      );
+      final engine = SyncEngine(
+        stateRepository: _FakeSyncStateRepository(),
+        clock: const _FixedClock(),
+        maxRetries: 1,
+      );
+
+      final result = await engine.sync(
+        repositories: [repository],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.isSuccess, isFalse);
+      expect(result.errors, hasLength(1));
+      expect(repository.failedIds, ['failed-1']);
+      expect(repository.pushAttempts, 2);
+    });
+
+    test('resolves conflicts with latest updatedAt winning', () async {
+      final local = _operation(
+        recordId: 'conflict-1',
+        updatedAt: DateTime(2026, 7, 9, 11),
+        payload: const {'source': 'local'},
+      );
+      final remote = _operation(
+        recordId: 'conflict-1',
+        updatedAt: DateTime(2026, 7, 9, 10),
+        payload: const {'source': 'remote'},
+      );
+      final repository = _FakeSyncableRepository(
+        localById: {'conflict-1': local},
+        remote: [remote],
+      );
+      final engine = SyncEngine(
+        stateRepository: _FakeSyncStateRepository(),
+        clock: const _FixedClock(),
+      );
+
+      final result = await engine.sync(
+        repositories: [repository],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.conflicts, hasLength(1));
+      expect(result.conflicts.single.localWon, isTrue);
+      expect(repository.appliedRemote, isEmpty);
+    });
+
+    test(
+      'applies remote conflict winner when remote updatedAt is newer',
+      () async {
+        final local = _operation(
+          recordId: 'conflict-2',
+          updatedAt: DateTime(2026, 7, 9, 10),
+          payload: const {'source': 'local'},
+        );
+        final remote = _operation(
+          recordId: 'conflict-2',
+          updatedAt: DateTime(2026, 7, 9, 11),
+          payload: const {'source': 'remote'},
+        );
+        final repository = _FakeSyncableRepository(
+          localById: {'conflict-2': local},
+          remote: [remote],
+        );
+        final engine = SyncEngine(
+          stateRepository: _FakeSyncStateRepository(),
+          clock: const _FixedClock(),
+        );
+
+        final result = await engine.sync(
+          repositories: [repository],
+          appVersion: '1.0.0',
+          userId: 'user-1',
+        );
+
+        expect(result.conflicts.single.remoteWon, isTrue);
+        expect(repository.appliedRemote.map((operation) => operation.payload), [
+          {'source': 'remote'},
+        ]);
+      },
+    );
+  });
+}
+
+SyncOperation _operation({
+  required String recordId,
+  required DateTime updatedAt,
+  Map<String, dynamic> payload = const {},
+  SyncOperationType type = SyncOperationType.update,
+  DateTime? deletedAt,
+}) {
+  return SyncOperation(
+    repositoryKey: 'fake',
+    recordId: recordId,
+    type: type,
+    updatedAt: updatedAt,
+    deletedAt: deletedAt,
+    payload: payload,
+  );
+}
+
+class _FakeSyncableRepository implements SyncableRepository {
+  _FakeSyncableRepository({
+    List<SyncOperation> pending = const [],
+    List<SyncOperation> remote = const [],
+    Map<String, SyncOperation> localById = const {},
+    this.pushFailuresBeforeSuccess = 0,
+  }) : _pending = List.of(pending),
+       _remote = List.of(remote),
+       _localById = Map.of(localById);
+
+  final List<SyncOperation> _pending;
+  final List<SyncOperation> _remote;
+  final Map<String, SyncOperation> _localById;
+  final int pushFailuresBeforeSuccess;
+
+  final pushed = <SyncOperation>[];
+  final appliedRemote = <SyncOperation>[];
+  final syncedIds = <String>[];
+  final failedIds = <String>[];
+  int pushAttempts = 0;
+  DateTime? lastPullUpdatedAfter;
+
+  @override
+  String get syncKey => 'fake';
+
+  @override
+  Future<List<SyncOperation>> pendingOperations() async {
+    return List.of(_pending);
+  }
+
+  @override
+  Future<SyncOperation?> localOperationById(String recordId) async {
+    return _localById[recordId];
+  }
+
+  @override
+  Future<void> push(SyncOperation operation) async {
+    pushAttempts++;
+    if (pushAttempts <= pushFailuresBeforeSuccess) {
+      throw StateError('temporary failure');
+    }
+
+    pushed.add(operation);
+  }
+
+  @override
+  Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async {
+    lastPullUpdatedAfter = updatedAfter;
+    if (updatedAfter == null) return List.of(_remote);
+
+    return _remote
+        .where((operation) => operation.updatedAt.isAfter(updatedAfter))
+        .toList();
+  }
+
+  @override
+  Future<void> applyRemote(SyncOperation operation) async {
+    appliedRemote.add(operation);
+  }
+
+  @override
+  Future<void> markSynced(String recordId, {required DateTime syncedAt}) async {
+    syncedIds.add(recordId);
+  }
+
+  @override
+  Future<void> markFailed(String recordId, SyncError error) async {
+    failedIds.add(recordId);
+  }
+}
+
+class _FakeSyncStateRepository implements SyncStateRepository {
+  _FakeSyncStateRepository({SyncState initialState = const SyncState()})
+    : state = initialState;
+
+  SyncState state;
+
+  @override
+  Future<SyncState> getState() async => state;
+
+  @override
+  Future<SyncState> ensureState({
+    required String appVersion,
+    required String? userId,
+  }) async {
+    state = state.copyWith(
+      deviceId: state.deviceId ?? 'device-1',
+      appVersion: appVersion,
+      userId: userId,
+    );
+    return state;
+  }
+
+  @override
+  Future<void> saveState(SyncState state) async {
+    this.state = state;
+  }
+}
+
+class _FixedClock implements ClockService {
+  const _FixedClock();
+
+  @override
+  DateTime now() => DateTime(2026, 7, 9, 12);
+}
