@@ -88,6 +88,13 @@ class QuickActionsSection extends StatelessWidget {
             ),
             const HBGap.md(),
             QuickActionCard(
+              icon: Icons.picture_as_pdf_outlined,
+              title: 'Relatórios',
+              subtitle: 'PDF',
+              onTap: () => _open(context, AppRoutes.medicalReports),
+            ),
+            const HBGap.md(),
+            QuickActionCard(
               icon: Icons.settings_outlined,
               title: 'Configurações',
               subtitle: 'Abrir',
