@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/formatters/formatters.dart';
 import '../../../../design_system/design_system.dart';
 
 class ShowcasePage extends StatelessWidget {
@@ -31,24 +32,26 @@ class ShowcasePage extends StatelessWidget {
             ),
           ),
           const HBGap.xl(),
-          const HBSection(
+          HBSection(
             title: 'Cards',
             subtitle: 'Container padrão para agrupamento de conteúdo.',
             child: Column(
               children: [
-                HBCard(child: HBText('Este é um card padrão do HelpBari.')),
-                HBGap.lg(),
+                const HBCard(
+                  child: HBText('Este é um card padrão do HelpBari.'),
+                ),
+                const HBGap.lg(),
                 HBMetricCard(
                   title: 'Peso atual',
-                  value: '94,8 kg',
+                  value: AppWeightFormatter.kg(94.8),
                   description: 'Atualizado hoje',
                   icon: AppIcons.weight,
                 ),
-                HBGap.md(),
+                const HBGap.md(),
                 HBMetricCard(
                   title: 'Água hoje',
-                  value: '1,2 L',
-                  description: 'Meta diária: 2 L',
+                  value: AppWaterFormatter.ml(1200),
+                  description: AppWaterFormatter.dailyGoal(2000),
                   icon: AppIcons.water,
                   iconBackgroundColor: AppColors.secondaryLight,
                   iconColor: AppColors.secondary,

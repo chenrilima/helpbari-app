@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/health/health.dart';
 import '../../../appointments/domain/models/appointment_summary.dart';
 import '../../../appointments/domain/usecases/use_cases.dart';
 import '../../../appointments/presentation/providers/appointment_use_cases_provider.dart';
@@ -15,6 +16,9 @@ import '../../../medications/presentation/providers/medication_use_cases_provide
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../profile/presentation/providers/profile_use_case_providers.dart';
+import '../../../settings/domain/entities/entities.dart';
+import '../../../settings/domain/usecases/use_cases.dart';
+import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
 import '../../../vitamins/domain/usecases/vitamin_use_cases.dart';
 import '../../../vitamins/presentation/providers/vitamin_use_cases_provider.dart';
 import '../../../water/domain/usecases/use_cases.dart';
@@ -33,6 +37,7 @@ class HomeViewModel extends Notifier<HomeState> {
   late final ExamUseCases _examUseCases;
   late final MedicationUseCases _medicationUseCases;
   late final MealUseCases _mealUseCases;
+  late final SettingsUseCases _settingsUseCases;
 
   @override
   HomeState build() {
@@ -44,6 +49,7 @@ class HomeViewModel extends Notifier<HomeState> {
     _examUseCases = ref.read(examUseCasesProvider);
     _medicationUseCases = ref.read(medicationUseCasesProvider);
     _mealUseCases = ref.read(mealUseCasesProvider);
+    _settingsUseCases = ref.read(settingsUseCasesProvider);
 
     return const HomeState();
   }
@@ -60,6 +66,7 @@ class HomeViewModel extends Notifier<HomeState> {
       _examUseCases.getSummary(),
       _medicationUseCases.getSummary(),
       _mealUseCases.getSummary(),
+      _settingsUseCases.getSettings(),
     ]);
 
     final profile = results[0] as Profile?;
@@ -70,8 +77,51 @@ class HomeViewModel extends Notifier<HomeState> {
     final examSummary = results[5] as ExamSummary;
     final medicationSummary = results[6] as MedicationSummary;
     final mealSummary = results[7] as MealSummary;
+    final settings = results[8] as AppSettings;
+    final currentWeight = weightSummary.latestRecord?.weight.value;
+    final referenceWeight = currentWeight ?? profile?.initialWeight.value;
+    final targetWeight = profile?.targetWeight?.value;
+    final proteinGoal = referenceWeight == null
+        ? 0
+        : ProteinCalculator.goalForWeightKg(referenceWeight);
+    final weightProgress =
+        profile == null || currentWeight == null || targetWeight == null
+        ? null
+        : WeightProgressCalculator.calculate(
+            initialWeightKg: profile.initialWeight.value,
+            currentWeightKg: currentWeight,
+            targetWeightKg: targetWeight,
+          );
+    final nextAppointment = appointmentSummary.nextAppointment;
+    final latestExam = examSummary.latestExam;
+    final dailySummary = DailySummaryCalculator.calculate(
+      waterConsumedMl: totalWaterToday,
+      waterGoalMl: settings.dailyWaterGoalMl,
+      pendingVitamins: pendingVitamins,
+      pendingMedications: medicationSummary.pendingCount,
+      registeredMeals: mealSummary.todayCount,
+      totalProteinGrams: mealSummary.totalProteinToday,
+      proteinGoalGrams: proteinGoal,
+      nextAppointment: nextAppointment == null
+          ? null
+          : DailySummaryItem(
+              id: nextAppointment.id,
+              title: nextAppointment.title,
+              subtitle: nextAppointment.formattedDate,
+              date: nextAppointment.date.value,
+            ),
+      latestExam: latestExam == null
+          ? null
+          : DailySummaryItem(
+              id: latestExam.id,
+              title: latestExam.formattedName,
+              subtitle: latestExam.formattedDate,
+              date: latestExam.examDate.value,
+            ),
+      weightProgress: weightProgress,
+    );
 
-    state = state.copyWith(
+    state = HomeState(
       profile: profile,
       latestWeightRecord: weightSummary.latestRecord,
       hasWeightRecords: weightSummary.hasRecords,
@@ -83,6 +133,7 @@ class HomeViewModel extends Notifier<HomeState> {
       pendingMedicationsCount: medicationSummary.pendingCount,
       todayMealsCount: mealSummary.todayCount,
       totalProteinToday: mealSummary.totalProteinToday,
+      dailySummary: dailySummary,
     );
   }
 }

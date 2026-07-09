@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -21,7 +22,13 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
   final _notesController = TextEditingController();
 
   MealType _selectedType = MealType.lunch;
-  final DateTime _selectedDate = DateTime.now();
+  late final DateTime _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = ref.read(clockServiceProvider).now();
+  }
 
   @override
   void dispose() {
@@ -32,9 +39,12 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     final proteinText = _proteinController.text.trim();
+    final proteinGrams = proteinText.isEmpty ? null : int.tryParse(proteinText);
 
     await ref
         .read(mealViewModelProvider.notifier)
@@ -42,7 +52,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
           name: _nameController.text.trim(),
           type: _selectedType,
           mealDate: _selectedDate,
-          proteinGrams: proteinText.isEmpty ? null : int.parse(proteinText),
+          proteinGrams: proteinGrams,
           notes: _notesController.text.trim(),
         );
 
@@ -105,6 +115,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
                   controller: _notesController,
                   label: 'Observações',
                   maxLines: 3,
+                  validator: AppValidators.optionalText,
                 ),
                 const HBGap.xl(),
                 HBButton(label: 'Salvar refeição', onPressed: _submit),

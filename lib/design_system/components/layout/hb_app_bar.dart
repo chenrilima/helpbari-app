@@ -39,6 +39,7 @@ class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Semantics(
         header: true,
+        namesRoute: true,
         child: Column(
           crossAxisAlignment: centerTitle
               ? CrossAxisAlignment.center

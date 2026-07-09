@@ -8,11 +8,13 @@ import '../../../home/presentation/widgets/home_section.dart';
 class VitaminsOverviewSection extends StatelessWidget {
   const VitaminsOverviewSection({
     required this.pendingCount,
+    this.subtitle = 'Acompanhe seus suplementos.',
     this.onRefresh,
     super.key,
   });
 
   final int pendingCount;
+  final String subtitle;
   final Future<void> Function()? onRefresh;
 
   Future<void> _openVitamins(BuildContext context) async {
@@ -31,7 +33,7 @@ class VitaminsOverviewSection extends StatelessWidget {
 
     return HomeSection(
       title: 'Vitaminas',
-      subtitle: 'Acompanhe seus suplementos.',
+      subtitle: subtitle,
       child: HBMetricCard(
         title: 'Rotina de vitaminas',
         value: value,

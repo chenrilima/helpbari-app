@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
-
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
-import '../viewmodels/auth_providers.dart';
 import '../states/auth_state.dart';
+import '../viewmodels/auth_providers.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -48,9 +48,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         case AuthAuthenticated():
           context.go(AppRoutes.home);
         case AuthFailure(:final message):
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(message)));
+          HBSnackBar.error(context, message: message);
         default:
           break;
       }
@@ -70,31 +68,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   hint: 'seuemail@exemplo.com',
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) {
-                      return 'Informe seu e-mail.';
-                    }
-
-                    if (!text.contains('@')) {
-                      return 'Informe um e-mail válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.email,
                 ),
                 const HBGap.md(),
                 HBPasswordField(
                   controller: _passwordController,
                   textInputAction: TextInputAction.done,
-                  validator: (value) {
-                    if ((value ?? '').isEmpty) {
-                      return 'Informe sua senha.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.password,
                   onFieldSubmitted: (_) => _signIn(),
                 ),
                 const HBGap.lg(),

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
-
+import '../../../../core/services/service_providers.dart';
+import '../../../../core/services/services.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -8,14 +8,15 @@ import '../providers/medication_use_cases_provider.dart';
 import '../states/medication_state.dart';
 
 class MedicationViewModel extends Notifier<MedicationState> {
-  final _uuid = const Uuid();
-
   late final MedicationUseCases _useCases;
+  late final UuidService _uuidService;
+  late final LoggerService _logger;
 
   @override
   MedicationState build() {
     _useCases = ref.read(medicationUseCasesProvider);
-
+    _logger = ref.read(loggerServiceProvider);
+    _uuidService = ref.read(uuidServiceProvider);
     return const MedicationState();
   }
 
@@ -45,7 +46,7 @@ class MedicationViewModel extends Notifier<MedicationState> {
     }
 
     final medication = Medication(
-      id: _uuid.v4(),
+      id: _uuidService.generate(),
       name: medicationName,
       scheduleTime: scheduleTime,
       dosage: dosage,
@@ -54,6 +55,7 @@ class MedicationViewModel extends Notifier<MedicationState> {
 
     await _useCases.save(medication);
     await loadMedications();
+    _logger.info('Medicamento cadastrado.');
   }
 
   Future<void> markAsTaken(String id) async {

@@ -1,4 +1,5 @@
 import '../../../../core/domain/entity.dart';
+import '../../../../core/services/clock_service.dart';
 import '../value_objects/value_objects.dart';
 
 class WaterRecord extends Entity {
@@ -6,6 +7,7 @@ class WaterRecord extends Entity {
     required this.id,
     required this.amount,
     required this.recordedAt,
+    this.clock = const AppClockService(),
   });
 
   @override
@@ -15,8 +17,10 @@ class WaterRecord extends Entity {
 
   final DateTime recordedAt;
 
+  final ClockService clock;
+
   bool get wasRecordedToday {
-    final now = DateTime.now();
+    final now = clock.now();
 
     return now.year == recordedAt.year &&
         now.month == recordedAt.month &&

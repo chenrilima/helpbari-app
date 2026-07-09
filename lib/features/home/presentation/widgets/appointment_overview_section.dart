@@ -10,11 +10,13 @@ import 'home_section.dart';
 class AppointmentOverviewSection extends StatelessWidget {
   const AppointmentOverviewSection({
     required this.nextAppointment,
+    this.subtitle = 'Sua próxima consulta médica.',
     this.onRefresh,
     super.key,
   });
 
   final Appointment? nextAppointment;
+  final String subtitle;
   final Future<void> Function()? onRefresh;
 
   Future<void> _openAppointments(BuildContext context) async {
@@ -25,7 +27,7 @@ class AppointmentOverviewSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return HomeSection(
       title: 'Consultas',
-      subtitle: 'Sua próxima consulta médica.',
+      subtitle: subtitle,
       child: nextAppointment != null
           ? AppointmentSummaryCard(appointment: nextAppointment!)
           : HBEmptyState(

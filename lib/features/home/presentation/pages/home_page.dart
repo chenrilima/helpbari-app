@@ -5,6 +5,7 @@ import '../../../../design_system/design_system.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/appointment_overview_section.dart';
 import '../widgets/exam_overview_section.dart';
+import '../widgets/health_score_overview_section.dart';
 import '../widgets/home_header.dart';
 import '../widgets/meal_overview_section.dart';
 import '../widgets/medication_overview_section.dart';
@@ -46,11 +47,13 @@ class _HomePageState extends ConsumerState<HomePage> {
     return HBPage(
       children: [
         HomeHeader(userName: state.profile?.name ?? 'Olá'),
-        const ProgressBanner(
-          title: 'Continue assim! 💜',
-          message:
-              'Cada registro ajuda você a acompanhar sua evolução e manter o foco.',
-        ),
+        ProgressBanner(title: state.bannerTitle, message: state.bannerMessage),
+        if (state.dailySummary != null) ...[
+          const HBGap.xl(),
+          HealthScoreOverviewSection(
+            healthScore: state.dailySummary!.healthScore,
+          ),
+        ],
         const HBGap.xl(),
         WeightOverviewSection(
           latestRecord: state.latestWeightRecord,
@@ -61,32 +64,42 @@ class _HomePageState extends ConsumerState<HomePage> {
         const HBGap.xl(),
         WaterOverviewSection(
           totalTodayInMl: state.totalWaterTodayInMl,
+          goalMl: state.dailySummary?.waterGoalMl ?? 2000,
+          subtitle: state.waterMessage,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),
         VitaminsOverviewSection(
           pendingCount: state.pendingVitaminsCount,
+          subtitle: state.vitaminsMessage,
           onRefresh: _loadHome,
         ),
 
         const HBGap.xl(),
         MedicationOverviewSection(
           pendingCount: state.pendingMedicationsCount,
+          subtitle: state.medicationsMessage,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),
         MealOverviewSection(
           todayCount: state.todayMealsCount,
           totalProteinToday: state.totalProteinToday,
+          subtitle: state.mealsMessage,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),
         AppointmentOverviewSection(
           nextAppointment: state.nextAppointment,
+          subtitle: state.appointmentMessage,
           onRefresh: _loadHome,
         ),
         const HBGap.xl(),
-        ExamOverviewSection(latestExam: state.latestExam, onRefresh: _loadHome),
+        ExamOverviewSection(
+          latestExam: state.latestExam,
+          subtitle: state.examMessage,
+          onRefresh: _loadHome,
+        ),
 
         const HBGap.xl(),
         QuickActionsSection(onRefresh: _loadHome),

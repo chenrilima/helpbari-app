@@ -27,6 +27,6 @@ extension BuildContextExtension on BuildContext {
   bool get isExpanded => screenWidth >= AppBreakpoints.expanded;
 
   void showSnackBar(String message) {
-    ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: Text(message)));
+    HBSnackBar.info(this, message: message);
   }
 }

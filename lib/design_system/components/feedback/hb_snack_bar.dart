@@ -34,24 +34,31 @@ abstract final class HBSnackBar {
       SnackBar(
         behavior: SnackBarBehavior.floating,
         backgroundColor: _backgroundColor(type),
-        content: Row(
-          children: [
-            Icon(
-              _icon(type),
-              color: AppColors.onPrimary,
-              size: AppSizes.iconSm,
-            ),
-            const HBGap.horizontal(AppSpacing.sm),
-            Expanded(
-              child: HBText(
-                message,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        content: Semantics(
+          container: true,
+          liveRegion: true,
+          label: message,
+          child: Row(
+            children: [
+              ExcludeSemantics(
+                child: Icon(
+                  _icon(type),
                   color: AppColors.onPrimary,
-                  fontWeight: FontWeight.w600,
+                  size: AppSizes.iconSm,
                 ),
               ),
-            ),
-          ],
+              const HBGap.horizontal(AppSpacing.sm),
+              Expanded(
+                child: HBText(
+                  message,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.onPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),

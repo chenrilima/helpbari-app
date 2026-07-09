@@ -9,11 +9,13 @@ import 'home_section.dart';
 class MedicationOverviewSection extends StatelessWidget {
   const MedicationOverviewSection({
     required this.pendingCount,
+    this.subtitle = 'Acompanhe sua rotina de remédios.',
     this.onRefresh,
     super.key,
   });
 
   final int pendingCount;
+  final String subtitle;
   final Future<void> Function()? onRefresh;
 
   Future<void> _openMedications(BuildContext context) async {
@@ -24,11 +26,15 @@ class MedicationOverviewSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return HomeSection(
       title: 'Medicamentos',
-      subtitle: 'Acompanhe sua rotina de remédios.',
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        onTap: () => _openMedications(context),
-        child: MedicationSummaryCard(pendingCount: pendingCount),
+      subtitle: subtitle,
+      child: Semantics(
+        button: true,
+        label: 'Abrir medicamentos',
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          onTap: () => _openMedications(context),
+          child: MedicationSummaryCard(pendingCount: pendingCount),
+        ),
       ),
     );
   }

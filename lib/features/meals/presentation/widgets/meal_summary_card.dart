@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/formatters/app_protein_formatter.dart';
 import '../../../../design_system/design_system.dart';
 
 class MealSummaryCard extends StatelessWidget {
@@ -22,7 +23,7 @@ class MealSummaryCard extends StatelessWidget {
 
     final description = totalProteinToday <= 0
         ? 'Proteína não informada'
-        : '$totalProteinToday g de proteína hoje';
+        : AppProteinFormatter.today(totalProteinToday);
 
     return HBMetricCard(
       title: 'Refeições',

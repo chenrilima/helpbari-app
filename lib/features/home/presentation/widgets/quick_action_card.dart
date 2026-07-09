@@ -20,29 +20,29 @@ class QuickActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 140,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: HBCard(
         onTap: onTap,
-        child: HBCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, color: AppColors.primary, size: 28),
+        semanticLabel: '$title. $subtitle',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ExcludeSemantics(
+              child: Icon(icon, color: AppColors.primary, size: 28),
+            ),
 
-              const HBGap.md(),
+            const HBGap.md(),
 
-              HBText(title, style: Theme.of(context).textTheme.titleMedium),
+            HBText(title, style: Theme.of(context).textTheme.titleMedium),
 
-              const HBGap.xs(),
+            const HBGap.xs(),
 
-              HBText(
-                subtitle,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
-              ),
-            ],
-          ),
+            HBText(
+              subtitle,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+            ),
+          ],
         ),
       ),
     );

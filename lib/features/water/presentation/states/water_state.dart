@@ -1,11 +1,17 @@
 import '../../../../core/formatters/app_water_formatter.dart';
+import '../../../../core/services/clock_service.dart';
 import '../../domain/entities/entities.dart';
 
 class WaterState {
-  const WaterState({this.records = const [], this.isLoading = false});
+  const WaterState({
+    this.records = const [],
+    this.isLoading = false,
+    this.clock = const AppClockService(),
+  });
 
   final List<WaterRecord> records;
   final bool isLoading;
+  final ClockService clock;
 
   bool get hasRecords => records.isNotEmpty;
 
@@ -18,7 +24,7 @@ class WaterState {
   }
 
   int get totalTodayInMl {
-    final today = DateTime.now();
+    final today = clock.now();
 
     return records
         .where(
@@ -32,10 +38,15 @@ class WaterState {
 
   String get formattedToday => AppWaterFormatter.ml(totalTodayInMl);
 
-  WaterState copyWith({List<WaterRecord>? records, bool? isLoading}) {
+  WaterState copyWith({
+    List<WaterRecord>? records,
+    bool? isLoading,
+    ClockService? clock,
+  }) {
     return WaterState(
       records: records ?? this.records,
       isLoading: isLoading ?? this.isLoading,
+      clock: clock ?? this.clock,
     );
   }
 }

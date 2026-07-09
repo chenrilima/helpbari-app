@@ -29,14 +29,20 @@ class Meal extends Entity {
 
   bool get wasRegisteredToday => mealDate.isToday;
 
-  bool get hasProteinInfo => proteinGrams != null && proteinGrams! > 0;
+  bool get hasProteinInfo {
+    final proteinGrams = this.proteinGrams;
+
+    return proteinGrams != null && proteinGrams > 0;
+  }
 
   String get formattedProtein {
-    if (!hasProteinInfo) {
+    final proteinGrams = this.proteinGrams;
+
+    if (proteinGrams == null || proteinGrams <= 0) {
       return 'Proteína não informada';
     }
 
-    return AppProteinFormatter.meal(proteinGrams!);
+    return AppProteinFormatter.meal(proteinGrams);
   }
 
   Meal copyWith({

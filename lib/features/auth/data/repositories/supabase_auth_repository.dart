@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
 
-import '../../../../core/errors/app_exception.dart';
+import '../../../../core/failures/failures.dart' as domain_failures;
 import '../../../../core/result/result.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -44,26 +44,27 @@ class SupabaseAuthRepository implements AuthRepository {
       final user = response.user;
 
       if (user == null) {
-        return const Failure(
-          AppException(message: 'Não foi possível criar sua conta.'),
+        return Failure(
+          const domain_failures.StorageFailure(
+            message: 'Não foi possível criar sua conta.',
+            code: 'auth_empty_user',
+          ).toException(),
         );
       }
 
       return Success(AuthUser(id: user.id, email: user.email));
     } on AuthException catch (error, stackTrace) {
       return Failure(
-        AppException(
+        domain_failures.StorageFailure(
           message: error.message,
           code: error.statusCode,
-          stackTrace: stackTrace,
-        ),
+        ).toException(stackTrace: stackTrace),
       );
     } catch (error, stackTrace) {
       return Failure(
-        AppException(
+        const domain_failures.UnexpectedFailure(
           message: 'Erro inesperado ao criar conta.',
-          stackTrace: stackTrace,
-        ),
+        ).toException(stackTrace: stackTrace),
       );
     }
   }
@@ -82,26 +83,27 @@ class SupabaseAuthRepository implements AuthRepository {
       final user = response.user;
 
       if (user == null) {
-        return const Failure(
-          AppException(message: 'Não foi possível autenticar o usuário.'),
+        return Failure(
+          const domain_failures.StorageFailure(
+            message: 'Não foi possível autenticar o usuário.',
+            code: 'auth_empty_user',
+          ).toException(),
         );
       }
 
       return Success(AuthUser(id: user.id, email: user.email));
     } on AuthException catch (error, stackTrace) {
       return Failure(
-        AppException(
+        domain_failures.StorageFailure(
           message: error.message,
           code: error.statusCode,
-          stackTrace: stackTrace,
-        ),
+        ).toException(stackTrace: stackTrace),
       );
     } catch (error, stackTrace) {
       return Failure(
-        AppException(
+        const domain_failures.UnexpectedFailure(
           message: 'Erro inesperado ao entrar.',
-          stackTrace: stackTrace,
-        ),
+        ).toException(stackTrace: stackTrace),
       );
     }
   }
@@ -113,10 +115,9 @@ class SupabaseAuthRepository implements AuthRepository {
       return const Success(null);
     } catch (error, stackTrace) {
       return Failure(
-        AppException(
+        const domain_failures.UnexpectedFailure(
           message: 'Erro inesperado ao sair.',
-          stackTrace: stackTrace,
-        ),
+        ).toException(stackTrace: stackTrace),
       );
     }
   }

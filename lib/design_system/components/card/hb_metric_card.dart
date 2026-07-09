@@ -35,68 +35,80 @@ class HBMetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: borderColor),
-        boxShadow: AppShadows.soft,
+    final effectiveSemanticLabel =
+        semanticLabel ??
+        [title, value, if (description != null) description].join(', ');
+
+    final content = ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: onTap == null ? 0 : AppSizes.buttonMinTapTarget,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (icon != null) ...[
-            ExcludeSemantics(
-              child: Container(
-                width: AppSizes.avatarMd,
-                height: AppSizes.avatarMd,
-                decoration: BoxDecoration(
-                  color: iconBackgroundColor ?? AppColors.primaryLight,
-                  borderRadius: BorderRadius.circular(AppRadius.md),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: borderColor),
+          boxShadow: AppShadows.soft,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (icon != null) ...[
+              ExcludeSemantics(
+                child: Container(
+                  width: AppSizes.avatarMd,
+                  height: AppSizes.avatarMd,
+                  decoration: BoxDecoration(
+                    color: iconBackgroundColor ?? AppColors.primaryLight,
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                  child: HBIcon(icon!, color: iconColor ?? AppColors.primary),
                 ),
-                child: HBIcon(icon!, color: iconColor ?? AppColors.primary),
+              ),
+              const HBGap.horizontal(AppSpacing.md),
+            ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HBText(title, style: Theme.of(context).textTheme.bodyMedium),
+                  const HBGap.xs(),
+                  HBText(value, style: Theme.of(context).textTheme.titleLarge),
+                  if (description != null) ...[
+                    const HBGap.xs(),
+                    HBText(
+                      description!,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                  if (badge != null) ...[const HBGap.sm(), badge!],
+                ],
               ),
             ),
-            const HBGap.horizontal(AppSpacing.md),
+            if (trailing != null) ...[
+              const HBGap.horizontal(AppSpacing.sm),
+              trailing!,
+            ],
           ],
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HBText(title, style: Theme.of(context).textTheme.bodyMedium),
-                const HBGap.xs(),
-                HBText(value, style: Theme.of(context).textTheme.titleLarge),
-                if (description != null) ...[
-                  const HBGap.xs(),
-                  HBText(
-                    description!,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-                if (badge != null) ...[const HBGap.sm(), badge!],
-              ],
-            ),
-          ),
-          if (trailing != null) ...[
-            const HBGap.horizontal(AppSpacing.sm),
-            trailing!,
-          ],
-        ],
+        ),
       ),
     );
 
     if (onTap == null) {
       return Semantics(
-        label: semanticLabel ?? '$title, $value',
+        label: effectiveSemanticLabel,
+        excludeSemantics: true,
         child: content,
       );
     }
 
     return Semantics(
       button: true,
-      label: semanticLabel ?? '$title, $value',
+      enabled: true,
+      label: effectiveSemanticLabel,
+      excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),

@@ -1,10 +1,13 @@
+import '../../../../core/services/clock_service.dart';
+
 class MealDate {
-  const MealDate(this.value);
+  const MealDate(this.value, {this.clock = const AppClockService()});
 
   final DateTime value;
+  final ClockService clock;
 
   bool get isToday {
-    final now = DateTime.now();
+    final now = clock.now();
 
     return now.year == value.year &&
         now.month == value.month &&

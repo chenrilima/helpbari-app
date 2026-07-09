@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/formatters/app_water_formatter.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/setting_view_model_provider.dart';
 
@@ -49,7 +51,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(AppIcons.water),
                 title: const HBText('Meta diária de água'),
-                subtitle: HBText('${settings.dailyWaterGoalMl} ml por dia'),
+                subtitle: HBText(
+                  '${AppWaterFormatter.ml(settings.dailyWaterGoalMl)} por dia',
+                ),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   _showWaterGoalDialog(context, settings.dailyWaterGoalMl);
@@ -139,46 +143,42 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     BuildContext context,
     int currentGoal,
   ) async {
+    final formKey = GlobalKey<FormState>();
     final controller = TextEditingController(text: currentGoal.toString());
 
-    final result = await showDialog<int>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Meta diária de água'),
-          content: TextField(
-            controller: controller,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Meta em ml',
-              hintText: 'Ex: 2000',
-            ),
+    final result = await HBDialog.custom<int>(
+      context,
+      title: 'Meta diária de água',
+      content: Form(
+        key: formKey,
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          validator: AppValidators.waterGoal,
+          decoration: const InputDecoration(
+            labelText: 'Meta em ml',
+            hintText: 'Ex: 2000',
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () {
-                final value = int.tryParse(controller.text.trim());
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            final formState = formKey.currentState;
 
-                if (value == null || value < 500 || value > 6000) {
-                  HBSnackBar.warning(
-                    context,
-                    message: 'Informe uma meta entre 500 ml e 6000 ml.',
-                  );
+            if (formState == null || !formState.validate()) return;
 
-                  return;
-                }
+            final value = int.parse(controller.text.trim());
 
-                Navigator.of(context).pop(value);
-              },
-              child: const Text('Salvar'),
-            ),
-          ],
-        );
-      },
+            Navigator.of(context).pop(value);
+          },
+          child: const Text('Salvar'),
+        ),
+      ],
     );
 
     if (result == null) return;

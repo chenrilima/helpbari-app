@@ -21,11 +21,14 @@ class HBButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDisabled = onPressed == null || isLoading;
+    final effectiveLabel = semanticLabel ?? label;
 
     return Semantics(
       button: true,
       enabled: !isDisabled,
-      label: semanticLabel ?? label,
+      liveRegion: isLoading,
+      label: isLoading ? '$effectiveLabel, carregando' : effectiveLabel,
+      excludeSemantics: true,
       child: SizedBox(
         width: double.infinity,
         height: AppSizes.buttonHeight,
@@ -46,12 +49,14 @@ class HBButton extends StatelessWidget {
             ).textTheme.labelLarge?.copyWith(color: AppColors.onPrimary),
           ),
           child: isLoading
-              ? const SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: AppColors.onPrimary,
+              ? const ExcludeSemantics(
+                  child: SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.onPrimary,
+                    ),
                   ),
                 )
               : _HBButtonContent(label: label, icon: icon),

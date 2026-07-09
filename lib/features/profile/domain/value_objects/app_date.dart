@@ -1,10 +1,13 @@
+import '../../../../core/services/clock_service.dart';
+
 class AppDate {
-  const AppDate(this.value);
+  const AppDate(this.value, {this.clock = const AppClockService()});
 
   final DateTime value;
+  final ClockService clock;
 
   int get age {
-    final now = DateTime.now();
+    final now = clock.now();
 
     var age = now.year - value.year;
 

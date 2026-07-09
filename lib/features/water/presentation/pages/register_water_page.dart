@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/formatters/app_water_formatter.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/water_view_model_provider.dart';
 
@@ -20,10 +21,10 @@ class RegisterWaterPage extends ConsumerWidget {
           spacing: 12,
           runSpacing: 12,
           children: const [
-            _QuickWaterButton(label: '200 ml', amount: 200),
-            _QuickWaterButton(label: '300 ml', amount: 300),
-            _QuickWaterButton(label: '500 ml', amount: 500),
-            _QuickWaterButton(label: '750 ml', amount: 750),
+            _QuickWaterButton(amount: 200),
+            _QuickWaterButton(amount: 300),
+            _QuickWaterButton(amount: 500),
+            _QuickWaterButton(amount: 750),
           ],
         ),
         const HBGap.xl(),
@@ -39,13 +40,14 @@ class RegisterWaterPage extends ConsumerWidget {
 }
 
 class _QuickWaterButton extends ConsumerWidget {
-  const _QuickWaterButton({required this.label, required this.amount});
+  const _QuickWaterButton({required this.amount});
 
-  final String label;
   final int amount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final label = AppWaterFormatter.ml(amount);
+
     return SizedBox(
       width: 160,
       child: HBButton(
@@ -54,7 +56,10 @@ class _QuickWaterButton extends ConsumerWidget {
         onPressed: () async {
           await ref.read(waterViewModelProvider.notifier).registerWater(amount);
           if (!context.mounted) return;
-          HBSnackBar.success(context, message: '$label registrado! 💧');
+          HBSnackBar.success(
+            context,
+            message: AppWaterFormatter.registered(amount),
+          );
           context.pop(true);
         },
       ),

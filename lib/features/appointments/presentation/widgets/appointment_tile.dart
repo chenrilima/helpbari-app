@@ -20,7 +20,9 @@ class AppointmentTile extends StatelessWidget {
     return HBCard(
       child: Row(
         children: [
-          const Icon(AppIcons.calendar, color: AppColors.primary),
+          const ExcludeSemantics(
+            child: Icon(AppIcons.calendar, color: AppColors.primary),
+          ),
 
           const HBGap.md(),
 
@@ -52,8 +54,16 @@ class AppointmentTile extends StatelessWidget {
           ),
 
           if (appointment.isScheduled) ...[
-            IconButton(onPressed: onCancel, icon: const Icon(Icons.close)),
-            IconButton(onPressed: onComplete, icon: const Icon(Icons.check)),
+            IconButton(
+              tooltip: 'Cancelar consulta',
+              onPressed: onCancel,
+              icon: const Icon(Icons.close),
+            ),
+            IconButton(
+              tooltip: 'Concluir consulta',
+              onPressed: onComplete,
+              icon: const Icon(Icons.check),
+            ),
           ],
         ],
       ),

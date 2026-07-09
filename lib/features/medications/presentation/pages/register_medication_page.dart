@@ -43,7 +43,9 @@ class _RegisterMedicationPageState
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     await ref
         .read(medicationViewModelProvider.notifier)
@@ -91,6 +93,7 @@ class _RegisterMedicationPageState
                   label: 'Dosagem',
                   hint: 'Ex: 20 mg, 1 comprimido',
                   textInputAction: TextInputAction.next,
+                  validator: AppValidators.optionalText,
                 ),
                 const HBGap.md(),
                 HBButton(
@@ -102,6 +105,7 @@ class _RegisterMedicationPageState
                   controller: _notesController,
                   label: 'Observações',
                   maxLines: 3,
+                  validator: AppValidators.optionalText,
                 ),
                 const HBGap.xl(),
                 HBButton(label: 'Salvar medicamento', onPressed: _submit),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -39,7 +40,9 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     if (_birthDate == null || _surgeryDate == null) {
       HBSnackBar.warning(
@@ -79,11 +82,13 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   }
 
   Future<void> _selectBirthDate() async {
+    final now = ref.read(clockServiceProvider).now();
+
     final date = await showDatePicker(
       context: context,
       initialDate: DateTime(1990),
       firstDate: DateTime(1940),
-      lastDate: DateTime.now(),
+      lastDate: now,
     );
 
     if (date == null) return;
@@ -92,11 +97,13 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   }
 
   Future<void> _selectSurgeryDate() async {
+    final now = ref.read(clockServiceProvider).now();
+
     final date = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: now,
       firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
+      lastDate: now,
     );
 
     if (date == null) return;
@@ -166,7 +173,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                     decimal: true,
                   ),
                   textInputAction: TextInputAction.done,
-                  validator: AppValidators.weight,
+                  validator: AppValidators.optionalWeight,
                   onFieldSubmitted: (_) => _submit(),
                 ),
                 const HBGap.md(),

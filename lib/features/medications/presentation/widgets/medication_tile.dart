@@ -20,7 +20,9 @@ class MedicationTile extends StatelessWidget {
     return HBCard(
       child: Row(
         children: [
-          const Icon(Icons.medication_outlined, color: AppColors.primary),
+          const ExcludeSemantics(
+            child: Icon(Icons.medication_outlined, color: AppColors.primary),
+          ),
           const HBGap.md(),
           Expanded(
             child: Column(
@@ -49,8 +51,16 @@ class MedicationTile extends StatelessWidget {
             ),
           ),
           if (medication.isPending) ...[
-            IconButton(onPressed: onSkipped, icon: const Icon(Icons.close)),
-            IconButton(onPressed: onTaken, icon: const Icon(Icons.check)),
+            IconButton(
+              tooltip: 'Pular medicamento',
+              onPressed: onSkipped,
+              icon: const Icon(Icons.close),
+            ),
+            IconButton(
+              tooltip: 'Marcar medicamento como tomado',
+              onPressed: onTaken,
+              icon: const Icon(Icons.check),
+            ),
           ],
         ],
       ),

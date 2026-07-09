@@ -10,6 +10,34 @@ abstract final class AppValidators {
     return null;
   }
 
+  static String? optionalText(String? _) {
+    return null;
+  }
+
+  static String? email(String? value) {
+    final text = value?.trim() ?? '';
+
+    if (text.isEmpty) return 'Informe seu e-mail.';
+    if (!text.contains('@')) return 'Informe um e-mail válido.';
+
+    return null;
+  }
+
+  static String? password(String? value) {
+    if ((value ?? '').isEmpty) return 'Informe sua senha.';
+
+    return null;
+  }
+
+  static String? newPassword(String? value) {
+    final text = value ?? '';
+
+    if (text.isEmpty) return 'Informe sua senha.';
+    if (text.length < 6) return 'A senha deve ter pelo menos 6 caracteres.';
+
+    return null;
+  }
+
   static String? name(String? value) {
     final text = value?.trim() ?? '';
 
@@ -64,6 +92,16 @@ abstract final class AppValidators {
 
     if (protein == null || protein < 0 || protein > 300) {
       return 'Informe uma quantidade válida.';
+    }
+
+    return null;
+  }
+
+  static String? waterGoal(String? value) {
+    final waterGoal = int.tryParse(value?.trim() ?? '');
+
+    if (waterGoal == null || waterGoal < 500 || waterGoal > 6000) {
+      return 'Informe uma meta entre 500 ml e 6000 ml.';
     }
 
     return null;

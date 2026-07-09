@@ -9,11 +9,15 @@ import 'home_section.dart';
 class WaterOverviewSection extends StatelessWidget {
   const WaterOverviewSection({
     required this.totalTodayInMl,
+    required this.goalMl,
+    this.subtitle = 'Sua hidratação de hoje.',
     this.onRefresh,
     super.key,
   });
 
   final int totalTodayInMl;
+  final int goalMl;
+  final String subtitle;
   final Future<void> Function()? onRefresh;
 
   Future<void> _openWater(BuildContext context) async {
@@ -24,11 +28,15 @@ class WaterOverviewSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return HomeSection(
       title: 'Água',
-      subtitle: 'Sua hidratação de hoje.',
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        onTap: () => _openWater(context),
-        child: WaterProgressCard(currentMl: totalTodayInMl),
+      subtitle: subtitle,
+      child: Semantics(
+        button: true,
+        label: 'Abrir água',
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          onTap: () => _openWater(context),
+          child: WaterProgressCard(currentMl: totalTodayInMl, goalMl: goalMl),
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
+import '../../../../core/services/service_providers.dart';
+import '../../../../core/services/uuid_service.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -8,13 +9,13 @@ import '../providers/exam_use_cases_provider.dart';
 import '../states/exam_state.dart';
 
 class ExamViewModel extends Notifier<ExamState> {
-  final _uuid = const Uuid();
-
+  late final UuidService _uuidService;
   late final ExamUseCases _useCases;
 
   @override
   ExamState build() {
     _useCases = ref.read(examUseCasesProvider);
+    _uuidService = ref.read(uuidServiceProvider);
 
     return const ExamState();
   }
@@ -39,7 +40,7 @@ class ExamViewModel extends Notifier<ExamState> {
     if (examName == null) return;
 
     final exam = Exam(
-      id: _uuid.v4(),
+      id: _uuidService.generate(),
       name: examName,
       examDate: ExamDate(examDate),
       laboratory: laboratory,

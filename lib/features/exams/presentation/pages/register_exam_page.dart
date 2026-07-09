@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/exam_view_model_provider.dart';
@@ -20,7 +21,13 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
   final _laboratoryController = TextEditingController();
   final _notesController = TextEditingController();
 
-  DateTime _selectedDate = DateTime.now();
+  late DateTime _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = ref.read(clockServiceProvider).now();
+  }
 
   @override
   void dispose() {
@@ -31,11 +38,13 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
   }
 
   Future<void> _pickDate() async {
+    final now = ref.read(clockServiceProvider).now();
+
     final date = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
       firstDate: DateTime(2000),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
+      lastDate: now.add(const Duration(days: 365)),
     );
 
     if (date == null) return;
@@ -46,7 +55,9 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
   }
 
   Future<void> _save() async {
-    if (!_formKey.currentState!.validate()) {
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) {
       return;
     }
 
@@ -95,6 +106,7 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
                 HBTextField(
                   controller: _laboratoryController,
                   label: 'Laboratório',
+                  validator: AppValidators.optionalText,
                 ),
 
                 const HBGap.md(),
@@ -107,6 +119,7 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
                   controller: _notesController,
                   label: 'Observações',
                   maxLines: 4,
+                  validator: AppValidators.optionalText,
                 ),
 
                 const HBGap.xl(),

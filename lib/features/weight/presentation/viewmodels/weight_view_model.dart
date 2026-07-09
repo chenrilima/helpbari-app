@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/services/clock_service.dart';
+import '../../../../core/services/service_providers.dart';
+import '../../../../core/services/uuid_service.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -9,10 +12,14 @@ import '../states/weight_state.dart';
 
 class WeightViewModel extends Notifier<WeightState> {
   late final WeightUseCases _useCases;
+  late final UuidService _uuidService;
+  late final ClockService _clock;
 
   @override
   WeightState build() {
     _useCases = ref.read(weightUseCasesProvider);
+    _uuidService = ref.read(uuidServiceProvider);
+    _clock = ref.read(clockServiceProvider);
 
     return const WeightState();
   }
@@ -46,9 +53,9 @@ class WeightViewModel extends Notifier<WeightState> {
       final notes = form.notes == null ? null : Notes.create(form.notes!);
 
       final record = WeightRecord(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        id: _uuidService.generate(),
         weight: weight,
-        recordedAt: RecordedAt(form.recordedAt),
+        recordedAt: RecordedAt(form.recordedAt, clock: _clock),
         notes: notes,
       );
 

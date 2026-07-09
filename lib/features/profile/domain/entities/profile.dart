@@ -1,4 +1,5 @@
 import '../../../../core/domain/entity.dart';
+import '../../../../core/services/clock_service.dart';
 import '../value_objects/value_objects.dart';
 
 class Profile extends Entity {
@@ -14,6 +15,7 @@ class Profile extends Entity {
     required this.surgeryType,
     this.targetWeight,
     this.photoUrl,
+    this.clock = const AppClockService(),
   });
 
   @override
@@ -39,10 +41,12 @@ class Profile extends Entity {
 
   final AppDate createdAt;
 
+  final ClockService clock;
+
   int get age => birthDate.age;
 
   int get daysSinceSurgery {
-    final now = DateTime.now();
+    final now = clock.now();
     return now.difference(surgeryDate.value).inDays;
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
+import '../../../../core/services/service_providers.dart';
+import '../../../../core/services/services.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/vitamin_use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -8,13 +9,15 @@ import '../providers/vitamin_use_cases_provider.dart';
 import '../states/vitamin_state.dart';
 
 class VitaminViewModel extends Notifier<VitaminState> {
-  final _uuid = const Uuid();
-
+  late final UuidService _uuidService;
+  late final LoggerService _logger;
   late final VitaminUseCases _useCases;
 
   @override
   VitaminState build() {
     _useCases = ref.read(vitaminUseCasesProvider);
+    _logger = ref.read(loggerServiceProvider);
+    _uuidService = ref.read(uuidServiceProvider);
 
     return const VitaminState();
   }
@@ -40,18 +43,20 @@ class VitaminViewModel extends Notifier<VitaminState> {
     }
 
     final vitamin = Vitamin(
-      id: _uuid.v4(),
+      id: _uuidService.generate(),
       name: vitaminName,
       scheduleTime: scheduleTime,
     );
 
     await _useCases.save(vitamin);
     await loadVitamins();
+    _logger.info('Vitamina Criada.');
   }
 
   Future<void> markAsTaken(String id) async {
     await _useCases.markAsTaken(id);
     await loadVitamins();
+    _logger.info('Vitamina tomada');
   }
 
   Future<void> markAsSkipped(String id) async {

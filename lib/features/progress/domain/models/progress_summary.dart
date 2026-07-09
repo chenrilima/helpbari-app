@@ -1,3 +1,4 @@
+import '../../../../core/formatters/app_number_formatter.dart';
 import '../../../../core/formatters/app_weight_formatter.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
@@ -76,7 +77,7 @@ class ProgressSummary {
 
     if (value == null) return 'Meta não definida';
 
-    return '${value.round()}% da meta';
+    return AppNumberFormatter.goalProgress(value);
   }
 
   String get formattedInitialBmi => profile.initialBmi.formatted;

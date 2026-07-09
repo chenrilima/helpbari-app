@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../models/create_weight_form.dart';
@@ -22,7 +23,13 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
 
   final _notesController = TextEditingController();
 
-  DateTime _recordedAt = DateTime.now();
+  late DateTime _recordedAt;
+
+  @override
+  void initState() {
+    super.initState();
+    _recordedAt = ref.read(clockServiceProvider).now();
+  }
 
   @override
   void dispose() {
@@ -33,11 +40,13 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
   }
 
   Future<void> _selectDate() async {
+    final now = ref.read(clockServiceProvider).now();
+
     final date = await showDatePicker(
       context: context,
       initialDate: _recordedAt,
       firstDate: DateTime(2020),
-      lastDate: DateTime.now(),
+      lastDate: now,
     );
 
     if (date == null) return;
@@ -48,7 +57,9 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) return;
 
     final form = CreateWeightForm(
       weight: double.parse(_weightController.text.trim().replaceAll(',', '.')),
@@ -96,6 +107,7 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
                   controller: _notesController,
                   label: 'Observações (opcional)',
                   maxLines: 3,
+                  validator: AppValidators.optionalText,
                 ),
 
                 const HBGap.md(),
