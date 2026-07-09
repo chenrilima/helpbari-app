@@ -37,11 +37,7 @@ class HBMetricCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveSemanticLabel =
         semanticLabel ??
-        [
-          title,
-          value,
-          if (description != null) description,
-        ].join(', ');
+        [title, value, if (description != null) description].join(', ');
 
     final content = ConstrainedBox(
       constraints: BoxConstraints(

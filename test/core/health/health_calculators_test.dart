@@ -118,4 +118,69 @@ void main() {
       expect(result.isExcellent, isFalse);
     });
   });
+
+  group('DailySummaryCalculator', () {
+    test('aggregates daily health data', () {
+      const nextAppointment = DailySummaryItem(
+        id: 'appointment-1',
+        title: 'Retorno médico',
+        subtitle: '10:00',
+      );
+      const latestExam = DailySummaryItem(id: 'exam-1', title: 'Hemograma');
+      const weightProgress = WeightProgressResult(
+        initialWeightKg: 120,
+        currentWeightKg: 100,
+        targetWeightKg: 80,
+        weightLostKg: 20,
+        remainingKg: 20,
+        progress: 0.5,
+        isTargetReached: false,
+      );
+
+      final summary = DailySummaryCalculator.calculate(
+        waterConsumedMl: 1500,
+        waterGoalMl: 2000,
+        pendingVitamins: 1,
+        pendingMedications: 2,
+        registeredMeals: 3,
+        totalProteinGrams: 60,
+        proteinGoalGrams: 100,
+        nextAppointment: nextAppointment,
+        latestExam: latestExam,
+        weightProgress: weightProgress,
+      );
+
+      expect(summary.waterConsumedMl, 1500);
+      expect(summary.waterGoalMl, 2000);
+      expect(summary.hydration.progress, 0.75);
+      expect(summary.pendingVitamins, 1);
+      expect(summary.pendingMedications, 2);
+      expect(summary.registeredMeals, 3);
+      expect(summary.totalProteinGrams, 60);
+      expect(summary.protein.progress, 0.6);
+      expect(summary.nextAppointment, nextAppointment);
+      expect(summary.latestExam, latestExam);
+      expect(summary.weightProgress, weightProgress);
+    });
+
+    test('clamps negative counters', () {
+      final summary = DailySummaryCalculator.calculate(
+        waterConsumedMl: -1,
+        waterGoalMl: -1,
+        pendingVitamins: -1,
+        pendingMedications: -1,
+        registeredMeals: -1,
+        totalProteinGrams: -1,
+        proteinGoalGrams: -1,
+      );
+
+      expect(summary.waterConsumedMl, 0);
+      expect(summary.waterGoalMl, 0);
+      expect(summary.pendingVitamins, 0);
+      expect(summary.pendingMedications, 0);
+      expect(summary.registeredMeals, 0);
+      expect(summary.totalProteinGrams, 0);
+      expect(summary.proteinGoalGrams, 0);
+    });
+  });
 }
