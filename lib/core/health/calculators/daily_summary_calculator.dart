@@ -1,4 +1,5 @@
 import '../models/models.dart';
+import 'health_score_calculator.dart';
 import 'hydration_calculator.dart';
 import 'protein_calculator.dart';
 
@@ -15,18 +16,36 @@ abstract final class DailySummaryCalculator {
     DailySummaryItem? latestExam,
     WeightProgressResult? weightProgress,
   }) {
+    final hydration = HydrationCalculator.calculate(
+      currentMl: waterConsumedMl,
+      goalMl: waterGoalMl,
+    );
+
+    final protein = ProteinCalculator.calculate(
+      currentGrams: totalProteinGrams,
+      goalGrams: proteinGoalGrams,
+    );
+
+    final safePendingVitamins = _nonNegative(pendingVitamins);
+    final safePendingMedications = _nonNegative(pendingMedications);
+    final safeRegisteredMeals = _nonNegative(registeredMeals);
+
+    final healthScore = HealthScoreCalculator.calculate(
+      hydration: hydration,
+      protein: protein,
+      pendingVitamins: safePendingVitamins,
+      pendingMedications: safePendingMedications,
+      registeredMeals: safeRegisteredMeals,
+      weightProgress: weightProgress,
+    );
+
     return DailySummary(
-      hydration: HydrationCalculator.calculate(
-        currentMl: waterConsumedMl,
-        goalMl: waterGoalMl,
-      ),
-      pendingVitamins: _nonNegative(pendingVitamins),
-      pendingMedications: _nonNegative(pendingMedications),
-      registeredMeals: _nonNegative(registeredMeals),
-      protein: ProteinCalculator.calculate(
-        currentGrams: totalProteinGrams,
-        goalGrams: proteinGoalGrams,
-      ),
+      hydration: hydration,
+      pendingVitamins: safePendingVitamins,
+      pendingMedications: safePendingMedications,
+      registeredMeals: safeRegisteredMeals,
+      protein: protein,
+      healthScore: healthScore,
       nextAppointment: nextAppointment,
       latestExam: latestExam,
       weightProgress: weightProgress,

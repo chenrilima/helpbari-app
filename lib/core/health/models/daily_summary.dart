@@ -1,4 +1,5 @@
 import 'daily_summary_item.dart';
+import 'health_score_result.dart';
 import 'hydration_result.dart';
 import 'protein_result.dart';
 import 'weight_progress_result.dart';
@@ -10,6 +11,7 @@ class DailySummary {
     required this.pendingMedications,
     required this.registeredMeals,
     required this.protein,
+    required this.healthScore,
     this.nextAppointment,
     this.latestExam,
     this.weightProgress,
@@ -20,6 +22,7 @@ class DailySummary {
   final int pendingMedications;
   final int registeredMeals;
   final ProteinResult protein;
+  final HealthScoreResult healthScore;
   final DailySummaryItem? nextAppointment;
   final DailySummaryItem? latestExam;
   final WeightProgressResult? weightProgress;

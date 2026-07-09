@@ -5,6 +5,7 @@ import '../../../../design_system/design_system.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/appointment_overview_section.dart';
 import '../widgets/exam_overview_section.dart';
+import '../widgets/health_score_overview_section.dart';
 import '../widgets/home_header.dart';
 import '../widgets/meal_overview_section.dart';
 import '../widgets/medication_overview_section.dart';
@@ -47,6 +48,12 @@ class _HomePageState extends ConsumerState<HomePage> {
       children: [
         HomeHeader(userName: state.profile?.name ?? 'Olá'),
         ProgressBanner(title: state.bannerTitle, message: state.bannerMessage),
+        if (state.dailySummary != null) ...[
+          const HBGap.xl(),
+          HealthScoreOverviewSection(
+            healthScore: state.dailySummary!.healthScore,
+          ),
+        ],
         const HBGap.xl(),
         WeightOverviewSection(
           latestRecord: state.latestWeightRecord,
