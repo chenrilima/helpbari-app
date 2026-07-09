@@ -12,6 +12,8 @@ import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/meals/presentation/pages/register_meal_page.dart';
 import '../../features/medications/presentation/pages/medications_page.dart';
 import '../../features/medications/presentation/pages/register_medication_page.dart';
+import '../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/progress/presentation/pages/progress_page.dart';
@@ -36,12 +38,28 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ref.watch(sessionManagerProvider).authStateChanges,
   );
 
+  ref.listen(onboardingViewModelProvider, (previous, next) {
+    refreshListenable.notify();
+  });
+
   final router = GoRouter(
     initialLocation: AppRoutes.home,
     refreshListenable: refreshListenable,
     redirect: (context, state) {
+      final location = state.uri.path;
+      final onboardingState = ref.read(onboardingViewModelProvider);
+      final isOnboardingRoute = location == AppRoutes.onboarding;
+
+      if (!onboardingState.hasCompleted) {
+        return isOnboardingRoute ? null : AppRoutes.onboarding;
+      }
+
+      if (isOnboardingRoute) {
+        return AppRoutes.splash;
+      }
+
       return AuthGuard.redirect(
-        location: state.uri.path,
+        location: location,
         authState: ref.read(authViewModelProvider),
       );
     },
@@ -49,6 +67,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder: (context, state) => const OnboardingPage(),
       ),
       GoRoute(
         path: AppRoutes.login,
@@ -151,6 +173,8 @@ class _GoRouterRefreshStream extends ChangeNotifier {
   }
 
   late final StreamSubscription<Object?> _subscription;
+
+  void notify() => notifyListeners();
 
   @override
   void dispose() {

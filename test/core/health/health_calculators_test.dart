@@ -111,10 +111,13 @@ void main() {
       final result = HealthScoreCalculator.calculate(
         hydration: hydration,
         protein: protein,
+        pendingVitamins: 1,
+        pendingMedications: 0,
+        registeredMeals: 3,
         weightProgress: weightProgress,
       );
 
-      expect(result.score, 68);
+      expect(result.score, 70);
       expect(result.isExcellent, isFalse);
     });
   });
