@@ -1,3 +1,5 @@
+import '../../../../core/formatters/app_water_formatter.dart';
+
 class WaterAmount {
   const WaterAmount._(this.valueInMl);
 
@@ -13,13 +15,7 @@ class WaterAmount {
     return WaterAmount._(valueInMl);
   }
 
-  String get formatted {
-    if (valueInMl >= 1000) {
-      return '${(valueInMl / 1000).toStringAsFixed(1)} L';
-    }
-
-    return '$valueInMl ml';
-  }
+  String get formatted => AppWaterFormatter.ml(valueInMl);
 
   @override
   String toString() => formatted;

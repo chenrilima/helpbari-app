@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/medication_view_model_provider.dart';
 
@@ -56,6 +57,8 @@ class _RegisterMedicationPageState
 
     if (!mounted) return;
 
+    HBSnackBar.success(context, message: 'Medicamento cadastrado com sucesso.');
+
     context.pop(true);
   }
 
@@ -80,19 +83,7 @@ class _RegisterMedicationPageState
                   label: 'Nome do medicamento',
                   hint: 'Ex: Omeprazol, Losartana',
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) {
-                      return 'Informe o nome do medicamento.';
-                    }
-
-                    if (text.length < 2) {
-                      return 'Informe um nome válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.medicationName,
                 ),
                 const HBGap.md(),
                 HBTextField(

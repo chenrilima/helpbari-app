@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../../domain/value_objects/value_objects.dart';
 import '../providers/meal_view_model_provider.dart';
@@ -20,7 +21,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
   final _notesController = TextEditingController();
 
   MealType _selectedType = MealType.lunch;
-  DateTime _selectedDate = DateTime.now();
+  final DateTime _selectedDate = DateTime.now();
 
   @override
   void dispose() {
@@ -47,6 +48,8 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
 
     if (!mounted) return;
 
+    HBSnackBar.success(context, message: 'Refeição cadastrada com sucesso.');
+
     context.pop(true);
   }
 
@@ -68,19 +71,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
                   label: 'Nome da refeição',
                   hint: 'Ex: Frango com legumes',
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) {
-                      return 'Informe o nome da refeição.';
-                    }
-
-                    if (text.length < 2) {
-                      return 'Informe um nome válido.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.mealName,
                 ),
                 const HBGap.md(),
                 DropdownButtonFormField<MealType>(
@@ -107,19 +98,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
                   hint: 'Ex: 25',
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    final text = value?.trim() ?? '';
-
-                    if (text.isEmpty) return null;
-
-                    final protein = int.tryParse(text);
-
-                    if (protein == null || protein < 0 || protein > 300) {
-                      return 'Informe uma quantidade válida.';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.protein,
                 ),
                 const HBGap.md(),
                 HBTextField(

@@ -53,13 +53,8 @@ class _QuickWaterButton extends ConsumerWidget {
         icon: AppIcons.water,
         onPressed: () async {
           await ref.read(waterViewModelProvider.notifier).registerWater(amount);
-
           if (!context.mounted) return;
-
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('$label registrado! 💧')));
-
+          HBSnackBar.success(context, message: '$label registrado! 💧');
           context.pop(true);
         },
       ),

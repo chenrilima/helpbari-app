@@ -1,3 +1,4 @@
+import '../../../../core/formatters/app_weight_formatter.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
 
@@ -47,38 +48,27 @@ class ProgressSummary {
     return (alreadyLost / totalToLose).clamp(0, 1) * 100;
   }
 
-  String get formattedInitialWeight => '${initialWeight.toStringAsFixed(1)} kg';
+  String get formattedInitialWeight {
+    return AppWeightFormatter.kg(initialWeight);
+  }
 
   String get formattedCurrentWeight {
     final current = currentWeight;
-
     if (current == null) return 'Sem registro';
-
-    return '${current.toStringAsFixed(1)} kg';
+    return AppWeightFormatter.kg(current);
   }
 
   String get formattedWeightLost {
     final value = weightLost;
-
     if (value == null) return 'Sem registro';
-
     if (value == 0) return 'Peso inicial mantido';
-
-    if (value > 0) {
-      return '${value.toStringAsFixed(1)} kg perdidos';
-    }
-
-    return '${value.abs().toStringAsFixed(1)} kg acima do inicial';
+    return AppWeightFormatter.difference(value);
   }
 
   String get formattedRemainingToTarget {
     final value = remainingToTarget;
-
     if (value == null) return 'Meta não definida';
-
-    if (value <= 0) return 'Meta atingida';
-
-    return '${value.toStringAsFixed(1)} kg até a meta';
+    return AppWeightFormatter.remaining(value);
   }
 
   String get formattedTargetProgress {

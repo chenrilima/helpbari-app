@@ -1,3 +1,4 @@
+import '../../../../core/formatters/app_protein_formatter.dart';
 import '../entities/entities.dart';
 
 class MealSummary {
@@ -22,8 +23,6 @@ class MealSummary {
   }
 
   String get formattedProteinToday {
-    if (totalProteinToday <= 0) return 'Proteína não informada';
-
-    return '$totalProteinToday g de proteína hoje';
+    return AppProteinFormatter.today(totalProteinToday);
   }
 }

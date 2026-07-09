@@ -1,3 +1,4 @@
+import '../../../../core/formatters/app_water_formatter.dart';
 import '../../domain/entities/entities.dart';
 
 class WaterState {
@@ -29,13 +30,7 @@ class WaterState {
         .fold<int>(0, (total, record) => total + record.amount.valueInMl);
   }
 
-  String get formattedToday {
-    if (totalTodayInMl >= 1000) {
-      return '${(totalTodayInMl / 1000).toStringAsFixed(1)} L';
-    }
-
-    return '$totalTodayInMl ml';
-  }
+  String get formattedToday => AppWaterFormatter.ml(totalTodayInMl);
 
   WaterState copyWith({List<WaterRecord>? records, bool? isLoading}) {
     return WaterState(

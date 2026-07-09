@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/exam_view_model_provider.dart';
 
@@ -60,6 +61,8 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
 
     if (!mounted) return;
 
+    HBSnackBar.success(context, message: 'Exame cadastrado com sucesso.');
+
     context.pop(true);
   }
 
@@ -84,13 +87,7 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
                 HBTextField(
                   controller: _nameController,
                   label: 'Nome do exame',
-                  validator: (value) {
-                    if ((value ?? '').trim().isEmpty) {
-                      return 'Informe o exame';
-                    }
-
-                    return null;
-                  },
+                  validator: AppValidators.examName,
                 ),
 
                 const HBGap.md(),
