@@ -10,6 +10,7 @@ import '../../features/exams/presentation/pages/exams_page.dart';
 import '../../features/exams/presentation/pages/register_exam_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/meals/presentation/pages/register_meal_page.dart';
+import '../../features/medical_reports/presentation/pages/medical_reports_page.dart';
 import '../../features/medications/presentation/pages/medications_page.dart';
 import '../../features/medications/presentation/pages/register_medication_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
@@ -150,6 +151,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.registerMeal,
         builder: (context, state) => const RegisterMealPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.medicalReports,
+        builder: (context, state) => const MedicalReportsPage(),
       ),
       GoRoute(
         path: AppRoutes.settings,
