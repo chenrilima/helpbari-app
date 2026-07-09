@@ -25,10 +25,14 @@ class WaterOverviewSection extends StatelessWidget {
     return HomeSection(
       title: 'Água',
       subtitle: 'Sua hidratação de hoje.',
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        onTap: () => _openWater(context),
-        child: WaterProgressCard(currentMl: totalTodayInMl),
+      child: Semantics(
+        button: true,
+        label: 'Abrir água',
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          onTap: () => _openWater(context),
+          child: WaterProgressCard(currentMl: totalTodayInMl),
+        ),
       ),
     );
   }

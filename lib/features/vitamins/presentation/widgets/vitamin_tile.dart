@@ -20,7 +20,9 @@ class VitaminTile extends StatelessWidget {
     return HBCard(
       child: Row(
         children: [
-          const Icon(AppIcons.vitamin, color: AppColors.primary),
+          const ExcludeSemantics(
+            child: Icon(AppIcons.vitamin, color: AppColors.primary),
+          ),
           const HBGap.md(),
           Expanded(
             child: Column(
@@ -41,8 +43,16 @@ class VitaminTile extends StatelessWidget {
             ),
           ),
           if (vitamin.isPending) ...[
-            IconButton(onPressed: onSkipped, icon: const Icon(Icons.close)),
-            IconButton(onPressed: onTaken, icon: const Icon(Icons.check)),
+            IconButton(
+              tooltip: 'Pular vitamina',
+              onPressed: onSkipped,
+              icon: const Icon(Icons.close),
+            ),
+            IconButton(
+              tooltip: 'Marcar vitamina como tomada',
+              onPressed: onTaken,
+              icon: const Icon(Icons.check),
+            ),
           ],
         ],
       ),

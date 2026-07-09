@@ -25,10 +25,14 @@ class MedicationOverviewSection extends StatelessWidget {
     return HomeSection(
       title: 'Medicamentos',
       subtitle: 'Acompanhe sua rotina de remédios.',
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        onTap: () => _openMedications(context),
-        child: MedicationSummaryCard(pendingCount: pendingCount),
+      child: Semantics(
+        button: true,
+        label: 'Abrir medicamentos',
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          onTap: () => _openMedications(context),
+          child: MedicationSummaryCard(pendingCount: pendingCount),
+        ),
       ),
     );
   }

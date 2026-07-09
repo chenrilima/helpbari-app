@@ -18,37 +18,37 @@ class TodayTaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(AppRadius.lg),
+    return HBCard(
       onTap: onTap,
-      child: HBCard(
-        child: Row(
-          children: [
-            Icon(icon, color: AppColors.primary, size: 28),
+      semanticLabel: '$title. $subtitle',
+      child: Row(
+        children: [
+          ExcludeSemantics(
+            child: Icon(icon, color: AppColors.primary, size: 28),
+          ),
 
-            const HBGap.md(),
+          const HBGap.md(),
 
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HBText(title, style: Theme.of(context).textTheme.titleMedium),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HBText(title, style: Theme.of(context).textTheme.titleMedium),
 
-                  const HBGap.xs(),
+                const HBGap.xs(),
 
-                  HBText(
-                    subtitle,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                HBText(
+                  subtitle,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
 
-            const Icon(Icons.chevron_right),
-          ],
-        ),
+          const ExcludeSemantics(child: Icon(Icons.chevron_right)),
+        ],
       ),
     );
   }

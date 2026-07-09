@@ -40,6 +40,14 @@ class HBCard extends StatelessWidget {
     );
 
     if (onTap == null) {
+      if (semanticLabel != null) {
+        return Semantics(
+          label: semanticLabel,
+          excludeSemantics: true,
+          child: content,
+        );
+      }
+
       return content;
     }
 
@@ -47,6 +55,7 @@ class HBCard extends StatelessWidget {
       button: true,
       enabled: true,
       label: semanticLabel,
+      excludeSemantics: semanticLabel != null,
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.lg),
         onTap: onTap,

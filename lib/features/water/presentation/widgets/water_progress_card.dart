@@ -35,6 +35,8 @@ class WaterProgressCard extends StatelessWidget {
 
           LinearProgressIndicator(
             value: progress,
+            semanticsLabel: 'Progresso da meta diária de água',
+            semanticsValue: AppNumberFormatter.percentage(progress * 100),
             borderRadius: BorderRadius.circular(AppRadius.full),
             minHeight: 10,
           ),

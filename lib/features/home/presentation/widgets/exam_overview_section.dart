@@ -27,10 +27,14 @@ class ExamOverviewSection extends StatelessWidget {
       title: 'Exames',
       subtitle: 'Acompanhe seus exames realizados.',
       child: latestExam != null
-          ? InkWell(
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              onTap: () => _openExams(context),
-              child: ExamSummaryCard(exam: latestExam!),
+          ? Semantics(
+              button: true,
+              label: 'Abrir exames',
+              child: InkWell(
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                onTap: () => _openExams(context),
+                child: ExamSummaryCard(exam: latestExam!),
+              ),
             )
           : HBEmptyState(
               title: 'Nenhum exame cadastrado',

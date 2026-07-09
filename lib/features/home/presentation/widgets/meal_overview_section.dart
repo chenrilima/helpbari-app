@@ -27,12 +27,16 @@ class MealOverviewSection extends StatelessWidget {
     return HomeSection(
       title: 'Refeições',
       subtitle: 'Acompanhe sua alimentação de hoje.',
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        onTap: () => _openMeals(context),
-        child: MealSummaryCard(
-          todayCount: todayCount,
-          totalProteinToday: totalProteinToday,
+      child: Semantics(
+        button: true,
+        label: 'Abrir refeições',
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          onTap: () => _openMeals(context),
+          child: MealSummaryCard(
+            todayCount: todayCount,
+            totalProteinToday: totalProteinToday,
+          ),
         ),
       ),
     );

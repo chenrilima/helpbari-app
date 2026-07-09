@@ -35,6 +35,14 @@ class HBMetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectiveSemanticLabel =
+        semanticLabel ??
+        [
+          title,
+          value,
+          if (description != null) description,
+        ].join(', ');
+
     final content = ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: onTap == null ? 0 : AppSizes.buttonMinTapTarget,
@@ -94,7 +102,8 @@ class HBMetricCard extends StatelessWidget {
 
     if (onTap == null) {
       return Semantics(
-        label: semanticLabel ?? '$title, $value',
+        label: effectiveSemanticLabel,
+        excludeSemantics: true,
         child: content,
       );
     }
@@ -102,7 +111,8 @@ class HBMetricCard extends StatelessWidget {
     return Semantics(
       button: true,
       enabled: true,
-      label: semanticLabel ?? '$title, $value',
+      label: effectiveSemanticLabel,
+      excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),
