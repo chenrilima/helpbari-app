@@ -6,6 +6,7 @@ class AuthGuard {
 
   static const publicRoutes = {
     AppRoutes.splash,
+    AppRoutes.onboarding,
     AppRoutes.login,
     AppRoutes.signUp,
   };
