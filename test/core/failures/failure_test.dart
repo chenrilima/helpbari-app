@@ -47,5 +47,17 @@ void main() {
       expect(first, second);
       expect(first, isNot(differentType));
     });
+
+    test('converts failure to app exception', () {
+      const failure = StorageFailure(
+        message: 'Não foi possível carregar os dados.',
+        code: 'storage_read_failed',
+      );
+
+      final exception = failure.toException();
+
+      expect(exception.message, failure.message);
+      expect(exception.code, failure.code);
+    });
   });
 }

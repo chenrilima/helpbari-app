@@ -1,3 +1,5 @@
+import '../errors/app_exception.dart';
+
 sealed class Failure {
   const Failure({required this.message, this.code});
 
@@ -24,6 +26,10 @@ sealed class Failure {
 
   @override
   int get hashCode => Object.hash(runtimeType, message, code);
+
+  AppException toException({StackTrace? stackTrace}) {
+    return AppException(message: message, code: code, stackTrace: stackTrace);
+  }
 }
 
 final class ValidationFailure extends Failure {
