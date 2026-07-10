@@ -17,9 +17,9 @@ class SyncManager extends Notifier<SyncState> {
   SyncState build() {
     _engine = ref.read(syncEngineProvider);
     _stateRepository = ref.read(syncStateRepositoryProvider);
-    _repositories = ref.read(syncableRepositoriesProvider);
-    _appVersion = ref.read(syncAppVersionProvider);
-    _userId = ref.read(syncUserIdProvider);
+    _repositories = ref.watch(syncableRepositoriesProvider);
+    _appVersion = ref.watch(syncAppVersionProvider);
+    _userId = ref.watch(syncUserIdProvider);
 
     return const SyncState();
   }

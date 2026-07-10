@@ -173,12 +173,15 @@ flutter run
 
 # ⚙️ Configuração
 
-Crie um arquivo `.env`
+Execute o app passando as credenciais do Supabase como `dart-defines`:
 
+```bash
+fvm flutter run \
+  --dart-define=SUPABASE_URL=https://seu-projeto.supabase.co \
+  --dart-define=SUPABASE_ANON_KEY=sua_chave_anon
 ```
-SUPABASE_URL=
-SUPABASE_ANON_KEY=
-```
+
+Não deixe espaços após cada `\`, pois ela precisa ser o último caractere da linha.
 
 ---
 

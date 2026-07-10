@@ -42,6 +42,28 @@ class WaterRecordDto {
     );
   }
 
+  Map<String, dynamic> toSupabaseInsert({required String userId}) {
+    return {
+      'id': id,
+      'user_id': userId,
+      'amount_ml': amountInMl,
+      'recorded_at': recordedAt.toIso8601String(),
+      'created_at': syncMetadata.createdAt.toIso8601String(),
+      'updated_at': syncMetadata.updatedAt.toIso8601String(),
+      'deleted_at': syncMetadata.deletedAt?.toIso8601String(),
+    };
+  }
+
+  Map<String, dynamic> toSupabaseUpdate({required String userId}) {
+    return {
+      'user_id': userId,
+      'amount_ml': amountInMl,
+      'recorded_at': recordedAt.toIso8601String(),
+      'updated_at': syncMetadata.updatedAt.toIso8601String(),
+      'deleted_at': syncMetadata.deletedAt?.toIso8601String(),
+    };
+  }
+
   static WaterRecordDto fromEntity(
     WaterRecord record, {
     required DateTime now,
@@ -74,6 +96,24 @@ class WaterRecordDto {
     );
   }
 
+  static WaterRecordDto fromSupabaseRow(Map<String, dynamic> row) {
+    final id = row['id'] as String;
+
+    return WaterRecordDto(
+      id: id,
+      amountInMl: row['amount_ml'] as int,
+      recordedAt: _dateTime(row['recorded_at']),
+      syncMetadata: SyncMetadata(
+        id: id,
+        userId: row['user_id'] as String?,
+        createdAt: _dateTime(row['created_at']),
+        updatedAt: _dateTime(row['updated_at']),
+        deletedAt: _nullableDateTime(row['deleted_at']),
+        syncStatus: SyncStatus.synced,
+      ),
+    );
+  }
+
   static SyncStatus _nextSyncStatus(SyncStatus? currentStatus) {
     return switch (currentStatus) {
       SyncStatus.synced => SyncStatus.pendingUpdate,
@@ -83,5 +123,19 @@ class WaterRecordDto {
       SyncStatus.pendingUpdate => SyncStatus.pendingUpdate,
       null => SyncStatus.pendingCreate,
     };
+  }
+
+  static DateTime _dateTime(Object? value) {
+    if (value is DateTime) return value;
+    if (value is String) return DateTime.parse(value);
+
+    throw FormatException('Data inválida para registro de água: $value');
+  }
+
+  static DateTime? _nullableDateTime(Object? value) {
+    if (value == null) return null;
+    if (value is String && value.isEmpty) return null;
+
+    return _dateTime(value);
   }
 }

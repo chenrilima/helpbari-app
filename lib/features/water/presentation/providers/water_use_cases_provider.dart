@@ -15,8 +15,11 @@ final waterRepositoryProvider = Provider<WaterRepository>((ref) {
         clock: ref.watch(clockServiceProvider),
       ),
     ),
-    RepositoryBackend.supabase => throw UnsupportedError(
-      'Water Supabase repository will be enabled in the Supabase integration step.',
+    RepositoryBackend.supabase => LocalWaterRepository(
+      LocalWaterDatasource(
+        database: ref.watch(localDatabaseProvider),
+        clock: ref.watch(clockServiceProvider),
+      ),
     ),
   };
 });
