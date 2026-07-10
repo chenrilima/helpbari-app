@@ -4,6 +4,7 @@ import '../../../../core/services/clock_service.dart';
 import '../../../../core/services/logger_service.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/services/uuid_service.dart';
+import '../../../../core/sync/sync.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -49,6 +50,7 @@ class WaterViewModel extends Notifier<WaterState> {
 
     await _useCases.save(record);
     _logger.info('ML de Água criado');
+    await ref.read(syncManagerProvider.notifier).syncNow();
     await loadHistory();
   }
 }
