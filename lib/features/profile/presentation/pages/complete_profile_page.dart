@@ -10,6 +10,7 @@ import '../../../../design_system/design_system.dart';
 import '../../domain/value_objects/value_objects.dart';
 import '../models/create_profile_form.dart';
 import '../providers/profile_view_model_provider.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 class CompleteProfilePage extends ConsumerStatefulWidget {
   const CompleteProfilePage({super.key});
@@ -29,6 +30,30 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   SurgeryType _selectedSurgeryType = SurgeryType.other;
   DateTime? _birthDate;
   DateTime? _surgeryDate;
+  bool _editing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(_loadExisting);
+  }
+
+  Future<void> _loadExisting() async {
+    await ref.read(profileViewModelProvider.notifier).loadProfile();
+    final profile = ref.read(profileViewModelProvider).profile;
+    if (profile == null || !mounted) return;
+    setState(() {
+      _editing = true;
+      _nameController.text = profile.name;
+      _heightController.text = profile.height.valueInCentimeters.toString();
+      _initialWeightController.text = profile.initialWeight.value.toString();
+      _targetWeightController.text =
+          profile.targetWeight?.value.toString() ?? '';
+      _birthDate = profile.birthDate.value;
+      _surgeryDate = profile.surgeryDate.value;
+      _selectedSurgeryType = profile.surgeryType;
+    });
+  }
 
   @override
   void dispose() {
@@ -56,7 +81,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
 
     final form = CreateProfileForm(
       name: _nameController.text.trim(),
-      email: 'local@helpbari.app',
+      email: ref.read(authSessionProvider)?.email ?? '',
       birthDate: _birthDate!,
       height: int.parse(_heightController.text.trim()),
       initialWeight: double.parse(
@@ -69,7 +94,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
       surgeryType: _selectedSurgeryType,
     );
 
-    await ref.read(profileViewModelProvider.notifier).createProfile(form);
+    await ref.read(profileViewModelProvider.notifier).saveProfile(form);
 
     if (!mounted) return;
 
@@ -114,8 +139,8 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   @override
   Widget build(BuildContext context) {
     return HBPage(
-      appBar: const HBAppBar(
-        title: 'Completar perfil',
+      appBar: HBAppBar(
+        title: _editing ? 'Editar perfil' : 'Completar perfil',
         subtitle: 'Personalize sua jornada',
       ),
       children: [
@@ -211,7 +236,10 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                   },
                 ),
                 const HBGap.xl(),
-                HBButton(label: 'Salvar perfil', onPressed: _submit),
+                HBButton(
+                  label: _editing ? 'Salvar alterações' : 'Salvar perfil',
+                  onPressed: _submit,
+                ),
               ],
             ),
           ),

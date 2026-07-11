@@ -3706,6 +3706,1538 @@ class SettingsCutoversCompanion extends UpdateCompanion<SettingsCutover> {
   }
 }
 
+class $ProfileRecordsTable extends ProfileRecords
+    with TableInfo<$ProfileRecordsTable, ProfileRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProfileRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+    'email',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _birthDateMeta = const VerificationMeta(
+    'birthDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> birthDate = GeneratedColumn<DateTime>(
+    'birth_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _heightInCentimetersMeta =
+      const VerificationMeta('heightInCentimeters');
+  @override
+  late final GeneratedColumn<int> heightInCentimeters = GeneratedColumn<int>(
+    'height_in_centimeters',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _initialWeightMeta = const VerificationMeta(
+    'initialWeight',
+  );
+  @override
+  late final GeneratedColumn<double> initialWeight = GeneratedColumn<double>(
+    'initial_weight',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetWeightMeta = const VerificationMeta(
+    'targetWeight',
+  );
+  @override
+  late final GeneratedColumn<double> targetWeight = GeneratedColumn<double>(
+    'target_weight',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _surgeryDateMeta = const VerificationMeta(
+    'surgeryDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> surgeryDate = GeneratedColumn<DateTime>(
+    'surgery_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _surgeryTypeMeta = const VerificationMeta(
+    'surgeryType',
+  );
+  @override
+  late final GeneratedColumn<String> surgeryType = GeneratedColumn<String>(
+    'surgery_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _photoUrlMeta = const VerificationMeta(
+    'photoUrl',
+  );
+  @override
+  late final GeneratedColumn<String> photoUrl = GeneratedColumn<String>(
+    'photo_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    name,
+    email,
+    birthDate,
+    heightInCentimeters,
+    initialWeight,
+    targetWeight,
+    surgeryDate,
+    surgeryType,
+    photoUrl,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'profile_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ProfileRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+        _emailMeta,
+        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_emailMeta);
+    }
+    if (data.containsKey('birth_date')) {
+      context.handle(
+        _birthDateMeta,
+        birthDate.isAcceptableOrUnknown(data['birth_date']!, _birthDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_birthDateMeta);
+    }
+    if (data.containsKey('height_in_centimeters')) {
+      context.handle(
+        _heightInCentimetersMeta,
+        heightInCentimeters.isAcceptableOrUnknown(
+          data['height_in_centimeters']!,
+          _heightInCentimetersMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_heightInCentimetersMeta);
+    }
+    if (data.containsKey('initial_weight')) {
+      context.handle(
+        _initialWeightMeta,
+        initialWeight.isAcceptableOrUnknown(
+          data['initial_weight']!,
+          _initialWeightMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_initialWeightMeta);
+    }
+    if (data.containsKey('target_weight')) {
+      context.handle(
+        _targetWeightMeta,
+        targetWeight.isAcceptableOrUnknown(
+          data['target_weight']!,
+          _targetWeightMeta,
+        ),
+      );
+    }
+    if (data.containsKey('surgery_date')) {
+      context.handle(
+        _surgeryDateMeta,
+        surgeryDate.isAcceptableOrUnknown(
+          data['surgery_date']!,
+          _surgeryDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_surgeryDateMeta);
+    }
+    if (data.containsKey('surgery_type')) {
+      context.handle(
+        _surgeryTypeMeta,
+        surgeryType.isAcceptableOrUnknown(
+          data['surgery_type']!,
+          _surgeryTypeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_surgeryTypeMeta);
+    }
+    if (data.containsKey('photo_url')) {
+      context.handle(
+        _photoUrlMeta,
+        photoUrl.isAcceptableOrUnknown(data['photo_url']!, _photoUrlMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  ProfileRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProfileRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      email: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}email'],
+      )!,
+      birthDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}birth_date'],
+      )!,
+      heightInCentimeters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}height_in_centimeters'],
+      )!,
+      initialWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}initial_weight'],
+      )!,
+      targetWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}target_weight'],
+      ),
+      surgeryDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}surgery_date'],
+      )!,
+      surgeryType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}surgery_type'],
+      )!,
+      photoUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}photo_url'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $ProfileRecordsTable createAlias(String alias) {
+    return $ProfileRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
+  final String id;
+  final String userId;
+  final String name;
+  final String email;
+  final DateTime birthDate;
+  final int heightInCentimeters;
+  final double initialWeight;
+  final double? targetWeight;
+  final DateTime surgeryDate;
+  final String surgeryType;
+  final String? photoUrl;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const ProfileRecord({
+    required this.id,
+    required this.userId,
+    required this.name,
+    required this.email,
+    required this.birthDate,
+    required this.heightInCentimeters,
+    required this.initialWeight,
+    this.targetWeight,
+    required this.surgeryDate,
+    required this.surgeryType,
+    this.photoUrl,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['name'] = Variable<String>(name);
+    map['email'] = Variable<String>(email);
+    map['birth_date'] = Variable<DateTime>(birthDate);
+    map['height_in_centimeters'] = Variable<int>(heightInCentimeters);
+    map['initial_weight'] = Variable<double>(initialWeight);
+    if (!nullToAbsent || targetWeight != null) {
+      map['target_weight'] = Variable<double>(targetWeight);
+    }
+    map['surgery_date'] = Variable<DateTime>(surgeryDate);
+    map['surgery_type'] = Variable<String>(surgeryType);
+    if (!nullToAbsent || photoUrl != null) {
+      map['photo_url'] = Variable<String>(photoUrl);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  ProfileRecordsCompanion toCompanion(bool nullToAbsent) {
+    return ProfileRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      name: Value(name),
+      email: Value(email),
+      birthDate: Value(birthDate),
+      heightInCentimeters: Value(heightInCentimeters),
+      initialWeight: Value(initialWeight),
+      targetWeight: targetWeight == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetWeight),
+      surgeryDate: Value(surgeryDate),
+      surgeryType: Value(surgeryType),
+      photoUrl: photoUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(photoUrl),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory ProfileRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProfileRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      name: serializer.fromJson<String>(json['name']),
+      email: serializer.fromJson<String>(json['email']),
+      birthDate: serializer.fromJson<DateTime>(json['birthDate']),
+      heightInCentimeters: serializer.fromJson<int>(
+        json['heightInCentimeters'],
+      ),
+      initialWeight: serializer.fromJson<double>(json['initialWeight']),
+      targetWeight: serializer.fromJson<double?>(json['targetWeight']),
+      surgeryDate: serializer.fromJson<DateTime>(json['surgeryDate']),
+      surgeryType: serializer.fromJson<String>(json['surgeryType']),
+      photoUrl: serializer.fromJson<String?>(json['photoUrl']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'name': serializer.toJson<String>(name),
+      'email': serializer.toJson<String>(email),
+      'birthDate': serializer.toJson<DateTime>(birthDate),
+      'heightInCentimeters': serializer.toJson<int>(heightInCentimeters),
+      'initialWeight': serializer.toJson<double>(initialWeight),
+      'targetWeight': serializer.toJson<double?>(targetWeight),
+      'surgeryDate': serializer.toJson<DateTime>(surgeryDate),
+      'surgeryType': serializer.toJson<String>(surgeryType),
+      'photoUrl': serializer.toJson<String?>(photoUrl),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  ProfileRecord copyWith({
+    String? id,
+    String? userId,
+    String? name,
+    String? email,
+    DateTime? birthDate,
+    int? heightInCentimeters,
+    double? initialWeight,
+    Value<double?> targetWeight = const Value.absent(),
+    DateTime? surgeryDate,
+    String? surgeryType,
+    Value<String?> photoUrl = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => ProfileRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    name: name ?? this.name,
+    email: email ?? this.email,
+    birthDate: birthDate ?? this.birthDate,
+    heightInCentimeters: heightInCentimeters ?? this.heightInCentimeters,
+    initialWeight: initialWeight ?? this.initialWeight,
+    targetWeight: targetWeight.present ? targetWeight.value : this.targetWeight,
+    surgeryDate: surgeryDate ?? this.surgeryDate,
+    surgeryType: surgeryType ?? this.surgeryType,
+    photoUrl: photoUrl.present ? photoUrl.value : this.photoUrl,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  ProfileRecord copyWithCompanion(ProfileRecordsCompanion data) {
+    return ProfileRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      name: data.name.present ? data.name.value : this.name,
+      email: data.email.present ? data.email.value : this.email,
+      birthDate: data.birthDate.present ? data.birthDate.value : this.birthDate,
+      heightInCentimeters: data.heightInCentimeters.present
+          ? data.heightInCentimeters.value
+          : this.heightInCentimeters,
+      initialWeight: data.initialWeight.present
+          ? data.initialWeight.value
+          : this.initialWeight,
+      targetWeight: data.targetWeight.present
+          ? data.targetWeight.value
+          : this.targetWeight,
+      surgeryDate: data.surgeryDate.present
+          ? data.surgeryDate.value
+          : this.surgeryDate,
+      surgeryType: data.surgeryType.present
+          ? data.surgeryType.value
+          : this.surgeryType,
+      photoUrl: data.photoUrl.present ? data.photoUrl.value : this.photoUrl,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('name: $name, ')
+          ..write('email: $email, ')
+          ..write('birthDate: $birthDate, ')
+          ..write('heightInCentimeters: $heightInCentimeters, ')
+          ..write('initialWeight: $initialWeight, ')
+          ..write('targetWeight: $targetWeight, ')
+          ..write('surgeryDate: $surgeryDate, ')
+          ..write('surgeryType: $surgeryType, ')
+          ..write('photoUrl: $photoUrl, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    name,
+    email,
+    birthDate,
+    heightInCentimeters,
+    initialWeight,
+    targetWeight,
+    surgeryDate,
+    surgeryType,
+    photoUrl,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProfileRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.name == this.name &&
+          other.email == this.email &&
+          other.birthDate == this.birthDate &&
+          other.heightInCentimeters == this.heightInCentimeters &&
+          other.initialWeight == this.initialWeight &&
+          other.targetWeight == this.targetWeight &&
+          other.surgeryDate == this.surgeryDate &&
+          other.surgeryType == this.surgeryType &&
+          other.photoUrl == this.photoUrl &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> name;
+  final Value<String> email;
+  final Value<DateTime> birthDate;
+  final Value<int> heightInCentimeters;
+  final Value<double> initialWeight;
+  final Value<double?> targetWeight;
+  final Value<DateTime> surgeryDate;
+  final Value<String> surgeryType;
+  final Value<String?> photoUrl;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const ProfileRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.email = const Value.absent(),
+    this.birthDate = const Value.absent(),
+    this.heightInCentimeters = const Value.absent(),
+    this.initialWeight = const Value.absent(),
+    this.targetWeight = const Value.absent(),
+    this.surgeryDate = const Value.absent(),
+    this.surgeryType = const Value.absent(),
+    this.photoUrl = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ProfileRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required String name,
+    required String email,
+    required DateTime birthDate,
+    required int heightInCentimeters,
+    required double initialWeight,
+    this.targetWeight = const Value.absent(),
+    required DateTime surgeryDate,
+    required String surgeryType,
+    this.photoUrl = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       name = Value(name),
+       email = Value(email),
+       birthDate = Value(birthDate),
+       heightInCentimeters = Value(heightInCentimeters),
+       initialWeight = Value(initialWeight),
+       surgeryDate = Value(surgeryDate),
+       surgeryType = Value(surgeryType),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<ProfileRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? name,
+    Expression<String>? email,
+    Expression<DateTime>? birthDate,
+    Expression<int>? heightInCentimeters,
+    Expression<double>? initialWeight,
+    Expression<double>? targetWeight,
+    Expression<DateTime>? surgeryDate,
+    Expression<String>? surgeryType,
+    Expression<String>? photoUrl,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (name != null) 'name': name,
+      if (email != null) 'email': email,
+      if (birthDate != null) 'birth_date': birthDate,
+      if (heightInCentimeters != null)
+        'height_in_centimeters': heightInCentimeters,
+      if (initialWeight != null) 'initial_weight': initialWeight,
+      if (targetWeight != null) 'target_weight': targetWeight,
+      if (surgeryDate != null) 'surgery_date': surgeryDate,
+      if (surgeryType != null) 'surgery_type': surgeryType,
+      if (photoUrl != null) 'photo_url': photoUrl,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ProfileRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? name,
+    Value<String>? email,
+    Value<DateTime>? birthDate,
+    Value<int>? heightInCentimeters,
+    Value<double>? initialWeight,
+    Value<double?>? targetWeight,
+    Value<DateTime>? surgeryDate,
+    Value<String>? surgeryType,
+    Value<String?>? photoUrl,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return ProfileRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      birthDate: birthDate ?? this.birthDate,
+      heightInCentimeters: heightInCentimeters ?? this.heightInCentimeters,
+      initialWeight: initialWeight ?? this.initialWeight,
+      targetWeight: targetWeight ?? this.targetWeight,
+      surgeryDate: surgeryDate ?? this.surgeryDate,
+      surgeryType: surgeryType ?? this.surgeryType,
+      photoUrl: photoUrl ?? this.photoUrl,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (birthDate.present) {
+      map['birth_date'] = Variable<DateTime>(birthDate.value);
+    }
+    if (heightInCentimeters.present) {
+      map['height_in_centimeters'] = Variable<int>(heightInCentimeters.value);
+    }
+    if (initialWeight.present) {
+      map['initial_weight'] = Variable<double>(initialWeight.value);
+    }
+    if (targetWeight.present) {
+      map['target_weight'] = Variable<double>(targetWeight.value);
+    }
+    if (surgeryDate.present) {
+      map['surgery_date'] = Variable<DateTime>(surgeryDate.value);
+    }
+    if (surgeryType.present) {
+      map['surgery_type'] = Variable<String>(surgeryType.value);
+    }
+    if (photoUrl.present) {
+      map['photo_url'] = Variable<String>(photoUrl.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('name: $name, ')
+          ..write('email: $email, ')
+          ..write('birthDate: $birthDate, ')
+          ..write('heightInCentimeters: $heightInCentimeters, ')
+          ..write('initialWeight: $initialWeight, ')
+          ..write('targetWeight: $targetWeight, ')
+          ..write('surgeryDate: $surgeryDate, ')
+          ..write('surgeryType: $surgeryType, ')
+          ..write('photoUrl: $photoUrl, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ProfileCutoversTable extends ProfileCutovers
+    with TableInfo<$ProfileCutoversTable, ProfileCutover> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProfileCutoversTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _migrationKeyMeta = const VerificationMeta(
+    'migrationKey',
+  );
+  @override
+  late final GeneratedColumn<String> migrationKey = GeneratedColumn<String>(
+    'migration_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _versionMeta = const VerificationMeta(
+    'version',
+  );
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+    'version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _checksumMeta = const VerificationMeta(
+    'checksum',
+  );
+  @override
+  late final GeneratedColumn<String> checksum = GeneratedColumn<String>(
+    'checksum',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordCountMeta = const VerificationMeta(
+    'recordCount',
+  );
+  @override
+  late final GeneratedColumn<int> recordCount = GeneratedColumn<int>(
+    'record_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _databaseSchemaVersionMeta =
+      const VerificationMeta('databaseSchemaVersion');
+  @override
+  late final GeneratedColumn<int> databaseSchemaVersion = GeneratedColumn<int>(
+    'database_schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'profile_cutovers';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ProfileCutover> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('migration_key')) {
+      context.handle(
+        _migrationKeyMeta,
+        migrationKey.isAcceptableOrUnknown(
+          data['migration_key']!,
+          _migrationKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migrationKeyMeta);
+    }
+    if (data.containsKey('version')) {
+      context.handle(
+        _versionMeta,
+        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_versionMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completedAtMeta);
+    }
+    if (data.containsKey('checksum')) {
+      context.handle(
+        _checksumMeta,
+        checksum.isAcceptableOrUnknown(data['checksum']!, _checksumMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_checksumMeta);
+    }
+    if (data.containsKey('record_count')) {
+      context.handle(
+        _recordCountMeta,
+        recordCount.isAcceptableOrUnknown(
+          data['record_count']!,
+          _recordCountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_recordCountMeta);
+    }
+    if (data.containsKey('database_schema_version')) {
+      context.handle(
+        _databaseSchemaVersionMeta,
+        databaseSchemaVersion.isAcceptableOrUnknown(
+          data['database_schema_version']!,
+          _databaseSchemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_databaseSchemaVersionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {migrationKey, userId};
+  @override
+  ProfileCutover map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProfileCutover(
+      migrationKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}migration_key'],
+      )!,
+      version: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}version'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      )!,
+      checksum: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}checksum'],
+      )!,
+      recordCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}record_count'],
+      )!,
+      databaseSchemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}database_schema_version'],
+      )!,
+    );
+  }
+
+  @override
+  $ProfileCutoversTable createAlias(String alias) {
+    return $ProfileCutoversTable(attachedDatabase, alias);
+  }
+}
+
+class ProfileCutover extends DataClass implements Insertable<ProfileCutover> {
+  final String migrationKey;
+  final int version;
+  final String userId;
+  final DateTime completedAt;
+  final String checksum;
+  final int recordCount;
+  final int databaseSchemaVersion;
+  const ProfileCutover({
+    required this.migrationKey,
+    required this.version,
+    required this.userId,
+    required this.completedAt,
+    required this.checksum,
+    required this.recordCount,
+    required this.databaseSchemaVersion,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['migration_key'] = Variable<String>(migrationKey);
+    map['version'] = Variable<int>(version);
+    map['user_id'] = Variable<String>(userId);
+    map['completed_at'] = Variable<DateTime>(completedAt);
+    map['checksum'] = Variable<String>(checksum);
+    map['record_count'] = Variable<int>(recordCount);
+    map['database_schema_version'] = Variable<int>(databaseSchemaVersion);
+    return map;
+  }
+
+  ProfileCutoversCompanion toCompanion(bool nullToAbsent) {
+    return ProfileCutoversCompanion(
+      migrationKey: Value(migrationKey),
+      version: Value(version),
+      userId: Value(userId),
+      completedAt: Value(completedAt),
+      checksum: Value(checksum),
+      recordCount: Value(recordCount),
+      databaseSchemaVersion: Value(databaseSchemaVersion),
+    );
+  }
+
+  factory ProfileCutover.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProfileCutover(
+      migrationKey: serializer.fromJson<String>(json['migrationKey']),
+      version: serializer.fromJson<int>(json['version']),
+      userId: serializer.fromJson<String>(json['userId']),
+      completedAt: serializer.fromJson<DateTime>(json['completedAt']),
+      checksum: serializer.fromJson<String>(json['checksum']),
+      recordCount: serializer.fromJson<int>(json['recordCount']),
+      databaseSchemaVersion: serializer.fromJson<int>(
+        json['databaseSchemaVersion'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'migrationKey': serializer.toJson<String>(migrationKey),
+      'version': serializer.toJson<int>(version),
+      'userId': serializer.toJson<String>(userId),
+      'completedAt': serializer.toJson<DateTime>(completedAt),
+      'checksum': serializer.toJson<String>(checksum),
+      'recordCount': serializer.toJson<int>(recordCount),
+      'databaseSchemaVersion': serializer.toJson<int>(databaseSchemaVersion),
+    };
+  }
+
+  ProfileCutover copyWith({
+    String? migrationKey,
+    int? version,
+    String? userId,
+    DateTime? completedAt,
+    String? checksum,
+    int? recordCount,
+    int? databaseSchemaVersion,
+  }) => ProfileCutover(
+    migrationKey: migrationKey ?? this.migrationKey,
+    version: version ?? this.version,
+    userId: userId ?? this.userId,
+    completedAt: completedAt ?? this.completedAt,
+    checksum: checksum ?? this.checksum,
+    recordCount: recordCount ?? this.recordCount,
+    databaseSchemaVersion: databaseSchemaVersion ?? this.databaseSchemaVersion,
+  );
+  ProfileCutover copyWithCompanion(ProfileCutoversCompanion data) {
+    return ProfileCutover(
+      migrationKey: data.migrationKey.present
+          ? data.migrationKey.value
+          : this.migrationKey,
+      version: data.version.present ? data.version.value : this.version,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      checksum: data.checksum.present ? data.checksum.value : this.checksum,
+      recordCount: data.recordCount.present
+          ? data.recordCount.value
+          : this.recordCount,
+      databaseSchemaVersion: data.databaseSchemaVersion.present
+          ? data.databaseSchemaVersion.value
+          : this.databaseSchemaVersion,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileCutover(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProfileCutover &&
+          other.migrationKey == this.migrationKey &&
+          other.version == this.version &&
+          other.userId == this.userId &&
+          other.completedAt == this.completedAt &&
+          other.checksum == this.checksum &&
+          other.recordCount == this.recordCount &&
+          other.databaseSchemaVersion == this.databaseSchemaVersion);
+}
+
+class ProfileCutoversCompanion extends UpdateCompanion<ProfileCutover> {
+  final Value<String> migrationKey;
+  final Value<int> version;
+  final Value<String> userId;
+  final Value<DateTime> completedAt;
+  final Value<String> checksum;
+  final Value<int> recordCount;
+  final Value<int> databaseSchemaVersion;
+  final Value<int> rowid;
+  const ProfileCutoversCompanion({
+    this.migrationKey = const Value.absent(),
+    this.version = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.checksum = const Value.absent(),
+    this.recordCount = const Value.absent(),
+    this.databaseSchemaVersion = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ProfileCutoversCompanion.insert({
+    required String migrationKey,
+    required int version,
+    required String userId,
+    required DateTime completedAt,
+    required String checksum,
+    required int recordCount,
+    required int databaseSchemaVersion,
+    this.rowid = const Value.absent(),
+  }) : migrationKey = Value(migrationKey),
+       version = Value(version),
+       userId = Value(userId),
+       completedAt = Value(completedAt),
+       checksum = Value(checksum),
+       recordCount = Value(recordCount),
+       databaseSchemaVersion = Value(databaseSchemaVersion);
+  static Insertable<ProfileCutover> custom({
+    Expression<String>? migrationKey,
+    Expression<int>? version,
+    Expression<String>? userId,
+    Expression<DateTime>? completedAt,
+    Expression<String>? checksum,
+    Expression<int>? recordCount,
+    Expression<int>? databaseSchemaVersion,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (migrationKey != null) 'migration_key': migrationKey,
+      if (version != null) 'version': version,
+      if (userId != null) 'user_id': userId,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (checksum != null) 'checksum': checksum,
+      if (recordCount != null) 'record_count': recordCount,
+      if (databaseSchemaVersion != null)
+        'database_schema_version': databaseSchemaVersion,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ProfileCutoversCompanion copyWith({
+    Value<String>? migrationKey,
+    Value<int>? version,
+    Value<String>? userId,
+    Value<DateTime>? completedAt,
+    Value<String>? checksum,
+    Value<int>? recordCount,
+    Value<int>? databaseSchemaVersion,
+    Value<int>? rowid,
+  }) {
+    return ProfileCutoversCompanion(
+      migrationKey: migrationKey ?? this.migrationKey,
+      version: version ?? this.version,
+      userId: userId ?? this.userId,
+      completedAt: completedAt ?? this.completedAt,
+      checksum: checksum ?? this.checksum,
+      recordCount: recordCount ?? this.recordCount,
+      databaseSchemaVersion:
+          databaseSchemaVersion ?? this.databaseSchemaVersion,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (migrationKey.present) {
+      map['migration_key'] = Variable<String>(migrationKey.value);
+    }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (checksum.present) {
+      map['checksum'] = Variable<String>(checksum.value);
+    }
+    if (recordCount.present) {
+      map['record_count'] = Variable<int>(recordCount.value);
+    }
+    if (databaseSchemaVersion.present) {
+      map['database_schema_version'] = Variable<int>(
+        databaseSchemaVersion.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileCutoversCompanion(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -3720,6 +5252,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this,
   );
   late final $SettingsCutoversTable settingsCutovers = $SettingsCutoversTable(
+    this,
+  );
+  late final $ProfileRecordsTable profileRecords = $ProfileRecordsTable(this);
+  late final $ProfileCutoversTable profileCutovers = $ProfileCutoversTable(
     this,
   );
   late final Index waterUserDeletedRecordedIdx = Index(
@@ -3738,8 +5274,17 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'settings_user_sync_updated_idx',
     'CREATE INDEX settings_user_sync_updated_idx ON settings_records (user_id, sync_status, updated_at)',
   );
+  late final Index profileUserUniqueIdx = Index(
+    'profile_user_unique_idx',
+    'CREATE UNIQUE INDEX profile_user_unique_idx ON profile_records (user_id)',
+  );
+  late final Index profileUserSyncUpdatedIdx = Index(
+    'profile_user_sync_updated_idx',
+    'CREATE INDEX profile_user_sync_updated_idx ON profile_records (user_id, sync_status, updated_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
+  late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3752,10 +5297,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     waterCutovers,
     settingsRecords,
     settingsCutovers,
+    profileRecords,
+    profileCutovers,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
     settingsUserSyncUpdatedIdx,
+    profileUserUniqueIdx,
+    profileUserSyncUpdatedIdx,
   ];
 }
 
@@ -5604,6 +7153,725 @@ typedef $$SettingsCutoversTableProcessedTableManager =
       SettingsCutover,
       PrefetchHooks Function()
     >;
+typedef $$ProfileRecordsTableCreateCompanionBuilder =
+    ProfileRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required String name,
+      required String email,
+      required DateTime birthDate,
+      required int heightInCentimeters,
+      required double initialWeight,
+      Value<double?> targetWeight,
+      required DateTime surgeryDate,
+      required String surgeryType,
+      Value<String?> photoUrl,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$ProfileRecordsTableUpdateCompanionBuilder =
+    ProfileRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> name,
+      Value<String> email,
+      Value<DateTime> birthDate,
+      Value<int> heightInCentimeters,
+      Value<double> initialWeight,
+      Value<double?> targetWeight,
+      Value<DateTime> surgeryDate,
+      Value<String> surgeryType,
+      Value<String?> photoUrl,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$ProfileRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $ProfileRecordsTable> {
+  $$ProfileRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get birthDate => $composableBuilder(
+    column: $table.birthDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get heightInCentimeters => $composableBuilder(
+    column: $table.heightInCentimeters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get initialWeight => $composableBuilder(
+    column: $table.initialWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get targetWeight => $composableBuilder(
+    column: $table.targetWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get surgeryDate => $composableBuilder(
+    column: $table.surgeryDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get surgeryType => $composableBuilder(
+    column: $table.surgeryType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get photoUrl => $composableBuilder(
+    column: $table.photoUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ProfileRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProfileRecordsTable> {
+  $$ProfileRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get birthDate => $composableBuilder(
+    column: $table.birthDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get heightInCentimeters => $composableBuilder(
+    column: $table.heightInCentimeters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get initialWeight => $composableBuilder(
+    column: $table.initialWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get targetWeight => $composableBuilder(
+    column: $table.targetWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get surgeryDate => $composableBuilder(
+    column: $table.surgeryDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get surgeryType => $composableBuilder(
+    column: $table.surgeryType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get photoUrl => $composableBuilder(
+    column: $table.photoUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ProfileRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProfileRecordsTable> {
+  $$ProfileRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get birthDate =>
+      $composableBuilder(column: $table.birthDate, builder: (column) => column);
+
+  GeneratedColumn<int> get heightInCentimeters => $composableBuilder(
+    column: $table.heightInCentimeters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get initialWeight => $composableBuilder(
+    column: $table.initialWeight,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get targetWeight => $composableBuilder(
+    column: $table.targetWeight,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get surgeryDate => $composableBuilder(
+    column: $table.surgeryDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get surgeryType => $composableBuilder(
+    column: $table.surgeryType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get photoUrl =>
+      $composableBuilder(column: $table.photoUrl, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$ProfileRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ProfileRecordsTable,
+          ProfileRecord,
+          $$ProfileRecordsTableFilterComposer,
+          $$ProfileRecordsTableOrderingComposer,
+          $$ProfileRecordsTableAnnotationComposer,
+          $$ProfileRecordsTableCreateCompanionBuilder,
+          $$ProfileRecordsTableUpdateCompanionBuilder,
+          (
+            ProfileRecord,
+            BaseReferences<_$AppDatabase, $ProfileRecordsTable, ProfileRecord>,
+          ),
+          ProfileRecord,
+          PrefetchHooks Function()
+        > {
+  $$ProfileRecordsTableTableManager(
+    _$AppDatabase db,
+    $ProfileRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProfileRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProfileRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProfileRecordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> email = const Value.absent(),
+                Value<DateTime> birthDate = const Value.absent(),
+                Value<int> heightInCentimeters = const Value.absent(),
+                Value<double> initialWeight = const Value.absent(),
+                Value<double?> targetWeight = const Value.absent(),
+                Value<DateTime> surgeryDate = const Value.absent(),
+                Value<String> surgeryType = const Value.absent(),
+                Value<String?> photoUrl = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ProfileRecordsCompanion(
+                id: id,
+                userId: userId,
+                name: name,
+                email: email,
+                birthDate: birthDate,
+                heightInCentimeters: heightInCentimeters,
+                initialWeight: initialWeight,
+                targetWeight: targetWeight,
+                surgeryDate: surgeryDate,
+                surgeryType: surgeryType,
+                photoUrl: photoUrl,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String name,
+                required String email,
+                required DateTime birthDate,
+                required int heightInCentimeters,
+                required double initialWeight,
+                Value<double?> targetWeight = const Value.absent(),
+                required DateTime surgeryDate,
+                required String surgeryType,
+                Value<String?> photoUrl = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ProfileRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                name: name,
+                email: email,
+                birthDate: birthDate,
+                heightInCentimeters: heightInCentimeters,
+                initialWeight: initialWeight,
+                targetWeight: targetWeight,
+                surgeryDate: surgeryDate,
+                surgeryType: surgeryType,
+                photoUrl: photoUrl,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ProfileRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ProfileRecordsTable,
+      ProfileRecord,
+      $$ProfileRecordsTableFilterComposer,
+      $$ProfileRecordsTableOrderingComposer,
+      $$ProfileRecordsTableAnnotationComposer,
+      $$ProfileRecordsTableCreateCompanionBuilder,
+      $$ProfileRecordsTableUpdateCompanionBuilder,
+      (
+        ProfileRecord,
+        BaseReferences<_$AppDatabase, $ProfileRecordsTable, ProfileRecord>,
+      ),
+      ProfileRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$ProfileCutoversTableCreateCompanionBuilder =
+    ProfileCutoversCompanion Function({
+      required String migrationKey,
+      required int version,
+      required String userId,
+      required DateTime completedAt,
+      required String checksum,
+      required int recordCount,
+      required int databaseSchemaVersion,
+      Value<int> rowid,
+    });
+typedef $$ProfileCutoversTableUpdateCompanionBuilder =
+    ProfileCutoversCompanion Function({
+      Value<String> migrationKey,
+      Value<int> version,
+      Value<String> userId,
+      Value<DateTime> completedAt,
+      Value<String> checksum,
+      Value<int> recordCount,
+      Value<int> databaseSchemaVersion,
+      Value<int> rowid,
+    });
+
+class $$ProfileCutoversTableFilterComposer
+    extends Composer<_$AppDatabase, $ProfileCutoversTable> {
+  $$ProfileCutoversTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ProfileCutoversTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProfileCutoversTable> {
+  $$ProfileCutoversTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ProfileCutoversTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProfileCutoversTable> {
+  $$ProfileCutoversTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get checksum =>
+      $composableBuilder(column: $table.checksum, builder: (column) => column);
+
+  GeneratedColumn<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => column,
+  );
+}
+
+class $$ProfileCutoversTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ProfileCutoversTable,
+          ProfileCutover,
+          $$ProfileCutoversTableFilterComposer,
+          $$ProfileCutoversTableOrderingComposer,
+          $$ProfileCutoversTableAnnotationComposer,
+          $$ProfileCutoversTableCreateCompanionBuilder,
+          $$ProfileCutoversTableUpdateCompanionBuilder,
+          (
+            ProfileCutover,
+            BaseReferences<
+              _$AppDatabase,
+              $ProfileCutoversTable,
+              ProfileCutover
+            >,
+          ),
+          ProfileCutover,
+          PrefetchHooks Function()
+        > {
+  $$ProfileCutoversTableTableManager(
+    _$AppDatabase db,
+    $ProfileCutoversTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProfileCutoversTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProfileCutoversTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProfileCutoversTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> migrationKey = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> completedAt = const Value.absent(),
+                Value<String> checksum = const Value.absent(),
+                Value<int> recordCount = const Value.absent(),
+                Value<int> databaseSchemaVersion = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ProfileCutoversCompanion(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String migrationKey,
+                required int version,
+                required String userId,
+                required DateTime completedAt,
+                required String checksum,
+                required int recordCount,
+                required int databaseSchemaVersion,
+                Value<int> rowid = const Value.absent(),
+              }) => ProfileCutoversCompanion.insert(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ProfileCutoversTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ProfileCutoversTable,
+      ProfileCutover,
+      $$ProfileCutoversTableFilterComposer,
+      $$ProfileCutoversTableOrderingComposer,
+      $$ProfileCutoversTableAnnotationComposer,
+      $$ProfileCutoversTableCreateCompanionBuilder,
+      $$ProfileCutoversTableUpdateCompanionBuilder,
+      (
+        ProfileCutover,
+        BaseReferences<_$AppDatabase, $ProfileCutoversTable, ProfileCutover>,
+      ),
+      ProfileCutover,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -5622,4 +7890,8 @@ class $AppDatabaseManager {
       $$SettingsRecordsTableTableManager(_db, _db.settingsRecords);
   $$SettingsCutoversTableTableManager get settingsCutovers =>
       $$SettingsCutoversTableTableManager(_db, _db.settingsCutovers);
+  $$ProfileRecordsTableTableManager get profileRecords =>
+      $$ProfileRecordsTableTableManager(_db, _db.profileRecords);
+  $$ProfileCutoversTableTableManager get profileCutovers =>
+      $$ProfileCutoversTableTableManager(_db, _db.profileCutovers);
 }

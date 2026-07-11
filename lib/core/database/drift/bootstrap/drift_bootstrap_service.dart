@@ -6,6 +6,7 @@ import '../consistency/water_local_consistency_report.dart';
 import '../migrations/water_local_migration_report.dart';
 import '../migrations/water_local_migration_service.dart';
 import '../migrations/settings_legacy_service.dart';
+import '../migrations/profile_legacy_service.dart';
 
 typedef AppDatabaseFactory = Future<AppDatabase> Function();
 
@@ -32,6 +33,10 @@ class DriftBootstrapService {
         storage: _storage,
       ).migrate();
       await SettingsLegacyService(
+        database: database,
+        storage: _storage,
+      ).migrate();
+      await ProfileLegacyService(
         database: database,
         storage: _storage,
       ).migrate();

@@ -18,6 +18,8 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/profile/presentation/guards/profile_guard.dart';
+import '../../features/profile/presentation/providers/profile_view_model_provider.dart';
 import '../../features/progress/presentation/pages/progress_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
@@ -48,7 +50,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
   ref.listen(authViewModelProvider, (previous, next) {
     refreshListenable.notify();
+    if (ref.read(authSessionProvider) != null) {
+      unawaited(ref.read(profileViewModelProvider.notifier).loadProfile());
+    }
   });
+  ref.listen(
+    profileViewModelProvider,
+    (previous, next) => refreshListenable.notify(),
+  );
+  if (ref.read(authSessionProvider) != null) {
+    Future.microtask(
+      () => ref.read(profileViewModelProvider.notifier).loadProfile(),
+    );
+  }
 
   final router = GoRouter(
     initialLocation: AppRoutes.home,
@@ -66,10 +80,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         return AppRoutes.splash;
       }
 
-      return AuthGuard.redirect(
+      final authRedirect = AuthGuard.redirect(
         location: location,
         authState: ref.read(authViewModelProvider),
       );
+      if (authRedirect != null) return authRedirect;
+      if (ref.read(authSessionProvider) != null) {
+        return ProfileGuard.redirect(
+          location: location,
+          state: ref.read(profileViewModelProvider),
+        );
+      }
+      return null;
     },
     routes: [
       GoRoute(
