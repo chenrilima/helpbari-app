@@ -1,12 +1,15 @@
 import 'package:drift/drift.dart';
 
 import 'daos/water_dao.dart';
+import 'daos/settings_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
 import 'tables/sync_devices.dart';
 import 'tables/water_records.dart';
 import 'tables/water_cutovers.dart';
+import 'tables/settings_records.dart';
+import 'tables/settings_cutovers.dart';
 
 part 'app_database.g.dart';
 
@@ -17,15 +20,17 @@ part 'app_database.g.dart';
     SyncDevices,
     LocalMigrations,
     WaterCutovers,
+    SettingsRecords,
+    SettingsCutovers,
   ],
-  daos: [WaterDao],
+  daos: [WaterDao, SettingsDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -34,6 +39,10 @@ class AppDatabase extends _$AppDatabase {
     },
     onUpgrade: (migrator, from, to) async {
       if (from < 2) await migrator.createTable(waterCutovers);
+      if (from < 3) {
+        await migrator.createTable(settingsRecords);
+        await migrator.createTable(settingsCutovers);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');

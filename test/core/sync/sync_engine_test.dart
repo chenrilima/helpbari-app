@@ -1,9 +1,39 @@
+import 'dart:async';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/services/clock_service.dart';
 import 'package:helpbari/core/sync/sync.dart';
 
 void main() {
   group('SyncEngine', () {
+    test('SyncManager shares one in-flight sync without a loop', () async {
+      final gate = Completer<void>();
+      final repository = _FakeSyncableRepository(pullGate: gate);
+      final stateRepository = _FakeSyncStateRepository();
+      final container = ProviderContainer(
+        overrides: [
+          syncableRepositoriesProvider.overrideWithValue([repository]),
+          syncStateRepositoryProvider.overrideWithValue(stateRepository),
+          syncAppVersionProvider.overrideWithValue('test'),
+          syncUserIdProvider.overrideWithValue('user-1'),
+          syncDataRefreshProvider.overrideWithValue(() async {}),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final manager = container.read(syncManagerProvider.notifier);
+      final first = manager.syncNow();
+      final second = manager.syncNow();
+
+      expect(identical(first, second), isTrue);
+      await Future<void>.delayed(Duration.zero);
+      expect(repository.pullCalls, 1);
+      gate.complete();
+      await Future.wait([first, second]);
+      expect(repository.pullCalls, 1);
+    });
+
     test('pushes pending local operations and updates sync state', () async {
       final repository = _FakeSyncableRepository(
         pending: [
@@ -230,6 +260,7 @@ class _FakeSyncableRepository implements SyncableRepository {
     Map<String, SyncOperation> localById = const {},
     this.pushFailuresBeforeSuccess = 0,
     this.throwOnPull = false,
+    this.pullGate,
   }) : _pending = List.of(pending),
        _remote = List.of(remote),
        _localById = Map.of(localById);
@@ -239,6 +270,7 @@ class _FakeSyncableRepository implements SyncableRepository {
   final Map<String, SyncOperation> _localById;
   final int pushFailuresBeforeSuccess;
   final bool throwOnPull;
+  final Completer<void>? pullGate;
 
   final pushed = <SyncOperation>[];
   final appliedRemote = <SyncOperation>[];
@@ -246,6 +278,7 @@ class _FakeSyncableRepository implements SyncableRepository {
   final failedIds = <String>[];
   int pushAttempts = 0;
   DateTime? lastPullUpdatedAfter;
+  int pullCalls = 0;
 
   @override
   String get syncKey => 'fake';
@@ -272,6 +305,8 @@ class _FakeSyncableRepository implements SyncableRepository {
 
   @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async {
+    pullCalls++;
+    await pullGate?.future;
     if (throwOnPull) throw StateError('pull failed');
     lastPullUpdatedAfter = updatedAfter;
     if (updatedAfter == null) return List.of(_remote);

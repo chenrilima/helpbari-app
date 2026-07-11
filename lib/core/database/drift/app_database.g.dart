@@ -2282,6 +2282,1430 @@ class WaterCutoversCompanion extends UpdateCompanion<WaterCutover> {
   }
 }
 
+class $SettingsRecordsTable extends SettingsRecords
+    with TableInfo<$SettingsRecordsTable, SettingsRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SettingsRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dailyWaterGoalMlMeta = const VerificationMeta(
+    'dailyWaterGoalMl',
+  );
+  @override
+  late final GeneratedColumn<int> dailyWaterGoalMl = GeneratedColumn<int>(
+    'daily_water_goal_ml',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(2000),
+  );
+  static const VerificationMeta _vitaminRemindersEnabledMeta =
+      const VerificationMeta('vitaminRemindersEnabled');
+  @override
+  late final GeneratedColumn<bool> vitaminRemindersEnabled =
+      GeneratedColumn<bool>(
+        'vitamin_reminders_enabled',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("vitamin_reminders_enabled" IN (0, 1))',
+        ),
+        defaultValue: const Constant(true),
+      );
+  static const VerificationMeta _medicationRemindersEnabledMeta =
+      const VerificationMeta('medicationRemindersEnabled');
+  @override
+  late final GeneratedColumn<bool> medicationRemindersEnabled =
+      GeneratedColumn<bool>(
+        'medication_reminders_enabled',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("medication_reminders_enabled" IN (0, 1))',
+        ),
+        defaultValue: const Constant(true),
+      );
+  static const VerificationMeta _appointmentRemindersEnabledMeta =
+      const VerificationMeta('appointmentRemindersEnabled');
+  @override
+  late final GeneratedColumn<bool> appointmentRemindersEnabled =
+      GeneratedColumn<bool>(
+        'appointment_reminders_enabled',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("appointment_reminders_enabled" IN (0, 1))',
+        ),
+        defaultValue: const Constant(true),
+      );
+  static const VerificationMeta _mealTrackingEnabledMeta =
+      const VerificationMeta('mealTrackingEnabled');
+  @override
+  late final GeneratedColumn<bool> mealTrackingEnabled = GeneratedColumn<bool>(
+    'meal_tracking_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("meal_tracking_enabled" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _weightUnitMeta = const VerificationMeta(
+    'weightUnit',
+  );
+  @override
+  late final GeneratedColumn<String> weightUnit = GeneratedColumn<String>(
+    'weight_unit',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('kg'),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    dailyWaterGoalMl,
+    vitaminRemindersEnabled,
+    medicationRemindersEnabled,
+    appointmentRemindersEnabled,
+    mealTrackingEnabled,
+    weightUnit,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'settings_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SettingsRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('daily_water_goal_ml')) {
+      context.handle(
+        _dailyWaterGoalMlMeta,
+        dailyWaterGoalMl.isAcceptableOrUnknown(
+          data['daily_water_goal_ml']!,
+          _dailyWaterGoalMlMeta,
+        ),
+      );
+    }
+    if (data.containsKey('vitamin_reminders_enabled')) {
+      context.handle(
+        _vitaminRemindersEnabledMeta,
+        vitaminRemindersEnabled.isAcceptableOrUnknown(
+          data['vitamin_reminders_enabled']!,
+          _vitaminRemindersEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('medication_reminders_enabled')) {
+      context.handle(
+        _medicationRemindersEnabledMeta,
+        medicationRemindersEnabled.isAcceptableOrUnknown(
+          data['medication_reminders_enabled']!,
+          _medicationRemindersEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('appointment_reminders_enabled')) {
+      context.handle(
+        _appointmentRemindersEnabledMeta,
+        appointmentRemindersEnabled.isAcceptableOrUnknown(
+          data['appointment_reminders_enabled']!,
+          _appointmentRemindersEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('meal_tracking_enabled')) {
+      context.handle(
+        _mealTrackingEnabledMeta,
+        mealTrackingEnabled.isAcceptableOrUnknown(
+          data['meal_tracking_enabled']!,
+          _mealTrackingEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('weight_unit')) {
+      context.handle(
+        _weightUnitMeta,
+        weightUnit.isAcceptableOrUnknown(data['weight_unit']!, _weightUnitMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  SettingsRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SettingsRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      dailyWaterGoalMl: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}daily_water_goal_ml'],
+      )!,
+      vitaminRemindersEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}vitamin_reminders_enabled'],
+      )!,
+      medicationRemindersEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}medication_reminders_enabled'],
+      )!,
+      appointmentRemindersEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}appointment_reminders_enabled'],
+      )!,
+      mealTrackingEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}meal_tracking_enabled'],
+      )!,
+      weightUnit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}weight_unit'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $SettingsRecordsTable createAlias(String alias) {
+    return $SettingsRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
+  final String id;
+  final String userId;
+  final int dailyWaterGoalMl;
+  final bool vitaminRemindersEnabled;
+  final bool medicationRemindersEnabled;
+  final bool appointmentRemindersEnabled;
+  final bool mealTrackingEnabled;
+  final String weightUnit;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const SettingsRecord({
+    required this.id,
+    required this.userId,
+    required this.dailyWaterGoalMl,
+    required this.vitaminRemindersEnabled,
+    required this.medicationRemindersEnabled,
+    required this.appointmentRemindersEnabled,
+    required this.mealTrackingEnabled,
+    required this.weightUnit,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['daily_water_goal_ml'] = Variable<int>(dailyWaterGoalMl);
+    map['vitamin_reminders_enabled'] = Variable<bool>(vitaminRemindersEnabled);
+    map['medication_reminders_enabled'] = Variable<bool>(
+      medicationRemindersEnabled,
+    );
+    map['appointment_reminders_enabled'] = Variable<bool>(
+      appointmentRemindersEnabled,
+    );
+    map['meal_tracking_enabled'] = Variable<bool>(mealTrackingEnabled);
+    map['weight_unit'] = Variable<String>(weightUnit);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  SettingsRecordsCompanion toCompanion(bool nullToAbsent) {
+    return SettingsRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      dailyWaterGoalMl: Value(dailyWaterGoalMl),
+      vitaminRemindersEnabled: Value(vitaminRemindersEnabled),
+      medicationRemindersEnabled: Value(medicationRemindersEnabled),
+      appointmentRemindersEnabled: Value(appointmentRemindersEnabled),
+      mealTrackingEnabled: Value(mealTrackingEnabled),
+      weightUnit: Value(weightUnit),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory SettingsRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SettingsRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      dailyWaterGoalMl: serializer.fromJson<int>(json['dailyWaterGoalMl']),
+      vitaminRemindersEnabled: serializer.fromJson<bool>(
+        json['vitaminRemindersEnabled'],
+      ),
+      medicationRemindersEnabled: serializer.fromJson<bool>(
+        json['medicationRemindersEnabled'],
+      ),
+      appointmentRemindersEnabled: serializer.fromJson<bool>(
+        json['appointmentRemindersEnabled'],
+      ),
+      mealTrackingEnabled: serializer.fromJson<bool>(
+        json['mealTrackingEnabled'],
+      ),
+      weightUnit: serializer.fromJson<String>(json['weightUnit']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'dailyWaterGoalMl': serializer.toJson<int>(dailyWaterGoalMl),
+      'vitaminRemindersEnabled': serializer.toJson<bool>(
+        vitaminRemindersEnabled,
+      ),
+      'medicationRemindersEnabled': serializer.toJson<bool>(
+        medicationRemindersEnabled,
+      ),
+      'appointmentRemindersEnabled': serializer.toJson<bool>(
+        appointmentRemindersEnabled,
+      ),
+      'mealTrackingEnabled': serializer.toJson<bool>(mealTrackingEnabled),
+      'weightUnit': serializer.toJson<String>(weightUnit),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  SettingsRecord copyWith({
+    String? id,
+    String? userId,
+    int? dailyWaterGoalMl,
+    bool? vitaminRemindersEnabled,
+    bool? medicationRemindersEnabled,
+    bool? appointmentRemindersEnabled,
+    bool? mealTrackingEnabled,
+    String? weightUnit,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => SettingsRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    dailyWaterGoalMl: dailyWaterGoalMl ?? this.dailyWaterGoalMl,
+    vitaminRemindersEnabled:
+        vitaminRemindersEnabled ?? this.vitaminRemindersEnabled,
+    medicationRemindersEnabled:
+        medicationRemindersEnabled ?? this.medicationRemindersEnabled,
+    appointmentRemindersEnabled:
+        appointmentRemindersEnabled ?? this.appointmentRemindersEnabled,
+    mealTrackingEnabled: mealTrackingEnabled ?? this.mealTrackingEnabled,
+    weightUnit: weightUnit ?? this.weightUnit,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  SettingsRecord copyWithCompanion(SettingsRecordsCompanion data) {
+    return SettingsRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      dailyWaterGoalMl: data.dailyWaterGoalMl.present
+          ? data.dailyWaterGoalMl.value
+          : this.dailyWaterGoalMl,
+      vitaminRemindersEnabled: data.vitaminRemindersEnabled.present
+          ? data.vitaminRemindersEnabled.value
+          : this.vitaminRemindersEnabled,
+      medicationRemindersEnabled: data.medicationRemindersEnabled.present
+          ? data.medicationRemindersEnabled.value
+          : this.medicationRemindersEnabled,
+      appointmentRemindersEnabled: data.appointmentRemindersEnabled.present
+          ? data.appointmentRemindersEnabled.value
+          : this.appointmentRemindersEnabled,
+      mealTrackingEnabled: data.mealTrackingEnabled.present
+          ? data.mealTrackingEnabled.value
+          : this.mealTrackingEnabled,
+      weightUnit: data.weightUnit.present
+          ? data.weightUnit.value
+          : this.weightUnit,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingsRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('dailyWaterGoalMl: $dailyWaterGoalMl, ')
+          ..write('vitaminRemindersEnabled: $vitaminRemindersEnabled, ')
+          ..write('medicationRemindersEnabled: $medicationRemindersEnabled, ')
+          ..write('appointmentRemindersEnabled: $appointmentRemindersEnabled, ')
+          ..write('mealTrackingEnabled: $mealTrackingEnabled, ')
+          ..write('weightUnit: $weightUnit, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    dailyWaterGoalMl,
+    vitaminRemindersEnabled,
+    medicationRemindersEnabled,
+    appointmentRemindersEnabled,
+    mealTrackingEnabled,
+    weightUnit,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SettingsRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.dailyWaterGoalMl == this.dailyWaterGoalMl &&
+          other.vitaminRemindersEnabled == this.vitaminRemindersEnabled &&
+          other.medicationRemindersEnabled == this.medicationRemindersEnabled &&
+          other.appointmentRemindersEnabled ==
+              this.appointmentRemindersEnabled &&
+          other.mealTrackingEnabled == this.mealTrackingEnabled &&
+          other.weightUnit == this.weightUnit &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<int> dailyWaterGoalMl;
+  final Value<bool> vitaminRemindersEnabled;
+  final Value<bool> medicationRemindersEnabled;
+  final Value<bool> appointmentRemindersEnabled;
+  final Value<bool> mealTrackingEnabled;
+  final Value<String> weightUnit;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const SettingsRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.dailyWaterGoalMl = const Value.absent(),
+    this.vitaminRemindersEnabled = const Value.absent(),
+    this.medicationRemindersEnabled = const Value.absent(),
+    this.appointmentRemindersEnabled = const Value.absent(),
+    this.mealTrackingEnabled = const Value.absent(),
+    this.weightUnit = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SettingsRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    this.dailyWaterGoalMl = const Value.absent(),
+    this.vitaminRemindersEnabled = const Value.absent(),
+    this.medicationRemindersEnabled = const Value.absent(),
+    this.appointmentRemindersEnabled = const Value.absent(),
+    this.mealTrackingEnabled = const Value.absent(),
+    this.weightUnit = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<SettingsRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<int>? dailyWaterGoalMl,
+    Expression<bool>? vitaminRemindersEnabled,
+    Expression<bool>? medicationRemindersEnabled,
+    Expression<bool>? appointmentRemindersEnabled,
+    Expression<bool>? mealTrackingEnabled,
+    Expression<String>? weightUnit,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (dailyWaterGoalMl != null) 'daily_water_goal_ml': dailyWaterGoalMl,
+      if (vitaminRemindersEnabled != null)
+        'vitamin_reminders_enabled': vitaminRemindersEnabled,
+      if (medicationRemindersEnabled != null)
+        'medication_reminders_enabled': medicationRemindersEnabled,
+      if (appointmentRemindersEnabled != null)
+        'appointment_reminders_enabled': appointmentRemindersEnabled,
+      if (mealTrackingEnabled != null)
+        'meal_tracking_enabled': mealTrackingEnabled,
+      if (weightUnit != null) 'weight_unit': weightUnit,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SettingsRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<int>? dailyWaterGoalMl,
+    Value<bool>? vitaminRemindersEnabled,
+    Value<bool>? medicationRemindersEnabled,
+    Value<bool>? appointmentRemindersEnabled,
+    Value<bool>? mealTrackingEnabled,
+    Value<String>? weightUnit,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return SettingsRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      dailyWaterGoalMl: dailyWaterGoalMl ?? this.dailyWaterGoalMl,
+      vitaminRemindersEnabled:
+          vitaminRemindersEnabled ?? this.vitaminRemindersEnabled,
+      medicationRemindersEnabled:
+          medicationRemindersEnabled ?? this.medicationRemindersEnabled,
+      appointmentRemindersEnabled:
+          appointmentRemindersEnabled ?? this.appointmentRemindersEnabled,
+      mealTrackingEnabled: mealTrackingEnabled ?? this.mealTrackingEnabled,
+      weightUnit: weightUnit ?? this.weightUnit,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (dailyWaterGoalMl.present) {
+      map['daily_water_goal_ml'] = Variable<int>(dailyWaterGoalMl.value);
+    }
+    if (vitaminRemindersEnabled.present) {
+      map['vitamin_reminders_enabled'] = Variable<bool>(
+        vitaminRemindersEnabled.value,
+      );
+    }
+    if (medicationRemindersEnabled.present) {
+      map['medication_reminders_enabled'] = Variable<bool>(
+        medicationRemindersEnabled.value,
+      );
+    }
+    if (appointmentRemindersEnabled.present) {
+      map['appointment_reminders_enabled'] = Variable<bool>(
+        appointmentRemindersEnabled.value,
+      );
+    }
+    if (mealTrackingEnabled.present) {
+      map['meal_tracking_enabled'] = Variable<bool>(mealTrackingEnabled.value);
+    }
+    if (weightUnit.present) {
+      map['weight_unit'] = Variable<String>(weightUnit.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingsRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('dailyWaterGoalMl: $dailyWaterGoalMl, ')
+          ..write('vitaminRemindersEnabled: $vitaminRemindersEnabled, ')
+          ..write('medicationRemindersEnabled: $medicationRemindersEnabled, ')
+          ..write('appointmentRemindersEnabled: $appointmentRemindersEnabled, ')
+          ..write('mealTrackingEnabled: $mealTrackingEnabled, ')
+          ..write('weightUnit: $weightUnit, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SettingsCutoversTable extends SettingsCutovers
+    with TableInfo<$SettingsCutoversTable, SettingsCutover> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SettingsCutoversTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _migrationKeyMeta = const VerificationMeta(
+    'migrationKey',
+  );
+  @override
+  late final GeneratedColumn<String> migrationKey = GeneratedColumn<String>(
+    'migration_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _versionMeta = const VerificationMeta(
+    'version',
+  );
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+    'version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _checksumMeta = const VerificationMeta(
+    'checksum',
+  );
+  @override
+  late final GeneratedColumn<String> checksum = GeneratedColumn<String>(
+    'checksum',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordCountMeta = const VerificationMeta(
+    'recordCount',
+  );
+  @override
+  late final GeneratedColumn<int> recordCount = GeneratedColumn<int>(
+    'record_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _databaseSchemaVersionMeta =
+      const VerificationMeta('databaseSchemaVersion');
+  @override
+  late final GeneratedColumn<int> databaseSchemaVersion = GeneratedColumn<int>(
+    'database_schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'settings_cutovers';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SettingsCutover> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('migration_key')) {
+      context.handle(
+        _migrationKeyMeta,
+        migrationKey.isAcceptableOrUnknown(
+          data['migration_key']!,
+          _migrationKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migrationKeyMeta);
+    }
+    if (data.containsKey('version')) {
+      context.handle(
+        _versionMeta,
+        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_versionMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completedAtMeta);
+    }
+    if (data.containsKey('checksum')) {
+      context.handle(
+        _checksumMeta,
+        checksum.isAcceptableOrUnknown(data['checksum']!, _checksumMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_checksumMeta);
+    }
+    if (data.containsKey('record_count')) {
+      context.handle(
+        _recordCountMeta,
+        recordCount.isAcceptableOrUnknown(
+          data['record_count']!,
+          _recordCountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_recordCountMeta);
+    }
+    if (data.containsKey('database_schema_version')) {
+      context.handle(
+        _databaseSchemaVersionMeta,
+        databaseSchemaVersion.isAcceptableOrUnknown(
+          data['database_schema_version']!,
+          _databaseSchemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_databaseSchemaVersionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {migrationKey, userId};
+  @override
+  SettingsCutover map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SettingsCutover(
+      migrationKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}migration_key'],
+      )!,
+      version: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}version'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      )!,
+      checksum: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}checksum'],
+      )!,
+      recordCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}record_count'],
+      )!,
+      databaseSchemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}database_schema_version'],
+      )!,
+    );
+  }
+
+  @override
+  $SettingsCutoversTable createAlias(String alias) {
+    return $SettingsCutoversTable(attachedDatabase, alias);
+  }
+}
+
+class SettingsCutover extends DataClass implements Insertable<SettingsCutover> {
+  final String migrationKey;
+  final int version;
+  final String userId;
+  final DateTime completedAt;
+  final String checksum;
+  final int recordCount;
+  final int databaseSchemaVersion;
+  const SettingsCutover({
+    required this.migrationKey,
+    required this.version,
+    required this.userId,
+    required this.completedAt,
+    required this.checksum,
+    required this.recordCount,
+    required this.databaseSchemaVersion,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['migration_key'] = Variable<String>(migrationKey);
+    map['version'] = Variable<int>(version);
+    map['user_id'] = Variable<String>(userId);
+    map['completed_at'] = Variable<DateTime>(completedAt);
+    map['checksum'] = Variable<String>(checksum);
+    map['record_count'] = Variable<int>(recordCount);
+    map['database_schema_version'] = Variable<int>(databaseSchemaVersion);
+    return map;
+  }
+
+  SettingsCutoversCompanion toCompanion(bool nullToAbsent) {
+    return SettingsCutoversCompanion(
+      migrationKey: Value(migrationKey),
+      version: Value(version),
+      userId: Value(userId),
+      completedAt: Value(completedAt),
+      checksum: Value(checksum),
+      recordCount: Value(recordCount),
+      databaseSchemaVersion: Value(databaseSchemaVersion),
+    );
+  }
+
+  factory SettingsCutover.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SettingsCutover(
+      migrationKey: serializer.fromJson<String>(json['migrationKey']),
+      version: serializer.fromJson<int>(json['version']),
+      userId: serializer.fromJson<String>(json['userId']),
+      completedAt: serializer.fromJson<DateTime>(json['completedAt']),
+      checksum: serializer.fromJson<String>(json['checksum']),
+      recordCount: serializer.fromJson<int>(json['recordCount']),
+      databaseSchemaVersion: serializer.fromJson<int>(
+        json['databaseSchemaVersion'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'migrationKey': serializer.toJson<String>(migrationKey),
+      'version': serializer.toJson<int>(version),
+      'userId': serializer.toJson<String>(userId),
+      'completedAt': serializer.toJson<DateTime>(completedAt),
+      'checksum': serializer.toJson<String>(checksum),
+      'recordCount': serializer.toJson<int>(recordCount),
+      'databaseSchemaVersion': serializer.toJson<int>(databaseSchemaVersion),
+    };
+  }
+
+  SettingsCutover copyWith({
+    String? migrationKey,
+    int? version,
+    String? userId,
+    DateTime? completedAt,
+    String? checksum,
+    int? recordCount,
+    int? databaseSchemaVersion,
+  }) => SettingsCutover(
+    migrationKey: migrationKey ?? this.migrationKey,
+    version: version ?? this.version,
+    userId: userId ?? this.userId,
+    completedAt: completedAt ?? this.completedAt,
+    checksum: checksum ?? this.checksum,
+    recordCount: recordCount ?? this.recordCount,
+    databaseSchemaVersion: databaseSchemaVersion ?? this.databaseSchemaVersion,
+  );
+  SettingsCutover copyWithCompanion(SettingsCutoversCompanion data) {
+    return SettingsCutover(
+      migrationKey: data.migrationKey.present
+          ? data.migrationKey.value
+          : this.migrationKey,
+      version: data.version.present ? data.version.value : this.version,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      checksum: data.checksum.present ? data.checksum.value : this.checksum,
+      recordCount: data.recordCount.present
+          ? data.recordCount.value
+          : this.recordCount,
+      databaseSchemaVersion: data.databaseSchemaVersion.present
+          ? data.databaseSchemaVersion.value
+          : this.databaseSchemaVersion,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingsCutover(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SettingsCutover &&
+          other.migrationKey == this.migrationKey &&
+          other.version == this.version &&
+          other.userId == this.userId &&
+          other.completedAt == this.completedAt &&
+          other.checksum == this.checksum &&
+          other.recordCount == this.recordCount &&
+          other.databaseSchemaVersion == this.databaseSchemaVersion);
+}
+
+class SettingsCutoversCompanion extends UpdateCompanion<SettingsCutover> {
+  final Value<String> migrationKey;
+  final Value<int> version;
+  final Value<String> userId;
+  final Value<DateTime> completedAt;
+  final Value<String> checksum;
+  final Value<int> recordCount;
+  final Value<int> databaseSchemaVersion;
+  final Value<int> rowid;
+  const SettingsCutoversCompanion({
+    this.migrationKey = const Value.absent(),
+    this.version = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.checksum = const Value.absent(),
+    this.recordCount = const Value.absent(),
+    this.databaseSchemaVersion = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SettingsCutoversCompanion.insert({
+    required String migrationKey,
+    required int version,
+    required String userId,
+    required DateTime completedAt,
+    required String checksum,
+    required int recordCount,
+    required int databaseSchemaVersion,
+    this.rowid = const Value.absent(),
+  }) : migrationKey = Value(migrationKey),
+       version = Value(version),
+       userId = Value(userId),
+       completedAt = Value(completedAt),
+       checksum = Value(checksum),
+       recordCount = Value(recordCount),
+       databaseSchemaVersion = Value(databaseSchemaVersion);
+  static Insertable<SettingsCutover> custom({
+    Expression<String>? migrationKey,
+    Expression<int>? version,
+    Expression<String>? userId,
+    Expression<DateTime>? completedAt,
+    Expression<String>? checksum,
+    Expression<int>? recordCount,
+    Expression<int>? databaseSchemaVersion,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (migrationKey != null) 'migration_key': migrationKey,
+      if (version != null) 'version': version,
+      if (userId != null) 'user_id': userId,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (checksum != null) 'checksum': checksum,
+      if (recordCount != null) 'record_count': recordCount,
+      if (databaseSchemaVersion != null)
+        'database_schema_version': databaseSchemaVersion,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SettingsCutoversCompanion copyWith({
+    Value<String>? migrationKey,
+    Value<int>? version,
+    Value<String>? userId,
+    Value<DateTime>? completedAt,
+    Value<String>? checksum,
+    Value<int>? recordCount,
+    Value<int>? databaseSchemaVersion,
+    Value<int>? rowid,
+  }) {
+    return SettingsCutoversCompanion(
+      migrationKey: migrationKey ?? this.migrationKey,
+      version: version ?? this.version,
+      userId: userId ?? this.userId,
+      completedAt: completedAt ?? this.completedAt,
+      checksum: checksum ?? this.checksum,
+      recordCount: recordCount ?? this.recordCount,
+      databaseSchemaVersion:
+          databaseSchemaVersion ?? this.databaseSchemaVersion,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (migrationKey.present) {
+      map['migration_key'] = Variable<String>(migrationKey.value);
+    }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (checksum.present) {
+      map['checksum'] = Variable<String>(checksum.value);
+    }
+    if (recordCount.present) {
+      map['record_count'] = Variable<int>(recordCount.value);
+    }
+    if (databaseSchemaVersion.present) {
+      map['database_schema_version'] = Variable<int>(
+        databaseSchemaVersion.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SettingsCutoversCompanion(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -2292,6 +3716,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this,
   );
   late final $WaterCutoversTable waterCutovers = $WaterCutoversTable(this);
+  late final $SettingsRecordsTable settingsRecords = $SettingsRecordsTable(
+    this,
+  );
+  late final $SettingsCutoversTable settingsCutovers = $SettingsCutoversTable(
+    this,
+  );
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -2300,7 +3730,16 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'water_user_sync_updated_idx',
     'CREATE INDEX water_user_sync_updated_idx ON water_records (user_id, sync_status, updated_at)',
   );
+  late final Index settingsUserUniqueIdx = Index(
+    'settings_user_unique_idx',
+    'CREATE UNIQUE INDEX settings_user_unique_idx ON settings_records (user_id)',
+  );
+  late final Index settingsUserSyncUpdatedIdx = Index(
+    'settings_user_sync_updated_idx',
+    'CREATE INDEX settings_user_sync_updated_idx ON settings_records (user_id, sync_status, updated_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
+  late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2311,8 +3750,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     syncDevices,
     localMigrations,
     waterCutovers,
+    settingsRecords,
+    settingsCutovers,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
+    settingsUserUniqueIdx,
+    settingsUserSyncUpdatedIdx,
   ];
 }
 
@@ -3493,6 +4936,674 @@ typedef $$WaterCutoversTableProcessedTableManager =
       WaterCutover,
       PrefetchHooks Function()
     >;
+typedef $$SettingsRecordsTableCreateCompanionBuilder =
+    SettingsRecordsCompanion Function({
+      required String id,
+      required String userId,
+      Value<int> dailyWaterGoalMl,
+      Value<bool> vitaminRemindersEnabled,
+      Value<bool> medicationRemindersEnabled,
+      Value<bool> appointmentRemindersEnabled,
+      Value<bool> mealTrackingEnabled,
+      Value<String> weightUnit,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$SettingsRecordsTableUpdateCompanionBuilder =
+    SettingsRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<int> dailyWaterGoalMl,
+      Value<bool> vitaminRemindersEnabled,
+      Value<bool> medicationRemindersEnabled,
+      Value<bool> appointmentRemindersEnabled,
+      Value<bool> mealTrackingEnabled,
+      Value<String> weightUnit,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$SettingsRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $SettingsRecordsTable> {
+  $$SettingsRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dailyWaterGoalMl => $composableBuilder(
+    column: $table.dailyWaterGoalMl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get vitaminRemindersEnabled => $composableBuilder(
+    column: $table.vitaminRemindersEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get medicationRemindersEnabled => $composableBuilder(
+    column: $table.medicationRemindersEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get appointmentRemindersEnabled => $composableBuilder(
+    column: $table.appointmentRemindersEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get mealTrackingEnabled => $composableBuilder(
+    column: $table.mealTrackingEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get weightUnit => $composableBuilder(
+    column: $table.weightUnit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SettingsRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SettingsRecordsTable> {
+  $$SettingsRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dailyWaterGoalMl => $composableBuilder(
+    column: $table.dailyWaterGoalMl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get vitaminRemindersEnabled => $composableBuilder(
+    column: $table.vitaminRemindersEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get medicationRemindersEnabled => $composableBuilder(
+    column: $table.medicationRemindersEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get appointmentRemindersEnabled => $composableBuilder(
+    column: $table.appointmentRemindersEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get mealTrackingEnabled => $composableBuilder(
+    column: $table.mealTrackingEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get weightUnit => $composableBuilder(
+    column: $table.weightUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SettingsRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SettingsRecordsTable> {
+  $$SettingsRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<int> get dailyWaterGoalMl => $composableBuilder(
+    column: $table.dailyWaterGoalMl,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get vitaminRemindersEnabled => $composableBuilder(
+    column: $table.vitaminRemindersEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get medicationRemindersEnabled => $composableBuilder(
+    column: $table.medicationRemindersEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get appointmentRemindersEnabled => $composableBuilder(
+    column: $table.appointmentRemindersEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get mealTrackingEnabled => $composableBuilder(
+    column: $table.mealTrackingEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get weightUnit => $composableBuilder(
+    column: $table.weightUnit,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$SettingsRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SettingsRecordsTable,
+          SettingsRecord,
+          $$SettingsRecordsTableFilterComposer,
+          $$SettingsRecordsTableOrderingComposer,
+          $$SettingsRecordsTableAnnotationComposer,
+          $$SettingsRecordsTableCreateCompanionBuilder,
+          $$SettingsRecordsTableUpdateCompanionBuilder,
+          (
+            SettingsRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $SettingsRecordsTable,
+              SettingsRecord
+            >,
+          ),
+          SettingsRecord,
+          PrefetchHooks Function()
+        > {
+  $$SettingsRecordsTableTableManager(
+    _$AppDatabase db,
+    $SettingsRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SettingsRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SettingsRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SettingsRecordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<int> dailyWaterGoalMl = const Value.absent(),
+                Value<bool> vitaminRemindersEnabled = const Value.absent(),
+                Value<bool> medicationRemindersEnabled = const Value.absent(),
+                Value<bool> appointmentRemindersEnabled = const Value.absent(),
+                Value<bool> mealTrackingEnabled = const Value.absent(),
+                Value<String> weightUnit = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SettingsRecordsCompanion(
+                id: id,
+                userId: userId,
+                dailyWaterGoalMl: dailyWaterGoalMl,
+                vitaminRemindersEnabled: vitaminRemindersEnabled,
+                medicationRemindersEnabled: medicationRemindersEnabled,
+                appointmentRemindersEnabled: appointmentRemindersEnabled,
+                mealTrackingEnabled: mealTrackingEnabled,
+                weightUnit: weightUnit,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                Value<int> dailyWaterGoalMl = const Value.absent(),
+                Value<bool> vitaminRemindersEnabled = const Value.absent(),
+                Value<bool> medicationRemindersEnabled = const Value.absent(),
+                Value<bool> appointmentRemindersEnabled = const Value.absent(),
+                Value<bool> mealTrackingEnabled = const Value.absent(),
+                Value<String> weightUnit = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SettingsRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                dailyWaterGoalMl: dailyWaterGoalMl,
+                vitaminRemindersEnabled: vitaminRemindersEnabled,
+                medicationRemindersEnabled: medicationRemindersEnabled,
+                appointmentRemindersEnabled: appointmentRemindersEnabled,
+                mealTrackingEnabled: mealTrackingEnabled,
+                weightUnit: weightUnit,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SettingsRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SettingsRecordsTable,
+      SettingsRecord,
+      $$SettingsRecordsTableFilterComposer,
+      $$SettingsRecordsTableOrderingComposer,
+      $$SettingsRecordsTableAnnotationComposer,
+      $$SettingsRecordsTableCreateCompanionBuilder,
+      $$SettingsRecordsTableUpdateCompanionBuilder,
+      (
+        SettingsRecord,
+        BaseReferences<_$AppDatabase, $SettingsRecordsTable, SettingsRecord>,
+      ),
+      SettingsRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$SettingsCutoversTableCreateCompanionBuilder =
+    SettingsCutoversCompanion Function({
+      required String migrationKey,
+      required int version,
+      required String userId,
+      required DateTime completedAt,
+      required String checksum,
+      required int recordCount,
+      required int databaseSchemaVersion,
+      Value<int> rowid,
+    });
+typedef $$SettingsCutoversTableUpdateCompanionBuilder =
+    SettingsCutoversCompanion Function({
+      Value<String> migrationKey,
+      Value<int> version,
+      Value<String> userId,
+      Value<DateTime> completedAt,
+      Value<String> checksum,
+      Value<int> recordCount,
+      Value<int> databaseSchemaVersion,
+      Value<int> rowid,
+    });
+
+class $$SettingsCutoversTableFilterComposer
+    extends Composer<_$AppDatabase, $SettingsCutoversTable> {
+  $$SettingsCutoversTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SettingsCutoversTableOrderingComposer
+    extends Composer<_$AppDatabase, $SettingsCutoversTable> {
+  $$SettingsCutoversTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SettingsCutoversTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SettingsCutoversTable> {
+  $$SettingsCutoversTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get checksum =>
+      $composableBuilder(column: $table.checksum, builder: (column) => column);
+
+  GeneratedColumn<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => column,
+  );
+}
+
+class $$SettingsCutoversTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SettingsCutoversTable,
+          SettingsCutover,
+          $$SettingsCutoversTableFilterComposer,
+          $$SettingsCutoversTableOrderingComposer,
+          $$SettingsCutoversTableAnnotationComposer,
+          $$SettingsCutoversTableCreateCompanionBuilder,
+          $$SettingsCutoversTableUpdateCompanionBuilder,
+          (
+            SettingsCutover,
+            BaseReferences<
+              _$AppDatabase,
+              $SettingsCutoversTable,
+              SettingsCutover
+            >,
+          ),
+          SettingsCutover,
+          PrefetchHooks Function()
+        > {
+  $$SettingsCutoversTableTableManager(
+    _$AppDatabase db,
+    $SettingsCutoversTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SettingsCutoversTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SettingsCutoversTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SettingsCutoversTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> migrationKey = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> completedAt = const Value.absent(),
+                Value<String> checksum = const Value.absent(),
+                Value<int> recordCount = const Value.absent(),
+                Value<int> databaseSchemaVersion = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SettingsCutoversCompanion(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String migrationKey,
+                required int version,
+                required String userId,
+                required DateTime completedAt,
+                required String checksum,
+                required int recordCount,
+                required int databaseSchemaVersion,
+                Value<int> rowid = const Value.absent(),
+              }) => SettingsCutoversCompanion.insert(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SettingsCutoversTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SettingsCutoversTable,
+      SettingsCutover,
+      $$SettingsCutoversTableFilterComposer,
+      $$SettingsCutoversTableOrderingComposer,
+      $$SettingsCutoversTableAnnotationComposer,
+      $$SettingsCutoversTableCreateCompanionBuilder,
+      $$SettingsCutoversTableUpdateCompanionBuilder,
+      (
+        SettingsCutover,
+        BaseReferences<_$AppDatabase, $SettingsCutoversTable, SettingsCutover>,
+      ),
+      SettingsCutover,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3507,4 +5618,8 @@ class $AppDatabaseManager {
       $$LocalMigrationsTableTableManager(_db, _db.localMigrations);
   $$WaterCutoversTableTableManager get waterCutovers =>
       $$WaterCutoversTableTableManager(_db, _db.waterCutovers);
+  $$SettingsRecordsTableTableManager get settingsRecords =>
+      $$SettingsRecordsTableTableManager(_db, _db.settingsRecords);
+  $$SettingsCutoversTableTableManager get settingsCutovers =>
+      $$SettingsCutoversTableTableManager(_db, _db.settingsCutovers);
 }

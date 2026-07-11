@@ -1,4 +1,6 @@
 import '../../../../core/database/database.dart';
+import '../../../../core/database/drift/app_database.dart';
+import 'package:drift/drift.dart' show Value;
 import '../../../../core/sync/sync.dart';
 import '../../domain/entities/entities.dart';
 
@@ -53,6 +55,7 @@ class SettingsDto {
     AppSettings settings, {
     required DateTime now,
     SyncMetadata? previousMetadata,
+    String? userId,
   }) {
     return SettingsDto(
       id: settings.id,
@@ -64,10 +67,79 @@ class SettingsDto {
       weightUnit: settings.weightUnit,
       syncMetadata: SyncMetadata(
         id: settings.id,
-        userId: previousMetadata?.userId,
+        userId: previousMetadata?.userId ?? userId,
         createdAt: previousMetadata?.createdAt ?? now,
         updatedAt: now,
         syncStatus: _nextSyncStatus(previousMetadata?.syncStatus),
+      ),
+    );
+  }
+
+  static SettingsDto fromDrift(SettingsRecord row) => SettingsDto(
+    id: row.id,
+    dailyWaterGoalMl: row.dailyWaterGoalMl,
+    vitaminRemindersEnabled: row.vitaminRemindersEnabled,
+    medicationRemindersEnabled: row.medicationRemindersEnabled,
+    appointmentRemindersEnabled: row.appointmentRemindersEnabled,
+    mealTrackingEnabled: row.mealTrackingEnabled,
+    weightUnit: row.weightUnit,
+    syncMetadata: SyncMetadata(
+      id: row.id,
+      userId: row.userId,
+      createdAt: row.createdAt,
+      updatedAt: row.updatedAt,
+      deletedAt: row.deletedAt,
+      syncStatus: SyncStatus.fromName(row.syncStatus),
+    ),
+  );
+
+  SettingsRecordsCompanion toDrift({required String userId}) =>
+      SettingsRecordsCompanion.insert(
+        id: id,
+        userId: userId,
+        dailyWaterGoalMl: Value(dailyWaterGoalMl),
+        vitaminRemindersEnabled: Value(vitaminRemindersEnabled),
+        medicationRemindersEnabled: Value(medicationRemindersEnabled),
+        appointmentRemindersEnabled: Value(appointmentRemindersEnabled),
+        mealTrackingEnabled: Value(mealTrackingEnabled),
+        weightUnit: Value(weightUnit),
+        createdAt: syncMetadata.createdAt,
+        updatedAt: syncMetadata.updatedAt,
+        deletedAt: Value(syncMetadata.deletedAt),
+        syncStatus: syncMetadata.syncStatus.name,
+      );
+
+  Map<String, Object?> toSupabase(String userId) => {
+    'id': id,
+    'user_id': userId,
+    'daily_water_goal_ml': dailyWaterGoalMl,
+    'vitamin_reminders_enabled': vitaminRemindersEnabled,
+    'medication_reminders_enabled': medicationRemindersEnabled,
+    'appointment_reminders_enabled': appointmentRemindersEnabled,
+    'meal_tracking_enabled': mealTrackingEnabled,
+    'weight_unit': weightUnit,
+    'created_at': syncMetadata.createdAt.toIso8601String(),
+    'updated_at': syncMetadata.updatedAt.toIso8601String(),
+    'deleted_at': syncMetadata.deletedAt?.toIso8601String(),
+  };
+
+  static SettingsDto fromSupabase(Map<String, dynamic> row) {
+    DateTime date(String key) => DateTime.parse(row[key] as String);
+    return SettingsDto(
+      id: row['id'] as String,
+      dailyWaterGoalMl: row['daily_water_goal_ml'] as int,
+      vitaminRemindersEnabled: row['vitamin_reminders_enabled'] as bool,
+      medicationRemindersEnabled: row['medication_reminders_enabled'] as bool,
+      appointmentRemindersEnabled: row['appointment_reminders_enabled'] as bool,
+      mealTrackingEnabled: row['meal_tracking_enabled'] as bool,
+      weightUnit: row['weight_unit'] as String,
+      syncMetadata: SyncMetadata(
+        id: row['id'] as String,
+        userId: row['user_id'] as String,
+        createdAt: date('created_at'),
+        updatedAt: date('updated_at'),
+        deletedAt: row['deleted_at'] == null ? null : date('deleted_at'),
+        syncStatus: SyncStatus.synced,
       ),
     );
   }

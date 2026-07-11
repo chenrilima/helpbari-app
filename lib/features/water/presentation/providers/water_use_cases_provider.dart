@@ -52,7 +52,7 @@ final waterRepositoryProvider = Provider<WaterRepository>((ref) {
 
 final waterUseCasesProvider = Provider(
   (ref) => WaterUseCases(
-    ref.read(waterRepositoryProvider),
+    ref.watch(waterRepositoryProvider),
     ref.read(clockServiceProvider),
   ),
 );

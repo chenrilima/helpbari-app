@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/formatters/app_water_formatter.dart';
 import '../../../../core/validators/app_validators.dart';
+import '../../../../app/bootstrap/sync_bootstrap_provider.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/setting_view_model_provider.dart';
 
@@ -36,9 +37,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     }
 
     return HBPage(
-      appBar: const HBAppBar(
+      appBar: HBAppBar(
         title: 'Configurações',
         subtitle: 'Preferências do HelpBari',
+        actions: [
+          IconButton(
+            tooltip: 'Sincronizar configurações',
+            onPressed: () => ref.read(syncBootstrapProvider).retry(),
+            icon: const Icon(Icons.sync_rounded),
+          ),
+        ],
       ),
       children: [
         HBCard(

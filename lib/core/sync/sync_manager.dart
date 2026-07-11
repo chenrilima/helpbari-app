@@ -11,6 +11,7 @@ class SyncManager extends Notifier<SyncState> {
   late final SyncEngine _engine;
   late final SyncStateRepository _stateRepository;
   late final String _appVersion;
+  Future<SyncResult?>? _activeSync;
 
   @override
   SyncState build() {
@@ -28,9 +29,17 @@ class SyncManager extends Notifier<SyncState> {
     );
   }
 
-  Future<SyncResult?> syncNow() async {
-    if (state.isSyncing) return state.lastResult;
+  Future<SyncResult?> syncNow() => _activeSync ??= _runSync();
 
+  Future<SyncResult?> _runSync() async {
+    try {
+      return await _performSync();
+    } finally {
+      _activeSync = null;
+    }
+  }
+
+  Future<SyncResult?> _performSync() async {
     state = state.copyWith(phase: SyncPhase.syncing, clearError: true);
 
     final result = await _engine.sync(
@@ -47,8 +56,11 @@ class SyncManager extends Notifier<SyncState> {
       clearError: result.isSuccess,
     );
 
+    // A pull may have committed local data even when another repository failed.
+    // Always reload Drift consumers after a completed engine pass.
+    await ref.read(syncDataRefreshProvider)();
+
     if (result.isSuccess) {
-      await ref.read(syncDataRefreshProvider)();
       AppLogger.info(
         'Sync concluído: ${result.repositoriesProcessed} repositório(s), '
         '${result.pushed} enviados, ${result.pulled} recebidos.',

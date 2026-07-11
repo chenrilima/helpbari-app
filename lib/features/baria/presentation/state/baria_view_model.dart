@@ -1,25 +1,52 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
+import '../../../water/presentation/providers/water_view_model_provider.dart';
 import '../../domain/models/models.dart';
 import '../../domain/usecases/baria_use_cases.dart';
 import '../providers/baria_use_cases_provider.dart';
 import 'baria_state.dart';
 
 class BariaViewModel extends Notifier<BariaState> {
-  late final BariaUseCases _bariaUseCases;
+  int _insightRequest = 0;
+  BariaUseCases get _bariaUseCases => ref.read(bariaUseCasesProvider);
 
   @override
   BariaState build() {
-    _bariaUseCases = ref.read(bariaUseCasesProvider);
+    ref.listen(waterViewModelProvider, (previous, next) {
+      if (previous != null &&
+          previous.isLoading &&
+          !next.isLoading &&
+          next.errorMessage == null) {
+        unawaited(loadDailyInsight());
+      }
+    });
+    ref.listen(dailyWaterGoalProvider, (previous, next) {
+      if (previous != null && next.hasValue) {
+        unawaited(loadDailyInsight());
+      }
+    });
+    ref.listen(authSessionProvider, (previous, next) {
+      if (previous?.id != next?.id) {
+        state = const BariaState();
+        if (next != null) unawaited(loadDailyInsight());
+      }
+    });
     return const BariaState();
   }
 
   Future<void> loadDailyInsight() async {
+    final request = ++_insightRequest;
     state = state.copyWith(isLoading: true, error: null);
     try {
       final insight = await _bariaUseCases.getDailyInsight();
+      if (request != _insightRequest) return;
       state = state.copyWith(dailyInsight: insight, isLoading: false);
     } catch (e) {
+      if (request != _insightRequest) return;
       state = state.copyWith(error: e.toString(), isLoading: false);
     }
   }

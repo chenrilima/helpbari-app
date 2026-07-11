@@ -7,9 +7,13 @@ import '../../../water/presentation/providers/water_use_cases_provider.dart';
 import '../../../vitamins/presentation/providers/vitamin_use_cases_provider.dart';
 import '../../../medications/presentation/providers/medication_use_cases_provider.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
+import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 final bariaRepositoryProvider = Provider<BariaRepository>((ref) {
+  ref.watch(authSessionProvider);
   final waterUseCases = ref.watch(waterUseCasesProvider);
+  final settingsUseCases = ref.watch(settingsUseCasesProvider);
   final vitaminUseCases = ref.watch(vitaminUseCasesProvider);
   final medicationUseCases = ref.watch(medicationUseCasesProvider);
   final homeState = ref.watch(homeViewModelProvider);
@@ -19,6 +23,7 @@ final bariaRepositoryProvider = Provider<BariaRepository>((ref) {
 
   return FakeBariaRepository(
     waterUseCases: waterUseCases,
+    settingsUseCases: settingsUseCases,
     vitaminUseCases: vitaminUseCases,
     medicationUseCases: medicationUseCases,
     healthScore: healthScore,
@@ -26,5 +31,5 @@ final bariaRepositoryProvider = Provider<BariaRepository>((ref) {
 });
 
 final bariaUseCasesProvider = Provider(
-  (ref) => BariaUseCases(ref.read(bariaRepositoryProvider)),
+  (ref) => BariaUseCases(ref.watch(bariaRepositoryProvider)),
 );

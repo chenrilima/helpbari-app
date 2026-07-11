@@ -7,10 +7,18 @@ import '../supabase/supabase_client_provider.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/charts/presentation/providers/chart_series_providers.dart';
 import '../../features/home/presentation/providers/home_view_model_provider.dart';
+import '../../features/settings/data/datasources/drift_settings_local_datasource.dart';
+import '../../features/settings/data/datasources/settings_supabase_datasource.dart';
+import '../../features/settings/data/repositories/settings_sync_repository.dart';
+import '../../features/settings/presentation/providers/setting_use_cases_provider.dart';
+import '../../features/settings/presentation/providers/setting_view_model_provider.dart';
+import '../../features/settings/presentation/providers/settings_reminder_sync_provider.dart';
+import '../../features/medical_reports/presentation/providers/medical_report_providers.dart';
 import '../../features/water/data/datasources/drift_water_local_datasource.dart';
 import '../../features/water/data/datasources/water_supabase_datasource.dart';
 import '../../features/water/data/repositories/water_sync_repository.dart';
 import '../../features/water/presentation/providers/water_view_model_provider.dart';
+import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
 import 'sync_manager.dart';
 import 'sync_state.dart';
@@ -41,6 +49,26 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       ),
       userId: user.id,
     ),
+    SettingsSyncRepository(
+      local: () async {
+        if (!ref.read(driftAvailableProvider)) {
+          throw StateError('Drift unavailable');
+        }
+        final database = await ref.read(appDatabaseProvider.future);
+        return DriftSettingsLocalDatasource(
+          dao: database.settingsDao,
+          clock: ref.read(clockServiceProvider),
+          userId: user.id,
+        );
+      },
+      remote: SettingsSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
+      userId: user.id,
+      afterCommit: (dto) async {
+        await ref
+            .read(settingsReminderSyncServiceProvider)
+            .applyAfterCommit(dto.toEntity());
+      },
+    ),
   ];
 });
 
@@ -68,10 +96,20 @@ final syncEngineProvider = Provider<SyncEngine>((ref) {
 
 final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
   return () async {
-    await ref.read(waterViewModelProvider.notifier).loadHistory();
+    ref.invalidate(settingsUseCasesProvider);
+    ref.invalidate(dailyWaterGoalProvider);
     ref.invalidate(homeViewModelProvider);
+    ref.invalidate(waterViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
+    ref.invalidate(medicalReportUseCasesProvider);
+    ref.invalidate(bariaViewModelProvider);
+    await ref.read(settingsViewModelProvider.notifier).loadSettings();
+    await Future.wait([
+      ref.read(waterViewModelProvider.notifier).loadHistory(),
+      ref.read(homeViewModelProvider.notifier).loadHome(),
+      ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
+    ]);
   };
 });
 

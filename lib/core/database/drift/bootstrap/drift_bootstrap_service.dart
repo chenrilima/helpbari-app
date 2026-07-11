@@ -5,6 +5,7 @@ import '../consistency/water_local_consistency_checker.dart';
 import '../consistency/water_local_consistency_report.dart';
 import '../migrations/water_local_migration_report.dart';
 import '../migrations/water_local_migration_service.dart';
+import '../migrations/settings_legacy_service.dart';
 
 typedef AppDatabaseFactory = Future<AppDatabase> Function();
 
@@ -27,6 +28,10 @@ class DriftBootstrapService {
       database = await _databaseFactory();
       await database.customSelect('SELECT 1').getSingle();
       final migration = await WaterLocalMigrationService(
+        database: database,
+        storage: _storage,
+      ).migrate();
+      await SettingsLegacyService(
         database: database,
         storage: _storage,
       ).migrate();
