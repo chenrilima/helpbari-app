@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/database/drift/app_database.dart';
+import 'package:helpbari/core/database/drift/consistency/water_local_consistency_checker.dart';
+import 'package:helpbari/core/database/drift/consistency/water_local_consistency_report.dart';
 import 'package:helpbari/core/database/drift/migrations/water_local_migration_service.dart';
 import 'package:helpbari/core/database/local_database_record.dart';
 import 'package:helpbari/core/services/local_storage_service.dart';
@@ -57,6 +60,64 @@ void main() {
     expect(second.ignored, 1);
     expect(second.checksum, first.checksum);
     expect(rows, hasLength(1));
+  });
+
+  test('imports a new record added after the first migration', () async {
+    final first = _record(id: 'one', userId: 'user-a');
+    storage.writeRecords([first]);
+    await service.migrate();
+
+    storage.writeRecords([
+      first,
+      _record(id: 'two', userId: 'user-a', amountMl: 400),
+    ]);
+    final report = await service.migrate();
+
+    expect(report.imported, 1);
+    expect(await database.waterDao.getActiveByUser('user-a'), hasLength(2));
+  });
+
+  test('updates a record changed after the first migration', () async {
+    storage.writeRecords([_record(id: 'one', userId: 'user-a')]);
+    await service.migrate();
+
+    storage.writeRecords([
+      _record(
+        id: 'one',
+        userId: 'user-a',
+        amountMl: 600,
+        updatedAt: DateTime.utc(2026, 2, 1),
+      ),
+    ]);
+    final report = await service.migrate();
+
+    expect(report.updated, 1);
+    expect(
+      (await database.waterDao.getByUserAndId('user-a', 'one'))?.amountMl,
+      600,
+    );
+  });
+
+  test('applies a tombstone added after the first migration', () async {
+    storage.writeRecords([_record(id: 'one', userId: 'user-a')]);
+    await service.migrate();
+    final deletedAt = DateTime.utc(2026, 3, 1);
+
+    storage.writeRecords([
+      _record(
+        id: 'one',
+        userId: 'user-a',
+        updatedAt: deletedAt,
+        deletedAt: deletedAt,
+        syncStatus: SyncStatus.pendingDelete,
+      ),
+    ]);
+    final report = await service.migrate();
+
+    final migrated = await database.waterDao.getByUserAndId('user-a', 'one');
+    expect(report.updated, 1);
+    expect(migrated?.deletedAt?.toUtc(), deletedAt);
+    expect(migrated?.syncStatus, SyncStatus.pendingDelete.name);
   });
 
   test(
@@ -216,7 +277,99 @@ void main() {
     final reordered = await service.migrate();
     expect(reordered.checksum, first.checksum);
   });
+
+  group('WaterLocalConsistencyChecker', () {
+    test('reports a consistent re-execution', () async {
+      storage.writeRecords([
+        _record(id: 'one', userId: 'user-a'),
+        _record(id: 'two', userId: 'user-b'),
+      ]);
+      await service.migrate();
+      await service.migrate();
+
+      final report = await _checker(database, storage).check();
+
+      expect(report.consistent, isTrue);
+      expect(report.usersAnalyzed, ['user-a', 'user-b']);
+      expect(report.legacyRecords, 2);
+      expect(report.driftRecords, 2);
+      expect(report.missingInDrift, 0);
+      expect(report.extraInDrift, 0);
+      expect(report.divergent, 0);
+      expect(report.checksums.values.every((value) => value.matches), isTrue);
+    });
+
+    test('detects content, tombstone and sync status divergence', () async {
+      final source = _record(id: 'one', userId: 'user-a');
+      storage.writeRecords([source]);
+      await service.migrate();
+      final changedAt = DateTime.utc(2026, 4, 1);
+      await database.waterDao.upsert(
+        WaterRecordsCompanion.insert(
+          id: 'one',
+          userId: 'user-a',
+          amountMl: 999,
+          recordedAt: changedAt,
+          createdAt: changedAt,
+          updatedAt: changedAt,
+          deletedAt: Value(changedAt),
+          syncStatus: SyncStatus.pendingDelete.name,
+        ),
+      );
+
+      final report = await _checker(database, storage).check();
+      final types = report.issues.single.types;
+
+      expect(report.consistent, isFalse);
+      expect(report.divergent, 1);
+      expect(types, contains(WaterConsistencyIssueType.contentDivergent));
+      expect(types, contains(WaterConsistencyIssueType.tombstoneDivergent));
+      expect(types, contains(WaterConsistencyIssueType.syncStatusDivergent));
+    });
+
+    test('detects an extra record in Drift', () async {
+      storage.writeRecords([_record(id: 'one', userId: 'user-a')]);
+      await service.migrate();
+      await database.waterDao.upsert(
+        WaterRecordsCompanion.insert(
+          id: 'extra',
+          userId: 'user-a',
+          amountMl: 200,
+          recordedAt: DateTime.utc(2026),
+          createdAt: DateTime.utc(2026),
+          updatedAt: DateTime.utc(2026),
+          syncStatus: SyncStatus.synced.name,
+        ),
+      );
+
+      final report = await _checker(database, storage).check();
+
+      expect(report.extraInDrift, 1);
+      expect(report.issues.single.recordId, 'extra');
+    });
+
+    test('keeps consistency results isolated by user', () async {
+      storage.writeRecords([
+        _record(id: 'same', userId: 'user-a'),
+        _record(id: 'same', userId: 'user-b'),
+      ]);
+      await service.migrate();
+      await database.waterDao.deleteByUserAndId('user-a', 'same');
+
+      final report = await _checker(database, storage).check();
+
+      expect(report.missingInDrift, 1);
+      expect(report.issues.single.userId, 'user-a');
+      expect(report.checksums['user-b']?.matches, isTrue);
+      expect(report.checksums['user-a']?.matches, isFalse);
+    });
+  });
 }
+
+WaterLocalConsistencyChecker _checker(
+  AppDatabase database,
+  LocalStorageService storage,
+) => WaterLocalConsistencyChecker(database: database, storage: storage);
 
 LocalDatabaseRecord _record({
   required String id,
