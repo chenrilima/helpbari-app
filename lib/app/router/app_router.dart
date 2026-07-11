@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:helpbari/features/meals/presentation/pages/meals_page.dart';
 import '../../features/appointments/presentation/pages/appointments_page.dart';
 import '../../features/appointments/presentation/pages/register_appointment_page.dart';
+import '../../features/baria/presentation/pages/baria_page.dart';
 import '../../features/exams/presentation/pages/exams_page.dart';
 import '../../features/exams/presentation/pages/register_exam_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
@@ -117,6 +118,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.registerWater,
         builder: (_, _) => const RegisterWaterPage(),
       ),
+      GoRoute(path: AppRoutes.baria, builder: (_, _) => const BariaPage()),
       GoRoute(
         path: AppRoutes.vitamins,
         builder: (context, state) => const VitaminsPage(),

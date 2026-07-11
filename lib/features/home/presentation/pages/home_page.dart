@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/health/models/daily_summary.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../auth/presentation/states/auth_state.dart';
 import '../../../auth/presentation/viewmodels/auth_providers.dart';
+import '../../../baria/presentation/widgets/baria_home_card.dart';
+import '../../../baria/presentation/providers/baria_view_model_provider.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/appointment_overview_section.dart';
 import '../widgets/exam_overview_section.dart';
@@ -83,6 +86,8 @@ class _HomePageState extends ConsumerState<HomePage> {
             HealthScoreOverviewSection(
               healthScore: state.dailySummary!.healthScore,
             ),
+            const HBGap.xl(),
+            _BariaCardSection(dailySummary: state.dailySummary!),
           ],
           const HBGap.xl(),
           WeightOverviewSection(
@@ -136,5 +141,37 @@ class _HomePageState extends ConsumerState<HomePage> {
         ],
       ),
     );
+  }
+}
+
+class _BariaCardSection extends ConsumerStatefulWidget {
+  const _BariaCardSection({required this.dailySummary});
+
+  final DailySummary dailySummary;
+
+  @override
+  ConsumerState<_BariaCardSection> createState() => _BariaCardSectionState();
+}
+
+class _BariaCardSectionState extends ConsumerState<_BariaCardSection> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(_loadBaria);
+  }
+
+  Future<void> _loadBaria() async {
+    await ref.read(bariaViewModelProvider.notifier).loadDailyInsight();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bariaState = ref.watch(bariaViewModelProvider);
+
+    if (bariaState.dailyInsight == null) {
+      return const SizedBox.shrink();
+    }
+
+    return BariaHomeCard(insight: bariaState.dailyInsight!);
   }
 }
