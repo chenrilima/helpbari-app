@@ -18,6 +18,7 @@ import '../../features/water/data/datasources/drift_water_local_datasource.dart'
 import '../../features/water/data/datasources/water_supabase_datasource.dart';
 import '../../features/water/data/repositories/water_sync_repository.dart';
 import '../../features/water/presentation/providers/water_view_model_provider.dart';
+import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
 import 'sync_manager.dart';
 import 'sync_state.dart';
@@ -102,10 +103,12 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(waterChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(medicalReportUseCasesProvider);
+    ref.invalidate(bariaViewModelProvider);
     await ref.read(settingsViewModelProvider.notifier).loadSettings();
     await Future.wait([
       ref.read(waterViewModelProvider.notifier).loadHistory(),
       ref.read(homeViewModelProvider.notifier).loadHome(),
+      ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
     ]);
   };
 });
