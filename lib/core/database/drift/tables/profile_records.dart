@@ -17,6 +17,7 @@ class ProfileRecords extends Table {
   DateTimeColumn get surgeryDate => dateTime()();
   TextColumn get surgeryType => text()();
   TextColumn get photoUrl => text().nullable()();
+  TextColumn get photoStoragePath => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
   DateTimeColumn get deletedAt => dateTime().nullable()();

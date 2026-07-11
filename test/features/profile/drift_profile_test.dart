@@ -23,6 +23,17 @@ void main() {
   });
   tearDown(() => database.close());
 
+  test('local schema v5 contains photo_storage_path', () async {
+    expect(database.schemaVersion, 5);
+    final columns = await database
+        .customSelect('PRAGMA table_info(profile_records)')
+        .get();
+    expect(
+      columns.map((row) => row.read<String>('name')),
+      contains('photo_storage_path'),
+    );
+  });
+
   test('CRUD, soft delete and pending status are isolated by userId', () async {
     final first = _local(database, 'user-a');
     final second = _local(database, 'user-b');
@@ -80,6 +91,32 @@ void main() {
     );
     expect((await local.getProfile())?.name, 'Remote');
   });
+
+  test(
+    'photo storage path round-trips through Drift and sync payload',
+    () async {
+      final local = _local(database, 'user-a');
+      final profile = _profile(
+        'user-a',
+        'Ana',
+      ).copyWith(photoStoragePath: 'user-a/profile/photo.jpg');
+      await local.save(profile);
+      expect(
+        (await local.getProfile())?.photoStoragePath,
+        'user-a/profile/photo.jpg',
+      );
+      final repository = ProfileSyncRepository(
+        local: () async => local,
+        remote: _Remote(),
+        userId: 'user-a',
+      );
+      final operation = (await repository.pendingOperations()).single;
+      expect(
+        operation.payload['photo_storage_path'],
+        'user-a/profile/photo.jpg',
+      );
+    },
+  );
 
   test(
     'migration preserves SharedPreferences and creates cutover marker',

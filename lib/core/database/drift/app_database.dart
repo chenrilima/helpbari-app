@@ -35,7 +35,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -51,6 +51,12 @@ class AppDatabase extends _$AppDatabase {
       if (from < 4) {
         await migrator.createTable(profileRecords);
         await migrator.createTable(profileCutovers);
+      }
+      if (from < 5) {
+        await migrator.addColumn(
+          profileRecords,
+          profileRecords.photoStoragePath,
+        );
       }
     },
     beforeOpen: (details) async {
