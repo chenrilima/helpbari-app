@@ -14,12 +14,7 @@ final onboardingRepositoryProvider = Provider<OnboardingRepository>((ref) {
 final onboardingUseCasesProvider = Provider<OnboardingUseCases>((ref) {
   final repository = ref.watch(onboardingRepositoryProvider);
 
-  return OnboardingUseCases(
-    getStatus: GetOnboardingStatusUseCase(repository),
-    getDraft: GetOnboardingDraftUseCase(repository),
-    saveDraft: SaveOnboardingDraftUseCase(repository),
-    complete: CompleteOnboardingUseCase(repository),
-  );
+  return OnboardingUseCases(repository);
 });
 
 final onboardingViewModelProvider =

@@ -23,8 +23,18 @@ class AuthGuard {
       AuthLoading() => location == AppRoutes.splash ? null : AppRoutes.splash,
       AuthPasswordRecoveryReady() =>
         location == AppRoutes.resetPassword ? null : AppRoutes.resetPassword,
-      AuthAuthenticated() => isPublicRoute ? AppRoutes.home : null,
-      AuthPasswordUpdated() => isPublicRoute ? AppRoutes.home : null,
+      AuthAuthenticated() =>
+        location == AppRoutes.onboarding
+            ? null
+            : isPublicRoute
+            ? AppRoutes.home
+            : null,
+      AuthPasswordUpdated() =>
+        location == AppRoutes.onboarding
+            ? null
+            : isPublicRoute
+            ? AppRoutes.home
+            : null,
       AuthUnauthenticated() ||
       AuthPasswordRecoverySent() ||
       AuthFailure() => isPublicRoute ? null : AppRoutes.login,

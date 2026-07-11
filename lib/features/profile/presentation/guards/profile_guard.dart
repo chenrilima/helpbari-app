@@ -18,7 +18,7 @@ class ProfileGuard {
     }
     final completing = location == AppRoutes.completeProfile;
     if (state.profile == null) {
-      return completing ? null : AppRoutes.completeProfile;
+      return completing ? null : AppRoutes.onboarding;
     }
     return null;
   }

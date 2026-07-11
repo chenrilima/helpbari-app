@@ -72,20 +72,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final onboardingState = ref.read(onboardingViewModelProvider);
       final isOnboardingRoute = location == AppRoutes.onboarding;
 
-      if (!onboardingState.hasCompleted) {
+      if (!onboardingState.introductionCompleted) {
         return isOnboardingRoute ? null : AppRoutes.onboarding;
       }
 
-      if (isOnboardingRoute) {
-        return AppRoutes.splash;
+      final session = ref.read(authSessionProvider);
+      if (session == null && isOnboardingRoute) return AppRoutes.login;
+      if (session != null && !onboardingState.userCompleted) {
+        return isOnboardingRoute ? null : AppRoutes.onboarding;
       }
+      if (session != null && isOnboardingRoute) return AppRoutes.home;
 
       final authRedirect = AuthGuard.redirect(
         location: location,
         authState: ref.read(authViewModelProvider),
       );
       if (authRedirect != null) return authRedirect;
-      if (ref.read(authSessionProvider) != null) {
+      if (session != null) {
         return ProfileGuard.redirect(
           location: location,
           state: ref.read(profileViewModelProvider),
