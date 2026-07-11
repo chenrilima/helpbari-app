@@ -15,6 +15,7 @@ class Profile extends Entity {
     required this.surgeryType,
     this.targetWeight,
     this.photoUrl,
+    this.photoStoragePath,
     this.clock = const AppClockService(),
   });
 
@@ -36,6 +37,7 @@ class Profile extends Entity {
   final SurgeryType surgeryType;
 
   final String? photoUrl;
+  final String? photoStoragePath;
 
   final String email;
 
@@ -53,4 +55,25 @@ class Profile extends Entity {
   Bmi get initialBmi {
     return Bmi.calculate(weight: initialWeight, height: height);
   }
+
+  Profile copyWith({
+    String? photoStoragePath,
+    bool clearPhotoStoragePath = false,
+  }) => Profile(
+    id: id,
+    name: name,
+    email: email,
+    createdAt: createdAt,
+    birthDate: birthDate,
+    height: height,
+    initialWeight: initialWeight,
+    targetWeight: targetWeight,
+    surgeryDate: surgeryDate,
+    surgeryType: surgeryType,
+    photoUrl: photoUrl,
+    photoStoragePath: clearPhotoStoragePath
+        ? null
+        : photoStoragePath ?? this.photoStoragePath,
+    clock: clock,
+  );
 }

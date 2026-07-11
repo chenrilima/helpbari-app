@@ -133,6 +133,7 @@ class DriftProfileLocalDatasource {
     surgeryDate: dto.surgeryDate,
     surgeryType: dto.surgeryType,
     photoUrl: dto.photoUrl,
+    photoStoragePath: dto.photoStoragePath,
     syncMetadata: metadata,
   );
 
@@ -156,6 +157,7 @@ class DriftProfileLocalDatasource {
     surgeryDate: Value(row.surgeryDate),
     surgeryType: Value(row.surgeryType),
     photoUrl: Value(row.photoUrl),
+    photoStoragePath: Value(row.photoStoragePath),
     createdAt: Value(row.createdAt),
     updatedAt: updatedAt.present ? updatedAt : Value(row.updatedAt),
     deletedAt: deletedAt.present ? deletedAt : Value(row.deletedAt),

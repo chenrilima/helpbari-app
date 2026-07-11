@@ -3824,6 +3824,17 @@ class $ProfileRecordsTable extends ProfileRecords
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _photoStoragePathMeta = const VerificationMeta(
+    'photoStoragePath',
+  );
+  @override
+  late final GeneratedColumn<String> photoStoragePath = GeneratedColumn<String>(
+    'photo_storage_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -3915,6 +3926,7 @@ class $ProfileRecordsTable extends ProfileRecords
     surgeryDate,
     surgeryType,
     photoUrl,
+    photoStoragePath,
     createdAt,
     updatedAt,
     deletedAt,
@@ -4031,6 +4043,15 @@ class $ProfileRecordsTable extends ProfileRecords
         photoUrl.isAcceptableOrUnknown(data['photo_url']!, _photoUrlMeta),
       );
     }
+    if (data.containsKey('photo_storage_path')) {
+      context.handle(
+        _photoStoragePathMeta,
+        photoStoragePath.isAcceptableOrUnknown(
+          data['photo_storage_path']!,
+          _photoStoragePathMeta,
+        ),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -4141,6 +4162,10 @@ class $ProfileRecordsTable extends ProfileRecords
         DriftSqlType.string,
         data['${effectivePrefix}photo_url'],
       ),
+      photoStoragePath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}photo_storage_path'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -4190,6 +4215,7 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
   final DateTime surgeryDate;
   final String surgeryType;
   final String? photoUrl;
+  final String? photoStoragePath;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
@@ -4209,6 +4235,7 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
     required this.surgeryDate,
     required this.surgeryType,
     this.photoUrl,
+    this.photoStoragePath,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
@@ -4234,6 +4261,9 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
     map['surgery_type'] = Variable<String>(surgeryType);
     if (!nullToAbsent || photoUrl != null) {
       map['photo_url'] = Variable<String>(photoUrl);
+    }
+    if (!nullToAbsent || photoStoragePath != null) {
+      map['photo_storage_path'] = Variable<String>(photoStoragePath);
     }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -4268,6 +4298,9 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
       photoUrl: photoUrl == null && nullToAbsent
           ? const Value.absent()
           : Value(photoUrl),
+      photoStoragePath: photoStoragePath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(photoStoragePath),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
       deletedAt: deletedAt == null && nullToAbsent
@@ -4303,6 +4336,7 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
       surgeryDate: serializer.fromJson<DateTime>(json['surgeryDate']),
       surgeryType: serializer.fromJson<String>(json['surgeryType']),
       photoUrl: serializer.fromJson<String?>(json['photoUrl']),
+      photoStoragePath: serializer.fromJson<String?>(json['photoStoragePath']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
@@ -4329,6 +4363,7 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
       'surgeryDate': serializer.toJson<DateTime>(surgeryDate),
       'surgeryType': serializer.toJson<String>(surgeryType),
       'photoUrl': serializer.toJson<String?>(photoUrl),
+      'photoStoragePath': serializer.toJson<String?>(photoStoragePath),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
@@ -4351,6 +4386,7 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
     DateTime? surgeryDate,
     String? surgeryType,
     Value<String?> photoUrl = const Value.absent(),
+    Value<String?> photoStoragePath = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
@@ -4370,6 +4406,9 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
     surgeryDate: surgeryDate ?? this.surgeryDate,
     surgeryType: surgeryType ?? this.surgeryType,
     photoUrl: photoUrl.present ? photoUrl.value : this.photoUrl,
+    photoStoragePath: photoStoragePath.present
+        ? photoStoragePath.value
+        : this.photoStoragePath,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
@@ -4405,6 +4444,9 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
           ? data.surgeryType.value
           : this.surgeryType,
       photoUrl: data.photoUrl.present ? data.photoUrl.value : this.photoUrl,
+      photoStoragePath: data.photoStoragePath.present
+          ? data.photoStoragePath.value
+          : this.photoStoragePath,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
@@ -4437,6 +4479,7 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
           ..write('surgeryDate: $surgeryDate, ')
           ..write('surgeryType: $surgeryType, ')
           ..write('photoUrl: $photoUrl, ')
+          ..write('photoStoragePath: $photoStoragePath, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
@@ -4461,6 +4504,7 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
     surgeryDate,
     surgeryType,
     photoUrl,
+    photoStoragePath,
     createdAt,
     updatedAt,
     deletedAt,
@@ -4484,6 +4528,7 @@ class ProfileRecord extends DataClass implements Insertable<ProfileRecord> {
           other.surgeryDate == this.surgeryDate &&
           other.surgeryType == this.surgeryType &&
           other.photoUrl == this.photoUrl &&
+          other.photoStoragePath == this.photoStoragePath &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
@@ -4505,6 +4550,7 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
   final Value<DateTime> surgeryDate;
   final Value<String> surgeryType;
   final Value<String?> photoUrl;
+  final Value<String?> photoStoragePath;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
@@ -4525,6 +4571,7 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
     this.surgeryDate = const Value.absent(),
     this.surgeryType = const Value.absent(),
     this.photoUrl = const Value.absent(),
+    this.photoStoragePath = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
@@ -4546,6 +4593,7 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
     required DateTime surgeryDate,
     required String surgeryType,
     this.photoUrl = const Value.absent(),
+    this.photoStoragePath = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
     this.deletedAt = const Value.absent(),
@@ -4578,6 +4626,7 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
     Expression<DateTime>? surgeryDate,
     Expression<String>? surgeryType,
     Expression<String>? photoUrl,
+    Expression<String>? photoStoragePath,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
@@ -4600,6 +4649,7 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
       if (surgeryDate != null) 'surgery_date': surgeryDate,
       if (surgeryType != null) 'surgery_type': surgeryType,
       if (photoUrl != null) 'photo_url': photoUrl,
+      if (photoStoragePath != null) 'photo_storage_path': photoStoragePath,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
@@ -4624,6 +4674,7 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
     Value<DateTime>? surgeryDate,
     Value<String>? surgeryType,
     Value<String?>? photoUrl,
+    Value<String?>? photoStoragePath,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
@@ -4645,6 +4696,7 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
       surgeryDate: surgeryDate ?? this.surgeryDate,
       surgeryType: surgeryType ?? this.surgeryType,
       photoUrl: photoUrl ?? this.photoUrl,
+      photoStoragePath: photoStoragePath ?? this.photoStoragePath,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
@@ -4692,6 +4744,9 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
     if (photoUrl.present) {
       map['photo_url'] = Variable<String>(photoUrl.value);
     }
+    if (photoStoragePath.present) {
+      map['photo_storage_path'] = Variable<String>(photoStoragePath.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -4733,6 +4788,7 @@ class ProfileRecordsCompanion extends UpdateCompanion<ProfileRecord> {
           ..write('surgeryDate: $surgeryDate, ')
           ..write('surgeryType: $surgeryType, ')
           ..write('photoUrl: $photoUrl, ')
+          ..write('photoStoragePath: $photoStoragePath, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
@@ -7166,6 +7222,7 @@ typedef $$ProfileRecordsTableCreateCompanionBuilder =
       required DateTime surgeryDate,
       required String surgeryType,
       Value<String?> photoUrl,
+      Value<String?> photoStoragePath,
       required DateTime createdAt,
       required DateTime updatedAt,
       Value<DateTime?> deletedAt,
@@ -7188,6 +7245,7 @@ typedef $$ProfileRecordsTableUpdateCompanionBuilder =
       Value<DateTime> surgeryDate,
       Value<String> surgeryType,
       Value<String?> photoUrl,
+      Value<String?> photoStoragePath,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
@@ -7259,6 +7317,11 @@ class $$ProfileRecordsTableFilterComposer
 
   ColumnFilters<String> get photoUrl => $composableBuilder(
     column: $table.photoUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get photoStoragePath => $composableBuilder(
+    column: $table.photoStoragePath,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7362,6 +7425,11 @@ class $$ProfileRecordsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get photoStoragePath => $composableBuilder(
+    column: $table.photoStoragePath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -7450,6 +7518,11 @@ class $$ProfileRecordsTableAnnotationComposer
   GeneratedColumn<String> get photoUrl =>
       $composableBuilder(column: $table.photoUrl, builder: (column) => column);
 
+  GeneratedColumn<String> get photoStoragePath => $composableBuilder(
+    column: $table.photoStoragePath,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
@@ -7524,6 +7597,7 @@ class $$ProfileRecordsTableTableManager
                 Value<DateTime> surgeryDate = const Value.absent(),
                 Value<String> surgeryType = const Value.absent(),
                 Value<String?> photoUrl = const Value.absent(),
+                Value<String?> photoStoragePath = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
@@ -7544,6 +7618,7 @@ class $$ProfileRecordsTableTableManager
                 surgeryDate: surgeryDate,
                 surgeryType: surgeryType,
                 photoUrl: photoUrl,
+                photoStoragePath: photoStoragePath,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
@@ -7566,6 +7641,7 @@ class $$ProfileRecordsTableTableManager
                 required DateTime surgeryDate,
                 required String surgeryType,
                 Value<String?> photoUrl = const Value.absent(),
+                Value<String?> photoStoragePath = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
                 Value<DateTime?> deletedAt = const Value.absent(),
@@ -7586,6 +7662,7 @@ class $$ProfileRecordsTableTableManager
                 surgeryDate: surgeryDate,
                 surgeryType: surgeryType,
                 photoUrl: photoUrl,
+                photoStoragePath: photoStoragePath,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,

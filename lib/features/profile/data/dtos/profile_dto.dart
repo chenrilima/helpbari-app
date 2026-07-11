@@ -21,6 +21,7 @@ class ProfileDto {
     required this.syncMetadata,
     this.targetWeight,
     this.photoUrl,
+    this.photoStoragePath,
   });
 
   final String id;
@@ -34,6 +35,7 @@ class ProfileDto {
   final DateTime surgeryDate;
   final SurgeryType surgeryType;
   final String? photoUrl;
+  final String? photoStoragePath;
   final SyncMetadata syncMetadata;
 
   Profile toEntity({ClockService clock = const AppClockService()}) {
@@ -57,6 +59,7 @@ class ProfileDto {
       surgeryDate: AppDate(surgeryDate, clock: clock),
       surgeryType: surgeryType,
       photoUrl: photoUrl,
+      photoStoragePath: photoStoragePath,
       clock: clock,
     );
   }
@@ -75,6 +78,7 @@ class ProfileDto {
         'surgeryDate': surgeryDate.toIso8601String(),
         'surgeryType': surgeryType.name,
         'photoUrl': photoUrl,
+        'photoStoragePath': photoStoragePath,
       },
     );
   }
@@ -100,6 +104,7 @@ class ProfileDto {
       surgeryDate: profile.surgeryDate.value,
       surgeryType: profile.surgeryType,
       photoUrl: profile.photoUrl,
+      photoStoragePath: profile.photoStoragePath,
       syncMetadata: SyncMetadata(
         id: profile.id,
         userId: userId ?? previousMetadata?.userId,
@@ -128,6 +133,7 @@ class ProfileDto {
         orElse: () => SurgeryType.other,
       ),
       photoUrl: data['photoUrl'] as String?,
+      photoStoragePath: data['photoStoragePath'] as String?,
       syncMetadata: record.metadata,
     );
   }
@@ -145,6 +151,7 @@ class ProfileDto {
         surgeryDate: Value(surgeryDate),
         surgeryType: Value(surgeryType.name),
         photoUrl: Value(photoUrl),
+        photoStoragePath: Value(photoStoragePath),
         createdAt: Value(syncMetadata.createdAt),
         updatedAt: Value(syncMetadata.updatedAt),
         deletedAt: Value(syncMetadata.deletedAt),
@@ -157,12 +164,13 @@ class ProfileDto {
     'name': name,
     'email': email,
     'birth_date': birthDate.toIso8601String(),
-    'height_in_centimeters': heightInCentimeters,
-    'initial_weight': initialWeight,
-    'target_weight': targetWeight,
+    'height_cm': heightInCentimeters,
+    'initial_weight_kg': initialWeight,
+    'target_weight_kg': targetWeight,
     'surgery_date': surgeryDate.toIso8601String(),
     'surgery_type': surgeryType.name,
     'photo_url': photoUrl,
+    'photo_storage_path': photoStoragePath,
     'created_at': syncMetadata.createdAt.toIso8601String(),
     'updated_at': syncMetadata.updatedAt.toIso8601String(),
     'deleted_at': syncMetadata.deletedAt?.toIso8601String(),
@@ -183,6 +191,7 @@ class ProfileDto {
       orElse: () => SurgeryType.other,
     ),
     photoUrl: row.photoUrl,
+    photoStoragePath: row.photoStoragePath,
     syncMetadata: SyncMetadata(
       id: row.id,
       userId: row.userId,
@@ -199,15 +208,16 @@ class ProfileDto {
     email: json['email'] as String,
     createdAt: DateTime.parse(json['created_at'] as String),
     birthDate: DateTime.parse(json['birth_date'] as String),
-    heightInCentimeters: json['height_in_centimeters'] as int,
-    initialWeight: (json['initial_weight'] as num).toDouble(),
-    targetWeight: (json['target_weight'] as num?)?.toDouble(),
+    heightInCentimeters: (json['height_cm'] as num).round(),
+    initialWeight: (json['initial_weight_kg'] as num).toDouble(),
+    targetWeight: (json['target_weight_kg'] as num?)?.toDouble(),
     surgeryDate: DateTime.parse(json['surgery_date'] as String),
     surgeryType: SurgeryType.values.firstWhere(
       (value) => value.name == json['surgery_type'],
       orElse: () => SurgeryType.other,
     ),
     photoUrl: json['photo_url'] as String?,
+    photoStoragePath: json['photo_storage_path'] as String?,
     syncMetadata: SyncMetadata(
       id: json['id'] as String,
       userId: json['user_id'] as String,

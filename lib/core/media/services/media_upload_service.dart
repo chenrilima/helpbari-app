@@ -55,4 +55,14 @@ class MediaUploadService {
   Future<void> remove({required List<String> paths, String? bucketId}) {
     return _storageService.remove(paths: paths, bucketId: bucketId);
   }
+
+  Future<String> createSignedUrl({
+    required String path,
+    required int expiresIn,
+    String? bucketId,
+  }) => _storageService.createSignedUrl(
+    path: path,
+    bucketId: bucketId,
+    expiresIn: expiresIn,
+  );
 }
