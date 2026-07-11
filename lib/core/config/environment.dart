@@ -13,6 +13,18 @@ abstract final class Environment {
     'APP_REDIRECT_URL',
     defaultValue: 'io.helpbari.app://login-callback',
   );
+  static const environmentName = String.fromEnvironment(
+    'ENV',
+    defaultValue: 'dev',
+  );
+
+  static AppEnvironment get configuredEnvironment {
+    return switch (environmentName.toLowerCase()) {
+      'prod' || 'production' => AppEnvironment.prod,
+      'staging' => AppEnvironment.staging,
+      _ => AppEnvironment.dev,
+    };
+  }
 
   static bool get isDev => current == AppEnvironment.dev;
 

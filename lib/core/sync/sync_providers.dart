@@ -24,6 +24,7 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       localDatasource: LocalWaterDatasource(
         database: ref.watch(localDatabaseProvider),
         clock: ref.watch(clockServiceProvider),
+        userId: user.id,
       ),
       supabaseDatasource: WaterSupabaseDatasource(
         ref.watch(supabaseDatabaseProvider),

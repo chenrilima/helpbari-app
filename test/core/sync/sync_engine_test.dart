@@ -114,6 +114,30 @@ void main() {
       expect(repository.pushAttempts, 2);
     });
 
+    test('still pushes pending records when pull fails', () async {
+      final repository = _FakeSyncableRepository(
+        pending: [
+          _operation(recordId: 'offline-pull', updatedAt: DateTime(2026, 7, 9)),
+        ],
+        throwOnPull: true,
+      );
+      final engine = SyncEngine(
+        stateRepository: _FakeSyncStateRepository(),
+        clock: const _FixedClock(),
+      );
+
+      final result = await engine.sync(
+        repositories: [repository],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.isSuccess, isFalse);
+      expect(result.pushed, 1);
+      expect(repository.pushed.single.recordId, 'offline-pull');
+      expect(result.errors.single.operation, 'pull');
+    });
+
     test('resolves conflicts with latest updatedAt winning', () async {
       final local = _operation(
         recordId: 'conflict-1',
@@ -205,6 +229,7 @@ class _FakeSyncableRepository implements SyncableRepository {
     List<SyncOperation> remote = const [],
     Map<String, SyncOperation> localById = const {},
     this.pushFailuresBeforeSuccess = 0,
+    this.throwOnPull = false,
   }) : _pending = List.of(pending),
        _remote = List.of(remote),
        _localById = Map.of(localById);
@@ -213,6 +238,7 @@ class _FakeSyncableRepository implements SyncableRepository {
   final List<SyncOperation> _remote;
   final Map<String, SyncOperation> _localById;
   final int pushFailuresBeforeSuccess;
+  final bool throwOnPull;
 
   final pushed = <SyncOperation>[];
   final appliedRemote = <SyncOperation>[];
@@ -246,6 +272,7 @@ class _FakeSyncableRepository implements SyncableRepository {
 
   @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async {
+    if (throwOnPull) throw StateError('pull failed');
     lastPullUpdatedAfter = updatedAfter;
     if (updatedAfter == null) return List.of(_remote);
 

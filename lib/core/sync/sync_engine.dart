@@ -42,11 +42,6 @@ class SyncEngine {
       repositoriesProcessed++;
 
       try {
-        final pushResult = await _pushPending(repository);
-        pushed += pushResult.pushed;
-        deleted += pushResult.deleted;
-        errors.addAll(pushResult.errors);
-
         final pullResult = await _pullRemote(
           repository,
           updatedAfter: initialState.lastPullAt,
@@ -60,7 +55,24 @@ class SyncEngine {
           SyncError(
             repositoryKey: repository.syncKey,
             message: error.toString(),
-            operation: 'sync',
+            operation: 'pull',
+            cause: error,
+            stackTrace: stackTrace,
+          ),
+        );
+      }
+
+      try {
+        final pushResult = await _pushPending(repository);
+        pushed += pushResult.pushed;
+        deleted += pushResult.deleted;
+        errors.addAll(pushResult.errors);
+      } catch (error, stackTrace) {
+        errors.add(
+          SyncError(
+            repositoryKey: repository.syncKey,
+            message: error.toString(),
+            operation: 'push',
             cause: error,
             stackTrace: stackTrace,
           ),

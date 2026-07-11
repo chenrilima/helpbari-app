@@ -51,7 +51,7 @@ class WaterSyncRepository implements SyncableRepository {
         record,
         userId: _userId,
       ),
-      SyncOperationType.delete => await _supabaseDatasource.insert(
+      SyncOperationType.delete => await _supabaseDatasource.softDelete(
         record,
         userId: _userId,
       ),

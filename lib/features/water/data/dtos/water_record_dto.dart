@@ -67,6 +67,7 @@ class WaterRecordDto {
   static WaterRecordDto fromEntity(
     WaterRecord record, {
     required DateTime now,
+    String? userId,
     SyncMetadata? previousMetadata,
   }) {
     final syncStatus = _nextSyncStatus(previousMetadata?.syncStatus);
@@ -77,7 +78,7 @@ class WaterRecordDto {
       recordedAt: record.recordedAt,
       syncMetadata: SyncMetadata(
         id: record.id,
-        userId: previousMetadata?.userId,
+        userId: previousMetadata?.userId ?? userId,
         createdAt: previousMetadata?.createdAt ?? now,
         updatedAt: now,
         syncStatus: syncStatus,

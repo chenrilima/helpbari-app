@@ -2,23 +2,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/data/repository_backend.dart';
 import '../../../../core/services/service_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/datasources/local_water_datasource.dart';
 import '../../data/repositories/local_water_repository.dart';
 import '../../domain/repositories/water_repository.dart';
 import '../../domain/usecases/use_cases.dart';
 
 final waterRepositoryProvider = Provider<WaterRepository>((ref) {
+  final userId = ref.watch(authSessionProvider)?.id;
   return switch (ref.watch(repositoryBackendProvider)) {
     RepositoryBackend.local => LocalWaterRepository(
       LocalWaterDatasource(
         database: ref.watch(localDatabaseProvider),
         clock: ref.watch(clockServiceProvider),
+        userId: userId,
       ),
     ),
     RepositoryBackend.supabase => LocalWaterRepository(
       LocalWaterDatasource(
         database: ref.watch(localDatabaseProvider),
         clock: ref.watch(clockServiceProvider),
+        userId: userId,
       ),
     ),
   };

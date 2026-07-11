@@ -2,66 +2,155 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/formatters/app_water_formatter.dart';
+import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/services/service_providers.dart';
 import '../../../../design_system/design_system.dart';
+import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
+import '../../domain/entities/entities.dart';
+import '../models/water_form.dart';
 import '../providers/water_view_model_provider.dart';
+import '../widgets/water_progress_card.dart';
 
-class RegisterWaterPage extends ConsumerWidget {
-  const RegisterWaterPage({super.key});
+class RegisterWaterPage extends ConsumerStatefulWidget {
+  const RegisterWaterPage({super.key, this.record});
+
+  final WaterRecord? record;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return HBPage(
-      appBar: const HBAppBar(
-        title: 'Registrar água',
-        subtitle: 'Acompanhe sua hidratação',
-      ),
-      children: [
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: const [
-            _QuickWaterButton(amount: 200),
-            _QuickWaterButton(amount: 300),
-            _QuickWaterButton(amount: 500),
-            _QuickWaterButton(amount: 750),
-          ],
-        ),
-        const HBGap.xl(),
-        HBButton(
-          label: 'Quantidade personalizada',
-          onPressed: () {
-            // Implementaremos depois.
-          },
-        ),
-      ],
-    );
-  }
+  ConsumerState<RegisterWaterPage> createState() => _RegisterWaterPageState();
 }
 
-class _QuickWaterButton extends ConsumerWidget {
-  const _QuickWaterButton({required this.amount});
+class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _amountController;
+  late DateTime _recordedAt;
 
-  final int amount;
+  bool get _isEditing => widget.record != null;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final label = AppWaterFormatter.ml(amount);
+  void initState() {
+    super.initState();
+    _amountController = TextEditingController(
+      text: widget.record?.amount.valueInMl.toString(),
+    );
+    _recordedAt =
+        widget.record?.recordedAt ?? ref.read(clockServiceProvider).now();
+  }
 
-    return SizedBox(
-      width: 160,
-      child: HBButton(
-        label: label,
-        icon: AppIcons.water,
-        onPressed: () async {
-          await ref.read(waterViewModelProvider.notifier).registerWater(amount);
-          if (!context.mounted) return;
-          HBSnackBar.success(
-            context,
-            message: AppWaterFormatter.registered(amount),
-          );
-          context.pop(true);
-        },
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDate() async {
+    final now = ref.read(clockServiceProvider).now();
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _recordedAt,
+      firstDate: DateTime(2020),
+      lastDate: now,
+    );
+    if (date == null) return;
+    setState(() {
+      _recordedAt = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        _recordedAt.hour,
+        _recordedAt.minute,
+      );
+    });
+  }
+
+  Future<void> _submit() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    final form = WaterForm(
+      amountInMl: int.parse(_amountController.text.trim()),
+      recordedAt: _recordedAt,
+    );
+    final notifier = ref.read(waterViewModelProvider.notifier);
+    final success = _isEditing
+        ? await notifier.updateWater(widget.record!, form)
+        : await notifier.createWater(form);
+    if (!mounted) return;
+    if (!success) {
+      HBSnackBar.error(
+        context,
+        message:
+            ref.read(waterViewModelProvider).errorMessage ??
+            'Não foi possível salvar o registro.',
+      );
+      return;
+    }
+    final syncWarning = ref.read(waterViewModelProvider).syncWarning;
+    if (syncWarning != null) {
+      HBSnackBar.warning(context, message: syncWarning);
+    } else {
+      HBSnackBar.success(
+        context,
+        message: _isEditing
+            ? 'Registro atualizado e sincronizado.'
+            : 'Água registrada e sincronizada.',
+      );
+    }
+    context.pop(true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isLoading = ref.watch(
+      waterViewModelProvider.select((state) => state.isLoading),
+    );
+    final waterState = ref.watch(waterViewModelProvider);
+    final goalMl = ref.watch(dailyWaterGoalProvider).value ?? 2000;
+    return HBLoadingOverlay(
+      isLoading: isLoading,
+      message: 'Salvando registro...',
+      child: HBPage(
+        appBar: HBAppBar(
+          title: _isEditing ? 'Editar água' : 'Registrar água',
+          subtitle: 'Acompanhe sua hidratação',
+        ),
+        children: [
+          WaterProgressCard(
+            currentMl: waterState.totalTodayInMl,
+            goalMl: goalMl,
+          ),
+          const HBGap.lg(),
+          HBCard(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  HBTextField(
+                    controller: _amountController,
+                    label: 'Quantidade (ml)',
+                    hint: 'Ex: 300',
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      final amount = int.tryParse(value?.trim() ?? '');
+                      if (amount == null || amount <= 0 || amount > 10000) {
+                        return 'Informe uma quantidade entre 1 e 10000 ml.';
+                      }
+                      return null;
+                    },
+                  ),
+                  const HBGap.md(),
+                  HBButton(
+                    label: 'Data: ${AppDateFormatter.short(_recordedAt)}',
+                    onPressed: isLoading ? null : _selectDate,
+                  ),
+                  const HBGap.xl(),
+                  HBButton(
+                    label: _isEditing ? 'Salvar alterações' : 'Salvar água',
+                    onPressed: isLoading ? null : _submit,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

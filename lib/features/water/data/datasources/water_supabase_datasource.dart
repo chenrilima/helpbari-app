@@ -50,6 +50,13 @@ class WaterSupabaseDatasource {
     );
   }
 
+  Future<WaterRecordDto> softDelete(
+    WaterRecordDto record, {
+    required String userId,
+  }) {
+    return update(record, userId: userId);
+  }
+
   Future<List<WaterRecordDto>> pull({
     required String userId,
     DateTime? updatedAfter,

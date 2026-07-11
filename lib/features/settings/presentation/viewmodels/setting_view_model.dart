@@ -20,6 +20,7 @@ class SettingsViewModel extends Notifier<SettingsState> {
 
   Future<void> updateDailyWaterGoal(int goalMl) async {
     await ref.read(settingsUseCasesProvider).updateDailyWaterGoal(goalMl);
+    ref.invalidate(dailyWaterGoalProvider);
     await loadSettings();
   }
 

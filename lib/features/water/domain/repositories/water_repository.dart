@@ -1,7 +1,11 @@
 import '../entities/entities.dart';
 
 abstract interface class WaterRepository {
-  Future<void> save(WaterRecord record);
-
   Future<List<WaterRecord>> getHistory();
+
+  Future<void> create(WaterRecord record);
+
+  Future<void> update(WaterRecord record);
+
+  Future<void> delete(String id);
 }

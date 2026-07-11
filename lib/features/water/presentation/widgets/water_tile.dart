@@ -5,9 +5,16 @@ import '../../../../design_system/design_system.dart';
 import '../../domain/entities/entities.dart';
 
 class WaterTile extends StatelessWidget {
-  const WaterTile({required this.record, super.key});
+  const WaterTile({
+    required this.record,
+    required this.onEdit,
+    required this.onDelete,
+    super.key,
+  });
 
   final WaterRecord record;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +42,16 @@ class WaterTile extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          IconButton(
+            tooltip: 'Editar registro',
+            onPressed: onEdit,
+            icon: const Icon(Icons.edit_outlined),
+          ),
+          IconButton(
+            tooltip: 'Excluir registro',
+            onPressed: onDelete,
+            icon: const Icon(Icons.delete_outline, color: AppColors.danger),
           ),
         ],
       ),

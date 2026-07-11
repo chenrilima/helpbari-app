@@ -9,7 +9,7 @@ import 'core/config/environment.dart';
 
 Future<void> main() async {
   await bootstrap(
-    environment: AppEnvironment.dev,
+    environment: Environment.configuredEnvironment,
     builder: () async {
       final preferences = await SharedPreferences.getInstance();
 
