@@ -8,6 +8,14 @@ final class OnboardingProfileDraft {
     this.waterGoal = '',
     this.objectives = const [],
     this.notificationsEnabled = false,
+    this.birthDate = '',
+    this.height = '',
+    this.initialWeight = '',
+    this.targetWeight = '',
+    this.surgeryType = 'other',
+    this.currentWeightConfirmedAsInitial = false,
+    this.waterGoalConfirmed = false,
+    this.notificationsConfirmed = false,
   });
 
   factory OnboardingProfileDraft.fromJson(Map<String, Object?> json) {
@@ -20,6 +28,15 @@ final class OnboardingProfileDraft {
           .whereType<String>()
           .toList(growable: false),
       notificationsEnabled: json['notificationsEnabled'] as bool? ?? false,
+      birthDate: json['birthDate'] as String? ?? '',
+      height: json['height'] as String? ?? '',
+      initialWeight: json['initialWeight'] as String? ?? '',
+      targetWeight: json['targetWeight'] as String? ?? '',
+      surgeryType: json['surgeryType'] as String? ?? 'other',
+      currentWeightConfirmedAsInitial:
+          json['currentWeightConfirmedAsInitial'] as bool? ?? false,
+      waterGoalConfirmed: json['waterGoalConfirmed'] as bool? ?? false,
+      notificationsConfirmed: json['notificationsConfirmed'] as bool? ?? false,
     );
   }
 
@@ -29,6 +46,14 @@ final class OnboardingProfileDraft {
   final String waterGoal;
   final List<String> objectives;
   final bool notificationsEnabled;
+  final String birthDate;
+  final String height;
+  final String initialWeight;
+  final String targetWeight;
+  final String surgeryType;
+  final bool currentWeightConfirmedAsInitial;
+  final bool waterGoalConfirmed;
+  final bool notificationsConfirmed;
 
   OnboardingProfileDraft copyWith({
     String? name,
@@ -37,6 +62,14 @@ final class OnboardingProfileDraft {
     String? waterGoal,
     List<String>? objectives,
     bool? notificationsEnabled,
+    String? birthDate,
+    String? height,
+    String? initialWeight,
+    String? targetWeight,
+    String? surgeryType,
+    bool? currentWeightConfirmedAsInitial,
+    bool? waterGoalConfirmed,
+    bool? notificationsConfirmed,
   }) {
     return OnboardingProfileDraft(
       name: name ?? this.name,
@@ -45,6 +78,17 @@ final class OnboardingProfileDraft {
       waterGoal: waterGoal ?? this.waterGoal,
       objectives: objectives ?? this.objectives,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+      birthDate: birthDate ?? this.birthDate,
+      height: height ?? this.height,
+      initialWeight: initialWeight ?? this.initialWeight,
+      targetWeight: targetWeight ?? this.targetWeight,
+      surgeryType: surgeryType ?? this.surgeryType,
+      currentWeightConfirmedAsInitial:
+          currentWeightConfirmedAsInitial ??
+          this.currentWeightConfirmedAsInitial,
+      waterGoalConfirmed: waterGoalConfirmed ?? this.waterGoalConfirmed,
+      notificationsConfirmed:
+          notificationsConfirmed ?? this.notificationsConfirmed,
     );
   }
 
@@ -56,6 +100,14 @@ final class OnboardingProfileDraft {
       'waterGoal': waterGoal,
       'objectives': objectives,
       'notificationsEnabled': notificationsEnabled,
+      'birthDate': birthDate,
+      'height': height,
+      'initialWeight': initialWeight,
+      'targetWeight': targetWeight,
+      'surgeryType': surgeryType,
+      'currentWeightConfirmedAsInitial': currentWeightConfirmedAsInitial,
+      'waterGoalConfirmed': waterGoalConfirmed,
+      'notificationsConfirmed': notificationsConfirmed,
     };
   }
 

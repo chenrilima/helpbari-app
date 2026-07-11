@@ -12,38 +12,47 @@ enum OnboardingStep {
 
 final class OnboardingState {
   const OnboardingState({
-    required this.hasCompleted,
+    required this.introductionCompleted,
+    required this.userCompleted,
+    required this.isAuthenticated,
     required this.draft,
     this.currentStep = OnboardingStep.splash,
     this.isSaving = false,
+    this.errorMessage,
   });
 
-  final bool hasCompleted;
+  final bool introductionCompleted;
+  final bool userCompleted;
+  final bool isAuthenticated;
   final OnboardingProfileDraft draft;
   final OnboardingStep currentStep;
   final bool isSaving;
+  final String? errorMessage;
 
+  bool get hasCompleted =>
+      isAuthenticated ? userCompleted : introductionCompleted;
   int get currentIndex => OnboardingStep.values.indexOf(currentStep);
-
   int get totalSteps => OnboardingStep.values.length;
-
   double get progress => (currentIndex + 1) / totalSteps;
-
   bool get isFirstStep => currentIndex == 0;
-
   bool get isLastStep => currentIndex == totalSteps - 1;
 
   OnboardingState copyWith({
-    bool? hasCompleted,
+    bool? introductionCompleted,
+    bool? userCompleted,
+    bool? isAuthenticated,
     OnboardingProfileDraft? draft,
     OnboardingStep? currentStep,
     bool? isSaving,
-  }) {
-    return OnboardingState(
-      hasCompleted: hasCompleted ?? this.hasCompleted,
-      draft: draft ?? this.draft,
-      currentStep: currentStep ?? this.currentStep,
-      isSaving: isSaving ?? this.isSaving,
-    );
-  }
+    String? errorMessage,
+    bool clearError = false,
+  }) => OnboardingState(
+    introductionCompleted: introductionCompleted ?? this.introductionCompleted,
+    userCompleted: userCompleted ?? this.userCompleted,
+    isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+    draft: draft ?? this.draft,
+    currentStep: currentStep ?? this.currentStep,
+    isSaving: isSaving ?? this.isSaving,
+    errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
+  );
 }

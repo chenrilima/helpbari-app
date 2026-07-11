@@ -1,52 +1,23 @@
 import '../entities/entities.dart';
 import '../repositories/repositories.dart';
 
-final class GetOnboardingStatusUseCase {
-  const GetOnboardingStatusUseCase(this._repository);
-
-  final OnboardingRepository _repository;
-
-  bool call() => _repository.hasCompletedOnboarding();
-}
-
-final class GetOnboardingDraftUseCase {
-  const GetOnboardingDraftUseCase(this._repository);
-
-  final OnboardingRepository _repository;
-
-  OnboardingProfileDraft call() => _repository.getDraft();
-}
-
-final class SaveOnboardingDraftUseCase {
-  const SaveOnboardingDraftUseCase(this._repository);
-
-  final OnboardingRepository _repository;
-
-  Future<void> call(OnboardingProfileDraft draft) {
-    return _repository.saveDraft(draft);
-  }
-}
-
-final class CompleteOnboardingUseCase {
-  const CompleteOnboardingUseCase(this._repository);
-
-  final OnboardingRepository _repository;
-
-  Future<void> call(OnboardingProfileDraft draft) {
-    return _repository.complete(draft);
-  }
-}
-
 final class OnboardingUseCases {
-  const OnboardingUseCases({
-    required this.getStatus,
-    required this.getDraft,
-    required this.saveDraft,
-    required this.complete,
-  });
+  const OnboardingUseCases(this.repository);
+  final OnboardingRepository repository;
 
-  final GetOnboardingStatusUseCase getStatus;
-  final GetOnboardingDraftUseCase getDraft;
-  final SaveOnboardingDraftUseCase saveDraft;
-  final CompleteOnboardingUseCase complete;
+  bool hasCompletedIntroduction() => repository.hasCompletedIntroduction();
+  bool hasCompletedForUser(String userId) =>
+      repository.hasCompletedForUser(userId);
+  bool hasConsumedDraft(String userId) => repository.hasConsumedDraft(userId);
+  int getResumeStep(String? userId) => repository.getResumeStep(userId);
+  OnboardingProfileDraft getDraft() => repository.getDraft();
+  Future<void> saveDraft(OnboardingProfileDraft draft) =>
+      repository.saveDraft(draft);
+  Future<void> completeIntroduction() => repository.completeIntroduction();
+  Future<void> saveResumeStep(String? userId, int step) =>
+      repository.saveResumeStep(userId, step);
+  Future<void> completeForUser(String userId) =>
+      repository.completeForUser(userId);
+  Future<void> markDraftConsumed(String userId) =>
+      repository.markDraftConsumed(userId);
 }
