@@ -44,6 +44,7 @@ dependencies:
   shared_preferences: ^2.5.3
   drift: ^2.28.2
   sqlite3_flutter_libs: ^0.5.39
+  crypto: ^3.0.6
   image_picker: ^1.2.3
   file_picker: ^11.0.2
   image_cropper: ^12.2.1

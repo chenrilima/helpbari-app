@@ -32,6 +32,12 @@ class WaterDao extends DatabaseAccessor<AppDatabase> with _$WaterDaoMixin {
         .get();
   }
 
+  /// Anonymous legacy records are intentionally excluded from sync reads.
+  Future<List<WaterRecord>> getPendingForSync(String userId) {
+    if (userId == 'anonymous') return Future.value(const []);
+    return getPendingByUser(userId);
+  }
+
   Future<void> upsert(WaterRecordsCompanion record) {
     return into(waterRecords).insertOnConflictUpdate(record);
   }
