@@ -12,6 +12,7 @@ abstract final class AppRoutes {
   static const registerWeight = '/register-weight';
   static const water = '/water';
   static const registerWater = '/register-water';
+  static const baria = '/baria';
   static const vitamins = '/vitamins';
   static const registerVitamin = '/register-vitamin';
   static const appointments = '/appointments';
