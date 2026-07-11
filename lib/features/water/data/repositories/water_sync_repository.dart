@@ -1,11 +1,15 @@
 import '../../../../core/sync/sync.dart';
-import '../datasources/local_water_datasource.dart';
+import '../datasources/drift_water_local_datasource.dart';
 import '../datasources/water_supabase_datasource.dart';
 import '../dtos/water_record_dto.dart';
 
-class WaterSyncRepository implements SyncableRepository {
+class WaterSyncRepository
+    implements
+        SyncableRepository,
+        RepositorySyncCursor,
+        AtomicRemoteSyncRepository {
   const WaterSyncRepository({
-    required LocalWaterDatasource localDatasource,
+    required Future<DriftWaterLocalDatasource> Function() localDatasource,
     required WaterSupabaseDatasource supabaseDatasource,
     required String userId,
     SyncStatusMapper statusMapper = const SyncStatusMapper(),
@@ -14,9 +18,9 @@ class WaterSyncRepository implements SyncableRepository {
        _userId = userId,
        _statusMapper = statusMapper;
 
-  static const key = 'water_records';
+  static const key = 'water';
 
-  final LocalWaterDatasource _localDatasource;
+  final Future<DriftWaterLocalDatasource> Function() _localDatasource;
   final WaterSupabaseDatasource _supabaseDatasource;
   final String _userId;
   final SyncStatusMapper _statusMapper;
@@ -26,14 +30,14 @@ class WaterSyncRepository implements SyncableRepository {
 
   @override
   Future<List<SyncOperation>> pendingOperations() async {
-    final records = await _localDatasource.pendingSync();
+    final records = await (await _localDatasource()).pendingSync();
 
     return records.map(_operationFromDto).toList();
   }
 
   @override
   Future<SyncOperation?> localOperationById(String recordId) async {
-    final record = await _localDatasource.pendingById(recordId);
+    final record = await (await _localDatasource()).pendingById(recordId);
     if (record == null) return null;
 
     return _operationFromDto(record);
@@ -57,7 +61,7 @@ class WaterSyncRepository implements SyncableRepository {
       ),
     };
 
-    await _localDatasource.applyRemote(remoteRecord);
+    await (await _localDatasource()).applyRemote(remoteRecord);
   }
 
   @override
@@ -72,17 +76,37 @@ class WaterSyncRepository implements SyncableRepository {
 
   @override
   Future<void> applyRemote(SyncOperation operation) async {
-    await _localDatasource.applyRemote(_dtoFromOperation(operation));
+    await (await _localDatasource()).applyRemote(_dtoFromOperation(operation));
   }
 
   @override
   Future<void> markSynced(String recordId, {required DateTime syncedAt}) {
-    return _localDatasource.markSynced(recordId, userId: _userId);
+    return _localDatasource().then((value) => value.markSynced(recordId));
   }
 
   @override
   Future<void> markFailed(String recordId, SyncError error) {
-    return _localDatasource.markFailed(recordId);
+    return _localDatasource().then(
+      (value) => value.markFailed(recordId, error.message),
+    );
+  }
+
+  @override
+  Future<DateTime?> getLastPullAt() async =>
+      (await _localDatasource()).getLastPullAt(syncKey);
+
+  @override
+  Future<void> saveSuccessfulSync(DateTime completedAt) async =>
+      (await _localDatasource()).saveCursor(syncKey, completedAt);
+
+  @override
+  Future<void> applyRemoteAndMarkSynced(
+    SyncOperation operation, {
+    required DateTime syncedAt,
+  }) async {
+    await (await _localDatasource()).applyRemoteAndMarkSynced(
+      _dtoFromOperation(operation),
+    );
   }
 
   SyncOperation _operationFromDto(WaterRecordDto record) {

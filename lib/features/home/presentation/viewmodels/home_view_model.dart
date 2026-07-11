@@ -29,30 +29,20 @@ import '../../../weight/presentation/providers/weight_use_cases_provider.dart';
 import '../states/home_state.dart';
 
 class HomeViewModel extends Notifier<HomeState> {
-  late final ProfileUseCases _profileUseCases;
-  late final WeightUseCases _weightUseCases;
-  late final WaterUseCases _waterUseCases;
-  late final VitaminUseCases _vitaminUseCases;
-  late final AppointmentUseCases _appointmentUseCases;
-  late final ExamUseCases _examUseCases;
-  late final MedicationUseCases _medicationUseCases;
-  late final MealUseCases _mealUseCases;
-  late final SettingsUseCases _settingsUseCases;
+  ProfileUseCases get _profileUseCases => ref.read(profileUseCasesProvider);
+  WeightUseCases get _weightUseCases => ref.read(weightUseCasesProvider);
+  WaterUseCases get _waterUseCases => ref.read(waterUseCasesProvider);
+  VitaminUseCases get _vitaminUseCases => ref.read(vitaminUseCasesProvider);
+  AppointmentUseCases get _appointmentUseCases =>
+      ref.read(appointmentUseCasesProvider);
+  ExamUseCases get _examUseCases => ref.read(examUseCasesProvider);
+  MedicationUseCases get _medicationUseCases =>
+      ref.read(medicationUseCasesProvider);
+  MealUseCases get _mealUseCases => ref.read(mealUseCasesProvider);
+  SettingsUseCases get _settingsUseCases => ref.read(settingsUseCasesProvider);
 
   @override
-  HomeState build() {
-    _profileUseCases = ref.read(profileUseCasesProvider);
-    _weightUseCases = ref.read(weightUseCasesProvider);
-    _waterUseCases = ref.read(waterUseCasesProvider);
-    _vitaminUseCases = ref.read(vitaminUseCasesProvider);
-    _appointmentUseCases = ref.read(appointmentUseCasesProvider);
-    _examUseCases = ref.read(examUseCasesProvider);
-    _medicationUseCases = ref.read(medicationUseCasesProvider);
-    _mealUseCases = ref.read(mealUseCasesProvider);
-    _settingsUseCases = ref.read(settingsUseCasesProvider);
-
-    return const HomeState();
-  }
+  HomeState build() => const HomeState();
 
   Future<void> loadHome() async {
     state = state.copyWith(isLoading: true);

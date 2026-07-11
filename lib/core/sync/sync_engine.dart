@@ -40,11 +40,14 @@ class SyncEngine {
 
     for (final repository in repositories) {
       repositoriesProcessed++;
+      final updatedAfter = repository is RepositorySyncCursor
+          ? await (repository as RepositorySyncCursor).getLastPullAt()
+          : initialState.lastPullAt;
 
       try {
         final pullResult = await _pullRemote(
           repository,
-          updatedAfter: initialState.lastPullAt,
+          updatedAfter: updatedAfter,
         );
         pulled += pullResult.pulled;
         deleted += pullResult.deleted;
@@ -76,6 +79,12 @@ class SyncEngine {
             cause: error,
             stackTrace: stackTrace,
           ),
+        );
+      }
+      if (repository is RepositorySyncCursor &&
+          !errors.any((error) => error.repositoryKey == repository.syncKey)) {
+        await (repository as RepositorySyncCursor).saveSuccessfulSync(
+          _clock.now(),
         );
       }
     }
@@ -163,8 +172,16 @@ class SyncEngine {
         }
 
         if (identical(operationToApply, remote)) {
-          await repository.applyRemote(remote);
-          await repository.markSynced(remote.recordId, syncedAt: _clock.now());
+          if (repository is AtomicRemoteSyncRepository) {
+            await (repository as AtomicRemoteSyncRepository)
+                .applyRemoteAndMarkSynced(remote, syncedAt: _clock.now());
+          } else {
+            await repository.applyRemote(remote);
+            await repository.markSynced(
+              remote.recordId,
+              syncedAt: _clock.now(),
+            );
+          }
           pulled++;
           if (remote.isDelete) deleted++;
         }

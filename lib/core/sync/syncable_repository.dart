@@ -18,3 +18,15 @@ abstract interface class SyncableRepository {
 
   Future<void> markFailed(String recordId, SyncError error);
 }
+
+abstract interface class RepositorySyncCursor {
+  Future<DateTime?> getLastPullAt();
+  Future<void> saveSuccessfulSync(DateTime completedAt);
+}
+
+abstract interface class AtomicRemoteSyncRepository {
+  Future<void> applyRemoteAndMarkSynced(
+    SyncOperation operation, {
+    required DateTime syncedAt,
+  });
+}
