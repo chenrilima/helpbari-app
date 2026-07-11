@@ -1,4 +1,7 @@
+import 'package:drift/drift.dart' show Value;
+
 import '../../../../core/database/database.dart';
+import '../../../../core/database/drift/app_database.dart';
 import '../../../../core/services/clock_service.dart';
 import '../../../../core/sync/sync.dart';
 import '../../domain/entities/entities.dart';
@@ -79,6 +82,7 @@ class ProfileDto {
   static ProfileDto fromEntity(
     Profile profile, {
     required DateTime now,
+    String? userId,
     SyncMetadata? previousMetadata,
   }) {
     final createdAt = previousMetadata?.createdAt ?? profile.createdAt.value;
@@ -98,7 +102,7 @@ class ProfileDto {
       photoUrl: profile.photoUrl,
       syncMetadata: SyncMetadata(
         id: profile.id,
-        userId: previousMetadata?.userId,
+        userId: userId ?? previousMetadata?.userId,
         createdAt: createdAt,
         updatedAt: now,
         syncStatus: syncStatus,
@@ -127,6 +131,94 @@ class ProfileDto {
       syncMetadata: record.metadata,
     );
   }
+
+  ProfileRecordsCompanion toDrift({required String userId}) =>
+      ProfileRecordsCompanion(
+        id: Value(id),
+        userId: Value(userId),
+        name: Value(name),
+        email: Value(email),
+        birthDate: Value(birthDate),
+        heightInCentimeters: Value(heightInCentimeters),
+        initialWeight: Value(initialWeight),
+        targetWeight: Value(targetWeight),
+        surgeryDate: Value(surgeryDate),
+        surgeryType: Value(surgeryType.name),
+        photoUrl: Value(photoUrl),
+        createdAt: Value(syncMetadata.createdAt),
+        updatedAt: Value(syncMetadata.updatedAt),
+        deletedAt: Value(syncMetadata.deletedAt),
+        syncStatus: Value(syncMetadata.syncStatus.name),
+      );
+
+  Map<String, dynamic> toSupabase(String userId) => {
+    'id': id,
+    'user_id': userId,
+    'name': name,
+    'email': email,
+    'birth_date': birthDate.toIso8601String(),
+    'height_in_centimeters': heightInCentimeters,
+    'initial_weight': initialWeight,
+    'target_weight': targetWeight,
+    'surgery_date': surgeryDate.toIso8601String(),
+    'surgery_type': surgeryType.name,
+    'photo_url': photoUrl,
+    'created_at': syncMetadata.createdAt.toIso8601String(),
+    'updated_at': syncMetadata.updatedAt.toIso8601String(),
+    'deleted_at': syncMetadata.deletedAt?.toIso8601String(),
+  };
+
+  static ProfileDto fromDrift(ProfileRecord row) => ProfileDto(
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    createdAt: row.createdAt,
+    birthDate: row.birthDate,
+    heightInCentimeters: row.heightInCentimeters,
+    initialWeight: row.initialWeight,
+    targetWeight: row.targetWeight,
+    surgeryDate: row.surgeryDate,
+    surgeryType: SurgeryType.values.firstWhere(
+      (value) => value.name == row.surgeryType,
+      orElse: () => SurgeryType.other,
+    ),
+    photoUrl: row.photoUrl,
+    syncMetadata: SyncMetadata(
+      id: row.id,
+      userId: row.userId,
+      createdAt: row.createdAt,
+      updatedAt: row.updatedAt,
+      deletedAt: row.deletedAt,
+      syncStatus: SyncStatus.fromName(row.syncStatus),
+    ),
+  );
+
+  static ProfileDto fromSupabase(Map<String, dynamic> json) => ProfileDto(
+    id: json['id'] as String,
+    name: json['name'] as String,
+    email: json['email'] as String,
+    createdAt: DateTime.parse(json['created_at'] as String),
+    birthDate: DateTime.parse(json['birth_date'] as String),
+    heightInCentimeters: json['height_in_centimeters'] as int,
+    initialWeight: (json['initial_weight'] as num).toDouble(),
+    targetWeight: (json['target_weight'] as num?)?.toDouble(),
+    surgeryDate: DateTime.parse(json['surgery_date'] as String),
+    surgeryType: SurgeryType.values.firstWhere(
+      (value) => value.name == json['surgery_type'],
+      orElse: () => SurgeryType.other,
+    ),
+    photoUrl: json['photo_url'] as String?,
+    syncMetadata: SyncMetadata(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+      deletedAt: json['deleted_at'] == null
+          ? null
+          : DateTime.parse(json['deleted_at'] as String),
+      syncStatus: SyncStatus.synced,
+    ),
+  );
 
   static SyncStatus _nextSyncStatus(SyncStatus? currentStatus) {
     return switch (currentStatus) {

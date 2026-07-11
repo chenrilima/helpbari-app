@@ -7,6 +7,7 @@ class LocalProfileDatasource {
   const LocalProfileDatasource({
     required LocalDatabase database,
     required ClockService clock,
+    this.userId,
   }) : _database = database,
        _clock = clock;
 
@@ -14,11 +15,21 @@ class LocalProfileDatasource {
 
   final LocalDatabase _database;
   final ClockService _clock;
+  final String? userId;
 
   Future<ProfileDto?> getProfile() async {
     final records = await _database.getAll(collection);
-    final activeRecords = records.where((record) => !record.isDeleted).toList()
-      ..sort((a, b) => b.metadata.updatedAt.compareTo(a.metadata.updatedAt));
+    final activeRecords =
+        records
+            .where(
+              (record) =>
+                  !record.isDeleted &&
+                  (userId == null || record.metadata.userId == userId),
+            )
+            .toList()
+          ..sort(
+            (a, b) => b.metadata.updatedAt.compareTo(a.metadata.updatedAt),
+          );
 
     if (activeRecords.isEmpty) return null;
 
@@ -30,6 +41,7 @@ class LocalProfileDatasource {
     final dto = ProfileDto.fromEntity(
       profile.toEntity(clock: _clock),
       now: _clock.now(),
+      userId: userId,
       previousMetadata: previous?.metadata,
     );
 

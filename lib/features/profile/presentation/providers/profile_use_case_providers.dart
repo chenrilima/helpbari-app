@@ -4,7 +4,7 @@ import '../../domain/usecases/use_cases.dart';
 import 'profile_repository_provider.dart';
 
 final profileUseCasesProvider = Provider<ProfileUseCases>((ref) {
-  final repository = ref.read(profileRepositoryProvider);
+  final repository = ref.watch(profileRepositoryProvider);
 
   return ProfileUseCases(
     getProfile: GetProfileUseCase(repository),

@@ -66,9 +66,50 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final profile = state.profile!;
 
     return HBPage(
-      appBar: const HBAppBar(
+      appBar: HBAppBar(
         title: 'Perfil',
         subtitle: 'Suas informações bariátricas',
+        actions: [
+          IconButton(
+            tooltip: 'Editar perfil',
+            onPressed: () => context.pushAndRefresh(
+              AppRoutes.completeProfile,
+              onRefresh: () =>
+                  ref.read(profileViewModelProvider.notifier).loadProfile(),
+            ),
+            icon: const Icon(Icons.edit_outlined),
+          ),
+          IconButton(
+            tooltip: 'Excluir perfil',
+            onPressed: () async {
+              final confirmed = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Excluir perfil?'),
+                  content: const Text(
+                    'O perfil será removido deste aparelho e sincronizado quando houver conexão.',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancelar'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Excluir'),
+                    ),
+                  ],
+                ),
+              );
+              if (confirmed == true) {
+                await ref
+                    .read(profileViewModelProvider.notifier)
+                    .deleteProfile();
+              }
+            },
+            icon: const Icon(Icons.delete_outline),
+          ),
+        ],
       ),
       children: [
         HBMetricCard(
