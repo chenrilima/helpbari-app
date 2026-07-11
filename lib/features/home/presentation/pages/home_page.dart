@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/health/models/daily_summary.dart';
 import '../../../../design_system/design_system.dart';
+import '../../../../app/bootstrap/sync_bootstrap_provider.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../auth/presentation/states/auth_state.dart';
 import '../../../auth/presentation/viewmodels/auth_providers.dart';
 import '../../../baria/presentation/widgets/baria_home_card.dart';
@@ -28,6 +32,8 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  final _disposed = Completer<void>();
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +42,20 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Future<void> _loadHome() async {
+    final user = ref.read(authSessionProvider);
+    if (user != null) {
+      await ref
+          .read(syncBootstrapProvider)
+          .waitForInitialSync(user.id, cancelled: _disposed.future);
+    }
+    if (!mounted) return;
     await ref.read(homeViewModelProvider.notifier).loadHome();
+  }
+
+  @override
+  void dispose() {
+    if (!_disposed.isCompleted) _disposed.complete();
+    super.dispose();
   }
 
   Future<void> _signOut() async {

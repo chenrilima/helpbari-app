@@ -194,6 +194,69 @@ void main() {
     expect(postCommits, 2);
   });
 
+  test('local update stays pending offline and is pushed on retry', () async {
+    final local = _datasource(database, 'user-a');
+    await local.save(_dto('user-a', 2200));
+    await local.markSynced('user-a');
+    await local.save(_dto('user-a', 2900));
+    final remote = _Remote()..failUpsert = true;
+    final repository = SettingsSyncRepository(
+      local: () async => local,
+      remote: remote,
+      userId: 'user-a',
+      afterCommit: (_) async {},
+    );
+
+    final operation = (await repository.pendingOperations()).single;
+    expect(operation.type, SyncOperationType.update);
+    await expectLater(repository.push(operation), throwsA(isA<StateError>()));
+    await repository.markFailed(
+      operation.recordId,
+      const SyncError(
+        repositoryKey: SettingsSyncRepository.key,
+        message: 'offline',
+        operation: 'push',
+      ),
+    );
+    expect(await repository.pendingOperations(), hasLength(1));
+
+    remote.failUpsert = false;
+    await repository.push((await repository.pendingOperations()).single);
+    await repository.markSynced(operation.recordId, syncedAt: DateTime.now());
+
+    expect(remote.lastGoal, 2900);
+    expect(await local.pending(), isEmpty);
+  });
+
+  test('remote pull commits the value Drift consumers read', () async {
+    final local = _datasource(database, 'user-a');
+    await local.save(_dto('user-a', 2000));
+    await local.markSynced('user-a');
+    final remote = _Remote()
+      ..pulled = [
+        _dto(
+          'user-a',
+          3400,
+          updatedAt: DateTime.utc(2028),
+          status: SyncStatus.synced,
+        ),
+      ];
+    final repository = SettingsSyncRepository(
+      local: () async => local,
+      remote: remote,
+      userId: 'user-a',
+      afterCommit: (_) async {},
+    );
+
+    final pulled = await repository.pull(updatedAfter: null);
+    await repository.applyRemoteAndMarkSynced(
+      pulled.single,
+      syncedAt: DateTime.now(),
+    );
+
+    expect((await local.getSettings()).dailyWaterGoalMl, 3400);
+  });
+
   test(
     'uses legacy read fallback only before cutover when Drift fails',
     () async {
@@ -336,10 +399,14 @@ class _Notifications implements LocalNotificationService {
 
 class _Remote implements SettingsRemoteDatasource {
   int upserts = 0;
+  int? lastGoal;
+  bool failUpsert = false;
   List<SettingsDto> pulled = [];
   @override
   Future<SettingsDto> upsert(SettingsDto value, String userId) async {
     upserts++;
+    if (failUpsert) throw StateError('offline');
+    lastGoal = value.dailyWaterGoalMl;
     return _dto(
       userId,
       value.dailyWaterGoalMl,

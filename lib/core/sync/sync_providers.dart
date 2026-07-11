@@ -95,14 +95,18 @@ final syncEngineProvider = Provider<SyncEngine>((ref) {
 
 final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
   return () async {
-    await ref.read(waterViewModelProvider.notifier).loadHistory();
     ref.invalidate(settingsUseCasesProvider);
     ref.invalidate(dailyWaterGoalProvider);
-    await ref.read(settingsViewModelProvider.notifier).loadSettings();
     ref.invalidate(homeViewModelProvider);
+    ref.invalidate(waterViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(medicalReportUseCasesProvider);
+    await ref.read(settingsViewModelProvider.notifier).loadSettings();
+    await Future.wait([
+      ref.read(waterViewModelProvider.notifier).loadHistory(),
+      ref.read(homeViewModelProvider.notifier).loadHome(),
+    ]);
   };
 });
 
