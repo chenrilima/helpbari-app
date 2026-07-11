@@ -48,6 +48,7 @@ class SyncManager extends Notifier<SyncState> {
     );
 
     if (result.isSuccess) {
+      await ref.read(syncDataRefreshProvider)();
       AppLogger.info(
         'Sync concluído: ${result.repositoriesProcessed} repositório(s), '
         '${result.pushed} enviados, ${result.pulled} recebidos.',

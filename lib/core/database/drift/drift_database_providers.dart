@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app_database.dart';
 import 'daos/water_dao.dart';
 
+final driftAvailableProvider = Provider<bool>((ref) => true);
+
 final appDatabaseProvider = FutureProvider<AppDatabase>((ref) async {
   final database = AppDatabase();
   ref.onDispose(database.close);

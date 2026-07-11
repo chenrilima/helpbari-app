@@ -26,6 +26,7 @@ Future<void> main() async {
         ProviderScope(
           overrides: [
             sharedPreferencesProvider.overrideWithValue(preferences),
+            driftAvailableProvider.overrideWithValue(database != null),
             if (database != null)
               appDatabaseProvider.overrideWith((ref) {
                 ref.onDispose(database.close);

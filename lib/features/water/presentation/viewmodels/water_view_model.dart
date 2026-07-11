@@ -5,6 +5,8 @@ import '../../../../core/services/logger_service.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/services/uuid_service.dart';
 import '../../../../core/sync/sync.dart';
+import '../../../charts/presentation/providers/chart_series_providers.dart';
+import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -94,6 +96,9 @@ class WaterViewModel extends Notifier<WaterState> {
       _logger.info(log);
       await loadHistory();
       ref.invalidate(waterUseCasesProvider);
+      ref.invalidate(homeViewModelProvider);
+      ref.invalidate(waterChartSeriesProvider);
+      ref.invalidate(healthScoreChartSeriesProvider);
       final syncResult = await ref.read(syncManagerProvider.notifier).syncNow();
       if (syncResult != null && !syncResult.isSuccess) {
         state = state.copyWith(

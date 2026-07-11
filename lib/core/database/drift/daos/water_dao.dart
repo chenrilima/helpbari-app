@@ -57,4 +57,34 @@ class WaterDao extends DatabaseAccessor<AppDatabase> with _$WaterDaoMixin {
   Future<T> inTransaction<T>(Future<T> Function() action) {
     return transaction(action);
   }
+
+  Future<DateTime?> getLastPullAt(String userId, String repositoryKey) async {
+    final row =
+        await (attachedDatabase.select(attachedDatabase.syncCursors)..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.repositoryKey.equals(repositoryKey),
+            ))
+            .getSingleOrNull();
+    return row?.lastPullAt;
+  }
+
+  Future<void> saveCursor(
+    String userId,
+    String repositoryKey,
+    DateTime completedAt,
+  ) {
+    return attachedDatabase
+        .into(attachedDatabase.syncCursors)
+        .insertOnConflictUpdate(
+          SyncCursorsCompanion.insert(
+            userId: userId,
+            repositoryKey: repositoryKey,
+            lastPullAt: Value(completedAt),
+            lastPushAt: Value(completedAt),
+            lastSyncAt: Value(completedAt),
+            status: const Value('success'),
+          ),
+        );
+  }
 }
