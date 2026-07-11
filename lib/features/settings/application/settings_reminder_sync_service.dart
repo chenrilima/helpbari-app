@@ -4,9 +4,10 @@ import '../../medications/application/medication_reminder_service.dart';
 import '../../medications/domain/usecases/use_cases.dart';
 import '../../vitamins/application/vitamin_reminder_service.dart';
 import '../../vitamins/domain/usecases/vitamin_use_cases.dart';
+import '../domain/entities/entities.dart';
 
 class SettingsReminderSyncService {
-  const SettingsReminderSyncService({
+  SettingsReminderSyncService({
     required VitaminUseCases vitaminUseCases,
     required VitaminReminderService vitaminReminders,
     required MedicationUseCases medicationUseCases,
@@ -26,6 +27,21 @@ class SettingsReminderSyncService {
   final MedicationReminderService _medicationReminders;
   final AppointmentUseCases _appointmentUseCases;
   final AppointmentReminderService _appointmentReminders;
+  String? _lastAppliedFingerprint;
+
+  Future<bool> applyAfterCommit(AppSettings settings) async {
+    final fingerprint = [
+      settings.vitaminRemindersEnabled,
+      settings.medicationRemindersEnabled,
+      settings.appointmentRemindersEnabled,
+    ].join(':');
+    if (_lastAppliedFingerprint == fingerprint) return false;
+    await syncVitaminReminders(settings.vitaminRemindersEnabled);
+    await syncMedicationReminders(settings.medicationRemindersEnabled);
+    await syncAppointmentReminders(settings.appointmentRemindersEnabled);
+    _lastAppliedFingerprint = fingerprint;
+    return true;
+  }
 
   Future<void> syncVitaminReminders(bool enabled) async {
     final vitamins = await _vitaminUseCases.getAll();

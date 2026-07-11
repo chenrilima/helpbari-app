@@ -7,6 +7,13 @@ import '../supabase/supabase_client_provider.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/charts/presentation/providers/chart_series_providers.dart';
 import '../../features/home/presentation/providers/home_view_model_provider.dart';
+import '../../features/settings/data/datasources/drift_settings_local_datasource.dart';
+import '../../features/settings/data/datasources/settings_supabase_datasource.dart';
+import '../../features/settings/data/repositories/settings_sync_repository.dart';
+import '../../features/settings/presentation/providers/setting_use_cases_provider.dart';
+import '../../features/settings/presentation/providers/setting_view_model_provider.dart';
+import '../../features/settings/presentation/providers/settings_reminder_sync_provider.dart';
+import '../../features/medical_reports/presentation/providers/medical_report_providers.dart';
 import '../../features/water/data/datasources/drift_water_local_datasource.dart';
 import '../../features/water/data/datasources/water_supabase_datasource.dart';
 import '../../features/water/data/repositories/water_sync_repository.dart';
@@ -41,6 +48,26 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       ),
       userId: user.id,
     ),
+    SettingsSyncRepository(
+      local: () async {
+        if (!ref.read(driftAvailableProvider)) {
+          throw StateError('Drift unavailable');
+        }
+        final database = await ref.read(appDatabaseProvider.future);
+        return DriftSettingsLocalDatasource(
+          dao: database.settingsDao,
+          clock: ref.read(clockServiceProvider),
+          userId: user.id,
+        );
+      },
+      remote: SettingsSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
+      userId: user.id,
+      afterCommit: (dto) async {
+        await ref
+            .read(settingsReminderSyncServiceProvider)
+            .applyAfterCommit(dto.toEntity());
+      },
+    ),
   ];
 });
 
@@ -69,9 +96,13 @@ final syncEngineProvider = Provider<SyncEngine>((ref) {
 final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
   return () async {
     await ref.read(waterViewModelProvider.notifier).loadHistory();
+    ref.invalidate(settingsUseCasesProvider);
+    ref.invalidate(dailyWaterGoalProvider);
+    await ref.read(settingsViewModelProvider.notifier).loadSettings();
     ref.invalidate(homeViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
+    ref.invalidate(medicalReportUseCasesProvider);
   };
 });
 
