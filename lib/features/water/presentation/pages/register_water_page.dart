@@ -24,6 +24,7 @@ class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _amountController;
   late DateTime _recordedAt;
+  bool _isSubmitting = false;
 
   bool get _isEditing => widget.record != null;
 
@@ -64,7 +65,11 @@ class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
   }
 
   Future<void> _submit() async {
+    if (_isSubmitting) return;
     if (!(_formKey.currentState?.validate() ?? false)) return;
+    FocusManager.instance.primaryFocus?.unfocus();
+    setState(() => _isSubmitting = true);
+
     final form = WaterForm(
       amountInMl: int.parse(_amountController.text.trim()),
       recordedAt: _recordedAt,
@@ -75,6 +80,7 @@ class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
         : await notifier.createWater(form);
     if (!mounted) return;
     if (!success) {
+      setState(() => _isSubmitting = false);
       HBSnackBar.error(
         context,
         message:
@@ -102,11 +108,12 @@ class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
     final isLoading = ref.watch(
       waterViewModelProvider.select((state) => state.isLoading),
     );
+    final isBusy = isLoading || _isSubmitting;
     final waterState = ref.watch(waterViewModelProvider);
     final goalMl = ref.watch(dailyWaterGoalProvider).value ?? 2000;
     return HBLoadingOverlay(
-      isLoading: isLoading,
-      message: 'Salvando registro...',
+      isLoading: isBusy,
+      message: 'Salvando e sincronizando...',
       child: HBPage(
         appBar: HBAppBar(
           title: _isEditing ? 'Editar água' : 'Registrar água',
@@ -139,12 +146,12 @@ class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
                   const HBGap.md(),
                   HBButton(
                     label: 'Data: ${AppDateFormatter.short(_recordedAt)}',
-                    onPressed: isLoading ? null : _selectDate,
+                    onPressed: isBusy ? null : _selectDate,
                   ),
                   const HBGap.xl(),
                   HBButton(
                     label: _isEditing ? 'Salvar alterações' : 'Salvar água',
-                    onPressed: isLoading ? null : _submit,
+                    onPressed: isBusy ? null : _submit,
                   ),
                 ],
               ),
