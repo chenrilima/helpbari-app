@@ -21,7 +21,12 @@ class WaterLocalMigrationService {
 
   Future<WaterLocalMigrationReport> migrate() async {
     final snapshot = WaterLegacySnapshotReader(_storage).read();
-    final candidates = snapshot.records;
+    final cutoverUsers = (await _database.select(_database.waterCutovers).get())
+        .map((row) => row.userId)
+        .toSet();
+    final candidates = snapshot.records
+        .where((record) => !cutoverUsers.contains(record.userId))
+        .toList();
     final checksum = normalizedWaterChecksum(candidates);
     var imported = 0;
     var updated = 0;

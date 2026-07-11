@@ -1790,6 +1790,498 @@ class LocalMigrationsCompanion extends UpdateCompanion<LocalMigration> {
   }
 }
 
+class $WaterCutoversTable extends WaterCutovers
+    with TableInfo<$WaterCutoversTable, WaterCutover> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $WaterCutoversTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _migrationKeyMeta = const VerificationMeta(
+    'migrationKey',
+  );
+  @override
+  late final GeneratedColumn<String> migrationKey = GeneratedColumn<String>(
+    'migration_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _versionMeta = const VerificationMeta(
+    'version',
+  );
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+    'version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _checksumMeta = const VerificationMeta(
+    'checksum',
+  );
+  @override
+  late final GeneratedColumn<String> checksum = GeneratedColumn<String>(
+    'checksum',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordCountMeta = const VerificationMeta(
+    'recordCount',
+  );
+  @override
+  late final GeneratedColumn<int> recordCount = GeneratedColumn<int>(
+    'record_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _databaseSchemaVersionMeta =
+      const VerificationMeta('databaseSchemaVersion');
+  @override
+  late final GeneratedColumn<int> databaseSchemaVersion = GeneratedColumn<int>(
+    'database_schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'water_cutovers';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<WaterCutover> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('migration_key')) {
+      context.handle(
+        _migrationKeyMeta,
+        migrationKey.isAcceptableOrUnknown(
+          data['migration_key']!,
+          _migrationKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migrationKeyMeta);
+    }
+    if (data.containsKey('version')) {
+      context.handle(
+        _versionMeta,
+        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_versionMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completedAtMeta);
+    }
+    if (data.containsKey('checksum')) {
+      context.handle(
+        _checksumMeta,
+        checksum.isAcceptableOrUnknown(data['checksum']!, _checksumMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_checksumMeta);
+    }
+    if (data.containsKey('record_count')) {
+      context.handle(
+        _recordCountMeta,
+        recordCount.isAcceptableOrUnknown(
+          data['record_count']!,
+          _recordCountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_recordCountMeta);
+    }
+    if (data.containsKey('database_schema_version')) {
+      context.handle(
+        _databaseSchemaVersionMeta,
+        databaseSchemaVersion.isAcceptableOrUnknown(
+          data['database_schema_version']!,
+          _databaseSchemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_databaseSchemaVersionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {migrationKey, userId};
+  @override
+  WaterCutover map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WaterCutover(
+      migrationKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}migration_key'],
+      )!,
+      version: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}version'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      )!,
+      checksum: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}checksum'],
+      )!,
+      recordCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}record_count'],
+      )!,
+      databaseSchemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}database_schema_version'],
+      )!,
+    );
+  }
+
+  @override
+  $WaterCutoversTable createAlias(String alias) {
+    return $WaterCutoversTable(attachedDatabase, alias);
+  }
+}
+
+class WaterCutover extends DataClass implements Insertable<WaterCutover> {
+  final String migrationKey;
+  final int version;
+  final String userId;
+  final DateTime completedAt;
+  final String checksum;
+  final int recordCount;
+  final int databaseSchemaVersion;
+  const WaterCutover({
+    required this.migrationKey,
+    required this.version,
+    required this.userId,
+    required this.completedAt,
+    required this.checksum,
+    required this.recordCount,
+    required this.databaseSchemaVersion,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['migration_key'] = Variable<String>(migrationKey);
+    map['version'] = Variable<int>(version);
+    map['user_id'] = Variable<String>(userId);
+    map['completed_at'] = Variable<DateTime>(completedAt);
+    map['checksum'] = Variable<String>(checksum);
+    map['record_count'] = Variable<int>(recordCount);
+    map['database_schema_version'] = Variable<int>(databaseSchemaVersion);
+    return map;
+  }
+
+  WaterCutoversCompanion toCompanion(bool nullToAbsent) {
+    return WaterCutoversCompanion(
+      migrationKey: Value(migrationKey),
+      version: Value(version),
+      userId: Value(userId),
+      completedAt: Value(completedAt),
+      checksum: Value(checksum),
+      recordCount: Value(recordCount),
+      databaseSchemaVersion: Value(databaseSchemaVersion),
+    );
+  }
+
+  factory WaterCutover.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WaterCutover(
+      migrationKey: serializer.fromJson<String>(json['migrationKey']),
+      version: serializer.fromJson<int>(json['version']),
+      userId: serializer.fromJson<String>(json['userId']),
+      completedAt: serializer.fromJson<DateTime>(json['completedAt']),
+      checksum: serializer.fromJson<String>(json['checksum']),
+      recordCount: serializer.fromJson<int>(json['recordCount']),
+      databaseSchemaVersion: serializer.fromJson<int>(
+        json['databaseSchemaVersion'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'migrationKey': serializer.toJson<String>(migrationKey),
+      'version': serializer.toJson<int>(version),
+      'userId': serializer.toJson<String>(userId),
+      'completedAt': serializer.toJson<DateTime>(completedAt),
+      'checksum': serializer.toJson<String>(checksum),
+      'recordCount': serializer.toJson<int>(recordCount),
+      'databaseSchemaVersion': serializer.toJson<int>(databaseSchemaVersion),
+    };
+  }
+
+  WaterCutover copyWith({
+    String? migrationKey,
+    int? version,
+    String? userId,
+    DateTime? completedAt,
+    String? checksum,
+    int? recordCount,
+    int? databaseSchemaVersion,
+  }) => WaterCutover(
+    migrationKey: migrationKey ?? this.migrationKey,
+    version: version ?? this.version,
+    userId: userId ?? this.userId,
+    completedAt: completedAt ?? this.completedAt,
+    checksum: checksum ?? this.checksum,
+    recordCount: recordCount ?? this.recordCount,
+    databaseSchemaVersion: databaseSchemaVersion ?? this.databaseSchemaVersion,
+  );
+  WaterCutover copyWithCompanion(WaterCutoversCompanion data) {
+    return WaterCutover(
+      migrationKey: data.migrationKey.present
+          ? data.migrationKey.value
+          : this.migrationKey,
+      version: data.version.present ? data.version.value : this.version,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      checksum: data.checksum.present ? data.checksum.value : this.checksum,
+      recordCount: data.recordCount.present
+          ? data.recordCount.value
+          : this.recordCount,
+      databaseSchemaVersion: data.databaseSchemaVersion.present
+          ? data.databaseSchemaVersion.value
+          : this.databaseSchemaVersion,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WaterCutover(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WaterCutover &&
+          other.migrationKey == this.migrationKey &&
+          other.version == this.version &&
+          other.userId == this.userId &&
+          other.completedAt == this.completedAt &&
+          other.checksum == this.checksum &&
+          other.recordCount == this.recordCount &&
+          other.databaseSchemaVersion == this.databaseSchemaVersion);
+}
+
+class WaterCutoversCompanion extends UpdateCompanion<WaterCutover> {
+  final Value<String> migrationKey;
+  final Value<int> version;
+  final Value<String> userId;
+  final Value<DateTime> completedAt;
+  final Value<String> checksum;
+  final Value<int> recordCount;
+  final Value<int> databaseSchemaVersion;
+  final Value<int> rowid;
+  const WaterCutoversCompanion({
+    this.migrationKey = const Value.absent(),
+    this.version = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.checksum = const Value.absent(),
+    this.recordCount = const Value.absent(),
+    this.databaseSchemaVersion = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  WaterCutoversCompanion.insert({
+    required String migrationKey,
+    required int version,
+    required String userId,
+    required DateTime completedAt,
+    required String checksum,
+    required int recordCount,
+    required int databaseSchemaVersion,
+    this.rowid = const Value.absent(),
+  }) : migrationKey = Value(migrationKey),
+       version = Value(version),
+       userId = Value(userId),
+       completedAt = Value(completedAt),
+       checksum = Value(checksum),
+       recordCount = Value(recordCount),
+       databaseSchemaVersion = Value(databaseSchemaVersion);
+  static Insertable<WaterCutover> custom({
+    Expression<String>? migrationKey,
+    Expression<int>? version,
+    Expression<String>? userId,
+    Expression<DateTime>? completedAt,
+    Expression<String>? checksum,
+    Expression<int>? recordCount,
+    Expression<int>? databaseSchemaVersion,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (migrationKey != null) 'migration_key': migrationKey,
+      if (version != null) 'version': version,
+      if (userId != null) 'user_id': userId,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (checksum != null) 'checksum': checksum,
+      if (recordCount != null) 'record_count': recordCount,
+      if (databaseSchemaVersion != null)
+        'database_schema_version': databaseSchemaVersion,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  WaterCutoversCompanion copyWith({
+    Value<String>? migrationKey,
+    Value<int>? version,
+    Value<String>? userId,
+    Value<DateTime>? completedAt,
+    Value<String>? checksum,
+    Value<int>? recordCount,
+    Value<int>? databaseSchemaVersion,
+    Value<int>? rowid,
+  }) {
+    return WaterCutoversCompanion(
+      migrationKey: migrationKey ?? this.migrationKey,
+      version: version ?? this.version,
+      userId: userId ?? this.userId,
+      completedAt: completedAt ?? this.completedAt,
+      checksum: checksum ?? this.checksum,
+      recordCount: recordCount ?? this.recordCount,
+      databaseSchemaVersion:
+          databaseSchemaVersion ?? this.databaseSchemaVersion,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (migrationKey.present) {
+      map['migration_key'] = Variable<String>(migrationKey.value);
+    }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (checksum.present) {
+      map['checksum'] = Variable<String>(checksum.value);
+    }
+    if (recordCount.present) {
+      map['record_count'] = Variable<int>(recordCount.value);
+    }
+    if (databaseSchemaVersion.present) {
+      map['database_schema_version'] = Variable<int>(
+        databaseSchemaVersion.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WaterCutoversCompanion(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1799,6 +2291,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $LocalMigrationsTable localMigrations = $LocalMigrationsTable(
     this,
   );
+  late final $WaterCutoversTable waterCutovers = $WaterCutoversTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -1817,6 +2310,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     syncCursors,
     syncDevices,
     localMigrations,
+    waterCutovers,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
   ];
@@ -2753,6 +3247,252 @@ typedef $$LocalMigrationsTableProcessedTableManager =
       LocalMigration,
       PrefetchHooks Function()
     >;
+typedef $$WaterCutoversTableCreateCompanionBuilder =
+    WaterCutoversCompanion Function({
+      required String migrationKey,
+      required int version,
+      required String userId,
+      required DateTime completedAt,
+      required String checksum,
+      required int recordCount,
+      required int databaseSchemaVersion,
+      Value<int> rowid,
+    });
+typedef $$WaterCutoversTableUpdateCompanionBuilder =
+    WaterCutoversCompanion Function({
+      Value<String> migrationKey,
+      Value<int> version,
+      Value<String> userId,
+      Value<DateTime> completedAt,
+      Value<String> checksum,
+      Value<int> recordCount,
+      Value<int> databaseSchemaVersion,
+      Value<int> rowid,
+    });
+
+class $$WaterCutoversTableFilterComposer
+    extends Composer<_$AppDatabase, $WaterCutoversTable> {
+  $$WaterCutoversTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$WaterCutoversTableOrderingComposer
+    extends Composer<_$AppDatabase, $WaterCutoversTable> {
+  $$WaterCutoversTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$WaterCutoversTableAnnotationComposer
+    extends Composer<_$AppDatabase, $WaterCutoversTable> {
+  $$WaterCutoversTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get checksum =>
+      $composableBuilder(column: $table.checksum, builder: (column) => column);
+
+  GeneratedColumn<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => column,
+  );
+}
+
+class $$WaterCutoversTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WaterCutoversTable,
+          WaterCutover,
+          $$WaterCutoversTableFilterComposer,
+          $$WaterCutoversTableOrderingComposer,
+          $$WaterCutoversTableAnnotationComposer,
+          $$WaterCutoversTableCreateCompanionBuilder,
+          $$WaterCutoversTableUpdateCompanionBuilder,
+          (
+            WaterCutover,
+            BaseReferences<_$AppDatabase, $WaterCutoversTable, WaterCutover>,
+          ),
+          WaterCutover,
+          PrefetchHooks Function()
+        > {
+  $$WaterCutoversTableTableManager(_$AppDatabase db, $WaterCutoversTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$WaterCutoversTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$WaterCutoversTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$WaterCutoversTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> migrationKey = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> completedAt = const Value.absent(),
+                Value<String> checksum = const Value.absent(),
+                Value<int> recordCount = const Value.absent(),
+                Value<int> databaseSchemaVersion = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WaterCutoversCompanion(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String migrationKey,
+                required int version,
+                required String userId,
+                required DateTime completedAt,
+                required String checksum,
+                required int recordCount,
+                required int databaseSchemaVersion,
+                Value<int> rowid = const Value.absent(),
+              }) => WaterCutoversCompanion.insert(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$WaterCutoversTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WaterCutoversTable,
+      WaterCutover,
+      $$WaterCutoversTableFilterComposer,
+      $$WaterCutoversTableOrderingComposer,
+      $$WaterCutoversTableAnnotationComposer,
+      $$WaterCutoversTableCreateCompanionBuilder,
+      $$WaterCutoversTableUpdateCompanionBuilder,
+      (
+        WaterCutover,
+        BaseReferences<_$AppDatabase, $WaterCutoversTable, WaterCutover>,
+      ),
+      WaterCutover,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2765,4 +3505,6 @@ class $AppDatabaseManager {
       $$SyncDevicesTableTableManager(_db, _db.syncDevices);
   $$LocalMigrationsTableTableManager get localMigrations =>
       $$LocalMigrationsTableTableManager(_db, _db.localMigrations);
+  $$WaterCutoversTableTableManager get waterCutovers =>
+      $$WaterCutoversTableTableManager(_db, _db.waterCutovers);
 }

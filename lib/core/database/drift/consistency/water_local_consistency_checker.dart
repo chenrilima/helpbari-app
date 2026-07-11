@@ -9,21 +9,33 @@ class WaterLocalConsistencyChecker {
   const WaterLocalConsistencyChecker({
     required AppDatabase database,
     required LocalStorageService storage,
+    this.includeCutoverUsers = false,
   }) : _database = database,
        _storage = storage;
 
   final AppDatabase _database;
   final LocalStorageService _storage;
+  final bool includeCutoverUsers;
 
-  Future<WaterLocalConsistencyReport> check() async {
+  Future<WaterLocalConsistencyReport> check({String? userId}) async {
     final legacy = WaterLegacySnapshotReader(_storage).read();
+    final cutoverUsers = includeCutoverUsers
+        ? const <String>{}
+        : (await _database.select(_database.waterCutovers).get())
+              .map((row) => row.userId)
+              .toSet();
     final driftRows = await _database.select(_database.waterRecords).get();
     final drift = driftRows.map(NormalizedWaterRecord.fromDrift).toList()
       ..sort(compareNormalizedWaterRecords);
-    final users = {
-      ...legacy.userIds,
-      ...drift.map((record) => record.userId),
-    }.toList()..sort();
+    final users =
+        <String>{...legacy.userIds, ...drift.map((record) => record.userId)}
+            .where(
+              (value) =>
+                  !cutoverUsers.contains(value) &&
+                  (userId == null || value == userId),
+            )
+            .toList()
+          ..sort();
     final issues = <WaterConsistencyIssue>[];
 
     for (final userId in users) {

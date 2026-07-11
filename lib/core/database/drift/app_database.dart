@@ -6,11 +6,18 @@ import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
 import 'tables/sync_devices.dart';
 import 'tables/water_records.dart';
+import 'tables/water_cutovers.dart';
 
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  tables: [WaterRecords, SyncCursors, SyncDevices, LocalMigrations],
+  tables: [
+    WaterRecords,
+    SyncCursors,
+    SyncDevices,
+    LocalMigrations,
+    WaterCutovers,
+  ],
   daos: [WaterDao],
 )
 class AppDatabase extends _$AppDatabase {
@@ -18,7 +25,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -26,7 +33,7 @@ class AppDatabase extends _$AppDatabase {
       await migrator.createAll();
     },
     onUpgrade: (migrator, from, to) async {
-      // Future schema changes must be applied incrementally here.
+      if (from < 2) await migrator.createTable(waterCutovers);
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');

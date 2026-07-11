@@ -94,6 +94,54 @@ void main() {
       before,
     );
   });
+
+  test('does not use legacy fallback after cutover', () async {
+    SharedPreferences.setMockInitialValues({});
+    final preferences = await SharedPreferences.getInstance();
+    final storage = SharedPreferencesLocalStorageService(preferences);
+    final legacy = LocalWaterDatasource(
+      database: SharedPreferencesLocalDatabase(storage),
+      clock: const _Clock(),
+      userId: 'user-a',
+    );
+    await legacy.save(_dto(id: 'stale-legacy'));
+    final repository = DriftPrimaryWaterRepository(
+      driftDatasource: () async => throw StateError('unavailable'),
+      fallbackDatasource: legacy,
+      logger: _Logger(),
+      hasCutoverMirror: () => true,
+    );
+
+    await expectLater(
+      repository.getHistory(),
+      throwsA(isA<WaterDriftUnavailableAfterCutoverException>()),
+    );
+  });
+
+  test('reads exclusively from Drift after cutover', () async {
+    SharedPreferences.setMockInitialValues({});
+    final preferences = await SharedPreferences.getInstance();
+    final storage = SharedPreferencesLocalStorageService(preferences);
+    final drift = _datasource(database, 'user-a');
+    await drift.save(_dto(id: 'drift-only', amount: 700));
+    final legacy = LocalWaterDatasource(
+      database: SharedPreferencesLocalDatabase(storage),
+      clock: const _Clock(),
+      userId: 'user-a',
+    );
+    await legacy.save(_dto(id: 'legacy-only', amount: 100));
+    final repository = DriftPrimaryWaterRepository(
+      driftDatasource: () async => drift,
+      fallbackDatasource: legacy,
+      logger: _Logger(),
+      ensureCutover: () async {},
+      hasCutoverMirror: () => true,
+    );
+
+    final history = await repository.getHistory();
+
+    expect(history.map((record) => record.id), ['drift-only']);
+  });
 }
 
 DriftWaterLocalDatasource _datasource(AppDatabase database, String userId) =>
