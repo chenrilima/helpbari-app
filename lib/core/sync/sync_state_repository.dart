@@ -43,6 +43,15 @@ class LocalSyncStateRepository implements SyncStateRepository {
     required String? userId,
   }) async {
     final current = await getState();
+    if (current.userId != userId) {
+      final state = SyncState(
+        deviceId: current.deviceId ?? _uuidService.generate(),
+        appVersion: appVersion,
+        userId: userId,
+      );
+      await saveState(state);
+      return state;
+    }
     final state = current.copyWith(
       deviceId: current.deviceId ?? _uuidService.generate(),
       appVersion: appVersion,

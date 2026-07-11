@@ -16,9 +16,19 @@ class LocalWaterRepository implements WaterRepository {
   }
 
   @override
-  Future<void> save(WaterRecord record) {
+  Future<void> create(WaterRecord record) {
     return _datasource.save(
       WaterRecordDto.fromEntity(record, now: DateTime.now()),
     );
   }
+
+  @override
+  Future<void> update(WaterRecord record) {
+    return _datasource.save(
+      WaterRecordDto.fromEntity(record, now: DateTime.now()),
+    );
+  }
+
+  @override
+  Future<void> delete(String id) => _datasource.delete(id);
 }

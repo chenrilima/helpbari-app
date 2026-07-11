@@ -24,3 +24,8 @@ final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
 final settingsUseCasesProvider = Provider<SettingsUseCases>((ref) {
   return SettingsUseCases(ref.read(settingsRepositoryProvider));
 });
+
+final dailyWaterGoalProvider = FutureProvider<int>((ref) async {
+  final settings = await ref.read(settingsUseCasesProvider).getSettings();
+  return settings.dailyWaterGoalMl;
+});

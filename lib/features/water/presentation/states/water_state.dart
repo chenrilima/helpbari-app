@@ -6,11 +6,15 @@ class WaterState {
   const WaterState({
     this.records = const [],
     this.isLoading = false,
+    this.errorMessage,
+    this.syncWarning,
     this.clock = const AppClockService(),
   });
 
   final List<WaterRecord> records;
   final bool isLoading;
+  final String? errorMessage;
+  final String? syncWarning;
   final ClockService clock;
 
   bool get hasRecords => records.isNotEmpty;
@@ -41,11 +45,17 @@ class WaterState {
   WaterState copyWith({
     List<WaterRecord>? records,
     bool? isLoading,
+    String? errorMessage,
+    String? syncWarning,
+    bool clearError = false,
+    bool clearSyncWarning = false,
     ClockService? clock,
   }) {
     return WaterState(
       records: records ?? this.records,
       isLoading: isLoading ?? this.isLoading,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
+      syncWarning: clearSyncWarning ? null : syncWarning ?? this.syncWarning,
       clock: clock ?? this.clock,
     );
   }

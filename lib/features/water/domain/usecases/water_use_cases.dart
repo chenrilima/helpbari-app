@@ -8,8 +8,16 @@ class WaterUseCases {
   final WaterRepository _repository;
   final ClockService _clock;
 
-  Future<void> save(WaterRecord record) {
-    return _repository.save(record);
+  Future<void> create(WaterRecord record) {
+    return _repository.create(record);
+  }
+
+  Future<void> update(WaterRecord record) {
+    return _repository.update(record);
+  }
+
+  Future<void> delete(String id) {
+    return _repository.delete(id);
   }
 
   Future<List<WaterRecord>> getHistory() {

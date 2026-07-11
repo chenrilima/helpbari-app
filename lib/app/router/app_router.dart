@@ -32,6 +32,7 @@ import '../../features/vitamins/presentation/pages/register_vitamin_page.dart';
 import '../../features/vitamins/presentation/pages/vitamins_page.dart';
 import '../../features/water/presentation/pages/register_water_page.dart';
 import '../../features/water/presentation/pages/water_page.dart';
+import '../../features/water/domain/entities/entities.dart';
 import '../../features/weight/presentation/pages/register_weight_page.dart';
 import '../../features/weight/presentation/pages/weight_page.dart';
 import 'app_routes.dart';
@@ -116,7 +117,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.water, builder: (_, _) => const WaterPage()),
       GoRoute(
         path: AppRoutes.registerWater,
-        builder: (_, _) => const RegisterWaterPage(),
+        builder: (_, state) => RegisterWaterPage(
+          record: state.extra is WaterRecord
+              ? state.extra! as WaterRecord
+              : null,
+        ),
       ),
       GoRoute(path: AppRoutes.baria, builder: (_, _) => const BariaPage()),
       GoRoute(

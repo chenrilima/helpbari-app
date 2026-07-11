@@ -27,6 +27,8 @@ abstract final class SupabaseConfig {
     );
 
     _isInitialized = true;
-    AppLogger.info('Supabase initialized successfully');
+    AppLogger.info(
+      'Supabase initialized successfully: ${Environment.supabaseUrl}',
+    );
   }
 }
