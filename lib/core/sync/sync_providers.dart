@@ -36,6 +36,11 @@ import '../../features/appointments/data/datasources/appointment_supabase_dataso
 import '../../features/appointments/data/repositories/appointment_sync_repository.dart';
 import '../../features/appointments/presentation/providers/appointment_use_cases_provider.dart';
 import '../../features/appointments/presentation/providers/appointment_view_model_provider.dart';
+import '../../features/exams/data/datasources/drift_exam_local_datasource.dart';
+import '../../features/exams/data/datasources/exam_supabase_datasource.dart';
+import '../../features/exams/data/repositories/exam_sync_repository.dart';
+import '../../features/exams/presentation/providers/exam_use_cases_provider.dart';
+import '../../features/exams/presentation/providers/exam_view_model_provider.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -125,6 +130,15 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
         }
       },
     ),
+    ExamSyncRepository(
+      local: () async => DriftExamLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).examDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: ExamSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
+      userId: user.id,
+    ),
     SettingsSyncRepository(
       local: () async {
         if (!ref.read(driftAvailableProvider)) {
@@ -181,6 +195,8 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(mealViewModelProvider);
     ref.invalidate(appointmentUseCasesProvider);
     ref.invalidate(appointmentViewModelProvider);
+    ref.invalidate(examUseCasesProvider);
+    ref.invalidate(examViewModelProvider);
     ref.invalidate(weightChartSeriesProvider);
     ref.invalidate(progressViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
@@ -195,6 +211,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(weightViewModelProvider.notifier).loadHistory(),
       ref.read(mealViewModelProvider.notifier).loadMeals(),
       ref.read(appointmentViewModelProvider.notifier).loadAppointments(),
+      ref.read(examViewModelProvider.notifier).loadItems(),
       ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),

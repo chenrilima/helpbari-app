@@ -9202,6 +9202,1329 @@ class AppointmentCutoversCompanion extends UpdateCompanion<AppointmentCutover> {
   }
 }
 
+class $ExamRecordsTable extends ExamRecords
+    with TableInfo<$ExamRecordsTable, ExamRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ExamRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _examDateMeta = const VerificationMeta(
+    'examDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> examDate = GeneratedColumn<DateTime>(
+    'exam_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _laboratoryMeta = const VerificationMeta(
+    'laboratory',
+  );
+  @override
+  late final GeneratedColumn<String> laboratory = GeneratedColumn<String>(
+    'laboratory',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _attachmentPathMeta = const VerificationMeta(
+    'attachmentPath',
+  );
+  @override
+  late final GeneratedColumn<String> attachmentPath = GeneratedColumn<String>(
+    'attachment_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    name,
+    examDate,
+    laboratory,
+    notes,
+    attachmentPath,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'exam_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ExamRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('exam_date')) {
+      context.handle(
+        _examDateMeta,
+        examDate.isAcceptableOrUnknown(data['exam_date']!, _examDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_examDateMeta);
+    }
+    if (data.containsKey('laboratory')) {
+      context.handle(
+        _laboratoryMeta,
+        laboratory.isAcceptableOrUnknown(data['laboratory']!, _laboratoryMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('attachment_path')) {
+      context.handle(
+        _attachmentPathMeta,
+        attachmentPath.isAcceptableOrUnknown(
+          data['attachment_path']!,
+          _attachmentPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  ExamRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExamRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      examDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}exam_date'],
+      )!,
+      laboratory: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}laboratory'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      attachmentPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}attachment_path'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $ExamRecordsTable createAlias(String alias) {
+    return $ExamRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class ExamRecord extends DataClass implements Insertable<ExamRecord> {
+  final String id;
+  final String userId;
+  final String name;
+  final DateTime examDate;
+  final String? laboratory;
+  final String? notes;
+  final String? attachmentPath;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const ExamRecord({
+    required this.id,
+    required this.userId,
+    required this.name,
+    required this.examDate,
+    this.laboratory,
+    this.notes,
+    this.attachmentPath,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['name'] = Variable<String>(name);
+    map['exam_date'] = Variable<DateTime>(examDate);
+    if (!nullToAbsent || laboratory != null) {
+      map['laboratory'] = Variable<String>(laboratory);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || attachmentPath != null) {
+      map['attachment_path'] = Variable<String>(attachmentPath);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  ExamRecordsCompanion toCompanion(bool nullToAbsent) {
+    return ExamRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      name: Value(name),
+      examDate: Value(examDate),
+      laboratory: laboratory == null && nullToAbsent
+          ? const Value.absent()
+          : Value(laboratory),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      attachmentPath: attachmentPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(attachmentPath),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory ExamRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ExamRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      name: serializer.fromJson<String>(json['name']),
+      examDate: serializer.fromJson<DateTime>(json['examDate']),
+      laboratory: serializer.fromJson<String?>(json['laboratory']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      attachmentPath: serializer.fromJson<String?>(json['attachmentPath']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'name': serializer.toJson<String>(name),
+      'examDate': serializer.toJson<DateTime>(examDate),
+      'laboratory': serializer.toJson<String?>(laboratory),
+      'notes': serializer.toJson<String?>(notes),
+      'attachmentPath': serializer.toJson<String?>(attachmentPath),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  ExamRecord copyWith({
+    String? id,
+    String? userId,
+    String? name,
+    DateTime? examDate,
+    Value<String?> laboratory = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    Value<String?> attachmentPath = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => ExamRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    name: name ?? this.name,
+    examDate: examDate ?? this.examDate,
+    laboratory: laboratory.present ? laboratory.value : this.laboratory,
+    notes: notes.present ? notes.value : this.notes,
+    attachmentPath: attachmentPath.present
+        ? attachmentPath.value
+        : this.attachmentPath,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  ExamRecord copyWithCompanion(ExamRecordsCompanion data) {
+    return ExamRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      name: data.name.present ? data.name.value : this.name,
+      examDate: data.examDate.present ? data.examDate.value : this.examDate,
+      laboratory: data.laboratory.present
+          ? data.laboratory.value
+          : this.laboratory,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      attachmentPath: data.attachmentPath.present
+          ? data.attachmentPath.value
+          : this.attachmentPath,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExamRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('name: $name, ')
+          ..write('examDate: $examDate, ')
+          ..write('laboratory: $laboratory, ')
+          ..write('notes: $notes, ')
+          ..write('attachmentPath: $attachmentPath, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    name,
+    examDate,
+    laboratory,
+    notes,
+    attachmentPath,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ExamRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.name == this.name &&
+          other.examDate == this.examDate &&
+          other.laboratory == this.laboratory &&
+          other.notes == this.notes &&
+          other.attachmentPath == this.attachmentPath &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class ExamRecordsCompanion extends UpdateCompanion<ExamRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> name;
+  final Value<DateTime> examDate;
+  final Value<String?> laboratory;
+  final Value<String?> notes;
+  final Value<String?> attachmentPath;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const ExamRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.examDate = const Value.absent(),
+    this.laboratory = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.attachmentPath = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ExamRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required String name,
+    required DateTime examDate,
+    this.laboratory = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.attachmentPath = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       name = Value(name),
+       examDate = Value(examDate),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<ExamRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? name,
+    Expression<DateTime>? examDate,
+    Expression<String>? laboratory,
+    Expression<String>? notes,
+    Expression<String>? attachmentPath,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (name != null) 'name': name,
+      if (examDate != null) 'exam_date': examDate,
+      if (laboratory != null) 'laboratory': laboratory,
+      if (notes != null) 'notes': notes,
+      if (attachmentPath != null) 'attachment_path': attachmentPath,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ExamRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? name,
+    Value<DateTime>? examDate,
+    Value<String?>? laboratory,
+    Value<String?>? notes,
+    Value<String?>? attachmentPath,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return ExamRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      examDate: examDate ?? this.examDate,
+      laboratory: laboratory ?? this.laboratory,
+      notes: notes ?? this.notes,
+      attachmentPath: attachmentPath ?? this.attachmentPath,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (examDate.present) {
+      map['exam_date'] = Variable<DateTime>(examDate.value);
+    }
+    if (laboratory.present) {
+      map['laboratory'] = Variable<String>(laboratory.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (attachmentPath.present) {
+      map['attachment_path'] = Variable<String>(attachmentPath.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExamRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('name: $name, ')
+          ..write('examDate: $examDate, ')
+          ..write('laboratory: $laboratory, ')
+          ..write('notes: $notes, ')
+          ..write('attachmentPath: $attachmentPath, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ExamCutoversTable extends ExamCutovers
+    with TableInfo<$ExamCutoversTable, ExamCutover> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ExamCutoversTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _migrationKeyMeta = const VerificationMeta(
+    'migrationKey',
+  );
+  @override
+  late final GeneratedColumn<String> migrationKey = GeneratedColumn<String>(
+    'migration_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _versionMeta = const VerificationMeta(
+    'version',
+  );
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+    'version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _checksumMeta = const VerificationMeta(
+    'checksum',
+  );
+  @override
+  late final GeneratedColumn<String> checksum = GeneratedColumn<String>(
+    'checksum',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordCountMeta = const VerificationMeta(
+    'recordCount',
+  );
+  @override
+  late final GeneratedColumn<int> recordCount = GeneratedColumn<int>(
+    'record_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _databaseSchemaVersionMeta =
+      const VerificationMeta('databaseSchemaVersion');
+  @override
+  late final GeneratedColumn<int> databaseSchemaVersion = GeneratedColumn<int>(
+    'database_schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'exam_cutovers';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ExamCutover> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('migration_key')) {
+      context.handle(
+        _migrationKeyMeta,
+        migrationKey.isAcceptableOrUnknown(
+          data['migration_key']!,
+          _migrationKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migrationKeyMeta);
+    }
+    if (data.containsKey('version')) {
+      context.handle(
+        _versionMeta,
+        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_versionMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completedAtMeta);
+    }
+    if (data.containsKey('checksum')) {
+      context.handle(
+        _checksumMeta,
+        checksum.isAcceptableOrUnknown(data['checksum']!, _checksumMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_checksumMeta);
+    }
+    if (data.containsKey('record_count')) {
+      context.handle(
+        _recordCountMeta,
+        recordCount.isAcceptableOrUnknown(
+          data['record_count']!,
+          _recordCountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_recordCountMeta);
+    }
+    if (data.containsKey('database_schema_version')) {
+      context.handle(
+        _databaseSchemaVersionMeta,
+        databaseSchemaVersion.isAcceptableOrUnknown(
+          data['database_schema_version']!,
+          _databaseSchemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_databaseSchemaVersionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {migrationKey, userId};
+  @override
+  ExamCutover map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExamCutover(
+      migrationKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}migration_key'],
+      )!,
+      version: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}version'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      )!,
+      checksum: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}checksum'],
+      )!,
+      recordCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}record_count'],
+      )!,
+      databaseSchemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}database_schema_version'],
+      )!,
+    );
+  }
+
+  @override
+  $ExamCutoversTable createAlias(String alias) {
+    return $ExamCutoversTable(attachedDatabase, alias);
+  }
+}
+
+class ExamCutover extends DataClass implements Insertable<ExamCutover> {
+  final String migrationKey;
+  final int version;
+  final String userId;
+  final DateTime completedAt;
+  final String checksum;
+  final int recordCount;
+  final int databaseSchemaVersion;
+  const ExamCutover({
+    required this.migrationKey,
+    required this.version,
+    required this.userId,
+    required this.completedAt,
+    required this.checksum,
+    required this.recordCount,
+    required this.databaseSchemaVersion,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['migration_key'] = Variable<String>(migrationKey);
+    map['version'] = Variable<int>(version);
+    map['user_id'] = Variable<String>(userId);
+    map['completed_at'] = Variable<DateTime>(completedAt);
+    map['checksum'] = Variable<String>(checksum);
+    map['record_count'] = Variable<int>(recordCount);
+    map['database_schema_version'] = Variable<int>(databaseSchemaVersion);
+    return map;
+  }
+
+  ExamCutoversCompanion toCompanion(bool nullToAbsent) {
+    return ExamCutoversCompanion(
+      migrationKey: Value(migrationKey),
+      version: Value(version),
+      userId: Value(userId),
+      completedAt: Value(completedAt),
+      checksum: Value(checksum),
+      recordCount: Value(recordCount),
+      databaseSchemaVersion: Value(databaseSchemaVersion),
+    );
+  }
+
+  factory ExamCutover.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ExamCutover(
+      migrationKey: serializer.fromJson<String>(json['migrationKey']),
+      version: serializer.fromJson<int>(json['version']),
+      userId: serializer.fromJson<String>(json['userId']),
+      completedAt: serializer.fromJson<DateTime>(json['completedAt']),
+      checksum: serializer.fromJson<String>(json['checksum']),
+      recordCount: serializer.fromJson<int>(json['recordCount']),
+      databaseSchemaVersion: serializer.fromJson<int>(
+        json['databaseSchemaVersion'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'migrationKey': serializer.toJson<String>(migrationKey),
+      'version': serializer.toJson<int>(version),
+      'userId': serializer.toJson<String>(userId),
+      'completedAt': serializer.toJson<DateTime>(completedAt),
+      'checksum': serializer.toJson<String>(checksum),
+      'recordCount': serializer.toJson<int>(recordCount),
+      'databaseSchemaVersion': serializer.toJson<int>(databaseSchemaVersion),
+    };
+  }
+
+  ExamCutover copyWith({
+    String? migrationKey,
+    int? version,
+    String? userId,
+    DateTime? completedAt,
+    String? checksum,
+    int? recordCount,
+    int? databaseSchemaVersion,
+  }) => ExamCutover(
+    migrationKey: migrationKey ?? this.migrationKey,
+    version: version ?? this.version,
+    userId: userId ?? this.userId,
+    completedAt: completedAt ?? this.completedAt,
+    checksum: checksum ?? this.checksum,
+    recordCount: recordCount ?? this.recordCount,
+    databaseSchemaVersion: databaseSchemaVersion ?? this.databaseSchemaVersion,
+  );
+  ExamCutover copyWithCompanion(ExamCutoversCompanion data) {
+    return ExamCutover(
+      migrationKey: data.migrationKey.present
+          ? data.migrationKey.value
+          : this.migrationKey,
+      version: data.version.present ? data.version.value : this.version,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      checksum: data.checksum.present ? data.checksum.value : this.checksum,
+      recordCount: data.recordCount.present
+          ? data.recordCount.value
+          : this.recordCount,
+      databaseSchemaVersion: data.databaseSchemaVersion.present
+          ? data.databaseSchemaVersion.value
+          : this.databaseSchemaVersion,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExamCutover(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ExamCutover &&
+          other.migrationKey == this.migrationKey &&
+          other.version == this.version &&
+          other.userId == this.userId &&
+          other.completedAt == this.completedAt &&
+          other.checksum == this.checksum &&
+          other.recordCount == this.recordCount &&
+          other.databaseSchemaVersion == this.databaseSchemaVersion);
+}
+
+class ExamCutoversCompanion extends UpdateCompanion<ExamCutover> {
+  final Value<String> migrationKey;
+  final Value<int> version;
+  final Value<String> userId;
+  final Value<DateTime> completedAt;
+  final Value<String> checksum;
+  final Value<int> recordCount;
+  final Value<int> databaseSchemaVersion;
+  final Value<int> rowid;
+  const ExamCutoversCompanion({
+    this.migrationKey = const Value.absent(),
+    this.version = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.checksum = const Value.absent(),
+    this.recordCount = const Value.absent(),
+    this.databaseSchemaVersion = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ExamCutoversCompanion.insert({
+    required String migrationKey,
+    required int version,
+    required String userId,
+    required DateTime completedAt,
+    required String checksum,
+    required int recordCount,
+    required int databaseSchemaVersion,
+    this.rowid = const Value.absent(),
+  }) : migrationKey = Value(migrationKey),
+       version = Value(version),
+       userId = Value(userId),
+       completedAt = Value(completedAt),
+       checksum = Value(checksum),
+       recordCount = Value(recordCount),
+       databaseSchemaVersion = Value(databaseSchemaVersion);
+  static Insertable<ExamCutover> custom({
+    Expression<String>? migrationKey,
+    Expression<int>? version,
+    Expression<String>? userId,
+    Expression<DateTime>? completedAt,
+    Expression<String>? checksum,
+    Expression<int>? recordCount,
+    Expression<int>? databaseSchemaVersion,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (migrationKey != null) 'migration_key': migrationKey,
+      if (version != null) 'version': version,
+      if (userId != null) 'user_id': userId,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (checksum != null) 'checksum': checksum,
+      if (recordCount != null) 'record_count': recordCount,
+      if (databaseSchemaVersion != null)
+        'database_schema_version': databaseSchemaVersion,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ExamCutoversCompanion copyWith({
+    Value<String>? migrationKey,
+    Value<int>? version,
+    Value<String>? userId,
+    Value<DateTime>? completedAt,
+    Value<String>? checksum,
+    Value<int>? recordCount,
+    Value<int>? databaseSchemaVersion,
+    Value<int>? rowid,
+  }) {
+    return ExamCutoversCompanion(
+      migrationKey: migrationKey ?? this.migrationKey,
+      version: version ?? this.version,
+      userId: userId ?? this.userId,
+      completedAt: completedAt ?? this.completedAt,
+      checksum: checksum ?? this.checksum,
+      recordCount: recordCount ?? this.recordCount,
+      databaseSchemaVersion:
+          databaseSchemaVersion ?? this.databaseSchemaVersion,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (migrationKey.present) {
+      map['migration_key'] = Variable<String>(migrationKey.value);
+    }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (checksum.present) {
+      map['checksum'] = Variable<String>(checksum.value);
+    }
+    if (recordCount.present) {
+      map['record_count'] = Variable<int>(recordCount.value);
+    }
+    if (databaseSchemaVersion.present) {
+      map['database_schema_version'] = Variable<int>(
+        databaseSchemaVersion.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExamCutoversCompanion(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -9230,6 +10553,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $AppointmentRecordsTable(this);
   late final $AppointmentCutoversTable appointmentCutovers =
       $AppointmentCutoversTable(this);
+  late final $ExamRecordsTable examRecords = $ExamRecordsTable(this);
+  late final $ExamCutoversTable examCutovers = $ExamCutoversTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -9286,6 +10611,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'appointment_user_sync_updated_idx',
     'CREATE INDEX appointment_user_sync_updated_idx ON appointment_records (user_id, sync_status, updated_at)',
   );
+  late final Index examUserDeletedDateIdx = Index(
+    'exam_user_deleted_date_idx',
+    'CREATE INDEX exam_user_deleted_date_idx ON exam_records (user_id, deleted_at, exam_date)',
+  );
+  late final Index examUserSyncUpdatedIdx = Index(
+    'exam_user_sync_updated_idx',
+    'CREATE INDEX exam_user_sync_updated_idx ON exam_records (user_id, sync_status, updated_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -9294,6 +10627,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final AppointmentDao appointmentDao = AppointmentDao(
     this as AppDatabase,
   );
+  late final ExamDao examDao = ExamDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -9314,6 +10648,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     mealCutovers,
     appointmentRecords,
     appointmentCutovers,
+    examRecords,
+    examCutovers,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -9328,6 +10664,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     appointmentUserDeletedDateIdx,
     appointmentUserStatusDateIdx,
     appointmentUserSyncUpdatedIdx,
+    examUserDeletedDateIdx,
+    examUserSyncUpdatedIdx,
   ];
 }
 
@@ -13811,6 +15149,635 @@ typedef $$AppointmentCutoversTableProcessedTableManager =
       AppointmentCutover,
       PrefetchHooks Function()
     >;
+typedef $$ExamRecordsTableCreateCompanionBuilder =
+    ExamRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required String name,
+      required DateTime examDate,
+      Value<String?> laboratory,
+      Value<String?> notes,
+      Value<String?> attachmentPath,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$ExamRecordsTableUpdateCompanionBuilder =
+    ExamRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> name,
+      Value<DateTime> examDate,
+      Value<String?> laboratory,
+      Value<String?> notes,
+      Value<String?> attachmentPath,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$ExamRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $ExamRecordsTable> {
+  $$ExamRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get examDate => $composableBuilder(
+    column: $table.examDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get laboratory => $composableBuilder(
+    column: $table.laboratory,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get attachmentPath => $composableBuilder(
+    column: $table.attachmentPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ExamRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ExamRecordsTable> {
+  $$ExamRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get examDate => $composableBuilder(
+    column: $table.examDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get laboratory => $composableBuilder(
+    column: $table.laboratory,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get attachmentPath => $composableBuilder(
+    column: $table.attachmentPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ExamRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ExamRecordsTable> {
+  $$ExamRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get examDate =>
+      $composableBuilder(column: $table.examDate, builder: (column) => column);
+
+  GeneratedColumn<String> get laboratory => $composableBuilder(
+    column: $table.laboratory,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get attachmentPath => $composableBuilder(
+    column: $table.attachmentPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$ExamRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ExamRecordsTable,
+          ExamRecord,
+          $$ExamRecordsTableFilterComposer,
+          $$ExamRecordsTableOrderingComposer,
+          $$ExamRecordsTableAnnotationComposer,
+          $$ExamRecordsTableCreateCompanionBuilder,
+          $$ExamRecordsTableUpdateCompanionBuilder,
+          (
+            ExamRecord,
+            BaseReferences<_$AppDatabase, $ExamRecordsTable, ExamRecord>,
+          ),
+          ExamRecord,
+          PrefetchHooks Function()
+        > {
+  $$ExamRecordsTableTableManager(_$AppDatabase db, $ExamRecordsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ExamRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ExamRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ExamRecordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<DateTime> examDate = const Value.absent(),
+                Value<String?> laboratory = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> attachmentPath = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ExamRecordsCompanion(
+                id: id,
+                userId: userId,
+                name: name,
+                examDate: examDate,
+                laboratory: laboratory,
+                notes: notes,
+                attachmentPath: attachmentPath,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String name,
+                required DateTime examDate,
+                Value<String?> laboratory = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> attachmentPath = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ExamRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                name: name,
+                examDate: examDate,
+                laboratory: laboratory,
+                notes: notes,
+                attachmentPath: attachmentPath,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ExamRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ExamRecordsTable,
+      ExamRecord,
+      $$ExamRecordsTableFilterComposer,
+      $$ExamRecordsTableOrderingComposer,
+      $$ExamRecordsTableAnnotationComposer,
+      $$ExamRecordsTableCreateCompanionBuilder,
+      $$ExamRecordsTableUpdateCompanionBuilder,
+      (
+        ExamRecord,
+        BaseReferences<_$AppDatabase, $ExamRecordsTable, ExamRecord>,
+      ),
+      ExamRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$ExamCutoversTableCreateCompanionBuilder =
+    ExamCutoversCompanion Function({
+      required String migrationKey,
+      required int version,
+      required String userId,
+      required DateTime completedAt,
+      required String checksum,
+      required int recordCount,
+      required int databaseSchemaVersion,
+      Value<int> rowid,
+    });
+typedef $$ExamCutoversTableUpdateCompanionBuilder =
+    ExamCutoversCompanion Function({
+      Value<String> migrationKey,
+      Value<int> version,
+      Value<String> userId,
+      Value<DateTime> completedAt,
+      Value<String> checksum,
+      Value<int> recordCount,
+      Value<int> databaseSchemaVersion,
+      Value<int> rowid,
+    });
+
+class $$ExamCutoversTableFilterComposer
+    extends Composer<_$AppDatabase, $ExamCutoversTable> {
+  $$ExamCutoversTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ExamCutoversTableOrderingComposer
+    extends Composer<_$AppDatabase, $ExamCutoversTable> {
+  $$ExamCutoversTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ExamCutoversTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ExamCutoversTable> {
+  $$ExamCutoversTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get checksum =>
+      $composableBuilder(column: $table.checksum, builder: (column) => column);
+
+  GeneratedColumn<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => column,
+  );
+}
+
+class $$ExamCutoversTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ExamCutoversTable,
+          ExamCutover,
+          $$ExamCutoversTableFilterComposer,
+          $$ExamCutoversTableOrderingComposer,
+          $$ExamCutoversTableAnnotationComposer,
+          $$ExamCutoversTableCreateCompanionBuilder,
+          $$ExamCutoversTableUpdateCompanionBuilder,
+          (
+            ExamCutover,
+            BaseReferences<_$AppDatabase, $ExamCutoversTable, ExamCutover>,
+          ),
+          ExamCutover,
+          PrefetchHooks Function()
+        > {
+  $$ExamCutoversTableTableManager(_$AppDatabase db, $ExamCutoversTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ExamCutoversTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ExamCutoversTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ExamCutoversTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> migrationKey = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> completedAt = const Value.absent(),
+                Value<String> checksum = const Value.absent(),
+                Value<int> recordCount = const Value.absent(),
+                Value<int> databaseSchemaVersion = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ExamCutoversCompanion(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String migrationKey,
+                required int version,
+                required String userId,
+                required DateTime completedAt,
+                required String checksum,
+                required int recordCount,
+                required int databaseSchemaVersion,
+                Value<int> rowid = const Value.absent(),
+              }) => ExamCutoversCompanion.insert(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ExamCutoversTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ExamCutoversTable,
+      ExamCutover,
+      $$ExamCutoversTableFilterComposer,
+      $$ExamCutoversTableOrderingComposer,
+      $$ExamCutoversTableAnnotationComposer,
+      $$ExamCutoversTableCreateCompanionBuilder,
+      $$ExamCutoversTableUpdateCompanionBuilder,
+      (
+        ExamCutover,
+        BaseReferences<_$AppDatabase, $ExamCutoversTable, ExamCutover>,
+      ),
+      ExamCutover,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -13845,4 +15812,8 @@ class $AppDatabaseManager {
       $$AppointmentRecordsTableTableManager(_db, _db.appointmentRecords);
   $$AppointmentCutoversTableTableManager get appointmentCutovers =>
       $$AppointmentCutoversTableTableManager(_db, _db.appointmentCutovers);
+  $$ExamRecordsTableTableManager get examRecords =>
+      $$ExamRecordsTableTableManager(_db, _db.examRecords);
+  $$ExamCutoversTableTableManager get examCutovers =>
+      $$ExamCutoversTableTableManager(_db, _db.examCutovers);
 }
