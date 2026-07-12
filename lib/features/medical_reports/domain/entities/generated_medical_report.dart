@@ -8,6 +8,8 @@ class GeneratedMedicalReport {
     required this.fileName,
     required this.generatedAt,
     required this.template,
+    required this.hasClinicalData,
+    required this.reportVersion,
     this.savedPath,
   });
 
@@ -15,6 +17,8 @@ class GeneratedMedicalReport {
   final String fileName;
   final DateTime generatedAt;
   final ReportTemplate template;
+  final bool hasClinicalData;
+  final String reportVersion;
   final String? savedPath;
 
   GeneratedMedicalReport copyWith({String? savedPath}) {
@@ -23,6 +27,8 @@ class GeneratedMedicalReport {
       fileName: fileName,
       generatedAt: generatedAt,
       template: template,
+      hasClinicalData: hasClinicalData,
+      reportVersion: reportVersion,
       savedPath: savedPath ?? this.savedPath,
     );
   }

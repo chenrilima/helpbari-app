@@ -40,7 +40,11 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
           if (template.includes(ReportSection.patient)) ...[
             _sectionTitle('Dados do paciente'),
             _patient(snapshot),
+            _sectionTitle('Resumo da cirurgia'),
+            _surgery(snapshot),
           ],
+          _sectionTitle('Resumo clínico do período'),
+          _clinicalSummary(snapshot),
           if (template.includes(ReportSection.healthScore)) ...[
             _sectionTitle('Health Score'),
             _healthScore(snapshot),
@@ -82,6 +86,7 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
             _sectionTitle('Evolução'),
             _progress(snapshot),
           ],
+          _observations(snapshot),
           _attachments(snapshot),
         ],
       ),
@@ -94,6 +99,8 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
       fileName: _fileName(snapshot),
       generatedAt: snapshot.generatedAt,
       template: template,
+      hasClinicalData: snapshot.hasClinicalData,
+      reportVersion: snapshot.reportVersion,
     );
   }
 
@@ -161,8 +168,13 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
           ),
           pw.SizedBox(height: 8),
           pw.Text(
-            'Gerado em ${AppDateFormatter.shortWithTime(snapshot.generatedAt)}',
+            'Gerado em ${_generatedAt(snapshot.generatedAt)}',
             style: const pw.TextStyle(color: _muted, fontSize: 11),
+          ),
+          pw.SizedBox(height: 4),
+          pw.Text(
+            'Versão ${snapshot.reportVersion} - Período de ${AppDateFormatter.short(snapshot.periodStart)} a ${AppDateFormatter.short(snapshot.generatedAt)}',
+            style: const pw.TextStyle(color: _muted, fontSize: 10),
           ),
           pw.SizedBox(height: 18),
           pw.Wrap(
@@ -196,6 +208,34 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
       ('Meta de peso', _optionalWeight(profile.targetWeight?.value)),
       ('Cirurgia', profile.surgeryType.label),
       ('Data da cirurgia', AppDateFormatter.short(profile.surgeryDate.value)),
+    ]);
+  }
+
+  pw.Widget _surgery(MedicalReportSnapshot snapshot) {
+    final profile = snapshot.profile;
+    if (profile == null) return _empty('Dados cirúrgicos não informados.');
+    return _keyValueGrid([
+      ('Procedimento', profile.surgeryType.label),
+      ('Data', AppDateFormatter.short(profile.surgeryDate.value)),
+      ('Tempo desde a cirurgia', '${profile.daysSinceSurgery} dias'),
+      ('IMC inicial', profile.initialBmi.value.toStringAsFixed(1)),
+    ]);
+  }
+
+  pw.Widget _clinicalSummary(MedicalReportSnapshot snapshot) {
+    return _keyValueGrid([
+      (
+        'Média diária de água',
+        AppWaterFormatter.ml(snapshot.averageDailyWaterMl),
+      ),
+      ('Refeições em 30 dias', snapshot.mealsInPeriod.toString()),
+      ('Média diária de proteína', '${snapshot.averageDailyProteinGrams} g'),
+      ('Adesão às vitaminas', _percentage(snapshot.vitaminAdherencePercent)),
+      (
+        'Adesão aos medicamentos',
+        _percentage(snapshot.medicationAdherencePercent),
+      ),
+      ('Próximas consultas', snapshot.upcomingAppointments.length.toString()),
     ]);
   }
 
@@ -282,74 +322,113 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
         AppWaterFormatter.ml(snapshot.dailySummary.hydration.remainingMl),
       ),
       ('Registros', snapshot.waterHistory.length.toString()),
+      (
+        'Média diária (30 dias)',
+        AppWaterFormatter.ml(snapshot.averageDailyWaterMl),
+      ),
     ]);
   }
 
   pw.Widget _vitamins(MedicalReportSnapshot snapshot) {
-    return _table(
-      headers: ['Vitamina', 'Horário', 'Status'],
-      rows: snapshot.vitamins
-          .map(
-            (vitamin) => [
-              vitamin.formattedName,
-              vitamin.formattedTime,
-              snapshot.vitaminLogs
-                      .where((log) => log.vitaminId == vitamin.id)
-                      .firstOrNull
-                      ?.status
-                      .label ??
-                  'Pendente',
-            ],
-          )
-          .toList(),
-      emptyText: 'Nenhuma vitamina cadastrada.',
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        _keyValueGrid([
+          ('Adesão em 30 dias', _percentage(snapshot.vitaminAdherencePercent)),
+        ]),
+        pw.SizedBox(height: 10),
+        _table(
+          headers: ['Vitamina', 'Horário', 'Status'],
+          rows: snapshot.vitamins
+              .map(
+                (vitamin) => [
+                  vitamin.formattedName,
+                  vitamin.formattedTime,
+                  snapshot.vitaminLogs
+                          .where((log) => log.vitaminId == vitamin.id)
+                          .firstOrNull
+                          ?.status
+                          .label ??
+                      'Pendente',
+                ],
+              )
+              .toList(),
+          emptyText: 'Nenhuma vitamina cadastrada.',
+        ),
+      ],
     );
   }
 
   pw.Widget _medications(MedicalReportSnapshot snapshot) {
-    return _table(
-      headers: ['Medicamento', 'Dose', 'Horário', 'Status'],
-      rows: snapshot.medications
-          .map(
-            (medication) => [
-              medication.formattedName,
-              medication.dosage ?? '-',
-              medication.formattedTime,
-              snapshot.medicationLogs
-                      .where((log) => log.medicationId == medication.id)
-                      .firstOrNull
-                      ?.status
-                      .label ??
-                  'Pendente',
-            ],
-          )
-          .toList(),
-      emptyText: 'Nenhum medicamento cadastrado.',
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        _keyValueGrid([
+          (
+            'Adesão em 30 dias',
+            _percentage(snapshot.medicationAdherencePercent),
+          ),
+        ]),
+        pw.SizedBox(height: 10),
+        _table(
+          headers: ['Medicamento', 'Dose', 'Horário', 'Status'],
+          rows: snapshot.medications
+              .map(
+                (medication) => [
+                  medication.formattedName,
+                  medication.dosage ?? '-',
+                  medication.formattedTime,
+                  snapshot.medicationLogs
+                          .where((log) => log.medicationId == medication.id)
+                          .firstOrNull
+                          ?.status
+                          .label ??
+                      'Pendente',
+                ],
+              )
+              .toList(),
+          emptyText: 'Nenhum medicamento cadastrado.',
+        ),
+      ],
     );
   }
 
   pw.Widget _meals(MedicalReportSnapshot snapshot) {
-    return _table(
-      headers: ['Refeição', 'Tipo', 'Data', 'Proteína'],
-      rows: snapshot.meals
-          .take(12)
-          .map(
-            (meal) => [
-              meal.formattedName,
-              meal.formattedType,
-              meal.formattedDate,
-              meal.formattedProtein,
-            ],
-          )
-          .toList(),
-      emptyText: 'Nenhuma refeição cadastrada.',
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        _keyValueGrid([
+          ('Refeições em 30 dias', snapshot.mealsInPeriod.toString()),
+          (
+            'Média diária de proteína',
+            '${snapshot.averageDailyProteinGrams} g',
+          ),
+        ]),
+        pw.SizedBox(height: 10),
+        _table(
+          headers: ['Refeição', 'Tipo', 'Data', 'Proteína'],
+          rows: snapshot.meals
+              .take(30)
+              .map(
+                (meal) => [
+                  meal.formattedName,
+                  meal.formattedType,
+                  meal.formattedDate,
+                  meal.formattedProtein,
+                ],
+              )
+              .toList(),
+          emptyText: 'Nenhuma refeição cadastrada.',
+        ),
+      ],
     );
   }
 
   pw.Widget _appointments(MedicalReportSnapshot snapshot) {
     return _table(
       headers: ['Consulta', 'Data', 'Profissional', 'Local'],
-      rows: snapshot.appointments
+      rows: snapshot.upcomingAppointments
+          .take(20)
           .map(
             (appointment) => [
               appointment.title,
@@ -366,13 +445,13 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
   pw.Widget _exams(MedicalReportSnapshot snapshot) {
     return _table(
       headers: ['Exame', 'Data', 'Laboratório', 'Anexo'],
-      rows: snapshot.exams
+      rows: snapshot.latestExams
           .map(
             (exam) => [
               exam.formattedName,
               exam.formattedDate,
               exam.laboratory ?? '-',
-              exam.hasAttachment ? 'Sim' : 'Não',
+              exam.attachmentPath ?? 'Não',
             ],
           )
           .toList(),
@@ -396,7 +475,20 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
   }
 
   pw.Widget _attachments(MedicalReportSnapshot snapshot) {
-    if (snapshot.attachments.isEmpty) {
+    final examReferences = snapshot.exams
+        .where((exam) => exam.hasAttachment)
+        .map((exam) => [exam.formattedName, 'EXAME', exam.attachmentPath!]);
+    final rows = [
+      ...snapshot.attachments.map(
+        (attachment) => [
+          attachment.name,
+          attachment.type.name.toUpperCase(),
+          attachment.path,
+        ],
+      ),
+      ...examReferences,
+    ];
+    if (rows.isEmpty) {
       return pw.SizedBox();
     }
 
@@ -406,16 +498,31 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
         _sectionTitle('Anexos'),
         _table(
           headers: ['Arquivo', 'Tipo', 'Origem'],
-          rows: snapshot.attachments
-              .map(
-                (attachment) => [
-                  attachment.name,
-                  attachment.type.name.toUpperCase(),
-                  attachment.path,
-                ],
-              )
-              .toList(),
+          rows: rows,
           emptyText: '',
+        ),
+      ],
+    );
+  }
+
+  pw.Widget _observations(MedicalReportSnapshot snapshot) {
+    if (snapshot.automaticObservations.isEmpty) return pw.SizedBox();
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        _sectionTitle('Observações automáticas'),
+        ...snapshot.automaticObservations.map(
+          (text) => pw.Padding(
+            padding: const pw.EdgeInsets.only(bottom: 6),
+            child: pw.Text(
+              '- $text',
+              style: const pw.TextStyle(fontSize: 10, color: _ink),
+            ),
+          ),
+        ),
+        pw.Text(
+          'Observações geradas a partir dos registros do aplicativo e não substituem avaliação profissional.',
+          style: const pw.TextStyle(fontSize: 8, color: _muted),
         ),
       ],
     );
@@ -714,6 +821,15 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
     if (value == null) return 'Não informado';
 
     return AppWeightFormatter.kg(value);
+  }
+
+  String _percentage(double? value) =>
+      value == null ? 'Dados insuficientes' : '${value.toStringAsFixed(1)}%';
+
+  String _generatedAt(DateTime value) {
+    final hour = value.hour.toString().padLeft(2, '0');
+    final minute = value.minute.toString().padLeft(2, '0');
+    return '${AppDateFormatter.short(value)} - $hour:$minute';
   }
 
   String _scoreLabel(int score) {
