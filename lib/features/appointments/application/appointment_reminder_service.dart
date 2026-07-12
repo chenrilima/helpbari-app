@@ -26,11 +26,17 @@ class AppointmentReminderService {
     final settings = await _settingsUseCases.getSettings();
 
     if (!settings.appointmentRemindersEnabled || !appointment.isUpcoming) {
+      await cancel(appointment.id);
       return;
     }
 
     await _notifications.update(_appointmentSchedule(appointment));
   }
+
+  Future<void> applyAfterCommit(Appointment appointment) =>
+      appointment.isScheduled
+      ? rescheduleIfEnabled(appointment)
+      : cancel(appointment.id);
 
   Future<void> cancel(String appointmentId) {
     return _notifications.cancelPayload(

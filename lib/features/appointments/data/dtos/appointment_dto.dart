@@ -92,6 +92,44 @@ class AppointmentDto {
     );
   }
 
+  Map<String, dynamic> toSupabaseRow({required String userId}) => {
+    'id': id,
+    'user_id': userId,
+    'title': title,
+    'appointment_at': date.toUtc().toIso8601String(),
+    'doctor_name': doctorName,
+    'location': location,
+    'notes': notes,
+    'status': status.name,
+    'created_at': syncMetadata.createdAt.toUtc().toIso8601String(),
+    'updated_at': syncMetadata.updatedAt.toUtc().toIso8601String(),
+    'deleted_at': syncMetadata.deletedAt?.toUtc().toIso8601String(),
+  };
+
+  factory AppointmentDto.fromSupabaseRow(Map<String, dynamic> row) =>
+      AppointmentDto(
+        id: row['id'] as String,
+        title: row['title'] as String,
+        date: DateTime.parse(row['appointment_at'] as String),
+        status: AppointmentStatus.values.firstWhere(
+          (value) => value.name == row['status'],
+          orElse: () => AppointmentStatus.scheduled,
+        ),
+        doctorName: row['doctor_name'] as String?,
+        location: row['location'] as String?,
+        notes: row['notes'] as String?,
+        syncMetadata: SyncMetadata(
+          id: row['id'] as String,
+          userId: row['user_id'] as String,
+          createdAt: DateTime.parse(row['created_at'] as String),
+          updatedAt: DateTime.parse(row['updated_at'] as String),
+          deletedAt: row['deleted_at'] == null
+              ? null
+              : DateTime.parse(row['deleted_at'] as String),
+          syncStatus: SyncStatus.synced,
+        ),
+      );
+
   static SyncStatus _nextSyncStatus(SyncStatus? currentStatus) {
     return switch (currentStatus) {
       SyncStatus.synced => SyncStatus.pendingUpdate,

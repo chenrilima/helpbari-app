@@ -8,6 +8,8 @@ import 'package:helpbari/features/meals/domain/entities/entities.dart'
     show Meal;
 import '../../features/appointments/presentation/pages/appointments_page.dart';
 import '../../features/appointments/presentation/pages/register_appointment_page.dart';
+import '../../features/appointments/domain/entities/entities.dart'
+    show Appointment;
 import '../../features/baria/presentation/pages/baria_page.dart';
 import '../../features/exams/presentation/pages/exams_page.dart';
 import '../../features/exams/presentation/pages/register_exam_page.dart';
@@ -166,7 +168,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.registerAppointment,
-        builder: (context, state) => const RegisterAppointmentPage(),
+        builder: (context, state) => RegisterAppointmentPage(
+          appointment: state.extra is Appointment
+              ? state.extra! as Appointment
+              : null,
+        ),
       ),
       GoRoute(
         path: AppRoutes.appointments,
