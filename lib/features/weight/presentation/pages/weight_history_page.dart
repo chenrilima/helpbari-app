@@ -46,7 +46,11 @@ class _WeightHistoryPageState extends ConsumerState<WeightHistoryPage> {
           itemCount: state.records.length,
           separatorBuilder: (_, _) => const HBGap.md(),
           itemBuilder: (_, index) {
-            return WeightTile(record: state.records[index]);
+            return WeightTile(
+              record: state.records[index],
+              onEdit: () {},
+              onDelete: () {},
+            );
           },
         ),
       ],

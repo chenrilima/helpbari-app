@@ -35,7 +35,7 @@ class HBCard extends StatelessWidget {
           border: Border.all(color: borderColor),
           boxShadow: AppShadows.soft,
         ),
-        child: child,
+        child: Material(type: MaterialType.transparency, child: child),
       ),
     );
 

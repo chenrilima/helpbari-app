@@ -22,6 +22,11 @@ import '../../features/water/data/datasources/drift_water_local_datasource.dart'
 import '../../features/water/data/datasources/water_supabase_datasource.dart';
 import '../../features/water/data/repositories/water_sync_repository.dart';
 import '../../features/water/presentation/providers/water_view_model_provider.dart';
+import '../../features/weight/data/datasources/drift_weight_local_datasource.dart';
+import '../../features/weight/data/datasources/weight_supabase_datasource.dart';
+import '../../features/weight/data/repositories/weight_sync_repository.dart';
+import '../../features/weight/presentation/providers/weight_view_model_provider.dart';
+import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
 import 'sync_manager.dart';
@@ -66,6 +71,15 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       supabaseDatasource: WaterSupabaseDatasource(
         ref.watch(supabaseDatabaseProvider),
       ),
+      userId: user.id,
+    ),
+    WeightSyncRepository(
+      local: () async => DriftWeightLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).weightDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: WeightSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
       userId: user.id,
     ),
     SettingsSyncRepository(
@@ -119,6 +133,9 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(dailyWaterGoalProvider);
     ref.invalidate(homeViewModelProvider);
     ref.invalidate(waterViewModelProvider);
+    ref.invalidate(weightViewModelProvider);
+    ref.invalidate(weightChartSeriesProvider);
+    ref.invalidate(progressViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(medicalReportUseCasesProvider);
@@ -127,6 +144,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     await ref.read(settingsViewModelProvider.notifier).loadSettings();
     await Future.wait([
       ref.read(waterViewModelProvider.notifier).loadHistory(),
+      ref.read(weightViewModelProvider.notifier).loadHistory(),
       ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),

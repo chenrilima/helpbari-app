@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import 'daos/water_dao.dart';
 import 'daos/settings_dao.dart';
 import 'daos/profile_dao.dart';
+import 'daos/weight_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
@@ -13,6 +14,8 @@ import 'tables/settings_records.dart';
 import 'tables/settings_cutovers.dart';
 import 'tables/profile_records.dart';
 import 'tables/profile_cutovers.dart';
+import 'tables/weight_records.dart';
+import 'tables/weight_cutovers.dart';
 
 part 'app_database.g.dart';
 
@@ -27,15 +30,17 @@ part 'app_database.g.dart';
     SettingsCutovers,
     ProfileRecords,
     ProfileCutovers,
+    WeightRecords,
+    WeightCutovers,
   ],
-  daos: [WaterDao, SettingsDao, ProfileDao],
+  daos: [WaterDao, SettingsDao, ProfileDao, WeightDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -57,6 +62,10 @@ class AppDatabase extends _$AppDatabase {
           profileRecords,
           profileRecords.photoStoragePath,
         );
+      }
+      if (from < 6) {
+        await migrator.createTable(weightRecords);
+        await migrator.createTable(weightCutovers);
       }
     },
     beforeOpen: (details) async {
