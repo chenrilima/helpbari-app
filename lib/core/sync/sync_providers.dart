@@ -26,6 +26,11 @@ import '../../features/weight/data/datasources/drift_weight_local_datasource.dar
 import '../../features/weight/data/datasources/weight_supabase_datasource.dart';
 import '../../features/weight/data/repositories/weight_sync_repository.dart';
 import '../../features/weight/presentation/providers/weight_view_model_provider.dart';
+import '../../features/meals/data/datasources/drift_meal_local_datasource.dart';
+import '../../features/meals/data/datasources/meal_supabase_datasource.dart';
+import '../../features/meals/data/repositories/meal_sync_repository.dart';
+import '../../features/meals/presentation/providers/meal_view_model_provider.dart';
+import '../../features/meals/presentation/providers/meal_use_cases_provider.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -82,6 +87,15 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       remote: WeightSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
       userId: user.id,
     ),
+    MealSyncRepository(
+      local: () async => DriftMealLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).mealDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: MealSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
+      userId: user.id,
+    ),
     SettingsSyncRepository(
       local: () async {
         if (!ref.read(driftAvailableProvider)) {
@@ -134,17 +148,21 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(homeViewModelProvider);
     ref.invalidate(waterViewModelProvider);
     ref.invalidate(weightViewModelProvider);
+    ref.invalidate(mealUseCasesProvider);
+    ref.invalidate(mealViewModelProvider);
     ref.invalidate(weightChartSeriesProvider);
     ref.invalidate(progressViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(medicalReportUseCasesProvider);
+    ref.invalidate(medicalReportViewModelProvider);
     ref.invalidate(bariaViewModelProvider);
     ref.invalidate(profileViewModelProvider);
     await ref.read(settingsViewModelProvider.notifier).loadSettings();
     await Future.wait([
       ref.read(waterViewModelProvider.notifier).loadHistory(),
       ref.read(weightViewModelProvider.notifier).loadHistory(),
+      ref.read(mealViewModelProvider.notifier).loadMeals(),
       ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),

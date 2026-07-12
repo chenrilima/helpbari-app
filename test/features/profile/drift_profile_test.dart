@@ -23,8 +23,8 @@ void main() {
   });
   tearDown(() => database.close());
 
-  test('local schema v6 contains photo_storage_path', () async {
-    expect(database.schemaVersion, 6);
+  test('local schema v7 contains photo_storage_path', () async {
+    expect(database.schemaVersion, 7);
     final columns = await database
         .customSelect('PRAGMA table_info(profile_records)')
         .get();

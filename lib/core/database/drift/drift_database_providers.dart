@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app_database.dart';
 import 'daos/water_dao.dart';
 import 'daos/weight_dao.dart';
+import 'daos/meal_dao.dart';
 
 final driftAvailableProvider = Provider<bool>((ref) => true);
 
@@ -22,4 +23,9 @@ final waterDaoProvider = FutureProvider<WaterDao>((ref) async {
 final weightDaoProvider = FutureProvider<WeightDao>((ref) async {
   final database = await ref.watch(appDatabaseProvider.future);
   return database.weightDao;
+});
+
+final mealDaoProvider = FutureProvider<MealDao>((ref) async {
+  final database = await ref.watch(appDatabaseProvider.future);
+  return database.mealDao;
 });

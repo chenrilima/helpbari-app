@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:helpbari/features/meals/presentation/pages/meals_page.dart';
+import 'package:helpbari/features/meals/domain/entities/entities.dart'
+    show Meal;
 import '../../features/appointments/presentation/pages/appointments_page.dart';
 import '../../features/appointments/presentation/pages/register_appointment_page.dart';
 import '../../features/baria/presentation/pages/baria_page.dart';
@@ -196,7 +198,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.registerMeal,
-        builder: (context, state) => const RegisterMealPage(),
+        builder: (context, state) => RegisterMealPage(
+          meal: state.extra is Meal ? state.extra! as Meal : null,
+        ),
       ),
       GoRoute(
         path: AppRoutes.medicalReports,

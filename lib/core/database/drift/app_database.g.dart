@@ -6515,6 +6515,1323 @@ class WeightCutoversCompanion extends UpdateCompanion<WeightCutover> {
   }
 }
 
+class $MealRecordsTable extends MealRecords
+    with TableInfo<$MealRecordsTable, MealRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MealRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _mealDateMeta = const VerificationMeta(
+    'mealDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> mealDate = GeneratedColumn<DateTime>(
+    'meal_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _proteinGramsMeta = const VerificationMeta(
+    'proteinGrams',
+  );
+  @override
+  late final GeneratedColumn<int> proteinGrams = GeneratedColumn<int>(
+    'protein_grams',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'CHECK (protein_grams IS NULL OR protein_grams >= 0)',
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    name,
+    type,
+    mealDate,
+    notes,
+    proteinGrams,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'meal_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MealRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('meal_date')) {
+      context.handle(
+        _mealDateMeta,
+        mealDate.isAcceptableOrUnknown(data['meal_date']!, _mealDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_mealDateMeta);
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('protein_grams')) {
+      context.handle(
+        _proteinGramsMeta,
+        proteinGrams.isAcceptableOrUnknown(
+          data['protein_grams']!,
+          _proteinGramsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  MealRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MealRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      mealDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}meal_date'],
+      )!,
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      proteinGrams: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}protein_grams'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $MealRecordsTable createAlias(String alias) {
+    return $MealRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class MealRecord extends DataClass implements Insertable<MealRecord> {
+  final String id;
+  final String userId;
+  final String name;
+  final String type;
+  final DateTime mealDate;
+  final String? notes;
+  final int? proteinGrams;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const MealRecord({
+    required this.id,
+    required this.userId,
+    required this.name,
+    required this.type,
+    required this.mealDate,
+    this.notes,
+    this.proteinGrams,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['name'] = Variable<String>(name);
+    map['type'] = Variable<String>(type);
+    map['meal_date'] = Variable<DateTime>(mealDate);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || proteinGrams != null) {
+      map['protein_grams'] = Variable<int>(proteinGrams);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  MealRecordsCompanion toCompanion(bool nullToAbsent) {
+    return MealRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      name: Value(name),
+      type: Value(type),
+      mealDate: Value(mealDate),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      proteinGrams: proteinGrams == null && nullToAbsent
+          ? const Value.absent()
+          : Value(proteinGrams),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory MealRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MealRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      name: serializer.fromJson<String>(json['name']),
+      type: serializer.fromJson<String>(json['type']),
+      mealDate: serializer.fromJson<DateTime>(json['mealDate']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      proteinGrams: serializer.fromJson<int?>(json['proteinGrams']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'name': serializer.toJson<String>(name),
+      'type': serializer.toJson<String>(type),
+      'mealDate': serializer.toJson<DateTime>(mealDate),
+      'notes': serializer.toJson<String?>(notes),
+      'proteinGrams': serializer.toJson<int?>(proteinGrams),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  MealRecord copyWith({
+    String? id,
+    String? userId,
+    String? name,
+    String? type,
+    DateTime? mealDate,
+    Value<String?> notes = const Value.absent(),
+    Value<int?> proteinGrams = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => MealRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    name: name ?? this.name,
+    type: type ?? this.type,
+    mealDate: mealDate ?? this.mealDate,
+    notes: notes.present ? notes.value : this.notes,
+    proteinGrams: proteinGrams.present ? proteinGrams.value : this.proteinGrams,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  MealRecord copyWithCompanion(MealRecordsCompanion data) {
+    return MealRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      name: data.name.present ? data.name.value : this.name,
+      type: data.type.present ? data.type.value : this.type,
+      mealDate: data.mealDate.present ? data.mealDate.value : this.mealDate,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      proteinGrams: data.proteinGrams.present
+          ? data.proteinGrams.value
+          : this.proteinGrams,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MealRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('name: $name, ')
+          ..write('type: $type, ')
+          ..write('mealDate: $mealDate, ')
+          ..write('notes: $notes, ')
+          ..write('proteinGrams: $proteinGrams, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    name,
+    type,
+    mealDate,
+    notes,
+    proteinGrams,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MealRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.name == this.name &&
+          other.type == this.type &&
+          other.mealDate == this.mealDate &&
+          other.notes == this.notes &&
+          other.proteinGrams == this.proteinGrams &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class MealRecordsCompanion extends UpdateCompanion<MealRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> name;
+  final Value<String> type;
+  final Value<DateTime> mealDate;
+  final Value<String?> notes;
+  final Value<int?> proteinGrams;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const MealRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.type = const Value.absent(),
+    this.mealDate = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.proteinGrams = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MealRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required String name,
+    required String type,
+    required DateTime mealDate,
+    this.notes = const Value.absent(),
+    this.proteinGrams = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       name = Value(name),
+       type = Value(type),
+       mealDate = Value(mealDate),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<MealRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? name,
+    Expression<String>? type,
+    Expression<DateTime>? mealDate,
+    Expression<String>? notes,
+    Expression<int>? proteinGrams,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (name != null) 'name': name,
+      if (type != null) 'type': type,
+      if (mealDate != null) 'meal_date': mealDate,
+      if (notes != null) 'notes': notes,
+      if (proteinGrams != null) 'protein_grams': proteinGrams,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MealRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? name,
+    Value<String>? type,
+    Value<DateTime>? mealDate,
+    Value<String?>? notes,
+    Value<int?>? proteinGrams,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return MealRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      mealDate: mealDate ?? this.mealDate,
+      notes: notes ?? this.notes,
+      proteinGrams: proteinGrams ?? this.proteinGrams,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (mealDate.present) {
+      map['meal_date'] = Variable<DateTime>(mealDate.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (proteinGrams.present) {
+      map['protein_grams'] = Variable<int>(proteinGrams.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MealRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('name: $name, ')
+          ..write('type: $type, ')
+          ..write('mealDate: $mealDate, ')
+          ..write('notes: $notes, ')
+          ..write('proteinGrams: $proteinGrams, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MealCutoversTable extends MealCutovers
+    with TableInfo<$MealCutoversTable, MealCutover> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MealCutoversTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _migrationKeyMeta = const VerificationMeta(
+    'migrationKey',
+  );
+  @override
+  late final GeneratedColumn<String> migrationKey = GeneratedColumn<String>(
+    'migration_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _versionMeta = const VerificationMeta(
+    'version',
+  );
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+    'version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _checksumMeta = const VerificationMeta(
+    'checksum',
+  );
+  @override
+  late final GeneratedColumn<String> checksum = GeneratedColumn<String>(
+    'checksum',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordCountMeta = const VerificationMeta(
+    'recordCount',
+  );
+  @override
+  late final GeneratedColumn<int> recordCount = GeneratedColumn<int>(
+    'record_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _databaseSchemaVersionMeta =
+      const VerificationMeta('databaseSchemaVersion');
+  @override
+  late final GeneratedColumn<int> databaseSchemaVersion = GeneratedColumn<int>(
+    'database_schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'meal_cutovers';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MealCutover> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('migration_key')) {
+      context.handle(
+        _migrationKeyMeta,
+        migrationKey.isAcceptableOrUnknown(
+          data['migration_key']!,
+          _migrationKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migrationKeyMeta);
+    }
+    if (data.containsKey('version')) {
+      context.handle(
+        _versionMeta,
+        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_versionMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completedAtMeta);
+    }
+    if (data.containsKey('checksum')) {
+      context.handle(
+        _checksumMeta,
+        checksum.isAcceptableOrUnknown(data['checksum']!, _checksumMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_checksumMeta);
+    }
+    if (data.containsKey('record_count')) {
+      context.handle(
+        _recordCountMeta,
+        recordCount.isAcceptableOrUnknown(
+          data['record_count']!,
+          _recordCountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_recordCountMeta);
+    }
+    if (data.containsKey('database_schema_version')) {
+      context.handle(
+        _databaseSchemaVersionMeta,
+        databaseSchemaVersion.isAcceptableOrUnknown(
+          data['database_schema_version']!,
+          _databaseSchemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_databaseSchemaVersionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {migrationKey, userId};
+  @override
+  MealCutover map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MealCutover(
+      migrationKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}migration_key'],
+      )!,
+      version: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}version'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      )!,
+      checksum: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}checksum'],
+      )!,
+      recordCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}record_count'],
+      )!,
+      databaseSchemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}database_schema_version'],
+      )!,
+    );
+  }
+
+  @override
+  $MealCutoversTable createAlias(String alias) {
+    return $MealCutoversTable(attachedDatabase, alias);
+  }
+}
+
+class MealCutover extends DataClass implements Insertable<MealCutover> {
+  final String migrationKey;
+  final int version;
+  final String userId;
+  final DateTime completedAt;
+  final String checksum;
+  final int recordCount;
+  final int databaseSchemaVersion;
+  const MealCutover({
+    required this.migrationKey,
+    required this.version,
+    required this.userId,
+    required this.completedAt,
+    required this.checksum,
+    required this.recordCount,
+    required this.databaseSchemaVersion,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['migration_key'] = Variable<String>(migrationKey);
+    map['version'] = Variable<int>(version);
+    map['user_id'] = Variable<String>(userId);
+    map['completed_at'] = Variable<DateTime>(completedAt);
+    map['checksum'] = Variable<String>(checksum);
+    map['record_count'] = Variable<int>(recordCount);
+    map['database_schema_version'] = Variable<int>(databaseSchemaVersion);
+    return map;
+  }
+
+  MealCutoversCompanion toCompanion(bool nullToAbsent) {
+    return MealCutoversCompanion(
+      migrationKey: Value(migrationKey),
+      version: Value(version),
+      userId: Value(userId),
+      completedAt: Value(completedAt),
+      checksum: Value(checksum),
+      recordCount: Value(recordCount),
+      databaseSchemaVersion: Value(databaseSchemaVersion),
+    );
+  }
+
+  factory MealCutover.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MealCutover(
+      migrationKey: serializer.fromJson<String>(json['migrationKey']),
+      version: serializer.fromJson<int>(json['version']),
+      userId: serializer.fromJson<String>(json['userId']),
+      completedAt: serializer.fromJson<DateTime>(json['completedAt']),
+      checksum: serializer.fromJson<String>(json['checksum']),
+      recordCount: serializer.fromJson<int>(json['recordCount']),
+      databaseSchemaVersion: serializer.fromJson<int>(
+        json['databaseSchemaVersion'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'migrationKey': serializer.toJson<String>(migrationKey),
+      'version': serializer.toJson<int>(version),
+      'userId': serializer.toJson<String>(userId),
+      'completedAt': serializer.toJson<DateTime>(completedAt),
+      'checksum': serializer.toJson<String>(checksum),
+      'recordCount': serializer.toJson<int>(recordCount),
+      'databaseSchemaVersion': serializer.toJson<int>(databaseSchemaVersion),
+    };
+  }
+
+  MealCutover copyWith({
+    String? migrationKey,
+    int? version,
+    String? userId,
+    DateTime? completedAt,
+    String? checksum,
+    int? recordCount,
+    int? databaseSchemaVersion,
+  }) => MealCutover(
+    migrationKey: migrationKey ?? this.migrationKey,
+    version: version ?? this.version,
+    userId: userId ?? this.userId,
+    completedAt: completedAt ?? this.completedAt,
+    checksum: checksum ?? this.checksum,
+    recordCount: recordCount ?? this.recordCount,
+    databaseSchemaVersion: databaseSchemaVersion ?? this.databaseSchemaVersion,
+  );
+  MealCutover copyWithCompanion(MealCutoversCompanion data) {
+    return MealCutover(
+      migrationKey: data.migrationKey.present
+          ? data.migrationKey.value
+          : this.migrationKey,
+      version: data.version.present ? data.version.value : this.version,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      checksum: data.checksum.present ? data.checksum.value : this.checksum,
+      recordCount: data.recordCount.present
+          ? data.recordCount.value
+          : this.recordCount,
+      databaseSchemaVersion: data.databaseSchemaVersion.present
+          ? data.databaseSchemaVersion.value
+          : this.databaseSchemaVersion,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MealCutover(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    migrationKey,
+    version,
+    userId,
+    completedAt,
+    checksum,
+    recordCount,
+    databaseSchemaVersion,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MealCutover &&
+          other.migrationKey == this.migrationKey &&
+          other.version == this.version &&
+          other.userId == this.userId &&
+          other.completedAt == this.completedAt &&
+          other.checksum == this.checksum &&
+          other.recordCount == this.recordCount &&
+          other.databaseSchemaVersion == this.databaseSchemaVersion);
+}
+
+class MealCutoversCompanion extends UpdateCompanion<MealCutover> {
+  final Value<String> migrationKey;
+  final Value<int> version;
+  final Value<String> userId;
+  final Value<DateTime> completedAt;
+  final Value<String> checksum;
+  final Value<int> recordCount;
+  final Value<int> databaseSchemaVersion;
+  final Value<int> rowid;
+  const MealCutoversCompanion({
+    this.migrationKey = const Value.absent(),
+    this.version = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.checksum = const Value.absent(),
+    this.recordCount = const Value.absent(),
+    this.databaseSchemaVersion = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MealCutoversCompanion.insert({
+    required String migrationKey,
+    required int version,
+    required String userId,
+    required DateTime completedAt,
+    required String checksum,
+    required int recordCount,
+    required int databaseSchemaVersion,
+    this.rowid = const Value.absent(),
+  }) : migrationKey = Value(migrationKey),
+       version = Value(version),
+       userId = Value(userId),
+       completedAt = Value(completedAt),
+       checksum = Value(checksum),
+       recordCount = Value(recordCount),
+       databaseSchemaVersion = Value(databaseSchemaVersion);
+  static Insertable<MealCutover> custom({
+    Expression<String>? migrationKey,
+    Expression<int>? version,
+    Expression<String>? userId,
+    Expression<DateTime>? completedAt,
+    Expression<String>? checksum,
+    Expression<int>? recordCount,
+    Expression<int>? databaseSchemaVersion,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (migrationKey != null) 'migration_key': migrationKey,
+      if (version != null) 'version': version,
+      if (userId != null) 'user_id': userId,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (checksum != null) 'checksum': checksum,
+      if (recordCount != null) 'record_count': recordCount,
+      if (databaseSchemaVersion != null)
+        'database_schema_version': databaseSchemaVersion,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MealCutoversCompanion copyWith({
+    Value<String>? migrationKey,
+    Value<int>? version,
+    Value<String>? userId,
+    Value<DateTime>? completedAt,
+    Value<String>? checksum,
+    Value<int>? recordCount,
+    Value<int>? databaseSchemaVersion,
+    Value<int>? rowid,
+  }) {
+    return MealCutoversCompanion(
+      migrationKey: migrationKey ?? this.migrationKey,
+      version: version ?? this.version,
+      userId: userId ?? this.userId,
+      completedAt: completedAt ?? this.completedAt,
+      checksum: checksum ?? this.checksum,
+      recordCount: recordCount ?? this.recordCount,
+      databaseSchemaVersion:
+          databaseSchemaVersion ?? this.databaseSchemaVersion,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (migrationKey.present) {
+      map['migration_key'] = Variable<String>(migrationKey.value);
+    }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (checksum.present) {
+      map['checksum'] = Variable<String>(checksum.value);
+    }
+    if (recordCount.present) {
+      map['record_count'] = Variable<int>(recordCount.value);
+    }
+    if (databaseSchemaVersion.present) {
+      map['database_schema_version'] = Variable<int>(
+        databaseSchemaVersion.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MealCutoversCompanion(')
+          ..write('migrationKey: $migrationKey, ')
+          ..write('version: $version, ')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('checksum: $checksum, ')
+          ..write('recordCount: $recordCount, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -6537,6 +7854,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $WeightRecordsTable weightRecords = $WeightRecordsTable(this);
   late final $WeightCutoversTable weightCutovers = $WeightCutoversTable(this);
+  late final $MealRecordsTable mealRecords = $MealRecordsTable(this);
+  late final $MealCutoversTable mealCutovers = $MealCutoversTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -6569,10 +7888,23 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'weight_user_sync_updated_idx',
     'CREATE INDEX weight_user_sync_updated_idx ON weight_records (user_id, sync_status, updated_at)',
   );
+  late final Index mealUserDeletedDateIdx = Index(
+    'meal_user_deleted_date_idx',
+    'CREATE INDEX meal_user_deleted_date_idx ON meal_records (user_id, deleted_at, meal_date)',
+  );
+  late final Index mealUserTypeDateIdx = Index(
+    'meal_user_type_date_idx',
+    'CREATE INDEX meal_user_type_date_idx ON meal_records (user_id, type, meal_date)',
+  );
+  late final Index mealUserSyncUpdatedIdx = Index(
+    'meal_user_sync_updated_idx',
+    'CREATE INDEX meal_user_sync_updated_idx ON meal_records (user_id, sync_status, updated_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
   late final WeightDao weightDao = WeightDao(this as AppDatabase);
+  late final MealDao mealDao = MealDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6589,6 +7921,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     profileCutovers,
     weightRecords,
     weightCutovers,
+    mealRecords,
+    mealCutovers,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -6597,6 +7931,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     profileUserSyncUpdatedIdx,
     weightUserDeletedRecordedIdx,
     weightUserSyncUpdatedIdx,
+    mealUserDeletedDateIdx,
+    mealUserTypeDateIdx,
+    mealUserSyncUpdatedIdx,
   ];
 }
 
@@ -9776,6 +11113,633 @@ typedef $$WeightCutoversTableProcessedTableManager =
       WeightCutover,
       PrefetchHooks Function()
     >;
+typedef $$MealRecordsTableCreateCompanionBuilder =
+    MealRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required String name,
+      required String type,
+      required DateTime mealDate,
+      Value<String?> notes,
+      Value<int?> proteinGrams,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$MealRecordsTableUpdateCompanionBuilder =
+    MealRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> name,
+      Value<String> type,
+      Value<DateTime> mealDate,
+      Value<String?> notes,
+      Value<int?> proteinGrams,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$MealRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $MealRecordsTable> {
+  $$MealRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get mealDate => $composableBuilder(
+    column: $table.mealDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get proteinGrams => $composableBuilder(
+    column: $table.proteinGrams,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MealRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MealRecordsTable> {
+  $$MealRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get mealDate => $composableBuilder(
+    column: $table.mealDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get proteinGrams => $composableBuilder(
+    column: $table.proteinGrams,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MealRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MealRecordsTable> {
+  $$MealRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get mealDate =>
+      $composableBuilder(column: $table.mealDate, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<int> get proteinGrams => $composableBuilder(
+    column: $table.proteinGrams,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$MealRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MealRecordsTable,
+          MealRecord,
+          $$MealRecordsTableFilterComposer,
+          $$MealRecordsTableOrderingComposer,
+          $$MealRecordsTableAnnotationComposer,
+          $$MealRecordsTableCreateCompanionBuilder,
+          $$MealRecordsTableUpdateCompanionBuilder,
+          (
+            MealRecord,
+            BaseReferences<_$AppDatabase, $MealRecordsTable, MealRecord>,
+          ),
+          MealRecord,
+          PrefetchHooks Function()
+        > {
+  $$MealRecordsTableTableManager(_$AppDatabase db, $MealRecordsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MealRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MealRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MealRecordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<DateTime> mealDate = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<int?> proteinGrams = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MealRecordsCompanion(
+                id: id,
+                userId: userId,
+                name: name,
+                type: type,
+                mealDate: mealDate,
+                notes: notes,
+                proteinGrams: proteinGrams,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String name,
+                required String type,
+                required DateTime mealDate,
+                Value<String?> notes = const Value.absent(),
+                Value<int?> proteinGrams = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MealRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                name: name,
+                type: type,
+                mealDate: mealDate,
+                notes: notes,
+                proteinGrams: proteinGrams,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MealRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MealRecordsTable,
+      MealRecord,
+      $$MealRecordsTableFilterComposer,
+      $$MealRecordsTableOrderingComposer,
+      $$MealRecordsTableAnnotationComposer,
+      $$MealRecordsTableCreateCompanionBuilder,
+      $$MealRecordsTableUpdateCompanionBuilder,
+      (
+        MealRecord,
+        BaseReferences<_$AppDatabase, $MealRecordsTable, MealRecord>,
+      ),
+      MealRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$MealCutoversTableCreateCompanionBuilder =
+    MealCutoversCompanion Function({
+      required String migrationKey,
+      required int version,
+      required String userId,
+      required DateTime completedAt,
+      required String checksum,
+      required int recordCount,
+      required int databaseSchemaVersion,
+      Value<int> rowid,
+    });
+typedef $$MealCutoversTableUpdateCompanionBuilder =
+    MealCutoversCompanion Function({
+      Value<String> migrationKey,
+      Value<int> version,
+      Value<String> userId,
+      Value<DateTime> completedAt,
+      Value<String> checksum,
+      Value<int> recordCount,
+      Value<int> databaseSchemaVersion,
+      Value<int> rowid,
+    });
+
+class $$MealCutoversTableFilterComposer
+    extends Composer<_$AppDatabase, $MealCutoversTable> {
+  $$MealCutoversTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MealCutoversTableOrderingComposer
+    extends Composer<_$AppDatabase, $MealCutoversTable> {
+  $$MealCutoversTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get version => $composableBuilder(
+    column: $table.version,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get checksum => $composableBuilder(
+    column: $table.checksum,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MealCutoversTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MealCutoversTable> {
+  $$MealCutoversTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get migrationKey => $composableBuilder(
+    column: $table.migrationKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get checksum =>
+      $composableBuilder(column: $table.checksum, builder: (column) => column);
+
+  GeneratedColumn<int> get recordCount => $composableBuilder(
+    column: $table.recordCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => column,
+  );
+}
+
+class $$MealCutoversTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MealCutoversTable,
+          MealCutover,
+          $$MealCutoversTableFilterComposer,
+          $$MealCutoversTableOrderingComposer,
+          $$MealCutoversTableAnnotationComposer,
+          $$MealCutoversTableCreateCompanionBuilder,
+          $$MealCutoversTableUpdateCompanionBuilder,
+          (
+            MealCutover,
+            BaseReferences<_$AppDatabase, $MealCutoversTable, MealCutover>,
+          ),
+          MealCutover,
+          PrefetchHooks Function()
+        > {
+  $$MealCutoversTableTableManager(_$AppDatabase db, $MealCutoversTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MealCutoversTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MealCutoversTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MealCutoversTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> migrationKey = const Value.absent(),
+                Value<int> version = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> completedAt = const Value.absent(),
+                Value<String> checksum = const Value.absent(),
+                Value<int> recordCount = const Value.absent(),
+                Value<int> databaseSchemaVersion = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MealCutoversCompanion(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String migrationKey,
+                required int version,
+                required String userId,
+                required DateTime completedAt,
+                required String checksum,
+                required int recordCount,
+                required int databaseSchemaVersion,
+                Value<int> rowid = const Value.absent(),
+              }) => MealCutoversCompanion.insert(
+                migrationKey: migrationKey,
+                version: version,
+                userId: userId,
+                completedAt: completedAt,
+                checksum: checksum,
+                recordCount: recordCount,
+                databaseSchemaVersion: databaseSchemaVersion,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MealCutoversTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MealCutoversTable,
+      MealCutover,
+      $$MealCutoversTableFilterComposer,
+      $$MealCutoversTableOrderingComposer,
+      $$MealCutoversTableAnnotationComposer,
+      $$MealCutoversTableCreateCompanionBuilder,
+      $$MealCutoversTableUpdateCompanionBuilder,
+      (
+        MealCutover,
+        BaseReferences<_$AppDatabase, $MealCutoversTable, MealCutover>,
+      ),
+      MealCutover,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -9802,4 +11766,8 @@ class $AppDatabaseManager {
       $$WeightRecordsTableTableManager(_db, _db.weightRecords);
   $$WeightCutoversTableTableManager get weightCutovers =>
       $$WeightCutoversTableTableManager(_db, _db.weightCutovers);
+  $$MealRecordsTableTableManager get mealRecords =>
+      $$MealRecordsTableTableManager(_db, _db.mealRecords);
+  $$MealCutoversTableTableManager get mealCutovers =>
+      $$MealCutoversTableTableManager(_db, _db.mealCutovers);
 }

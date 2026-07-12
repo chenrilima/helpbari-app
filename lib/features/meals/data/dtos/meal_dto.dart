@@ -92,6 +92,41 @@ class MealDto {
     );
   }
 
+  Map<String, dynamic> toSupabaseRow({required String userId}) => {
+    'id': id,
+    'user_id': userId,
+    'name': name,
+    'type': type.name,
+    'meal_date': mealDate.toUtc().toIso8601String(),
+    'notes': notes,
+    'protein_grams': proteinGrams,
+    'created_at': syncMetadata.createdAt.toUtc().toIso8601String(),
+    'updated_at': syncMetadata.updatedAt.toUtc().toIso8601String(),
+    'deleted_at': syncMetadata.deletedAt?.toUtc().toIso8601String(),
+  };
+
+  factory MealDto.fromSupabaseRow(Map<String, dynamic> row) => MealDto(
+    id: row['id'] as String,
+    name: row['name'] as String,
+    type: MealType.values.firstWhere(
+      (value) => value.name == row['type'],
+      orElse: () => MealType.snack,
+    ),
+    mealDate: DateTime.parse(row['meal_date'] as String),
+    notes: row['notes'] as String?,
+    proteinGrams: row['protein_grams'] as int?,
+    syncMetadata: SyncMetadata(
+      id: row['id'] as String,
+      userId: row['user_id'] as String,
+      createdAt: DateTime.parse(row['created_at'] as String),
+      updatedAt: DateTime.parse(row['updated_at'] as String),
+      deletedAt: row['deleted_at'] == null
+          ? null
+          : DateTime.parse(row['deleted_at'] as String),
+      syncStatus: SyncStatus.synced,
+    ),
+  );
+
   static SyncStatus _nextSyncStatus(SyncStatus? currentStatus) {
     return switch (currentStatus) {
       SyncStatus.synced => SyncStatus.pendingUpdate,

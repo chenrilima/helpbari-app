@@ -4,6 +4,7 @@ import 'daos/water_dao.dart';
 import 'daos/settings_dao.dart';
 import 'daos/profile_dao.dart';
 import 'daos/weight_dao.dart';
+import 'daos/meal_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
@@ -16,6 +17,8 @@ import 'tables/profile_records.dart';
 import 'tables/profile_cutovers.dart';
 import 'tables/weight_records.dart';
 import 'tables/weight_cutovers.dart';
+import 'tables/meal_records.dart';
+import 'tables/meal_cutovers.dart';
 
 part 'app_database.g.dart';
 
@@ -32,15 +35,17 @@ part 'app_database.g.dart';
     ProfileCutovers,
     WeightRecords,
     WeightCutovers,
+    MealRecords,
+    MealCutovers,
   ],
-  daos: [WaterDao, SettingsDao, ProfileDao, WeightDao],
+  daos: [WaterDao, SettingsDao, ProfileDao, WeightDao, MealDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -66,6 +71,10 @@ class AppDatabase extends _$AppDatabase {
       if (from < 6) {
         await migrator.createTable(weightRecords);
         await migrator.createTable(weightCutovers);
+      }
+      if (from < 7) {
+        await migrator.createTable(mealRecords);
+        await migrator.createTable(mealCutovers);
       }
     },
     beforeOpen: (details) async {
