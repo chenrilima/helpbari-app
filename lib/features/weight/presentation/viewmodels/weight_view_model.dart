@@ -9,6 +9,10 @@ import '../../domain/value_objects/value_objects.dart';
 import '../models/create_weight_form.dart';
 import '../providers/weight_use_cases_provider.dart';
 import '../states/weight_state.dart';
+import '../../../home/presentation/providers/home_view_model_provider.dart';
+import '../../../charts/presentation/providers/chart_series_providers.dart';
+import '../../../progress/presentation/providers/progress_view_model_provider.dart';
+import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
 
 class WeightViewModel extends Notifier<WeightState> {
   late final WeightUseCases _useCases;
@@ -36,7 +40,7 @@ class WeightViewModel extends Notifier<WeightState> {
     }
   }
 
-  Future<void> registerWeight(CreateWeightForm form) async {
+  Future<bool> registerWeight(CreateWeightForm form) async {
     state = state.copyWith(isLoading: true);
 
     try {
@@ -47,7 +51,7 @@ class WeightViewModel extends Notifier<WeightState> {
           isLoading: false,
           errorMessage: 'Peso inválido.',
         );
-        return;
+        return false;
       }
 
       final notes = form.notes == null ? null : Notes.create(form.notes!);
@@ -61,11 +65,65 @@ class WeightViewModel extends Notifier<WeightState> {
 
       await _useCases.register(record);
 
-      final history = await _useCases.getHistory();
-
-      state = state.copyWith(records: history, isLoading: false);
+      await _refresh();
+      return true;
     } catch (error) {
       state = state.copyWith(isLoading: false, errorMessage: error.toString());
+      return false;
     }
+  }
+
+  Future<bool> updateWeight(
+    WeightRecord existing,
+    CreateWeightForm form,
+  ) async {
+    final weight = WeightValue.create(form.weight);
+    if (weight == null) return false;
+    state = state.copyWith(isLoading: true);
+    try {
+      await _useCases.update(
+        WeightRecord(
+          id: existing.id,
+          weight: weight,
+          recordedAt: RecordedAt(form.recordedAt, clock: _clock),
+          notes: form.notes == null ? null : Notes.create(form.notes!),
+        ),
+      );
+      await _refresh();
+      return true;
+    } catch (error) {
+      state = state.copyWith(isLoading: false, errorMessage: error.toString());
+      return false;
+    }
+  }
+
+  Future<bool> deleteWeight(String id) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      await _useCases.delete(id);
+      await _refresh();
+      return true;
+    } catch (error) {
+      state = state.copyWith(isLoading: false, errorMessage: error.toString());
+      return false;
+    }
+  }
+
+  Future<void> _refresh() async {
+    _invalidateConsumers();
+    state = state.copyWith(
+      records: await _useCases.getHistory(),
+      isLoading: false,
+    );
+  }
+
+  void _invalidateConsumers() {
+    ref.invalidate(weightUseCasesProvider);
+    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(weightChartSeriesProvider);
+    ref.invalidate(healthScoreChartSeriesProvider);
+    ref.invalidate(progressViewModelProvider);
+    ref.invalidate(medicalReportUseCasesProvider);
+    ref.invalidate(medicalReportViewModelProvider);
   }
 }

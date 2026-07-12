@@ -37,6 +37,7 @@ import '../../features/water/presentation/pages/water_page.dart';
 import '../../features/water/domain/entities/entities.dart';
 import '../../features/weight/presentation/pages/register_weight_page.dart';
 import '../../features/weight/presentation/pages/weight_page.dart';
+import '../../features/weight/domain/entities/entities.dart' show WeightRecord;
 import 'app_routes.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -137,7 +138,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       GoRoute(
         path: AppRoutes.registerWeight,
-        builder: (_, _) => const RegisterWeightPage(),
+        builder: (_, state) => RegisterWeightPage(
+          record: state.extra is WeightRecord
+              ? state.extra! as WeightRecord
+              : null,
+        ),
       ),
       GoRoute(path: AppRoutes.water, builder: (_, _) => const WaterPage()),
       GoRoute(

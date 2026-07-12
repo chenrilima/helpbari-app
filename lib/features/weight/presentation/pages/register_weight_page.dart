@@ -8,9 +8,11 @@ import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../models/create_weight_form.dart';
 import '../providers/weight_view_model_provider.dart';
+import '../../domain/entities/entities.dart';
 
 class RegisterWeightPage extends ConsumerStatefulWidget {
-  const RegisterWeightPage({super.key});
+  const RegisterWeightPage({super.key, this.record});
+  final WeightRecord? record;
 
   @override
   ConsumerState<RegisterWeightPage> createState() => _RegisterWeightPageState();
@@ -19,16 +21,24 @@ class RegisterWeightPage extends ConsumerStatefulWidget {
 class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final _weightController = TextEditingController();
-
-  final _notesController = TextEditingController();
+  late final TextEditingController _weightController;
+  late final TextEditingController _notesController;
 
   late DateTime _recordedAt;
+  bool _isSubmitting = false;
+  bool get _isEditing => widget.record != null;
 
   @override
   void initState() {
     super.initState();
-    _recordedAt = ref.read(clockServiceProvider).now();
+    _weightController = TextEditingController(
+      text: widget.record?.weight.value.toString(),
+    );
+    _notesController = TextEditingController(
+      text: widget.record?.notes?.value ?? '',
+    );
+    _recordedAt =
+        widget.record?.recordedAt.value ?? ref.read(clockServiceProvider).now();
   }
 
   @override
@@ -57,6 +67,7 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
   }
 
   Future<void> _submit() async {
+    if (_isSubmitting) return;
     final formState = _formKey.currentState;
 
     if (formState == null || !formState.validate()) return;
@@ -69,62 +80,88 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
           : _notesController.text.trim(),
     );
 
-    await ref.read(weightViewModelProvider.notifier).registerWeight(form);
+    setState(() => _isSubmitting = true);
+    final notifier = ref.read(weightViewModelProvider.notifier);
+    final success = _isEditing
+        ? await notifier.updateWeight(widget.record!, form)
+        : await notifier.registerWeight(form);
 
     if (!mounted) return;
-    HBSnackBar.success(context, message: 'Peso registrado com sucesso.');
+    if (!success) {
+      setState(() => _isSubmitting = false);
+      HBSnackBar.error(
+        context,
+        message:
+            ref.read(weightViewModelProvider).errorMessage ??
+            'Não foi possível salvar o peso.',
+      );
+      return;
+    }
+    HBSnackBar.success(
+      context,
+      message: _isEditing
+          ? 'Peso atualizado com sucesso.'
+          : 'Peso registrado com sucesso.',
+    );
 
     context.pop(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return HBPage(
-      appBar: const HBAppBar(
-        title: 'Registrar peso',
-        subtitle: 'Acompanhe sua evolução',
-      ),
-      children: [
-        HBCard(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HBTextField(
-                  controller: _weightController,
-                  label: 'Peso',
-                  hint: 'Ex: 91.5',
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
+    return HBLoadingOverlay(
+      isLoading: _isSubmitting,
+      message: 'Salvando peso...',
+      child: HBPage(
+        appBar: const HBAppBar(
+          title: 'Registrar peso',
+          subtitle: 'Acompanhe sua evolução',
+        ),
+        children: [
+          HBCard(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HBTextField(
+                    controller: _weightController,
+                    label: 'Peso',
+                    hint: 'Ex: 91.5',
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    validator: AppValidators.weight,
                   ),
-                  validator: AppValidators.weight,
-                ),
 
-                const HBGap.md(),
+                  const HBGap.md(),
 
-                HBTextField(
-                  controller: _notesController,
-                  label: 'Observações (opcional)',
-                  maxLines: 3,
-                  validator: AppValidators.optionalText,
-                ),
+                  HBTextField(
+                    controller: _notesController,
+                    label: 'Observações (opcional)',
+                    maxLines: 3,
+                    validator: AppValidators.optionalText,
+                  ),
 
-                const HBGap.md(),
+                  const HBGap.md(),
 
-                HBButton(
-                  label: 'Data: ${AppDateFormatter.short(_recordedAt)}',
-                  onPressed: _selectDate,
-                ),
+                  HBButton(
+                    label: 'Data: ${AppDateFormatter.short(_recordedAt)}',
+                    onPressed: _selectDate,
+                  ),
 
-                const HBGap.xl(),
+                  const HBGap.xl(),
 
-                HBButton(label: 'Salvar peso', onPressed: _submit),
-              ],
+                  HBButton(
+                    label: _isEditing ? 'Salvar alterações' : 'Salvar peso',
+                    onPressed: _isSubmitting ? null : _submit,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

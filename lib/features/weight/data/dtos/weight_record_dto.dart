@@ -68,6 +68,39 @@ class WeightRecordDto {
     );
   }
 
+  Map<String, dynamic> toSupabaseInsert({required String userId}) => {
+    'id': id,
+    'user_id': userId,
+    'weight_kg': weight,
+    'recorded_at': recordedAt.toUtc().toIso8601String(),
+    'notes': notes,
+    'created_at': syncMetadata.createdAt.toUtc().toIso8601String(),
+    'updated_at': syncMetadata.updatedAt.toUtc().toIso8601String(),
+    'deleted_at': syncMetadata.deletedAt?.toUtc().toIso8601String(),
+  };
+
+  Map<String, dynamic> toSupabaseUpdate({required String userId}) =>
+      toSupabaseInsert(userId: userId)..remove('created_at');
+
+  factory WeightRecordDto.fromSupabaseRow(Map<String, dynamic> row) {
+    return WeightRecordDto(
+      id: row['id'] as String,
+      weight: (row['weight_kg'] as num).toDouble(),
+      recordedAt: DateTime.parse(row['recorded_at'] as String),
+      notes: row['notes'] as String?,
+      syncMetadata: SyncMetadata(
+        id: row['id'] as String,
+        userId: row['user_id'] as String,
+        createdAt: DateTime.parse(row['created_at'] as String),
+        updatedAt: DateTime.parse(row['updated_at'] as String),
+        deletedAt: row['deleted_at'] == null
+            ? null
+            : DateTime.parse(row['deleted_at'] as String),
+        syncStatus: SyncStatus.synced,
+      ),
+    );
+  }
+
   static WeightRecordDto fromRecord(LocalDatabaseRecord record) {
     final data = record.data;
 

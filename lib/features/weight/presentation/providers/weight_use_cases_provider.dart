@@ -4,7 +4,7 @@ import '../../domain/usecases/use_cases.dart';
 import 'weight_repository_provider.dart';
 
 final weightUseCasesProvider = Provider<WeightUseCases>((ref) {
-  final repository = ref.read(weightRepositoryProvider);
+  final repository = ref.watch(weightRepositoryProvider);
 
   return WeightUseCases(repository);
 });

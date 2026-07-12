@@ -5,9 +5,16 @@ import '../../../../design_system/design_system.dart';
 import '../../domain/entities/entities.dart';
 
 class WeightTile extends StatelessWidget {
-  const WeightTile({required this.record, super.key});
+  const WeightTile({
+    required this.record,
+    required this.onEdit,
+    required this.onDelete,
+    super.key,
+  });
 
   final WeightRecord record;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +46,16 @@ class WeightTile extends StatelessWidget {
                 ],
               ],
             ),
+          ),
+          IconButton(
+            onPressed: onEdit,
+            tooltip: 'Editar registro',
+            icon: const Icon(Icons.edit_outlined),
+          ),
+          IconButton(
+            onPressed: onDelete,
+            tooltip: 'Excluir registro',
+            icon: const Icon(Icons.delete_outline, color: AppColors.danger),
           ),
         ],
       ),
