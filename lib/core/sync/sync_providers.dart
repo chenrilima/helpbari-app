@@ -31,6 +31,11 @@ import '../../features/meals/data/datasources/meal_supabase_datasource.dart';
 import '../../features/meals/data/repositories/meal_sync_repository.dart';
 import '../../features/meals/presentation/providers/meal_view_model_provider.dart';
 import '../../features/meals/presentation/providers/meal_use_cases_provider.dart';
+import '../../features/appointments/data/datasources/drift_appointment_local_datasource.dart';
+import '../../features/appointments/data/datasources/appointment_supabase_datasource.dart';
+import '../../features/appointments/data/repositories/appointment_sync_repository.dart';
+import '../../features/appointments/presentation/providers/appointment_use_cases_provider.dart';
+import '../../features/appointments/presentation/providers/appointment_view_model_provider.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -96,6 +101,30 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       remote: MealSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
       userId: user.id,
     ),
+    AppointmentSyncRepository(
+      local: () async => DriftAppointmentLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).appointmentDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: AppointmentSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+      afterRemoteCommit: (dto) async {
+        try {
+          await ref
+              .read(appointmentReminderServiceProvider)
+              .applyAfterCommit(dto.toEntity());
+        } catch (error) {
+          ref
+              .read(loggerServiceProvider)
+              .warning(
+                'Appointment notification reconciliation failed (${error.runtimeType}).',
+              );
+        }
+      },
+    ),
     SettingsSyncRepository(
       local: () async {
         if (!ref.read(driftAvailableProvider)) {
@@ -150,6 +179,8 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(weightViewModelProvider);
     ref.invalidate(mealUseCasesProvider);
     ref.invalidate(mealViewModelProvider);
+    ref.invalidate(appointmentUseCasesProvider);
+    ref.invalidate(appointmentViewModelProvider);
     ref.invalidate(weightChartSeriesProvider);
     ref.invalidate(progressViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
@@ -163,6 +194,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(waterViewModelProvider.notifier).loadHistory(),
       ref.read(weightViewModelProvider.notifier).loadHistory(),
       ref.read(mealViewModelProvider.notifier).loadMeals(),
+      ref.read(appointmentViewModelProvider.notifier).loadAppointments(),
       ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),

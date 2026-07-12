@@ -8,12 +8,16 @@ class AppointmentTile extends StatelessWidget {
     required this.appointment,
     required this.onComplete,
     required this.onCancel,
+    required this.onEdit,
+    required this.onDelete,
     super.key,
   });
 
   final Appointment appointment;
   final VoidCallback onComplete;
   final VoidCallback onCancel;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +69,16 @@ class AppointmentTile extends StatelessWidget {
               icon: const Icon(Icons.check),
             ),
           ],
+          IconButton(
+            tooltip: 'Editar consulta',
+            onPressed: onEdit,
+            icon: const Icon(Icons.edit_outlined),
+          ),
+          IconButton(
+            tooltip: 'Excluir consulta',
+            onPressed: onDelete,
+            icon: const Icon(Icons.delete_outline, color: AppColors.danger),
+          ),
         ],
       ),
     );
