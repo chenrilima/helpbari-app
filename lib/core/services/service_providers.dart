@@ -49,10 +49,8 @@ final notificationSchedulerProvider = Provider<NotificationScheduler>((ref) {
 });
 
 final notificationSchedulerStateProvider =
-    StreamProvider<NotificationSchedulerState>(
-      (ref) async* {
-        final scheduler = ref.watch(notificationSchedulerProvider);
-        yield scheduler.state;
-        yield* scheduler.states;
-      },
-    );
+    StreamProvider<NotificationSchedulerState>((ref) async* {
+      final scheduler = ref.watch(notificationSchedulerProvider);
+      yield scheduler.state;
+      yield* scheduler.states;
+    });
