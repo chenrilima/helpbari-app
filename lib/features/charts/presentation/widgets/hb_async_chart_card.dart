@@ -16,6 +16,7 @@ class HBAsyncChartCard extends StatelessWidget {
     this.color = AppColors.primary,
     this.height = 220,
     this.emptyIcon = Icons.bar_chart_outlined,
+    this.onRetry,
   });
 
   final String title;
@@ -26,6 +27,7 @@ class HBAsyncChartCard extends StatelessWidget {
   final Color color;
   final double height;
   final IconData emptyIcon;
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class HBAsyncChartCard extends StatelessWidget {
         color: color,
         height: height,
         emptyIcon: emptyIcon,
+        onRetry: onRetry,
       ),
       error: (error, stackTrace) => HBChartCard(
         title: title,

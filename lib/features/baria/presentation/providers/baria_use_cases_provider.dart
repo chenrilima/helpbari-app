@@ -27,6 +27,7 @@ final bariaRepositoryProvider = Provider<BariaRepository>((ref) {
     vitaminUseCases: vitaminUseCases,
     medicationUseCases: medicationUseCases,
     healthScore: healthScore,
+    dailySummary: homeState.dailySummary,
   );
 });
 

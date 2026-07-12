@@ -95,6 +95,7 @@ class WaterViewModel extends Notifier<WaterState> {
       ref.invalidate(homeViewModelProvider);
       ref.invalidate(waterChartSeriesProvider);
       ref.invalidate(healthScoreChartSeriesProvider);
+      ref.invalidate(healthPeriodAggregateProvider);
       final syncResult = await ref.read(syncManagerProvider.notifier).syncNow();
       if (syncResult != null && !syncResult.isSuccess) {
         state = state.copyWith(

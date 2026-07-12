@@ -277,6 +277,8 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(settingsUseCasesProvider);
     ref.invalidate(dailyWaterGoalProvider);
     ref.invalidate(homeViewModelProvider);
+    ref.invalidate(healthDashboardUseCasesProvider);
+    ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(waterViewModelProvider);
     ref.invalidate(weightViewModelProvider);
     ref.invalidate(mealUseCasesProvider);

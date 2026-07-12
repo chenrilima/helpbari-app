@@ -83,6 +83,33 @@ void main() {
   });
 
   group('HealthScoreCalculator', () {
+    test('v2 normalizes only available components and preserves zero', () {
+      final result = HealthScoreCalculator.calculateV2(
+        const HealthScoreInput(hydration: 0, vitamins: 0),
+      );
+
+      expect(result.score, 0);
+      expect(result.hasData, isTrue);
+      expect(result.availableWeight, 0.45);
+    });
+
+    test('v2 does not treat missing data as failure', () {
+      final result = HealthScoreCalculator.calculateV2(
+        const HealthScoreInput(hydration: 1),
+      );
+
+      expect(result.score, 100);
+      expect(result.availableWeight, HealthScoreCalculator.v2HydrationWeight);
+    });
+
+    test('v2 returns unavailable zero when every component is absent', () {
+      final result = HealthScoreCalculator.calculateV2(
+        const HealthScoreInput(),
+      );
+
+      expect(result.score, 0);
+      expect(result.hasData, isFalse);
+    });
     test('calculates weighted health score', () {
       const hydration = HydrationResult(
         currentMl: 2000,

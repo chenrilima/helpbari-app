@@ -116,6 +116,7 @@ class WeightViewModel extends Notifier<WeightState> {
     ref.invalidate(homeViewModelProvider);
     ref.invalidate(weightChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
+    ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(progressViewModelProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);

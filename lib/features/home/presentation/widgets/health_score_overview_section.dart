@@ -16,8 +16,9 @@ class HealthScoreOverviewSection extends StatelessWidget {
       subtitle: 'Pontuação baseada na sua rotina diária.',
       child: HBMetricCard(
         title: healthScore.label,
-        value: '${healthScore.score}%',
-        description: healthScore.message,
+        value: healthScore.hasData ? '${healthScore.score}%' : '--',
+        description:
+            '${healthScore.message} ${healthScore.compositionExplanation} ${HealthScoreResult.limitationNotice}',
         icon: Icons.favorite_outline,
       ),
     );

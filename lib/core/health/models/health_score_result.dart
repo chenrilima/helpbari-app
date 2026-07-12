@@ -7,6 +7,7 @@ class HealthScoreResult {
     required this.medicationsScore,
     required this.mealsScore,
     required this.weightProgressScore,
+    this.availableWeight = 1,
   });
 
   final int score;
@@ -16,6 +17,16 @@ class HealthScoreResult {
   final double medicationsScore;
   final double mealsScore;
   final double weightProgressScore;
+  final double availableWeight;
+
+  bool get hasData => availableWeight > 0;
+
+  String get compositionExplanation => hasData
+      ? 'Pontuação normalizada apenas entre os componentes registrados no dia.'
+      : 'Sem dados suficientes para calcular o indicador neste dia.';
+
+  static const limitationNotice =
+      'Indicador de acompanhamento da rotina; não representa avaliação clínica.';
 
   bool get isExcellent => score >= 80;
 

@@ -7,6 +7,7 @@ import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../core/services/service_providers.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../design_system/design_system.dart';
+import '../../../charts/charts.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/value_objects/value_objects.dart';
 import '../providers/meal_view_model_provider.dart';
@@ -99,6 +100,8 @@ class _MealsPageState extends ConsumerState<MealsPage> {
             todayCount: state.todayCount,
             totalProteinToday: state.totalProteinToday,
           ),
+          const HBGap.xl(),
+          const MealProteinChartWidget(),
           const HBGap.xl(),
           HBText('Histórico', style: Theme.of(context).textTheme.titleLarge),
           const HBGap.md(),

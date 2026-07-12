@@ -15,6 +15,7 @@ import '../../domain/repositories/repositories.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../states/medical_report_state.dart';
 import '../viewmodels/medical_report_view_model.dart';
+import '../../../home/presentation/providers/home_view_model_provider.dart';
 
 final medicalReportRepositoryProvider = Provider<MedicalReportRepository>((
   ref,
@@ -35,6 +36,7 @@ final medicalReportUseCasesProvider = Provider<MedicalReportUseCases>((ref) {
     examUseCases: ref.read(examUseCasesProvider),
     settingsUseCases: ref.read(settingsUseCasesProvider),
     clock: ref.read(clockServiceProvider),
+    dashboardUseCases: ref.read(healthDashboardUseCasesProvider),
   );
 });
 

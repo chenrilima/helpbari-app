@@ -13,6 +13,7 @@ class FakeBariaRepository implements BariaRepository {
     required this.vitaminUseCases,
     required this.medicationUseCases,
     required this.healthScore,
+    this.dailySummary,
   });
 
   final WaterUseCases waterUseCases;
@@ -20,12 +21,15 @@ class FakeBariaRepository implements BariaRepository {
   final VitaminUseCases vitaminUseCases;
   final MedicationUseCases medicationUseCases;
   final double healthScore;
+  final DailySummary? dailySummary;
 
   final List<BariaMessage> _conversationHistory = [];
   static const _nonClinicalNotice =
       'Estas informações são educativas e não substituem orientação médica.';
 
   Future<HydrationResult> _hydration() async {
+    final summary = dailySummary;
+    if (summary != null) return summary.hydration;
     final waterToday = await waterUseCases.getTodayTotalInMl();
     final settings = await settingsUseCases.getSettings();
     return HydrationCalculator.calculate(
@@ -34,12 +38,18 @@ class FakeBariaRepository implements BariaRepository {
     );
   }
 
+  Future<int> _pendingVitamins() async =>
+      dailySummary?.pendingVitamins ?? vitaminUseCases.getPendingCount();
+
+  Future<int> _pendingMedications() async =>
+      dailySummary?.pendingMedications ??
+      (await medicationUseCases.getSummary()).pendingCount;
+
   @override
   Future<BariaInsight> getDailyInsight() async {
     final hydration = await _hydration();
-    final pendingVitamins = await vitaminUseCases.getPendingCount();
-    final pendingMedications =
-        (await medicationUseCases.getSummary()).pendingCount;
+    final pendingVitamins = await _pendingVitamins();
+    final pendingMedications = await _pendingMedications();
 
     final hydrationPercent = (hydration.progress * 100).round();
     final isWellHydrated = hydrationPercent >= 80;
@@ -104,9 +114,8 @@ class FakeBariaRepository implements BariaRepository {
     final hydration = await _hydration();
     final waterToday = hydration.currentMl;
     final waterGoal = hydration.goalMl;
-    final pendingVitamins = await vitaminUseCases.getPendingCount();
-    final pendingMedications =
-        (await medicationUseCases.getSummary()).pendingCount;
+    final pendingVitamins = await _pendingVitamins();
+    final pendingMedications = await _pendingMedications();
 
     final messageLower = userMessage.toLowerCase();
     final hydrationPercent = (hydration.progress * 100).round();

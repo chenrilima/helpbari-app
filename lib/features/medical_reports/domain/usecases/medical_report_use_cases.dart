@@ -14,6 +14,8 @@ import '../../../vitamins/domain/entities/vitamin_log.dart';
 import '../../../water/domain/entities/entities.dart';
 import '../../../water/domain/usecases/use_cases.dart';
 import '../../../weight/domain/usecases/use_cases.dart';
+import '../../../home/domain/models/models.dart';
+import '../../../home/domain/usecases/use_cases.dart';
 import '../entities/entities.dart';
 import '../models/models.dart';
 import '../repositories/repositories.dart';
@@ -31,6 +33,7 @@ class MedicalReportUseCases {
     required ExamUseCases examUseCases,
     required SettingsUseCases settingsUseCases,
     required ClockService clock,
+    HealthDashboardUseCases? dashboardUseCases,
   }) : _repository = repository,
        _profileUseCases = profileUseCases,
        _weightUseCases = weightUseCases,
@@ -41,7 +44,8 @@ class MedicalReportUseCases {
        _appointmentUseCases = appointmentUseCases,
        _examUseCases = examUseCases,
        _settingsUseCases = settingsUseCases,
-       _clock = clock;
+       _clock = clock,
+       _dashboardUseCases = dashboardUseCases;
 
   final MedicalReportRepository _repository;
   final ProfileUseCases _profileUseCases;
@@ -54,6 +58,7 @@ class MedicalReportUseCases {
   final ExamUseCases _examUseCases;
   final SettingsUseCases _settingsUseCases;
   final ClockService _clock;
+  final HealthDashboardUseCases? _dashboardUseCases;
 
   Future<GeneratedMedicalReport> generateCompleteReport({
     ReportTemplate? template,
@@ -73,13 +78,12 @@ class MedicalReportUseCases {
     List<ReportAttachment> attachments = const [],
   }) async {
     final now = _clock.now();
-    final periodStart = DateTime(
-      now.year,
-      now.month,
-      now.day,
-    ).subtract(const Duration(days: 29));
+    final periodStart = DateTime(now.year, now.month, now.day - 29);
     final periodEnd = DateTime(now.year, now.month, now.day);
-    final results = await Future.wait([
+    final dashboardFuture = _dashboardUseCases == null
+        ? Future<HealthDashboardAggregate?>.value(null)
+        : _dashboardUseCases.load(start: periodStart, end: periodEnd);
+    final results = await Future.wait<dynamic>([
       _profileUseCases.getProfile(),
       _weightUseCases.getHistory(),
       _waterUseCases.getHistory(),
@@ -91,6 +95,7 @@ class MedicalReportUseCases {
       _settingsUseCases.getSettings(),
       _vitaminUseCases.getLogs(periodStart, periodEnd),
       _medicationUseCases.getLogs(periodStart, periodEnd),
+      dashboardFuture,
     ]);
 
     final profile = results[0] as Profile?;
@@ -104,6 +109,7 @@ class MedicalReportUseCases {
     final settings = results[8] as AppSettings;
     final vitaminLogs = results[9] as List<VitaminLog>;
     final medicationLogs = results[10] as List<MedicationLog>;
+    final dashboard = results[11] as HealthDashboardAggregate?;
     final currentWeight = weightHistory.isEmpty
         ? null
         : weightHistory.first.weight.value as double;
@@ -155,7 +161,7 @@ class MedicalReportUseCases {
     final nextAppointment = upcomingAppointments.isEmpty
         ? null
         : upcomingAppointments.first;
-    final dailySummary = DailySummaryCalculator.calculate(
+    final calculatedSummary = DailySummaryCalculator.calculate(
       waterConsumedMl: totalWaterToday,
       waterGoalMl: settings.dailyWaterGoalMl,
       pendingVitamins:
@@ -193,12 +199,25 @@ class MedicalReportUseCases {
             ),
       weightProgress: weightProgress,
     );
-    final vitaminAdherence = _adherence(
-      vitaminLogs.map((log) => log.status.name),
-    );
-    final medicationAdherence = _adherence(
-      medicationLogs.map((log) => log.status.name),
-    );
+    final dailySummary = dashboard == null
+        ? calculatedSummary
+        : DailySummary(
+            hydration: calculatedSummary.hydration,
+            pendingVitamins: dashboard.today.pendingVitamins ?? 0,
+            pendingMedications: dashboard.today.pendingMedications ?? 0,
+            registeredMeals: dashboard.today.mealsCount ?? 0,
+            protein: calculatedSummary.protein,
+            healthScore: dashboard.today.healthScore,
+            nextAppointment: calculatedSummary.nextAppointment,
+            latestExam: calculatedSummary.latestExam,
+            weightProgress: calculatedSummary.weightProgress,
+          );
+    final vitaminAdherence = dashboard == null
+        ? _adherence(vitaminLogs.map((log) => log.status.name))
+        : _average(dashboard.days.map((day) => day.vitaminAdherence));
+    final medicationAdherence = dashboard == null
+        ? _adherence(medicationLogs.map((log) => log.status.name))
+        : _average(dashboard.days.map((day) => day.medicationAdherence));
     final observations = _automaticObservations(
       settings: settings,
       averageDailyWaterMl: averageDailyWaterMl,
@@ -236,6 +255,12 @@ class MedicalReportUseCases {
       automaticObservations: List.unmodifiable(observations),
       attachments: attachments,
     );
+  }
+
+  double? _average(Iterable<double?> values) {
+    final available = values.whereType<double>().toList();
+    if (available.isEmpty) return null;
+    return available.reduce((a, b) => a + b) / available.length * 100;
   }
 
   double? _adherence(Iterable<String> statuses) {

@@ -28,6 +28,6 @@ enum ChartPeriod {
   DateTime startDate(DateTime now) {
     final today = DateTime(now.year, now.month, now.day);
 
-    return today.subtract(Duration(days: days - 1));
+    return DateTime(today.year, today.month, today.day - (days - 1));
   }
 }

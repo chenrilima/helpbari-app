@@ -28,6 +28,8 @@ class _VitaminAdherenceChartWidgetState
         setState(() => _period = value);
       },
       series: series,
+      onRetry: () =>
+          ref.invalidate(vitaminAdherenceChartSeriesProvider(_period)),
       color: AppColors.warning,
       emptyIcon: AppIcons.vitamin,
     );

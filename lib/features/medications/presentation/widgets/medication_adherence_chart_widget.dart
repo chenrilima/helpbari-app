@@ -28,6 +28,8 @@ class _MedicationAdherenceChartWidgetState
         setState(() => _period = value);
       },
       series: series,
+      onRetry: () =>
+          ref.invalidate(medicationAdherenceChartSeriesProvider(_period)),
       color: AppColors.secondary,
       emptyIcon: Icons.medication_outlined,
     );

@@ -17,6 +17,7 @@ class HBChartCard extends StatelessWidget {
     this.color = AppColors.primary,
     this.height = 220,
     this.emptyIcon = Icons.bar_chart_outlined,
+    this.onRetry,
   });
 
   final String title;
@@ -29,6 +30,7 @@ class HBChartCard extends StatelessWidget {
   final Color color;
   final double height;
   final IconData emptyIcon;
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -61,13 +63,15 @@ class HBChartCard extends StatelessWidget {
     final error = errorMessage;
 
     if (error != null) {
-      return SizedBox(
+      return ConstrainedBox(
         key: const ValueKey('chart-error'),
-        height: height,
+        constraints: BoxConstraints(minHeight: height),
         child: HBEmptyState(
           title: 'Não foi possível carregar',
           description: error,
           icon: Icons.error_outline,
+          actionLabel: onRetry == null ? null : 'Tentar novamente',
+          onActionPressed: onRetry,
         ),
       );
     }
