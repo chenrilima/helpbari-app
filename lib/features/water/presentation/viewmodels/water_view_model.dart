@@ -15,17 +15,13 @@ import '../models/water_form.dart';
 import '../states/water_state.dart';
 
 class WaterViewModel extends Notifier<WaterState> {
-  late final UuidService _uuidService;
-  late final LoggerService _logger;
-  late final WaterUseCases _useCases;
-  late final ClockService _clock;
+  UuidService get _uuidService => ref.read(uuidServiceProvider);
+  LoggerService get _logger => ref.read(loggerServiceProvider);
+  WaterUseCases get _useCases => ref.read(waterUseCasesProvider);
+  ClockService get _clock => ref.read(clockServiceProvider);
 
   @override
   WaterState build() {
-    _useCases = ref.read(waterUseCasesProvider);
-    _logger = ref.read(loggerServiceProvider);
-    _uuidService = ref.read(uuidServiceProvider);
-    _clock = ref.read(clockServiceProvider);
     return WaterState(clock: _clock);
   }
 
