@@ -84,6 +84,10 @@ class MedicalReportUseCases {
         DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
         DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
       ),
+      _medicationUseCases.getLogs(
+        DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
+        DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
+      ),
     ]);
 
     final profile = results[0] as Profile?;
@@ -96,6 +100,7 @@ class MedicalReportUseCases {
     final exams = results[7] as List;
     final settings = results[8] as AppSettings;
     final vitaminLogs = results[9] as List;
+    final medicationLogs = results[10] as List;
     final now = _clock.now();
     final currentWeight = weightHistory.isEmpty
         ? null
@@ -138,9 +143,13 @@ class MedicalReportUseCases {
               .map((log) => log.vitaminId)
               .toSet()
               .length,
-      pendingMedications: medications
-          .where((medication) => medication.isPending)
-          .length,
+      pendingMedications:
+          medications.length -
+          medicationLogs
+              .where((log) => log.status.name != 'pending')
+              .map((log) => log.medicationId)
+              .toSet()
+              .length,
       registeredMeals: todayMeals.length,
       totalProteinGrams: totalProteinToday,
       proteinGoalGrams: proteinGoal,
@@ -172,6 +181,7 @@ class MedicalReportUseCases {
       vitamins: List.unmodifiable(vitamins),
       vitaminLogs: List.unmodifiable(vitaminLogs.cast()),
       medications: List.unmodifiable(medications),
+      medicationLogs: List.unmodifiable(medicationLogs.cast()),
       meals: List.unmodifiable(meals),
       appointments: List.unmodifiable(appointments),
       exams: List.unmodifiable(exams),

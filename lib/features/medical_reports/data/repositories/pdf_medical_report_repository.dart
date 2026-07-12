@@ -315,7 +315,12 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
               medication.formattedName,
               medication.dosage ?? '-',
               medication.formattedTime,
-              medication.statusDescription,
+              snapshot.medicationLogs
+                      .where((log) => log.medicationId == medication.id)
+                      .firstOrNull
+                      ?.status
+                      .label ??
+                  'Pendente',
             ],
           )
           .toList(),

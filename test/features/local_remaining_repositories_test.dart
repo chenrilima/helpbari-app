@@ -43,19 +43,17 @@ void main() {
     expect(vitamins.map((vitamin) => vitamin.id), ['early']);
   });
 
-  test('persists medications, updates status, and soft deletes', () async {
+  test('persists medications, updates schedule, and soft deletes', () async {
     final database = await _database();
     final repository = LocalMedicationRepository(
       LocalMedicationDatasource(database: database, clock: const _FixedClock()),
     );
 
     await repository.save(_medication(id: 'med-1', hour: 9));
-    await repository.update(
-      _medication(id: 'med-1', hour: 9, status: MedicationStatus.taken),
-    );
+    await repository.update(_medication(id: 'med-1', hour: 10));
 
     var medications = await repository.getAll();
-    expect(medications.single.status, MedicationStatus.taken);
+    expect(medications.single.scheduleTime.hour, 10);
 
     await repository.delete('med-1');
     medications = await repository.getAll();
@@ -231,17 +229,12 @@ Vitamin _vitamin({required String id, required int hour}) {
   );
 }
 
-Medication _medication({
-  required String id,
-  required int hour,
-  MedicationStatus status = MedicationStatus.pending,
-}) {
+Medication _medication({required String id, required int hour}) {
   return Medication(
     id: id,
     name: MedicationName.create('Omeprazol')!,
     scheduleTime: MedicationScheduleTime.create(hour: hour, minute: 30)!,
     dosage: '20mg',
-    status: status,
   );
 }
 

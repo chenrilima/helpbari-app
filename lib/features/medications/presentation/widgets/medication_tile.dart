@@ -2,18 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../../../../design_system/design_system.dart';
 import '../../domain/entities/entities.dart';
+import '../../domain/value_objects/medication_status.dart';
 
 class MedicationTile extends StatelessWidget {
   const MedicationTile({
     required this.medication,
     required this.onTaken,
     required this.onSkipped,
+    required this.status,
+    required this.onEdit,
+    required this.onDelete,
     super.key,
   });
 
   final Medication medication;
   final VoidCallback onTaken;
   final VoidCallback onSkipped;
+  final MedicationStatus status;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,7 @@ class MedicationTile extends StatelessWidget {
                 ),
                 const HBGap.xs(),
                 HBText(
-                  '${medication.formattedTime} • ${medication.statusDescription}',
+                  '${medication.formattedTime} • ${status.label}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -50,7 +57,7 @@ class MedicationTile extends StatelessWidget {
               ],
             ),
           ),
-          if (medication.isPending) ...[
+          if (status == MedicationStatus.pending) ...[
             IconButton(
               tooltip: 'Pular medicamento',
               onPressed: onSkipped,
@@ -62,6 +69,13 @@ class MedicationTile extends StatelessWidget {
               icon: const Icon(Icons.check),
             ),
           ],
+          PopupMenuButton<String>(
+            onSelected: (value) => value == 'edit' ? onEdit() : onDelete(),
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: 'edit', child: Text('Editar')),
+              PopupMenuItem(value: 'delete', child: Text('Excluir')),
+            ],
+          ),
         ],
       ),
     );

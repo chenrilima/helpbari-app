@@ -9,7 +9,6 @@ class MedicationDto {
     required this.name,
     required this.hour,
     required this.minute,
-    required this.status,
     required this.syncMetadata,
     this.dosage,
     this.notes,
@@ -19,7 +18,6 @@ class MedicationDto {
   final String name;
   final int hour;
   final int minute;
-  final MedicationStatus status;
   final String? dosage;
   final String? notes;
   final SyncMetadata syncMetadata;
@@ -41,7 +39,6 @@ class MedicationDto {
       scheduleTime: scheduleTime,
       dosage: dosage,
       notes: notes,
-      status: status,
     );
   }
 
@@ -52,7 +49,7 @@ class MedicationDto {
         'name': name,
         'hour': hour,
         'minute': minute,
-        'status': status.name,
+        'status': MedicationStatus.pending.name,
         'dosage': dosage,
         'notes': notes,
       },
@@ -69,7 +66,6 @@ class MedicationDto {
       name: medication.name.value,
       hour: medication.scheduleTime.hour,
       minute: medication.scheduleTime.minute,
-      status: medication.status,
       dosage: medication.dosage,
       notes: medication.notes,
       syncMetadata: SyncMetadata(
@@ -90,15 +86,44 @@ class MedicationDto {
       name: data['name'] as String,
       hour: data['hour'] as int,
       minute: data['minute'] as int,
-      status: MedicationStatus.values.firstWhere(
-        (status) => status.name == data['status'],
-        orElse: () => MedicationStatus.pending,
-      ),
       dosage: data['dosage'] as String?,
       notes: data['notes'] as String?,
       syncMetadata: record.metadata,
     );
   }
+
+  Map<String, dynamic> toSupabaseRow({required String userId}) => {
+    'id': id,
+    'user_id': userId,
+    'name': name,
+    'schedule_hour': hour,
+    'schedule_minute': minute,
+    'dosage': dosage,
+    'notes': notes,
+    'status': MedicationStatus.pending.name,
+    'created_at': syncMetadata.createdAt.toUtc().toIso8601String(),
+    'updated_at': syncMetadata.updatedAt.toUtc().toIso8601String(),
+    'deleted_at': syncMetadata.deletedAt?.toUtc().toIso8601String(),
+  };
+  factory MedicationDto.fromSupabaseRow(Map<String, dynamic> row) =>
+      MedicationDto(
+        id: row['id'] as String,
+        name: row['name'] as String,
+        hour: row['schedule_hour'] as int,
+        minute: row['schedule_minute'] as int,
+        dosage: row['dosage'] as String?,
+        notes: row['notes'] as String?,
+        syncMetadata: SyncMetadata(
+          id: row['id'] as String,
+          userId: row['user_id'] as String,
+          createdAt: DateTime.parse(row['created_at'] as String),
+          updatedAt: DateTime.parse(row['updated_at'] as String),
+          deletedAt: row['deleted_at'] == null
+              ? null
+              : DateTime.parse(row['deleted_at'] as String),
+          syncStatus: SyncStatus.synced,
+        ),
+      );
 
   static SyncStatus _nextSyncStatus(SyncStatus? currentStatus) {
     return switch (currentStatus) {
