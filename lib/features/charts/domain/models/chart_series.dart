@@ -10,6 +10,8 @@ class ChartSeries {
     this.emptyTitle = 'Sem dados suficientes',
     this.emptyDescription =
         'Registre novas informações para visualizar este gráfico.',
+    this.referenceValue,
+    this.referenceLabel,
   });
 
   final String title;
@@ -18,6 +20,8 @@ class ChartSeries {
   final String? unit;
   final String emptyTitle;
   final String emptyDescription;
+  final double? referenceValue;
+  final String? referenceLabel;
 
   bool get hasData => points.isNotEmpty;
 }

@@ -9,6 +9,7 @@ import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
 import '../../../baria/presentation/providers/baria_view_model_provider.dart';
+import '../../../charts/presentation/providers/chart_series_providers.dart';
 import '../providers/exam_attachment_provider.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
@@ -216,6 +217,7 @@ class ExamViewModel extends Notifier<ExamState> {
   void _afterCommit() {
     ref.invalidate(examUseCasesProvider);
     ref.invalidate(homeViewModelProvider);
+    ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);
     ref.invalidate(bariaViewModelProvider);

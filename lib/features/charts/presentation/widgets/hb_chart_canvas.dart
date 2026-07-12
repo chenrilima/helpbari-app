@@ -19,21 +19,33 @@ class HBChartCanvas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      label: series.title,
-      child: CustomPaint(
-        painter: _ChartPainter(
-          series: series,
-          color: color,
-          labelStyle: Theme.of(
-            context,
-          ).textTheme.labelSmall?.copyWith(color: AppColors.textSecondary),
-          animationProgress: animationProgress,
+    final description = series.points
+        .map(
+          (point) =>
+              '${_date(point.date)}: ${point.value.toStringAsFixed(1)} ${series.unit ?? ''}',
+        )
+        .join(', ');
+    return Tooltip(
+      message: description,
+      child: Semantics(
+        label: '${series.title}. $description',
+        child: CustomPaint(
+          painter: _ChartPainter(
+            series: series,
+            color: color,
+            labelStyle: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: AppColors.textSecondary),
+            animationProgress: animationProgress,
+          ),
+          child: const SizedBox.expand(),
         ),
-        child: const SizedBox.expand(),
       ),
     );
   }
+
+  String _date(DateTime value) =>
+      '${value.day.toString().padLeft(2, '0')}/${value.month.toString().padLeft(2, '0')}';
 }
 
 class _ChartPainter extends CustomPainter {
@@ -74,6 +86,24 @@ class _ChartPainter extends CustomPainter {
     final adjustedRange = adjustedMax - adjustedMin;
 
     _drawGrid(canvas, chartRect, adjustedMin, adjustedRange);
+
+    final reference = series.referenceValue;
+    if (reference != null) {
+      final progress = ((reference - adjustedMin) / adjustedRange).clamp(
+        0.0,
+        1.0,
+      );
+      final y = chartRect.bottom - chartRect.height * progress;
+      final paint = Paint()
+        ..color = AppColors.textSecondary
+        ..strokeWidth = 1
+        ..style = PaintingStyle.stroke;
+      canvas.drawLine(
+        Offset(chartRect.left, y),
+        Offset(chartRect.right, y),
+        paint,
+      );
+    }
 
     switch (series.type) {
       case ChartType.line:

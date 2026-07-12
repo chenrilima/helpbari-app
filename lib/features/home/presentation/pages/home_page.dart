@@ -74,7 +74,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       }
     });
 
-    if (state.isLoading) {
+    if (state.isLoading && state.dailySummary == null) {
       return const HBPage(
         children: [HBLoading(message: 'Carregando sua jornada...')],
       );
@@ -95,6 +95,25 @@ class _HomePageState extends ConsumerState<HomePage> {
           ],
         ),
         children: [
+          if (state.errorMessage != null) ...[
+            HBEmptyState(
+              title: 'Dashboard indisponível',
+              description: state.errorMessage!,
+              icon: Icons.error_outline,
+              actionLabel: 'Tentar novamente',
+              onActionPressed: _loadHome,
+            ),
+            const HBGap.xl(),
+          ],
+          if (state.hasPartialFailure) ...[
+            const HBEmptyState(
+              title: 'Algumas seções estão indisponíveis',
+              description:
+                  'Os demais dados locais continuam disponíveis e serão atualizados novamente no próximo sync.',
+              icon: Icons.sync_problem_outlined,
+            ),
+            const HBGap.xl(),
+          ],
           HomeHeader(userName: state.profile?.name ?? 'Olá'),
           ProgressBanner(
             title: state.bannerTitle,

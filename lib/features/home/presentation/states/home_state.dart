@@ -5,6 +5,7 @@ import '../../../appointments/domain/entities/entities.dart';
 import '../../../exams/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
+import '../../domain/models/models.dart';
 
 class HomeState {
   const HomeState({
@@ -20,6 +21,9 @@ class HomeState {
     this.todayMealsCount = 0,
     this.totalProteinToday = 0,
     this.dailySummary,
+    this.unavailableSections = const {},
+    this.errorMessage,
+    this.smartInsights = const [],
   });
 
   final Profile? profile;
@@ -34,6 +38,10 @@ class HomeState {
   final int todayMealsCount;
   final int totalProteinToday;
   final DailySummary? dailySummary;
+  final Set<HealthDataSection> unavailableSections;
+  final String? errorMessage;
+  final List<Insight> smartInsights;
+  bool get hasPartialFailure => unavailableSections.isNotEmpty;
 
   double? get weightLost {
     final profile = this.profile;
@@ -60,6 +68,7 @@ class HomeState {
   }
 
   String get bannerTitle {
+    if (smartInsights.isNotEmpty) return smartInsights.first.title;
     final summary = dailySummary;
 
     if (summary == null) return 'Continue assim! 💜';
@@ -84,6 +93,9 @@ class HomeState {
   }
 
   String get bannerMessage {
+    if (smartInsights.isNotEmpty) {
+      return '${smartInsights.first.message} Informação de acompanhamento, não avaliação clínica.';
+    }
     final summary = dailySummary;
 
     if (summary == null) {
@@ -198,6 +210,10 @@ class HomeState {
     int? todayMealsCount,
     int? totalProteinToday,
     DailySummary? dailySummary,
+    Set<HealthDataSection>? unavailableSections,
+    String? errorMessage,
+    bool clearError = false,
+    List<Insight>? smartInsights,
   }) {
     return HomeState(
       profile: profile ?? this.profile,
@@ -213,6 +229,9 @@ class HomeState {
       todayMealsCount: todayMealsCount ?? this.todayMealsCount,
       totalProteinToday: totalProteinToday ?? this.totalProteinToday,
       dailySummary: dailySummary ?? this.dailySummary,
+      unavailableSections: unavailableSections ?? this.unavailableSections,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
+      smartInsights: smartInsights ?? this.smartInsights,
     );
   }
 }

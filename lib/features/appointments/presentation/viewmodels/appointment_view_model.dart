@@ -13,6 +13,7 @@ import '../states/appointment_state.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
 import '../../../baria/presentation/providers/baria_view_model_provider.dart';
+import '../../../charts/presentation/providers/chart_series_providers.dart';
 import '../../../../core/sync/sync.dart';
 
 class AppointmentViewModel extends Notifier<AppointmentState> {
@@ -137,6 +138,7 @@ class AppointmentViewModel extends Notifier<AppointmentState> {
   void _invalidate() {
     ref.invalidate(appointmentUseCasesProvider);
     ref.invalidate(homeViewModelProvider);
+    ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);
     ref.invalidate(bariaViewModelProvider);

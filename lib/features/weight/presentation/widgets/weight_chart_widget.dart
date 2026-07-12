@@ -26,6 +26,7 @@ class _WeightChartWidgetState extends ConsumerState<WeightChartWidget> {
         setState(() => _period = value);
       },
       series: series,
+      onRetry: () => ref.invalidate(weightChartSeriesProvider(_period)),
       color: AppColors.primary,
       emptyIcon: AppIcons.weight,
     );

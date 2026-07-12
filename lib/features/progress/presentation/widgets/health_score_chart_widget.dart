@@ -22,12 +22,13 @@ class _HealthScoreChartWidgetState
 
     return HBAsyncChartCard(
       title: 'Health Score',
-      subtitle: 'Pontuação calculada a partir dos registros',
+      subtitle: 'Indicador diário de acompanhamento, não avaliação clínica',
       period: _period,
       onPeriodChanged: (value) {
         setState(() => _period = value);
       },
       series: series,
+      onRetry: () => ref.invalidate(healthScoreChartSeriesProvider(_period)),
       color: AppColors.success,
       emptyIcon: Icons.monitor_heart_outlined,
     );

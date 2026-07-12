@@ -130,6 +130,7 @@ class VitaminViewModel extends Notifier<VitaminState> {
     ref.invalidate(vitaminUseCasesProvider);
     ref.invalidate(homeViewModelProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
+    ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(vitaminAdherenceChartSeriesProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);
