@@ -14356,6 +14356,843 @@ class MedicationCutoversCompanion extends UpdateCompanion<MedicationCutover> {
   }
 }
 
+class $PrivacyConsentRecordsTable extends PrivacyConsentRecords
+    with TableInfo<$PrivacyConsentRecordsTable, PrivacyConsentRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PrivacyConsentRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _termsVersionMeta = const VerificationMeta(
+    'termsVersion',
+  );
+  @override
+  late final GeneratedColumn<String> termsVersion = GeneratedColumn<String>(
+    'terms_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _privacyVersionMeta = const VerificationMeta(
+    'privacyVersion',
+  );
+  @override
+  late final GeneratedColumn<String> privacyVersion = GeneratedColumn<String>(
+    'privacy_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _acceptedAtMeta = const VerificationMeta(
+    'acceptedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> acceptedAt = GeneratedColumn<DateTime>(
+    'accepted_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _timezoneMeta = const VerificationMeta(
+    'timezone',
+  );
+  @override
+  late final GeneratedColumn<String> timezone = GeneratedColumn<String>(
+    'timezone',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    termsVersion,
+    privacyVersion,
+    acceptedAt,
+    deviceId,
+    timezone,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'privacy_consent_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PrivacyConsentRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('terms_version')) {
+      context.handle(
+        _termsVersionMeta,
+        termsVersion.isAcceptableOrUnknown(
+          data['terms_version']!,
+          _termsVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_termsVersionMeta);
+    }
+    if (data.containsKey('privacy_version')) {
+      context.handle(
+        _privacyVersionMeta,
+        privacyVersion.isAcceptableOrUnknown(
+          data['privacy_version']!,
+          _privacyVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_privacyVersionMeta);
+    }
+    if (data.containsKey('accepted_at')) {
+      context.handle(
+        _acceptedAtMeta,
+        acceptedAt.isAcceptableOrUnknown(data['accepted_at']!, _acceptedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_acceptedAtMeta);
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('timezone')) {
+      context.handle(
+        _timezoneMeta,
+        timezone.isAcceptableOrUnknown(data['timezone']!, _timezoneMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_timezoneMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  PrivacyConsentRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PrivacyConsentRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      termsVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}terms_version'],
+      )!,
+      privacyVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}privacy_version'],
+      )!,
+      acceptedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}accepted_at'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      timezone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}timezone'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $PrivacyConsentRecordsTable createAlias(String alias) {
+    return $PrivacyConsentRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class PrivacyConsentRecord extends DataClass
+    implements Insertable<PrivacyConsentRecord> {
+  final String id;
+  final String userId;
+  final String termsVersion;
+  final String privacyVersion;
+  final DateTime acceptedAt;
+  final String deviceId;
+  final String timezone;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const PrivacyConsentRecord({
+    required this.id,
+    required this.userId,
+    required this.termsVersion,
+    required this.privacyVersion,
+    required this.acceptedAt,
+    required this.deviceId,
+    required this.timezone,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['terms_version'] = Variable<String>(termsVersion);
+    map['privacy_version'] = Variable<String>(privacyVersion);
+    map['accepted_at'] = Variable<DateTime>(acceptedAt);
+    map['device_id'] = Variable<String>(deviceId);
+    map['timezone'] = Variable<String>(timezone);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  PrivacyConsentRecordsCompanion toCompanion(bool nullToAbsent) {
+    return PrivacyConsentRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      termsVersion: Value(termsVersion),
+      privacyVersion: Value(privacyVersion),
+      acceptedAt: Value(acceptedAt),
+      deviceId: Value(deviceId),
+      timezone: Value(timezone),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory PrivacyConsentRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PrivacyConsentRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      termsVersion: serializer.fromJson<String>(json['termsVersion']),
+      privacyVersion: serializer.fromJson<String>(json['privacyVersion']),
+      acceptedAt: serializer.fromJson<DateTime>(json['acceptedAt']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      timezone: serializer.fromJson<String>(json['timezone']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'termsVersion': serializer.toJson<String>(termsVersion),
+      'privacyVersion': serializer.toJson<String>(privacyVersion),
+      'acceptedAt': serializer.toJson<DateTime>(acceptedAt),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'timezone': serializer.toJson<String>(timezone),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  PrivacyConsentRecord copyWith({
+    String? id,
+    String? userId,
+    String? termsVersion,
+    String? privacyVersion,
+    DateTime? acceptedAt,
+    String? deviceId,
+    String? timezone,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => PrivacyConsentRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    termsVersion: termsVersion ?? this.termsVersion,
+    privacyVersion: privacyVersion ?? this.privacyVersion,
+    acceptedAt: acceptedAt ?? this.acceptedAt,
+    deviceId: deviceId ?? this.deviceId,
+    timezone: timezone ?? this.timezone,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  PrivacyConsentRecord copyWithCompanion(PrivacyConsentRecordsCompanion data) {
+    return PrivacyConsentRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      termsVersion: data.termsVersion.present
+          ? data.termsVersion.value
+          : this.termsVersion,
+      privacyVersion: data.privacyVersion.present
+          ? data.privacyVersion.value
+          : this.privacyVersion,
+      acceptedAt: data.acceptedAt.present
+          ? data.acceptedAt.value
+          : this.acceptedAt,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      timezone: data.timezone.present ? data.timezone.value : this.timezone,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrivacyConsentRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('termsVersion: $termsVersion, ')
+          ..write('privacyVersion: $privacyVersion, ')
+          ..write('acceptedAt: $acceptedAt, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('timezone: $timezone, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    termsVersion,
+    privacyVersion,
+    acceptedAt,
+    deviceId,
+    timezone,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PrivacyConsentRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.termsVersion == this.termsVersion &&
+          other.privacyVersion == this.privacyVersion &&
+          other.acceptedAt == this.acceptedAt &&
+          other.deviceId == this.deviceId &&
+          other.timezone == this.timezone &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class PrivacyConsentRecordsCompanion
+    extends UpdateCompanion<PrivacyConsentRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> termsVersion;
+  final Value<String> privacyVersion;
+  final Value<DateTime> acceptedAt;
+  final Value<String> deviceId;
+  final Value<String> timezone;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const PrivacyConsentRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.termsVersion = const Value.absent(),
+    this.privacyVersion = const Value.absent(),
+    this.acceptedAt = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.timezone = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PrivacyConsentRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required String termsVersion,
+    required String privacyVersion,
+    required DateTime acceptedAt,
+    required String deviceId,
+    required String timezone,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       termsVersion = Value(termsVersion),
+       privacyVersion = Value(privacyVersion),
+       acceptedAt = Value(acceptedAt),
+       deviceId = Value(deviceId),
+       timezone = Value(timezone),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<PrivacyConsentRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? termsVersion,
+    Expression<String>? privacyVersion,
+    Expression<DateTime>? acceptedAt,
+    Expression<String>? deviceId,
+    Expression<String>? timezone,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (termsVersion != null) 'terms_version': termsVersion,
+      if (privacyVersion != null) 'privacy_version': privacyVersion,
+      if (acceptedAt != null) 'accepted_at': acceptedAt,
+      if (deviceId != null) 'device_id': deviceId,
+      if (timezone != null) 'timezone': timezone,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PrivacyConsentRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? termsVersion,
+    Value<String>? privacyVersion,
+    Value<DateTime>? acceptedAt,
+    Value<String>? deviceId,
+    Value<String>? timezone,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return PrivacyConsentRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      termsVersion: termsVersion ?? this.termsVersion,
+      privacyVersion: privacyVersion ?? this.privacyVersion,
+      acceptedAt: acceptedAt ?? this.acceptedAt,
+      deviceId: deviceId ?? this.deviceId,
+      timezone: timezone ?? this.timezone,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (termsVersion.present) {
+      map['terms_version'] = Variable<String>(termsVersion.value);
+    }
+    if (privacyVersion.present) {
+      map['privacy_version'] = Variable<String>(privacyVersion.value);
+    }
+    if (acceptedAt.present) {
+      map['accepted_at'] = Variable<DateTime>(acceptedAt.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (timezone.present) {
+      map['timezone'] = Variable<String>(timezone.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrivacyConsentRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('termsVersion: $termsVersion, ')
+          ..write('privacyVersion: $privacyVersion, ')
+          ..write('acceptedAt: $acceptedAt, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('timezone: $timezone, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -14398,6 +15235,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $MedicationLogRecordsTable(this);
   late final $MedicationCutoversTable medicationCutovers =
       $MedicationCutoversTable(this);
+  late final $PrivacyConsentRecordsTable privacyConsentRecords =
+      $PrivacyConsentRecordsTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -14502,6 +15341,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'medication_log_user_sync_updated_idx',
     'CREATE INDEX medication_log_user_sync_updated_idx ON medication_log_records (user_id, sync_status, updated_at)',
   );
+  late final Index privacyConsentUserVersionsIdx = Index(
+    'privacy_consent_user_versions_idx',
+    'CREATE UNIQUE INDEX privacy_consent_user_versions_idx ON privacy_consent_records (user_id, terms_version, privacy_version)',
+  );
+  late final Index privacyConsentUserUpdatedIdx = Index(
+    'privacy_consent_user_updated_idx',
+    'CREATE INDEX privacy_consent_user_updated_idx ON privacy_consent_records (user_id, updated_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -14515,6 +15362,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final VitaminLogDao vitaminLogDao = VitaminLogDao(this as AppDatabase);
   late final MedicationDao medicationDao = MedicationDao(this as AppDatabase);
   late final MedicationLogDao medicationLogDao = MedicationLogDao(
+    this as AppDatabase,
+  );
+  late final PrivacyConsentDao privacyConsentDao = PrivacyConsentDao(
     this as AppDatabase,
   );
   @override
@@ -14545,6 +15395,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     medicationRecords,
     medicationLogRecords,
     medicationCutovers,
+    privacyConsentRecords,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -14571,6 +15422,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     medicationLogUserDateIdx,
     medicationLogUserMedicationDateIdx,
     medicationLogUserSyncUpdatedIdx,
+    privacyConsentUserVersionsIdx,
+    privacyConsentUserUpdatedIdx,
   ];
 }
 
@@ -21574,6 +22427,410 @@ typedef $$MedicationCutoversTableProcessedTableManager =
       MedicationCutover,
       PrefetchHooks Function()
     >;
+typedef $$PrivacyConsentRecordsTableCreateCompanionBuilder =
+    PrivacyConsentRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required String termsVersion,
+      required String privacyVersion,
+      required DateTime acceptedAt,
+      required String deviceId,
+      required String timezone,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$PrivacyConsentRecordsTableUpdateCompanionBuilder =
+    PrivacyConsentRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> termsVersion,
+      Value<String> privacyVersion,
+      Value<DateTime> acceptedAt,
+      Value<String> deviceId,
+      Value<String> timezone,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$PrivacyConsentRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $PrivacyConsentRecordsTable> {
+  $$PrivacyConsentRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get termsVersion => $composableBuilder(
+    column: $table.termsVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get privacyVersion => $composableBuilder(
+    column: $table.privacyVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get acceptedAt => $composableBuilder(
+    column: $table.acceptedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get timezone => $composableBuilder(
+    column: $table.timezone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PrivacyConsentRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PrivacyConsentRecordsTable> {
+  $$PrivacyConsentRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get termsVersion => $composableBuilder(
+    column: $table.termsVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get privacyVersion => $composableBuilder(
+    column: $table.privacyVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get acceptedAt => $composableBuilder(
+    column: $table.acceptedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get timezone => $composableBuilder(
+    column: $table.timezone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PrivacyConsentRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PrivacyConsentRecordsTable> {
+  $$PrivacyConsentRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get termsVersion => $composableBuilder(
+    column: $table.termsVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get privacyVersion => $composableBuilder(
+    column: $table.privacyVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get acceptedAt => $composableBuilder(
+    column: $table.acceptedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<String> get timezone =>
+      $composableBuilder(column: $table.timezone, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$PrivacyConsentRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PrivacyConsentRecordsTable,
+          PrivacyConsentRecord,
+          $$PrivacyConsentRecordsTableFilterComposer,
+          $$PrivacyConsentRecordsTableOrderingComposer,
+          $$PrivacyConsentRecordsTableAnnotationComposer,
+          $$PrivacyConsentRecordsTableCreateCompanionBuilder,
+          $$PrivacyConsentRecordsTableUpdateCompanionBuilder,
+          (
+            PrivacyConsentRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $PrivacyConsentRecordsTable,
+              PrivacyConsentRecord
+            >,
+          ),
+          PrivacyConsentRecord,
+          PrefetchHooks Function()
+        > {
+  $$PrivacyConsentRecordsTableTableManager(
+    _$AppDatabase db,
+    $PrivacyConsentRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PrivacyConsentRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$PrivacyConsentRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$PrivacyConsentRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> termsVersion = const Value.absent(),
+                Value<String> privacyVersion = const Value.absent(),
+                Value<DateTime> acceptedAt = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<String> timezone = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PrivacyConsentRecordsCompanion(
+                id: id,
+                userId: userId,
+                termsVersion: termsVersion,
+                privacyVersion: privacyVersion,
+                acceptedAt: acceptedAt,
+                deviceId: deviceId,
+                timezone: timezone,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String termsVersion,
+                required String privacyVersion,
+                required DateTime acceptedAt,
+                required String deviceId,
+                required String timezone,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PrivacyConsentRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                termsVersion: termsVersion,
+                privacyVersion: privacyVersion,
+                acceptedAt: acceptedAt,
+                deviceId: deviceId,
+                timezone: timezone,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PrivacyConsentRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PrivacyConsentRecordsTable,
+      PrivacyConsentRecord,
+      $$PrivacyConsentRecordsTableFilterComposer,
+      $$PrivacyConsentRecordsTableOrderingComposer,
+      $$PrivacyConsentRecordsTableAnnotationComposer,
+      $$PrivacyConsentRecordsTableCreateCompanionBuilder,
+      $$PrivacyConsentRecordsTableUpdateCompanionBuilder,
+      (
+        PrivacyConsentRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $PrivacyConsentRecordsTable,
+          PrivacyConsentRecord
+        >,
+      ),
+      PrivacyConsentRecord,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -21624,4 +22881,6 @@ class $AppDatabaseManager {
       $$MedicationLogRecordsTableTableManager(_db, _db.medicationLogRecords);
   $$MedicationCutoversTableTableManager get medicationCutovers =>
       $$MedicationCutoversTableTableManager(_db, _db.medicationCutovers);
+  $$PrivacyConsentRecordsTableTableManager get privacyConsentRecords =>
+      $$PrivacyConsentRecordsTableTableManager(_db, _db.privacyConsentRecords);
 }

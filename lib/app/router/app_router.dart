@@ -29,6 +29,7 @@ import '../../features/profile/presentation/guards/profile_guard.dart';
 import '../../features/profile/presentation/providers/profile_view_model_provider.dart';
 import '../../features/progress/presentation/pages/progress_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
+import '../../features/privacy/presentation/pages/privacy_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../core/supabase/session/session_manager_provider.dart';
 import '../../core/services/service_providers.dart';
@@ -235,6 +236,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.settings,
         builder: (_, _) => const SettingsPage(),
       ),
+      GoRoute(path: AppRoutes.privacy, builder: (_, _) => const PrivacyPage()),
     ],
   );
 

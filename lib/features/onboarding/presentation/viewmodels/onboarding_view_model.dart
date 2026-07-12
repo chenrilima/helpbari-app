@@ -7,6 +7,7 @@ import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../baria/presentation/providers/baria_view_model_provider.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../../profile/domain/value_objects/value_objects.dart';
+import '../../../privacy/presentation/providers/privacy_providers.dart';
 import '../../../profile/presentation/models/create_profile_form.dart';
 import '../../../profile/presentation/providers/profile_use_case_providers.dart';
 import '../../../profile/presentation/providers/profile_view_model_provider.dart';
@@ -52,11 +53,27 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       );
       return;
     }
-    final completed = _useCases.hasCompletedForUser(user.id);
+    var completed = _useCases.hasCompletedForUser(user.id);
+    var hasConsent = false;
+    try {
+      hasConsent = await ref.read(privacyUseCasesProvider).hasCurrentConsent();
+    } catch (_) {
+      // Mandatory acceptance remains pending when local data is unavailable.
+    }
+    if (completed && !hasConsent) {
+      completed = false;
+      state = state.copyWith(
+        isAuthenticated: true,
+        userCompleted: false,
+        draft: state.draft.copyWith(documentsAccepted: false),
+        currentStep: OnboardingStep.documents,
+      );
+      return;
+    }
     if (!completed) {
       try {
         final profile = await ref.read(profileUseCasesProvider).getProfile();
-        if (profile != null) {
+        if (profile != null && hasConsent) {
           await _useCases.completeForUser(user.id);
           await _useCases.markDraftConsumed(user.id);
           state = state.copyWith(
@@ -137,36 +154,49 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
     }
     state = state.copyWith(isSaving: true, clearError: true);
     try {
-      final form = _validatedForm(state.draft, user.email ?? '');
-      await ref.read(profileViewModelProvider.notifier).loadProfile();
-      await ref.read(profileViewModelProvider.notifier).saveProfile(form);
-      final profileState = ref.read(profileViewModelProvider);
-      if (profileState.profile == null || profileState.errorMessage != null) {
-        throw StateError(profileState.errorMessage ?? 'Perfil não foi salvo.');
+      if (!state.draft.documentsAccepted) {
+        throw const FormatException(
+          'Aceite os Termos de Uso e a Política de Privacidade.',
+        );
       }
+      await ref.read(privacyUseCasesProvider).acceptCurrentDocuments();
+      final existingProfile = await ref
+          .read(profileUseCasesProvider)
+          .getProfile();
+      if (existingProfile == null) {
+        final form = _validatedForm(state.draft, user.email ?? '');
+        await ref.read(profileViewModelProvider.notifier).loadProfile();
+        await ref.read(profileViewModelProvider.notifier).saveProfile(form);
+        final profileState = ref.read(profileViewModelProvider);
+        if (profileState.profile == null || profileState.errorMessage != null) {
+          throw StateError(
+            profileState.errorMessage ?? 'Perfil não foi salvo.',
+          );
+        }
 
-      final settingsUseCases = ref.read(settingsUseCasesProvider);
-      final current = await settingsUseCases.getSettings();
-      var confirmed = current;
-      if (state.draft.waterGoalConfirmed) {
-        confirmed = confirmed.copyWith(
-          dailyWaterGoalMl: int.parse(state.draft.waterGoal),
-        );
-      }
-      if (state.draft.notificationsConfirmed) {
-        confirmed = confirmed.copyWith(
-          vitaminRemindersEnabled: state.draft.notificationsEnabled,
-          medicationRemindersEnabled: state.draft.notificationsEnabled,
-          appointmentRemindersEnabled: state.draft.notificationsEnabled,
-        );
-      }
-      await settingsUseCases.saveSettings(confirmed);
-      try {
-        await ref
-            .read(settingsReminderSyncServiceProvider)
-            .applyAfterCommit(confirmed);
-      } catch (_) {
-        // Notification infrastructure cannot undo an offline local success.
+        final settingsUseCases = ref.read(settingsUseCasesProvider);
+        final current = await settingsUseCases.getSettings();
+        var confirmed = current;
+        if (state.draft.waterGoalConfirmed) {
+          confirmed = confirmed.copyWith(
+            dailyWaterGoalMl: int.parse(state.draft.waterGoal),
+          );
+        }
+        if (state.draft.notificationsConfirmed) {
+          confirmed = confirmed.copyWith(
+            vitaminRemindersEnabled: state.draft.notificationsEnabled,
+            medicationRemindersEnabled: state.draft.notificationsEnabled,
+            appointmentRemindersEnabled: state.draft.notificationsEnabled,
+          );
+        }
+        await settingsUseCases.saveSettings(confirmed);
+        try {
+          await ref
+              .read(settingsReminderSyncServiceProvider)
+              .applyAfterCommit(confirmed);
+        } catch (_) {
+          // Notification infrastructure cannot undo an offline local success.
+        }
       }
 
       await _useCases.completeForUser(user.id);
