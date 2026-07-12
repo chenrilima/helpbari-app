@@ -49,6 +49,14 @@ import '../../features/vitamins/data/repositories/vitamin_sync_repository.dart';
 import '../../features/vitamins/data/repositories/vitamin_log_sync_repository.dart';
 import '../../features/vitamins/presentation/providers/vitamin_use_cases_provider.dart';
 import '../../features/vitamins/presentation/providers/vitamin_view_model_provider.dart';
+import '../../features/medications/data/datasources/drift_medication_local_datasource.dart';
+import '../../features/medications/data/datasources/drift_medication_log_local_datasource.dart';
+import '../../features/medications/data/datasources/medication_supabase_datasource.dart';
+import '../../features/medications/data/datasources/medication_log_supabase_datasource.dart';
+import '../../features/medications/data/repositories/medication_sync_repository.dart';
+import '../../features/medications/data/repositories/medication_log_sync_repository.dart';
+import '../../features/medications/presentation/providers/medication_use_cases_provider.dart';
+import '../../features/medications/presentation/providers/medication_view_model_provider.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -182,6 +190,43 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       remote: VitaminLogSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
       userId: user.id,
     ),
+    MedicationSyncRepository(
+      local: () async => DriftMedicationLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).medicationDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: MedicationSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
+      userId: user.id,
+      afterRemoteCommit: (dto) async {
+        try {
+          final reminders = ref.read(medicationReminderServiceProvider);
+          if (dto.syncMetadata.isDeleted) {
+            await reminders.cancel(dto.id);
+          } else {
+            await reminders.rescheduleIfEnabled(dto.toEntity());
+          }
+        } catch (error) {
+          ref
+              .read(loggerServiceProvider)
+              .warning(
+                'Medication notification reconciliation failed (${error.runtimeType}).',
+              );
+        }
+      },
+    ),
+    MedicationLogSyncRepository(
+      local: () async => DriftMedicationLogLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).medicationLogDao,
+        clock: ref.read(clockServiceProvider),
+        uuid: ref.read(uuidServiceProvider),
+        userId: user.id,
+      ),
+      remote: MedicationLogSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+    ),
     SettingsSyncRepository(
       local: () async {
         if (!ref.read(driftAvailableProvider)) {
@@ -243,6 +288,9 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(vitaminUseCasesProvider);
     ref.invalidate(vitaminViewModelProvider);
     ref.invalidate(vitaminAdherenceChartSeriesProvider);
+    ref.invalidate(medicationUseCasesProvider);
+    ref.invalidate(medicationViewModelProvider);
+    ref.invalidate(medicationAdherenceChartSeriesProvider);
     ref.invalidate(weightChartSeriesProvider);
     ref.invalidate(progressViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
@@ -259,6 +307,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(appointmentViewModelProvider.notifier).loadAppointments(),
       ref.read(examViewModelProvider.notifier).loadItems(),
       ref.read(vitaminViewModelProvider.notifier).loadVitamins(),
+      ref.read(medicationViewModelProvider.notifier).loadMedications(),
       ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),

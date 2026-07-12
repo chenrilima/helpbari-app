@@ -1,23 +1,24 @@
 import 'package:drift/drift.dart';
 
 @TableIndex(
-  name: 'vitamin_user_deleted_schedule_idx',
-  columns: {#userId, #deletedAt, #scheduleHour, #scheduleMinute},
+  name: 'medication_log_user_date_idx',
+  columns: {#userId, #logDate, #deletedAt},
 )
 @TableIndex(
-  name: 'vitamin_user_sync_updated_idx',
+  name: 'medication_log_user_medication_date_idx',
+  columns: {#userId, #medicationId, #logDate},
+  unique: true,
+)
+@TableIndex(
+  name: 'medication_log_user_sync_updated_idx',
   columns: {#userId, #syncStatus, #updatedAt},
 )
-class VitaminRecords extends Table {
+class MedicationLogRecords extends Table {
   TextColumn get id => text()();
   TextColumn get userId => text()();
-  TextColumn get name => text()();
-  IntColumn get scheduleHour => integer().customConstraint(
-    'NOT NULL CHECK (schedule_hour BETWEEN 0 AND 23)',
-  )();
-  IntColumn get scheduleMinute => integer().customConstraint(
-    'NOT NULL CHECK (schedule_minute BETWEEN 0 AND 59)',
-  )();
+  TextColumn get medicationId => text()();
+  DateTimeColumn get logDate => dateTime()();
+  TextColumn get status => text()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
   DateTimeColumn get deletedAt => dateTime().nullable()();
@@ -25,7 +26,6 @@ class VitaminRecords extends Table {
   TextColumn get previousSyncStatus => text().nullable()();
   IntColumn get syncAttempts => integer().withDefault(const Constant(0))();
   TextColumn get lastSyncError => text().nullable()();
-
   @override
   Set<Column<Object>> get primaryKey => {userId, id};
 }

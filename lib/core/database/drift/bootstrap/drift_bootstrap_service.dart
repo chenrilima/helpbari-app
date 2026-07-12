@@ -12,6 +12,7 @@ import '../migrations/meal_legacy_service.dart';
 import '../migrations/appointment_legacy_service.dart';
 import '../migrations/exam_legacy_service.dart';
 import '../migrations/vitamin_legacy_service.dart';
+import '../migrations/medication_legacy_service.dart';
 
 typedef AppDatabaseFactory = Future<AppDatabase> Function();
 
@@ -56,6 +57,10 @@ class DriftBootstrapService {
       ).migrate();
       await ExamLegacyService(database: database, storage: _storage).migrate();
       await VitaminLegacyService(
+        database: database,
+        storage: _storage,
+      ).migrate();
+      await MedicationLegacyService(
         database: database,
         storage: _storage,
       ).migrate();

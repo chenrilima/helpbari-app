@@ -18,6 +18,7 @@ class MedicalReportSnapshot {
     required this.vitamins,
     required this.vitaminLogs,
     required this.medications,
+    required this.medicationLogs,
     required this.meals,
     required this.appointments,
     required this.exams,
@@ -34,6 +35,7 @@ class MedicalReportSnapshot {
   final List<Vitamin> vitamins;
   final List<VitaminLog> vitaminLogs;
   final List<Medication> medications;
+  final List<MedicationLog> medicationLogs;
   final List<Meal> meals;
   final List<Appointment> appointments;
   final List<Exam> exams;

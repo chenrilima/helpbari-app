@@ -1,14 +1,14 @@
 import 'package:drift/drift.dart';
 
 @TableIndex(
-  name: 'vitamin_user_deleted_schedule_idx',
+  name: 'medication_user_deleted_schedule_idx',
   columns: {#userId, #deletedAt, #scheduleHour, #scheduleMinute},
 )
 @TableIndex(
-  name: 'vitamin_user_sync_updated_idx',
+  name: 'medication_user_sync_updated_idx',
   columns: {#userId, #syncStatus, #updatedAt},
 )
-class VitaminRecords extends Table {
+class MedicationRecords extends Table {
   TextColumn get id => text()();
   TextColumn get userId => text()();
   TextColumn get name => text()();
@@ -18,6 +18,8 @@ class VitaminRecords extends Table {
   IntColumn get scheduleMinute => integer().customConstraint(
     'NOT NULL CHECK (schedule_minute BETWEEN 0 AND 59)',
   )();
+  TextColumn get dosage => text().nullable()();
+  TextColumn get notes => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
   DateTimeColumn get deletedAt => dateTime().nullable()();
@@ -25,7 +27,6 @@ class VitaminRecords extends Table {
   TextColumn get previousSyncStatus => text().nullable()();
   IntColumn get syncAttempts => integer().withDefault(const Constant(0))();
   TextColumn get lastSyncError => text().nullable()();
-
   @override
   Set<Column<Object>> get primaryKey => {userId, id};
 }

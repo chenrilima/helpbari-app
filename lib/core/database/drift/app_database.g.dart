@@ -10566,9 +10566,9 @@ class $VitaminRecordsTable extends VitaminRecords
     'schedule_hour',
     aliasedName,
     false,
-    check: () => ComparableExpr(scheduleHour).isBetweenValues(0, 23),
     type: DriftSqlType.int,
     requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (schedule_hour BETWEEN 0 AND 23)',
   );
   static const VerificationMeta _scheduleMinuteMeta = const VerificationMeta(
     'scheduleMinute',
@@ -10578,9 +10578,9 @@ class $VitaminRecordsTable extends VitaminRecords
     'schedule_minute',
     aliasedName,
     false,
-    check: () => ComparableExpr(scheduleMinute).isBetweenValues(0, 59),
     type: DriftSqlType.int,
     requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (schedule_minute BETWEEN 0 AND 59)',
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -12386,6 +12386,1976 @@ class VitaminCutoversCompanion extends UpdateCompanion<VitaminCutover> {
   }
 }
 
+class $MedicationRecordsTable extends MedicationRecords
+    with TableInfo<$MedicationRecordsTable, MedicationRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicationRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _scheduleHourMeta = const VerificationMeta(
+    'scheduleHour',
+  );
+  @override
+  late final GeneratedColumn<int> scheduleHour = GeneratedColumn<int>(
+    'schedule_hour',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (schedule_hour BETWEEN 0 AND 23)',
+  );
+  static const VerificationMeta _scheduleMinuteMeta = const VerificationMeta(
+    'scheduleMinute',
+  );
+  @override
+  late final GeneratedColumn<int> scheduleMinute = GeneratedColumn<int>(
+    'schedule_minute',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL CHECK (schedule_minute BETWEEN 0 AND 59)',
+  );
+  static const VerificationMeta _dosageMeta = const VerificationMeta('dosage');
+  @override
+  late final GeneratedColumn<String> dosage = GeneratedColumn<String>(
+    'dosage',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    name,
+    scheduleHour,
+    scheduleMinute,
+    dosage,
+    notes,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medication_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MedicationRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('schedule_hour')) {
+      context.handle(
+        _scheduleHourMeta,
+        scheduleHour.isAcceptableOrUnknown(
+          data['schedule_hour']!,
+          _scheduleHourMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_scheduleHourMeta);
+    }
+    if (data.containsKey('schedule_minute')) {
+      context.handle(
+        _scheduleMinuteMeta,
+        scheduleMinute.isAcceptableOrUnknown(
+          data['schedule_minute']!,
+          _scheduleMinuteMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_scheduleMinuteMeta);
+    }
+    if (data.containsKey('dosage')) {
+      context.handle(
+        _dosageMeta,
+        dosage.isAcceptableOrUnknown(data['dosage']!, _dosageMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  MedicationRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicationRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      scheduleHour: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}schedule_hour'],
+      )!,
+      scheduleMinute: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}schedule_minute'],
+      )!,
+      dosage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dosage'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $MedicationRecordsTable createAlias(String alias) {
+    return $MedicationRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicationRecord extends DataClass
+    implements Insertable<MedicationRecord> {
+  final String id;
+  final String userId;
+  final String name;
+  final int scheduleHour;
+  final int scheduleMinute;
+  final String? dosage;
+  final String? notes;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const MedicationRecord({
+    required this.id,
+    required this.userId,
+    required this.name,
+    required this.scheduleHour,
+    required this.scheduleMinute,
+    this.dosage,
+    this.notes,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['name'] = Variable<String>(name);
+    map['schedule_hour'] = Variable<int>(scheduleHour);
+    map['schedule_minute'] = Variable<int>(scheduleMinute);
+    if (!nullToAbsent || dosage != null) {
+      map['dosage'] = Variable<String>(dosage);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  MedicationRecordsCompanion toCompanion(bool nullToAbsent) {
+    return MedicationRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      name: Value(name),
+      scheduleHour: Value(scheduleHour),
+      scheduleMinute: Value(scheduleMinute),
+      dosage: dosage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dosage),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory MedicationRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicationRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      name: serializer.fromJson<String>(json['name']),
+      scheduleHour: serializer.fromJson<int>(json['scheduleHour']),
+      scheduleMinute: serializer.fromJson<int>(json['scheduleMinute']),
+      dosage: serializer.fromJson<String?>(json['dosage']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'name': serializer.toJson<String>(name),
+      'scheduleHour': serializer.toJson<int>(scheduleHour),
+      'scheduleMinute': serializer.toJson<int>(scheduleMinute),
+      'dosage': serializer.toJson<String?>(dosage),
+      'notes': serializer.toJson<String?>(notes),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  MedicationRecord copyWith({
+    String? id,
+    String? userId,
+    String? name,
+    int? scheduleHour,
+    int? scheduleMinute,
+    Value<String?> dosage = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => MedicationRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    name: name ?? this.name,
+    scheduleHour: scheduleHour ?? this.scheduleHour,
+    scheduleMinute: scheduleMinute ?? this.scheduleMinute,
+    dosage: dosage.present ? dosage.value : this.dosage,
+    notes: notes.present ? notes.value : this.notes,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  MedicationRecord copyWithCompanion(MedicationRecordsCompanion data) {
+    return MedicationRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      name: data.name.present ? data.name.value : this.name,
+      scheduleHour: data.scheduleHour.present
+          ? data.scheduleHour.value
+          : this.scheduleHour,
+      scheduleMinute: data.scheduleMinute.present
+          ? data.scheduleMinute.value
+          : this.scheduleMinute,
+      dosage: data.dosage.present ? data.dosage.value : this.dosage,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('name: $name, ')
+          ..write('scheduleHour: $scheduleHour, ')
+          ..write('scheduleMinute: $scheduleMinute, ')
+          ..write('dosage: $dosage, ')
+          ..write('notes: $notes, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    name,
+    scheduleHour,
+    scheduleMinute,
+    dosage,
+    notes,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicationRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.name == this.name &&
+          other.scheduleHour == this.scheduleHour &&
+          other.scheduleMinute == this.scheduleMinute &&
+          other.dosage == this.dosage &&
+          other.notes == this.notes &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class MedicationRecordsCompanion extends UpdateCompanion<MedicationRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> name;
+  final Value<int> scheduleHour;
+  final Value<int> scheduleMinute;
+  final Value<String?> dosage;
+  final Value<String?> notes;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const MedicationRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.scheduleHour = const Value.absent(),
+    this.scheduleMinute = const Value.absent(),
+    this.dosage = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MedicationRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required String name,
+    required int scheduleHour,
+    required int scheduleMinute,
+    this.dosage = const Value.absent(),
+    this.notes = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       name = Value(name),
+       scheduleHour = Value(scheduleHour),
+       scheduleMinute = Value(scheduleMinute),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<MedicationRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? name,
+    Expression<int>? scheduleHour,
+    Expression<int>? scheduleMinute,
+    Expression<String>? dosage,
+    Expression<String>? notes,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (name != null) 'name': name,
+      if (scheduleHour != null) 'schedule_hour': scheduleHour,
+      if (scheduleMinute != null) 'schedule_minute': scheduleMinute,
+      if (dosage != null) 'dosage': dosage,
+      if (notes != null) 'notes': notes,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MedicationRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? name,
+    Value<int>? scheduleHour,
+    Value<int>? scheduleMinute,
+    Value<String?>? dosage,
+    Value<String?>? notes,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return MedicationRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      scheduleHour: scheduleHour ?? this.scheduleHour,
+      scheduleMinute: scheduleMinute ?? this.scheduleMinute,
+      dosage: dosage ?? this.dosage,
+      notes: notes ?? this.notes,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (scheduleHour.present) {
+      map['schedule_hour'] = Variable<int>(scheduleHour.value);
+    }
+    if (scheduleMinute.present) {
+      map['schedule_minute'] = Variable<int>(scheduleMinute.value);
+    }
+    if (dosage.present) {
+      map['dosage'] = Variable<String>(dosage.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('name: $name, ')
+          ..write('scheduleHour: $scheduleHour, ')
+          ..write('scheduleMinute: $scheduleMinute, ')
+          ..write('dosage: $dosage, ')
+          ..write('notes: $notes, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicationLogRecordsTable extends MedicationLogRecords
+    with TableInfo<$MedicationLogRecordsTable, MedicationLogRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicationLogRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _medicationIdMeta = const VerificationMeta(
+    'medicationId',
+  );
+  @override
+  late final GeneratedColumn<String> medicationId = GeneratedColumn<String>(
+    'medication_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _logDateMeta = const VerificationMeta(
+    'logDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> logDate = GeneratedColumn<DateTime>(
+    'log_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    medicationId,
+    logDate,
+    status,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medication_log_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MedicationLogRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('medication_id')) {
+      context.handle(
+        _medicationIdMeta,
+        medicationId.isAcceptableOrUnknown(
+          data['medication_id']!,
+          _medicationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_medicationIdMeta);
+    }
+    if (data.containsKey('log_date')) {
+      context.handle(
+        _logDateMeta,
+        logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_logDateMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  MedicationLogRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicationLogRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      medicationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}medication_id'],
+      )!,
+      logDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}log_date'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $MedicationLogRecordsTable createAlias(String alias) {
+    return $MedicationLogRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicationLogRecord extends DataClass
+    implements Insertable<MedicationLogRecord> {
+  final String id;
+  final String userId;
+  final String medicationId;
+  final DateTime logDate;
+  final String status;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const MedicationLogRecord({
+    required this.id,
+    required this.userId,
+    required this.medicationId,
+    required this.logDate,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['medication_id'] = Variable<String>(medicationId);
+    map['log_date'] = Variable<DateTime>(logDate);
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  MedicationLogRecordsCompanion toCompanion(bool nullToAbsent) {
+    return MedicationLogRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      medicationId: Value(medicationId),
+      logDate: Value(logDate),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory MedicationLogRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicationLogRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      medicationId: serializer.fromJson<String>(json['medicationId']),
+      logDate: serializer.fromJson<DateTime>(json['logDate']),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'medicationId': serializer.toJson<String>(medicationId),
+      'logDate': serializer.toJson<DateTime>(logDate),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  MedicationLogRecord copyWith({
+    String? id,
+    String? userId,
+    String? medicationId,
+    DateTime? logDate,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => MedicationLogRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    medicationId: medicationId ?? this.medicationId,
+    logDate: logDate ?? this.logDate,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  MedicationLogRecord copyWithCompanion(MedicationLogRecordsCompanion data) {
+    return MedicationLogRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      medicationId: data.medicationId.present
+          ? data.medicationId.value
+          : this.medicationId,
+      logDate: data.logDate.present ? data.logDate.value : this.logDate,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationLogRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('medicationId: $medicationId, ')
+          ..write('logDate: $logDate, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    medicationId,
+    logDate,
+    status,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicationLogRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.medicationId == this.medicationId &&
+          other.logDate == this.logDate &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class MedicationLogRecordsCompanion
+    extends UpdateCompanion<MedicationLogRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> medicationId;
+  final Value<DateTime> logDate;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const MedicationLogRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.medicationId = const Value.absent(),
+    this.logDate = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MedicationLogRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required String medicationId,
+    required DateTime logDate,
+    required String status,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       medicationId = Value(medicationId),
+       logDate = Value(logDate),
+       status = Value(status),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<MedicationLogRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? medicationId,
+    Expression<DateTime>? logDate,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (medicationId != null) 'medication_id': medicationId,
+      if (logDate != null) 'log_date': logDate,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MedicationLogRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? medicationId,
+    Value<DateTime>? logDate,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return MedicationLogRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      medicationId: medicationId ?? this.medicationId,
+      logDate: logDate ?? this.logDate,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (medicationId.present) {
+      map['medication_id'] = Variable<String>(medicationId.value);
+    }
+    if (logDate.present) {
+      map['log_date'] = Variable<DateTime>(logDate.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationLogRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('medicationId: $medicationId, ')
+          ..write('logDate: $logDate, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicationCutoversTable extends MedicationCutovers
+    with TableInfo<$MedicationCutoversTable, MedicationCutover> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicationCutoversTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _databaseSchemaVersionMeta =
+      const VerificationMeta('databaseSchemaVersion');
+  @override
+  late final GeneratedColumn<int> databaseSchemaVersion = GeneratedColumn<int>(
+    'database_schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _migratedMedicationCountMeta =
+      const VerificationMeta('migratedMedicationCount');
+  @override
+  late final GeneratedColumn<int> migratedMedicationCount =
+      GeneratedColumn<int>(
+        'migrated_medication_count',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _migratedLogCountMeta = const VerificationMeta(
+    'migratedLogCount',
+  );
+  @override
+  late final GeneratedColumn<int> migratedLogCount = GeneratedColumn<int>(
+    'migrated_log_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    userId,
+    completedAt,
+    databaseSchemaVersion,
+    migratedMedicationCount,
+    migratedLogCount,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medication_cutovers';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MedicationCutover> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completedAtMeta);
+    }
+    if (data.containsKey('database_schema_version')) {
+      context.handle(
+        _databaseSchemaVersionMeta,
+        databaseSchemaVersion.isAcceptableOrUnknown(
+          data['database_schema_version']!,
+          _databaseSchemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_databaseSchemaVersionMeta);
+    }
+    if (data.containsKey('migrated_medication_count')) {
+      context.handle(
+        _migratedMedicationCountMeta,
+        migratedMedicationCount.isAcceptableOrUnknown(
+          data['migrated_medication_count']!,
+          _migratedMedicationCountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migratedMedicationCountMeta);
+    }
+    if (data.containsKey('migrated_log_count')) {
+      context.handle(
+        _migratedLogCountMeta,
+        migratedLogCount.isAcceptableOrUnknown(
+          data['migrated_log_count']!,
+          _migratedLogCountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migratedLogCountMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId};
+  @override
+  MedicationCutover map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicationCutover(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      )!,
+      databaseSchemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}database_schema_version'],
+      )!,
+      migratedMedicationCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}migrated_medication_count'],
+      )!,
+      migratedLogCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}migrated_log_count'],
+      )!,
+    );
+  }
+
+  @override
+  $MedicationCutoversTable createAlias(String alias) {
+    return $MedicationCutoversTable(attachedDatabase, alias);
+  }
+}
+
+class MedicationCutover extends DataClass
+    implements Insertable<MedicationCutover> {
+  final String userId;
+  final DateTime completedAt;
+  final int databaseSchemaVersion;
+  final int migratedMedicationCount;
+  final int migratedLogCount;
+  const MedicationCutover({
+    required this.userId,
+    required this.completedAt,
+    required this.databaseSchemaVersion,
+    required this.migratedMedicationCount,
+    required this.migratedLogCount,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['completed_at'] = Variable<DateTime>(completedAt);
+    map['database_schema_version'] = Variable<int>(databaseSchemaVersion);
+    map['migrated_medication_count'] = Variable<int>(migratedMedicationCount);
+    map['migrated_log_count'] = Variable<int>(migratedLogCount);
+    return map;
+  }
+
+  MedicationCutoversCompanion toCompanion(bool nullToAbsent) {
+    return MedicationCutoversCompanion(
+      userId: Value(userId),
+      completedAt: Value(completedAt),
+      databaseSchemaVersion: Value(databaseSchemaVersion),
+      migratedMedicationCount: Value(migratedMedicationCount),
+      migratedLogCount: Value(migratedLogCount),
+    );
+  }
+
+  factory MedicationCutover.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicationCutover(
+      userId: serializer.fromJson<String>(json['userId']),
+      completedAt: serializer.fromJson<DateTime>(json['completedAt']),
+      databaseSchemaVersion: serializer.fromJson<int>(
+        json['databaseSchemaVersion'],
+      ),
+      migratedMedicationCount: serializer.fromJson<int>(
+        json['migratedMedicationCount'],
+      ),
+      migratedLogCount: serializer.fromJson<int>(json['migratedLogCount']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'completedAt': serializer.toJson<DateTime>(completedAt),
+      'databaseSchemaVersion': serializer.toJson<int>(databaseSchemaVersion),
+      'migratedMedicationCount': serializer.toJson<int>(
+        migratedMedicationCount,
+      ),
+      'migratedLogCount': serializer.toJson<int>(migratedLogCount),
+    };
+  }
+
+  MedicationCutover copyWith({
+    String? userId,
+    DateTime? completedAt,
+    int? databaseSchemaVersion,
+    int? migratedMedicationCount,
+    int? migratedLogCount,
+  }) => MedicationCutover(
+    userId: userId ?? this.userId,
+    completedAt: completedAt ?? this.completedAt,
+    databaseSchemaVersion: databaseSchemaVersion ?? this.databaseSchemaVersion,
+    migratedMedicationCount:
+        migratedMedicationCount ?? this.migratedMedicationCount,
+    migratedLogCount: migratedLogCount ?? this.migratedLogCount,
+  );
+  MedicationCutover copyWithCompanion(MedicationCutoversCompanion data) {
+    return MedicationCutover(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      databaseSchemaVersion: data.databaseSchemaVersion.present
+          ? data.databaseSchemaVersion.value
+          : this.databaseSchemaVersion,
+      migratedMedicationCount: data.migratedMedicationCount.present
+          ? data.migratedMedicationCount.value
+          : this.migratedMedicationCount,
+      migratedLogCount: data.migratedLogCount.present
+          ? data.migratedLogCount.value
+          : this.migratedLogCount,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationCutover(')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion, ')
+          ..write('migratedMedicationCount: $migratedMedicationCount, ')
+          ..write('migratedLogCount: $migratedLogCount')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    userId,
+    completedAt,
+    databaseSchemaVersion,
+    migratedMedicationCount,
+    migratedLogCount,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicationCutover &&
+          other.userId == this.userId &&
+          other.completedAt == this.completedAt &&
+          other.databaseSchemaVersion == this.databaseSchemaVersion &&
+          other.migratedMedicationCount == this.migratedMedicationCount &&
+          other.migratedLogCount == this.migratedLogCount);
+}
+
+class MedicationCutoversCompanion extends UpdateCompanion<MedicationCutover> {
+  final Value<String> userId;
+  final Value<DateTime> completedAt;
+  final Value<int> databaseSchemaVersion;
+  final Value<int> migratedMedicationCount;
+  final Value<int> migratedLogCount;
+  final Value<int> rowid;
+  const MedicationCutoversCompanion({
+    this.userId = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.databaseSchemaVersion = const Value.absent(),
+    this.migratedMedicationCount = const Value.absent(),
+    this.migratedLogCount = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MedicationCutoversCompanion.insert({
+    required String userId,
+    required DateTime completedAt,
+    required int databaseSchemaVersion,
+    required int migratedMedicationCount,
+    required int migratedLogCount,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       completedAt = Value(completedAt),
+       databaseSchemaVersion = Value(databaseSchemaVersion),
+       migratedMedicationCount = Value(migratedMedicationCount),
+       migratedLogCount = Value(migratedLogCount);
+  static Insertable<MedicationCutover> custom({
+    Expression<String>? userId,
+    Expression<DateTime>? completedAt,
+    Expression<int>? databaseSchemaVersion,
+    Expression<int>? migratedMedicationCount,
+    Expression<int>? migratedLogCount,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (databaseSchemaVersion != null)
+        'database_schema_version': databaseSchemaVersion,
+      if (migratedMedicationCount != null)
+        'migrated_medication_count': migratedMedicationCount,
+      if (migratedLogCount != null) 'migrated_log_count': migratedLogCount,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MedicationCutoversCompanion copyWith({
+    Value<String>? userId,
+    Value<DateTime>? completedAt,
+    Value<int>? databaseSchemaVersion,
+    Value<int>? migratedMedicationCount,
+    Value<int>? migratedLogCount,
+    Value<int>? rowid,
+  }) {
+    return MedicationCutoversCompanion(
+      userId: userId ?? this.userId,
+      completedAt: completedAt ?? this.completedAt,
+      databaseSchemaVersion:
+          databaseSchemaVersion ?? this.databaseSchemaVersion,
+      migratedMedicationCount:
+          migratedMedicationCount ?? this.migratedMedicationCount,
+      migratedLogCount: migratedLogCount ?? this.migratedLogCount,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (databaseSchemaVersion.present) {
+      map['database_schema_version'] = Variable<int>(
+        databaseSchemaVersion.value,
+      );
+    }
+    if (migratedMedicationCount.present) {
+      map['migrated_medication_count'] = Variable<int>(
+        migratedMedicationCount.value,
+      );
+    }
+    if (migratedLogCount.present) {
+      map['migrated_log_count'] = Variable<int>(migratedLogCount.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationCutoversCompanion(')
+          ..write('userId: $userId, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('databaseSchemaVersion: $databaseSchemaVersion, ')
+          ..write('migratedMedicationCount: $migratedMedicationCount, ')
+          ..write('migratedLogCount: $migratedLogCount, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -12422,6 +14392,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $VitaminCutoversTable vitaminCutovers = $VitaminCutoversTable(
     this,
   );
+  late final $MedicationRecordsTable medicationRecords =
+      $MedicationRecordsTable(this);
+  late final $MedicationLogRecordsTable medicationLogRecords =
+      $MedicationLogRecordsTable(this);
+  late final $MedicationCutoversTable medicationCutovers =
+      $MedicationCutoversTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -12506,6 +14482,26 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'vitamin_log_user_sync_updated_idx',
     'CREATE INDEX vitamin_log_user_sync_updated_idx ON vitamin_log_records (user_id, sync_status, updated_at)',
   );
+  late final Index medicationUserDeletedScheduleIdx = Index(
+    'medication_user_deleted_schedule_idx',
+    'CREATE INDEX medication_user_deleted_schedule_idx ON medication_records (user_id, deleted_at, schedule_hour, schedule_minute)',
+  );
+  late final Index medicationUserSyncUpdatedIdx = Index(
+    'medication_user_sync_updated_idx',
+    'CREATE INDEX medication_user_sync_updated_idx ON medication_records (user_id, sync_status, updated_at)',
+  );
+  late final Index medicationLogUserDateIdx = Index(
+    'medication_log_user_date_idx',
+    'CREATE INDEX medication_log_user_date_idx ON medication_log_records (user_id, log_date, deleted_at)',
+  );
+  late final Index medicationLogUserMedicationDateIdx = Index(
+    'medication_log_user_medication_date_idx',
+    'CREATE UNIQUE INDEX medication_log_user_medication_date_idx ON medication_log_records (user_id, medication_id, log_date)',
+  );
+  late final Index medicationLogUserSyncUpdatedIdx = Index(
+    'medication_log_user_sync_updated_idx',
+    'CREATE INDEX medication_log_user_sync_updated_idx ON medication_log_records (user_id, sync_status, updated_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -12517,6 +14513,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final ExamDao examDao = ExamDao(this as AppDatabase);
   late final VitaminDao vitaminDao = VitaminDao(this as AppDatabase);
   late final VitaminLogDao vitaminLogDao = VitaminLogDao(this as AppDatabase);
+  late final MedicationDao medicationDao = MedicationDao(this as AppDatabase);
+  late final MedicationLogDao medicationLogDao = MedicationLogDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -12542,6 +14542,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     vitaminRecords,
     vitaminLogRecords,
     vitaminCutovers,
+    medicationRecords,
+    medicationLogRecords,
+    medicationCutovers,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -12563,6 +14566,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     vitaminLogUserDateIdx,
     vitaminLogUserVitaminDateIdx,
     vitaminLogUserSyncUpdatedIdx,
+    medicationUserDeletedScheduleIdx,
+    medicationUserSyncUpdatedIdx,
+    medicationLogUserDateIdx,
+    medicationLogUserMedicationDateIdx,
+    medicationLogUserSyncUpdatedIdx,
   ];
 }
 
@@ -18590,6 +20598,982 @@ typedef $$VitaminCutoversTableProcessedTableManager =
       VitaminCutover,
       PrefetchHooks Function()
     >;
+typedef $$MedicationRecordsTableCreateCompanionBuilder =
+    MedicationRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required String name,
+      required int scheduleHour,
+      required int scheduleMinute,
+      Value<String?> dosage,
+      Value<String?> notes,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$MedicationRecordsTableUpdateCompanionBuilder =
+    MedicationRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> name,
+      Value<int> scheduleHour,
+      Value<int> scheduleMinute,
+      Value<String?> dosage,
+      Value<String?> notes,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$MedicationRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicationRecordsTable> {
+  $$MedicationRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get scheduleHour => $composableBuilder(
+    column: $table.scheduleHour,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get scheduleMinute => $composableBuilder(
+    column: $table.scheduleMinute,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dosage => $composableBuilder(
+    column: $table.dosage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MedicationRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicationRecordsTable> {
+  $$MedicationRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get scheduleHour => $composableBuilder(
+    column: $table.scheduleHour,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get scheduleMinute => $composableBuilder(
+    column: $table.scheduleMinute,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dosage => $composableBuilder(
+    column: $table.dosage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MedicationRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicationRecordsTable> {
+  $$MedicationRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get scheduleHour => $composableBuilder(
+    column: $table.scheduleHour,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get scheduleMinute => $composableBuilder(
+    column: $table.scheduleMinute,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get dosage =>
+      $composableBuilder(column: $table.dosage, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$MedicationRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MedicationRecordsTable,
+          MedicationRecord,
+          $$MedicationRecordsTableFilterComposer,
+          $$MedicationRecordsTableOrderingComposer,
+          $$MedicationRecordsTableAnnotationComposer,
+          $$MedicationRecordsTableCreateCompanionBuilder,
+          $$MedicationRecordsTableUpdateCompanionBuilder,
+          (
+            MedicationRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $MedicationRecordsTable,
+              MedicationRecord
+            >,
+          ),
+          MedicationRecord,
+          PrefetchHooks Function()
+        > {
+  $$MedicationRecordsTableTableManager(
+    _$AppDatabase db,
+    $MedicationRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicationRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MedicationRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MedicationRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> scheduleHour = const Value.absent(),
+                Value<int> scheduleMinute = const Value.absent(),
+                Value<String?> dosage = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicationRecordsCompanion(
+                id: id,
+                userId: userId,
+                name: name,
+                scheduleHour: scheduleHour,
+                scheduleMinute: scheduleMinute,
+                dosage: dosage,
+                notes: notes,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String name,
+                required int scheduleHour,
+                required int scheduleMinute,
+                Value<String?> dosage = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicationRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                name: name,
+                scheduleHour: scheduleHour,
+                scheduleMinute: scheduleMinute,
+                dosage: dosage,
+                notes: notes,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MedicationRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MedicationRecordsTable,
+      MedicationRecord,
+      $$MedicationRecordsTableFilterComposer,
+      $$MedicationRecordsTableOrderingComposer,
+      $$MedicationRecordsTableAnnotationComposer,
+      $$MedicationRecordsTableCreateCompanionBuilder,
+      $$MedicationRecordsTableUpdateCompanionBuilder,
+      (
+        MedicationRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $MedicationRecordsTable,
+          MedicationRecord
+        >,
+      ),
+      MedicationRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$MedicationLogRecordsTableCreateCompanionBuilder =
+    MedicationLogRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required String medicationId,
+      required DateTime logDate,
+      required String status,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$MedicationLogRecordsTableUpdateCompanionBuilder =
+    MedicationLogRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> medicationId,
+      Value<DateTime> logDate,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$MedicationLogRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicationLogRecordsTable> {
+  $$MedicationLogRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get medicationId => $composableBuilder(
+    column: $table.medicationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get logDate => $composableBuilder(
+    column: $table.logDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MedicationLogRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicationLogRecordsTable> {
+  $$MedicationLogRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get medicationId => $composableBuilder(
+    column: $table.medicationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get logDate => $composableBuilder(
+    column: $table.logDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MedicationLogRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicationLogRecordsTable> {
+  $$MedicationLogRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get medicationId => $composableBuilder(
+    column: $table.medicationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get logDate =>
+      $composableBuilder(column: $table.logDate, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$MedicationLogRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MedicationLogRecordsTable,
+          MedicationLogRecord,
+          $$MedicationLogRecordsTableFilterComposer,
+          $$MedicationLogRecordsTableOrderingComposer,
+          $$MedicationLogRecordsTableAnnotationComposer,
+          $$MedicationLogRecordsTableCreateCompanionBuilder,
+          $$MedicationLogRecordsTableUpdateCompanionBuilder,
+          (
+            MedicationLogRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $MedicationLogRecordsTable,
+              MedicationLogRecord
+            >,
+          ),
+          MedicationLogRecord,
+          PrefetchHooks Function()
+        > {
+  $$MedicationLogRecordsTableTableManager(
+    _$AppDatabase db,
+    $MedicationLogRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicationLogRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MedicationLogRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$MedicationLogRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> medicationId = const Value.absent(),
+                Value<DateTime> logDate = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicationLogRecordsCompanion(
+                id: id,
+                userId: userId,
+                medicationId: medicationId,
+                logDate: logDate,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String medicationId,
+                required DateTime logDate,
+                required String status,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicationLogRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                medicationId: medicationId,
+                logDate: logDate,
+                status: status,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MedicationLogRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MedicationLogRecordsTable,
+      MedicationLogRecord,
+      $$MedicationLogRecordsTableFilterComposer,
+      $$MedicationLogRecordsTableOrderingComposer,
+      $$MedicationLogRecordsTableAnnotationComposer,
+      $$MedicationLogRecordsTableCreateCompanionBuilder,
+      $$MedicationLogRecordsTableUpdateCompanionBuilder,
+      (
+        MedicationLogRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $MedicationLogRecordsTable,
+          MedicationLogRecord
+        >,
+      ),
+      MedicationLogRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$MedicationCutoversTableCreateCompanionBuilder =
+    MedicationCutoversCompanion Function({
+      required String userId,
+      required DateTime completedAt,
+      required int databaseSchemaVersion,
+      required int migratedMedicationCount,
+      required int migratedLogCount,
+      Value<int> rowid,
+    });
+typedef $$MedicationCutoversTableUpdateCompanionBuilder =
+    MedicationCutoversCompanion Function({
+      Value<String> userId,
+      Value<DateTime> completedAt,
+      Value<int> databaseSchemaVersion,
+      Value<int> migratedMedicationCount,
+      Value<int> migratedLogCount,
+      Value<int> rowid,
+    });
+
+class $$MedicationCutoversTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicationCutoversTable> {
+  $$MedicationCutoversTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get migratedMedicationCount => $composableBuilder(
+    column: $table.migratedMedicationCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get migratedLogCount => $composableBuilder(
+    column: $table.migratedLogCount,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MedicationCutoversTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicationCutoversTable> {
+  $$MedicationCutoversTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get migratedMedicationCount => $composableBuilder(
+    column: $table.migratedMedicationCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get migratedLogCount => $composableBuilder(
+    column: $table.migratedLogCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MedicationCutoversTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicationCutoversTable> {
+  $$MedicationCutoversTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get databaseSchemaVersion => $composableBuilder(
+    column: $table.databaseSchemaVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get migratedMedicationCount => $composableBuilder(
+    column: $table.migratedMedicationCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get migratedLogCount => $composableBuilder(
+    column: $table.migratedLogCount,
+    builder: (column) => column,
+  );
+}
+
+class $$MedicationCutoversTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MedicationCutoversTable,
+          MedicationCutover,
+          $$MedicationCutoversTableFilterComposer,
+          $$MedicationCutoversTableOrderingComposer,
+          $$MedicationCutoversTableAnnotationComposer,
+          $$MedicationCutoversTableCreateCompanionBuilder,
+          $$MedicationCutoversTableUpdateCompanionBuilder,
+          (
+            MedicationCutover,
+            BaseReferences<
+              _$AppDatabase,
+              $MedicationCutoversTable,
+              MedicationCutover
+            >,
+          ),
+          MedicationCutover,
+          PrefetchHooks Function()
+        > {
+  $$MedicationCutoversTableTableManager(
+    _$AppDatabase db,
+    $MedicationCutoversTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicationCutoversTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MedicationCutoversTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MedicationCutoversTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> completedAt = const Value.absent(),
+                Value<int> databaseSchemaVersion = const Value.absent(),
+                Value<int> migratedMedicationCount = const Value.absent(),
+                Value<int> migratedLogCount = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicationCutoversCompanion(
+                userId: userId,
+                completedAt: completedAt,
+                databaseSchemaVersion: databaseSchemaVersion,
+                migratedMedicationCount: migratedMedicationCount,
+                migratedLogCount: migratedLogCount,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required DateTime completedAt,
+                required int databaseSchemaVersion,
+                required int migratedMedicationCount,
+                required int migratedLogCount,
+                Value<int> rowid = const Value.absent(),
+              }) => MedicationCutoversCompanion.insert(
+                userId: userId,
+                completedAt: completedAt,
+                databaseSchemaVersion: databaseSchemaVersion,
+                migratedMedicationCount: migratedMedicationCount,
+                migratedLogCount: migratedLogCount,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MedicationCutoversTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MedicationCutoversTable,
+      MedicationCutover,
+      $$MedicationCutoversTableFilterComposer,
+      $$MedicationCutoversTableOrderingComposer,
+      $$MedicationCutoversTableAnnotationComposer,
+      $$MedicationCutoversTableCreateCompanionBuilder,
+      $$MedicationCutoversTableUpdateCompanionBuilder,
+      (
+        MedicationCutover,
+        BaseReferences<
+          _$AppDatabase,
+          $MedicationCutoversTable,
+          MedicationCutover
+        >,
+      ),
+      MedicationCutover,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -18634,4 +21618,10 @@ class $AppDatabaseManager {
       $$VitaminLogRecordsTableTableManager(_db, _db.vitaminLogRecords);
   $$VitaminCutoversTableTableManager get vitaminCutovers =>
       $$VitaminCutoversTableTableManager(_db, _db.vitaminCutovers);
+  $$MedicationRecordsTableTableManager get medicationRecords =>
+      $$MedicationRecordsTableTableManager(_db, _db.medicationRecords);
+  $$MedicationLogRecordsTableTableManager get medicationLogRecords =>
+      $$MedicationLogRecordsTableTableManager(_db, _db.medicationLogRecords);
+  $$MedicationCutoversTableTableManager get medicationCutovers =>
+      $$MedicationCutoversTableTableManager(_db, _db.medicationCutovers);
 }

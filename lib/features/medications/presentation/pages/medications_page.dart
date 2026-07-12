@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
@@ -16,6 +17,21 @@ class MedicationsPage extends ConsumerStatefulWidget {
 }
 
 class _MedicationsPageState extends ConsumerState<MedicationsPage> {
+  Future<void> _delete(String id) async {
+    final confirmed = await HBDialog.confirm(
+      context,
+      title: 'Excluir medicamento?',
+      message: 'O cadastro e o histórico deste medicamento serão removidos.',
+    );
+    if (confirmed != true || !mounted) return;
+    final ok = await ref
+        .read(medicationViewModelProvider.notifier)
+        .deleteMedication(id);
+    if (mounted && ok) {
+      HBSnackBar.success(context, message: 'Medicamento excluído.');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +55,15 @@ class _MedicationsPageState extends ConsumerState<MedicationsPage> {
       children: [
         const MedicationAdherenceChartWidget(),
         const HBGap.xl(),
-        if (!state.hasMedications)
+        if (state.isLoading && !state.hasMedications)
+          const Center(child: CircularProgressIndicator())
+        else if (state.errorMessage != null && !state.hasMedications)
+          HBEmptyState(
+            title: 'Não foi possível carregar',
+            description: state.errorMessage!,
+            icon: Icons.medication_outlined,
+          )
+        else if (!state.hasMedications)
           const HBEmptyState(
             title: 'Nenhum medicamento cadastrado',
             description: 'Cadastre seus remédios para acompanhar sua rotina.',
@@ -56,6 +80,7 @@ class _MedicationsPageState extends ConsumerState<MedicationsPage> {
 
               return MedicationTile(
                 medication: medication,
+                status: state.statusFor(medication.id),
                 onTaken: () {
                   ref
                       .read(medicationViewModelProvider.notifier)
@@ -66,6 +91,14 @@ class _MedicationsPageState extends ConsumerState<MedicationsPage> {
                       .read(medicationViewModelProvider.notifier)
                       .markAsSkipped(medication.id);
                 },
+                onEdit: () async {
+                  await context.push<bool>(
+                    AppRoutes.registerMedication,
+                    extra: medication,
+                  );
+                  await _loadMedications();
+                },
+                onDelete: () => _delete(medication.id),
               );
             },
           ),
