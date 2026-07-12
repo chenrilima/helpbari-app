@@ -6,6 +6,8 @@ import 'daos/weight_dao.dart';
 import 'daos/meal_dao.dart';
 import 'daos/appointment_dao.dart';
 import 'daos/exam_dao.dart';
+import 'daos/vitamin_dao.dart';
+import 'daos/vitamin_log_dao.dart';
 
 final driftAvailableProvider = Provider<bool>((ref) => true);
 
@@ -36,4 +38,10 @@ final appointmentDaoProvider = FutureProvider<AppointmentDao>(
 );
 final examDaoProvider = FutureProvider<ExamDao>(
   (ref) async => (await ref.watch(appDatabaseProvider.future)).examDao,
+);
+final vitaminDaoProvider = FutureProvider<VitaminDao>(
+  (ref) async => (await ref.watch(appDatabaseProvider.future)).vitaminDao,
+);
+final vitaminLogDaoProvider = FutureProvider<VitaminLogDao>(
+  (ref) async => (await ref.watch(appDatabaseProvider.future)).vitaminLogDao,
 );

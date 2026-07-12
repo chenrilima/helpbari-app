@@ -11,6 +11,7 @@ import '../migrations/weight_legacy_service.dart';
 import '../migrations/meal_legacy_service.dart';
 import '../migrations/appointment_legacy_service.dart';
 import '../migrations/exam_legacy_service.dart';
+import '../migrations/vitamin_legacy_service.dart';
 
 typedef AppDatabaseFactory = Future<AppDatabase> Function();
 
@@ -54,6 +55,10 @@ class DriftBootstrapService {
         storage: _storage,
       ).migrate();
       await ExamLegacyService(database: database, storage: _storage).migrate();
+      await VitaminLegacyService(
+        database: database,
+        storage: _storage,
+      ).migrate();
       final consistency = await WaterLocalConsistencyChecker(
         database: database,
         storage: _storage,

@@ -16,6 +16,7 @@ class MedicalReportSnapshot {
     required this.weightHistory,
     required this.waterHistory,
     required this.vitamins,
+    required this.vitaminLogs,
     required this.medications,
     required this.meals,
     required this.appointments,
@@ -31,6 +32,7 @@ class MedicalReportSnapshot {
   final List<WeightRecord> weightHistory;
   final List<WaterRecord> waterHistory;
   final List<Vitamin> vitamins;
+  final List<VitaminLog> vitaminLogs;
   final List<Medication> medications;
   final List<Meal> meals;
   final List<Appointment> appointments;

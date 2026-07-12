@@ -41,6 +41,14 @@ import '../../features/exams/data/datasources/exam_supabase_datasource.dart';
 import '../../features/exams/data/repositories/exam_sync_repository.dart';
 import '../../features/exams/presentation/providers/exam_use_cases_provider.dart';
 import '../../features/exams/presentation/providers/exam_view_model_provider.dart';
+import '../../features/vitamins/data/datasources/drift_vitamin_local_datasource.dart';
+import '../../features/vitamins/data/datasources/drift_vitamin_log_local_datasource.dart';
+import '../../features/vitamins/data/datasources/vitamin_supabase_datasource.dart';
+import '../../features/vitamins/data/datasources/vitamin_log_supabase_datasource.dart';
+import '../../features/vitamins/data/repositories/vitamin_sync_repository.dart';
+import '../../features/vitamins/data/repositories/vitamin_log_sync_repository.dart';
+import '../../features/vitamins/presentation/providers/vitamin_use_cases_provider.dart';
+import '../../features/vitamins/presentation/providers/vitamin_view_model_provider.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -139,6 +147,41 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       remote: ExamSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
       userId: user.id,
     ),
+    VitaminSyncRepository(
+      local: () async => DriftVitaminLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).vitaminDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: VitaminSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
+      userId: user.id,
+      afterRemoteCommit: (dto) async {
+        try {
+          final reminders = ref.read(vitaminReminderServiceProvider);
+          if (dto.syncMetadata.isDeleted) {
+            await reminders.cancel(dto.id);
+          } else {
+            await reminders.rescheduleIfEnabled(dto.toEntity());
+          }
+        } catch (error) {
+          ref
+              .read(loggerServiceProvider)
+              .warning(
+                'Vitamin notification reconciliation failed (${error.runtimeType}).',
+              );
+        }
+      },
+    ),
+    VitaminLogSyncRepository(
+      local: () async => DriftVitaminLogLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).vitaminLogDao,
+        clock: ref.read(clockServiceProvider),
+        uuid: ref.read(uuidServiceProvider),
+        userId: user.id,
+      ),
+      remote: VitaminLogSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
+      userId: user.id,
+    ),
     SettingsSyncRepository(
       local: () async {
         if (!ref.read(driftAvailableProvider)) {
@@ -197,6 +240,9 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(appointmentViewModelProvider);
     ref.invalidate(examUseCasesProvider);
     ref.invalidate(examViewModelProvider);
+    ref.invalidate(vitaminUseCasesProvider);
+    ref.invalidate(vitaminViewModelProvider);
+    ref.invalidate(vitaminAdherenceChartSeriesProvider);
     ref.invalidate(weightChartSeriesProvider);
     ref.invalidate(progressViewModelProvider);
     ref.invalidate(waterChartSeriesProvider);
@@ -212,6 +258,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(mealViewModelProvider.notifier).loadMeals(),
       ref.read(appointmentViewModelProvider.notifier).loadAppointments(),
       ref.read(examViewModelProvider.notifier).loadItems(),
+      ref.read(vitaminViewModelProvider.notifier).loadVitamins(),
       ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),

@@ -293,7 +293,12 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
             (vitamin) => [
               vitamin.formattedName,
               vitamin.formattedTime,
-              vitamin.status.label,
+              snapshot.vitaminLogs
+                      .where((log) => log.vitaminId == vitamin.id)
+                      .firstOrNull
+                      ?.status
+                      .label ??
+                  'Pendente',
             ],
           )
           .toList(),

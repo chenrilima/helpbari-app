@@ -7,6 +7,8 @@ import 'daos/weight_dao.dart';
 import 'daos/meal_dao.dart';
 import 'daos/appointment_dao.dart';
 import 'daos/exam_dao.dart';
+import 'daos/vitamin_dao.dart';
+import 'daos/vitamin_log_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
@@ -25,6 +27,9 @@ import 'tables/appointment_records.dart';
 import 'tables/appointment_cutovers.dart';
 import 'tables/exam_records.dart';
 import 'tables/exam_cutovers.dart';
+import 'tables/vitamin_records.dart';
+import 'tables/vitamin_log_records.dart';
+import 'tables/vitamin_cutovers.dart';
 
 part 'app_database.g.dart';
 
@@ -47,6 +52,9 @@ part 'app_database.g.dart';
     AppointmentCutovers,
     ExamRecords,
     ExamCutovers,
+    VitaminRecords,
+    VitaminLogRecords,
+    VitaminCutovers,
   ],
   daos: [
     WaterDao,
@@ -56,6 +64,8 @@ part 'app_database.g.dart';
     MealDao,
     AppointmentDao,
     ExamDao,
+    VitaminDao,
+    VitaminLogDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -63,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -101,6 +111,11 @@ class AppDatabase extends _$AppDatabase {
       if (from < 9) {
         await migrator.createTable(examRecords);
         await migrator.createTable(examCutovers);
+      }
+      if (from < 10) {
+        await migrator.createTable(vitaminRecords);
+        await migrator.createTable(vitaminLogRecords);
+        await migrator.createTable(vitaminCutovers);
       }
     },
     beforeOpen: (details) async {

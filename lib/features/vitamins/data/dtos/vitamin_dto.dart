@@ -9,7 +9,6 @@ class VitaminDto {
     required this.name,
     required this.hour,
     required this.minute,
-    required this.status,
     required this.syncMetadata,
   });
 
@@ -17,7 +16,6 @@ class VitaminDto {
   final String name;
   final int hour;
   final int minute;
-  final VitaminStatus status;
   final SyncMetadata syncMetadata;
 
   Vitamin toEntity() {
@@ -28,12 +26,7 @@ class VitaminDto {
       throw FormatException('Vitamina local inválida: $id');
     }
 
-    return Vitamin(
-      id: id,
-      name: vitaminName,
-      scheduleTime: scheduleTime,
-      status: status,
-    );
+    return Vitamin(id: id, name: vitaminName, scheduleTime: scheduleTime);
   }
 
   LocalDatabaseRecord toRecord() {
@@ -43,7 +36,7 @@ class VitaminDto {
         'name': name,
         'hour': hour,
         'minute': minute,
-        'status': status.name,
+        'status': VitaminStatus.pending.name,
       },
     );
   }
@@ -58,7 +51,6 @@ class VitaminDto {
       name: vitamin.name.value,
       hour: vitamin.scheduleTime.hour,
       minute: vitamin.scheduleTime.minute,
-      status: vitamin.status,
       syncMetadata: SyncMetadata(
         id: vitamin.id,
         userId: previousMetadata?.userId,
@@ -77,13 +69,39 @@ class VitaminDto {
       name: data['name'] as String,
       hour: data['hour'] as int,
       minute: data['minute'] as int,
-      status: VitaminStatus.values.firstWhere(
-        (status) => status.name == data['status'],
-        orElse: () => VitaminStatus.pending,
-      ),
       syncMetadata: record.metadata,
     );
   }
+
+  Map<String, dynamic> toSupabaseRow({required String userId}) => {
+    'id': id,
+    'user_id': userId,
+    'name': name,
+    'schedule_hour': hour,
+    'schedule_minute': minute,
+    // Kept only because the initial schema requires the legacy column.
+    'status': VitaminStatus.pending.name,
+    'created_at': syncMetadata.createdAt.toUtc().toIso8601String(),
+    'updated_at': syncMetadata.updatedAt.toUtc().toIso8601String(),
+    'deleted_at': syncMetadata.deletedAt?.toUtc().toIso8601String(),
+  };
+
+  factory VitaminDto.fromSupabaseRow(Map<String, dynamic> row) => VitaminDto(
+    id: row['id'] as String,
+    name: row['name'] as String,
+    hour: row['schedule_hour'] as int,
+    minute: row['schedule_minute'] as int,
+    syncMetadata: SyncMetadata(
+      id: row['id'] as String,
+      userId: row['user_id'] as String,
+      createdAt: DateTime.parse(row['created_at'] as String),
+      updatedAt: DateTime.parse(row['updated_at'] as String),
+      deletedAt: row['deleted_at'] == null
+          ? null
+          : DateTime.parse(row['deleted_at'] as String),
+      syncStatus: SyncStatus.synced,
+    ),
+  );
 
   static SyncStatus _nextSyncStatus(SyncStatus? currentStatus) {
     return switch (currentStatus) {

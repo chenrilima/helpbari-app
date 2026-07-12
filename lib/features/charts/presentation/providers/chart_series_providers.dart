@@ -80,6 +80,9 @@ final healthScoreChartSeriesProvider = FutureProvider.autoDispose
       final waterRecords = await ref.read(waterUseCasesProvider).getHistory();
       final meals = await ref.read(mealUseCasesProvider).getAll();
       final vitamins = await ref.read(vitaminUseCasesProvider).getAll();
+      final vitaminLogs = await ref
+          .read(vitaminUseCasesProvider)
+          .getLogs(startDate, now);
       final medications = await ref.read(medicationUseCasesProvider).getAll();
       final weights = await ref.read(weightUseCasesProvider).getHistory();
 
@@ -114,7 +117,17 @@ final healthScoreChartSeriesProvider = FutureProvider.autoDispose
           return HealthScoreCalculator.calculate(
             hydration: hydration,
             protein: protein,
-            pendingVitamins: vitamins.where((item) => item.isPending).length,
+            pendingVitamins:
+                vitamins.length -
+                vitaminLogs
+                    .where(
+                      (log) =>
+                          _dateOnly(log.date) == date &&
+                          log.status.name != 'pending',
+                    )
+                    .map((log) => log.vitaminId)
+                    .toSet()
+                    .length,
             pendingMedications: medications
                 .where((item) => item.isPending)
                 .length,
@@ -137,12 +150,13 @@ final healthScoreChartSeriesProvider = FutureProvider.autoDispose
 
 final vitaminAdherenceChartSeriesProvider = FutureProvider.autoDispose
     .family<ChartSeries, ChartPeriod>((ref, period) async {
-      final vitamins = await ref.read(vitaminUseCasesProvider).getAll();
+      final useCases = ref.read(vitaminUseCasesProvider);
+      final now = ref.read(clockServiceProvider).now();
+      final start = period.startDate(now);
+      final vitamins = await useCases.getAll();
       final adherence = vitamins.isEmpty
           ? null
-          : vitamins.where((item) => item.isTaken).length /
-                vitamins.length *
-                100;
+          : await useCases.adherence(start, now);
 
       return ChartSeries(
         title: 'Aderência de vitaminas',
@@ -150,13 +164,7 @@ final vitaminAdherenceChartSeriesProvider = FutureProvider.autoDispose
         unit: '%',
         points: adherence == null
             ? const []
-            : [
-                ChartPoint(
-                  date: ref.read(clockServiceProvider).now(),
-                  value: adherence,
-                  label: 'Hoje',
-                ),
-              ],
+            : [ChartPoint(date: now, value: adherence, label: 'Hoje')],
         emptyTitle: 'Sem vitaminas cadastradas',
         emptyDescription:
             'Cadastre vitaminas e marque como tomadas para acompanhar a aderência.',
