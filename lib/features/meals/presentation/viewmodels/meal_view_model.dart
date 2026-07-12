@@ -18,17 +18,13 @@ import '../providers/meal_use_cases_provider.dart';
 import '../states/meal_state.dart';
 
 class MealViewModel extends Notifier<MealState> {
-  late final UuidService _uuidService;
-  late final LoggerService _logger;
-  late final ClockService _clock;
-  late final MealUseCases _useCases;
+  UuidService get _uuidService => ref.read(uuidServiceProvider);
+  LoggerService get _logger => ref.read(loggerServiceProvider);
+  ClockService get _clock => ref.read(clockServiceProvider);
+  MealUseCases get _useCases => ref.read(mealUseCasesProvider);
 
   @override
   MealState build() {
-    _useCases = ref.read(mealUseCasesProvider);
-    _uuidService = ref.read(uuidServiceProvider);
-    _logger = ref.read(loggerServiceProvider);
-    _clock = ref.read(clockServiceProvider);
     return const MealState();
   }
 

@@ -15,18 +15,12 @@ import '../../../progress/presentation/providers/progress_view_model_provider.da
 import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
 
 class WeightViewModel extends Notifier<WeightState> {
-  late final WeightUseCases _useCases;
-  late final UuidService _uuidService;
-  late final ClockService _clock;
+  WeightUseCases get _useCases => ref.read(weightUseCasesProvider);
+  UuidService get _uuidService => ref.read(uuidServiceProvider);
+  ClockService get _clock => ref.read(clockServiceProvider);
 
   @override
-  WeightState build() {
-    _useCases = ref.read(weightUseCasesProvider);
-    _uuidService = ref.read(uuidServiceProvider);
-    _clock = ref.read(clockServiceProvider);
-
-    return const WeightState();
-  }
+  WeightState build() => const WeightState();
 
   Future<void> loadHistory() async {
     state = state.copyWith(isLoading: true);
