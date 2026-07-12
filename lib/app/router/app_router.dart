@@ -38,6 +38,7 @@ import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/vitamins/presentation/pages/register_vitamin_page.dart';
 import '../../features/vitamins/presentation/pages/vitamins_page.dart';
+import '../../features/vitamins/domain/entities/vitamin.dart';
 import '../../features/water/presentation/pages/register_water_page.dart';
 import '../../features/water/presentation/pages/water_page.dart';
 import '../../features/water/domain/entities/entities.dart';
@@ -166,7 +167,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.registerVitamin,
-        builder: (context, state) => const RegisterVitaminPage(),
+        builder: (context, state) => RegisterVitaminPage(
+          vitamin: state.extra is Vitamin ? state.extra! as Vitamin : null,
+        ),
       ),
       GoRoute(
         path: AppRoutes.registerAppointment,

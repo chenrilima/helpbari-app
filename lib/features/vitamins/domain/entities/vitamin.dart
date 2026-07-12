@@ -6,7 +6,6 @@ class Vitamin extends Entity {
     required this.id,
     required this.name,
     required this.scheduleTime,
-    this.status = VitaminStatus.pending,
   });
 
   @override
@@ -14,36 +13,15 @@ class Vitamin extends Entity {
 
   final VitaminName name;
   final VitaminScheduleTime scheduleTime;
-  final VitaminStatus status;
-
-  bool get isPending => status == VitaminStatus.pending;
-
-  bool get isTaken => status == VitaminStatus.taken;
-
-  bool get isSkipped => status == VitaminStatus.skipped;
-
   String get formattedName => name.value;
 
   String get formattedTime => scheduleTime.formatted;
 
-  Vitamin markAsTaken() {
-    return copyWith(status: VitaminStatus.taken);
-  }
-
-  Vitamin markAsSkipped() {
-    return copyWith(status: VitaminStatus.skipped);
-  }
-
-  Vitamin copyWith({
-    VitaminName? name,
-    VitaminScheduleTime? scheduleTime,
-    VitaminStatus? status,
-  }) {
+  Vitamin copyWith({VitaminName? name, VitaminScheduleTime? scheduleTime}) {
     return Vitamin(
       id: id,
       name: name ?? this.name,
       scheduleTime: scheduleTime ?? this.scheduleTime,
-      status: status ?? this.status,
     );
   }
 }

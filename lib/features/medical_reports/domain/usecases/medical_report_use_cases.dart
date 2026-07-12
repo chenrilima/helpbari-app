@@ -80,6 +80,10 @@ class MedicalReportUseCases {
       _appointmentUseCases.getAll(),
       _examUseCases.getAll(),
       _settingsUseCases.getSettings(),
+      _vitaminUseCases.getLogs(
+        DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
+        DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
+      ),
     ]);
 
     final profile = results[0] as Profile?;
@@ -91,6 +95,7 @@ class MedicalReportUseCases {
     final appointments = results[6] as List;
     final exams = results[7] as List;
     final settings = results[8] as AppSettings;
+    final vitaminLogs = results[9] as List;
     final now = _clock.now();
     final currentWeight = weightHistory.isEmpty
         ? null
@@ -126,7 +131,13 @@ class MedicalReportUseCases {
     final dailySummary = DailySummaryCalculator.calculate(
       waterConsumedMl: totalWaterToday,
       waterGoalMl: settings.dailyWaterGoalMl,
-      pendingVitamins: vitamins.where((vitamin) => vitamin.isPending).length,
+      pendingVitamins:
+          vitamins.length -
+          vitaminLogs
+              .where((log) => log.status.name != 'pending')
+              .map((log) => log.vitaminId)
+              .toSet()
+              .length,
       pendingMedications: medications
           .where((medication) => medication.isPending)
           .length,
@@ -159,6 +170,7 @@ class MedicalReportUseCases {
       weightHistory: List.unmodifiable(weightHistory),
       waterHistory: List.unmodifiable(waterHistory),
       vitamins: List.unmodifiable(vitamins),
+      vitaminLogs: List.unmodifiable(vitaminLogs.cast()),
       medications: List.unmodifiable(medications),
       meals: List.unmodifiable(meals),
       appointments: List.unmodifiable(appointments),

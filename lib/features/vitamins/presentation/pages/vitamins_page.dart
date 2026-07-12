@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
@@ -16,6 +17,20 @@ class VitaminsPage extends ConsumerStatefulWidget {
 }
 
 class _VitaminsPageState extends ConsumerState<VitaminsPage> {
+  Future<void> _delete(String id) async {
+    final confirmed = await HBDialog.confirm(
+      context,
+      title: 'Excluir vitamina?',
+      message: 'O cadastro e o histórico desta vitamina serão removidos.',
+    );
+    if (confirmed != true || !mounted) return;
+    final ok = await ref
+        .read(vitaminViewModelProvider.notifier)
+        .deleteVitamin(id);
+    if (!mounted) return;
+    if (ok) HBSnackBar.success(context, message: 'Vitamina excluída.');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,7 +56,15 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
         const HBGap.xl(),
         const VitaminAdherenceChartWidget(),
         const HBGap.xl(),
-        if (!state.hasVitamins)
+        if (state.isLoading && !state.hasVitamins)
+          const Center(child: CircularProgressIndicator())
+        else if (state.errorMessage != null && !state.hasVitamins)
+          HBEmptyState(
+            title: 'Não foi possível carregar',
+            description: state.errorMessage!,
+            icon: AppIcons.vitamin,
+          )
+        else if (!state.hasVitamins)
           const HBEmptyState(
             title: 'Nenhuma vitamina cadastrada',
             description:
@@ -59,6 +82,7 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
 
               return VitaminTile(
                 vitamin: vitamin,
+                status: state.statusFor(vitamin.id),
                 onTaken: () {
                   ref
                       .read(vitaminViewModelProvider.notifier)
@@ -69,6 +93,16 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
                       .read(vitaminViewModelProvider.notifier)
                       .markAsSkipped(vitamin.id);
                 },
+                onEdit: () async {
+                  await context.push<bool>(
+                    AppRoutes.registerVitamin,
+                    extra: vitamin,
+                  );
+                  await ref
+                      .read(vitaminViewModelProvider.notifier)
+                      .loadVitamins();
+                },
+                onDelete: () => _delete(vitamin.id),
               );
             },
           ),
