@@ -11,6 +11,7 @@ import 'daos/vitamin_dao.dart';
 import 'daos/vitamin_log_dao.dart';
 import 'daos/medication_dao.dart';
 import 'daos/medication_log_dao.dart';
+import 'daos/privacy_consent_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
@@ -35,6 +36,7 @@ import 'tables/vitamin_cutovers.dart';
 import 'tables/medication_records.dart';
 import 'tables/medication_log_records.dart';
 import 'tables/medication_cutovers.dart';
+import 'tables/privacy_consent_records.dart';
 
 part 'app_database.g.dart';
 
@@ -63,6 +65,7 @@ part 'app_database.g.dart';
     MedicationRecords,
     MedicationLogRecords,
     MedicationCutovers,
+    PrivacyConsentRecords,
   ],
   daos: [
     WaterDao,
@@ -76,6 +79,7 @@ part 'app_database.g.dart';
     VitaminLogDao,
     MedicationDao,
     MedicationLogDao,
+    PrivacyConsentDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -83,7 +87,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 11;
+  int get schemaVersion => 12;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -131,6 +135,9 @@ class AppDatabase extends _$AppDatabase {
         await migrator.createTable(medicationRecords);
         await migrator.createTable(medicationLogRecords);
         await migrator.createTable(medicationCutovers);
+      }
+      if (from < 12) {
+        await migrator.createTable(privacyConsentRecords);
       }
     },
     beforeOpen: (details) async {

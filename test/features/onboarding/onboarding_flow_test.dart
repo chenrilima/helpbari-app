@@ -69,6 +69,7 @@ void main() {
     expect(draft.waterGoalConfirmed, isFalse);
     expect(draft.notificationsConfirmed, isFalse);
     expect(draft.currentWeightConfirmedAsInitial, isFalse);
+    expect(draft.documentsAccepted, isFalse);
   });
 }
 

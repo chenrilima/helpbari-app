@@ -17,6 +17,10 @@ import '../../features/profile/data/datasources/drift_profile_local_datasource.d
 import '../../features/profile/data/datasources/profile_supabase_datasource.dart';
 import '../../features/profile/data/repositories/profile_sync_repository.dart';
 import '../../features/profile/presentation/providers/profile_view_model_provider.dart';
+import '../../features/privacy/data/datasources/drift_privacy_consent_datasource.dart';
+import '../../features/privacy/data/repositories/privacy_consent_sync_repository.dart';
+import '../../features/privacy/presentation/providers/privacy_providers.dart';
+import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
 import '../../features/medical_reports/presentation/providers/medical_report_providers.dart';
 import '../../features/water/data/datasources/drift_water_local_datasource.dart';
 import '../../features/water/data/datasources/water_supabase_datasource.dart';
@@ -72,6 +76,14 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
   if (user == null || supabaseClient == null) return const [];
 
   return [
+    PrivacyConsentSyncRepository(
+      local: () async => DriftPrivacyConsentDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).privacyConsentDao,
+        userId: user.id,
+      ),
+      remote: ref.watch(privacyRemoteDatasourceProvider)!,
+      userId: user.id,
+    ),
     ProfileSyncRepository(
       local: () async {
         if (!ref.read(driftAvailableProvider)) {
@@ -301,6 +313,9 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(medicalReportViewModelProvider);
     ref.invalidate(bariaViewModelProvider);
     ref.invalidate(profileViewModelProvider);
+    ref.invalidate(privacyRepositoryProvider);
+    ref.invalidate(privacyViewModelProvider);
+    ref.invalidate(onboardingViewModelProvider);
     await ref.read(settingsViewModelProvider.notifier).loadSettings();
     await Future.wait([
       ref.read(waterViewModelProvider.notifier).loadHistory(),

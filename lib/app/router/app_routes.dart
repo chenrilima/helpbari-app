@@ -27,4 +27,5 @@ abstract final class AppRoutes {
   static const registerMeal = '/mealsRegister';
   static const medicalReports = '/medical-reports';
   static const settings = '/settings';
+  static const privacy = '/privacy';
 }

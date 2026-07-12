@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/formatters/app_water_formatter.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../app/bootstrap/sync_bootstrap_provider.dart';
+import '../../../../app/router/app_routes.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/setting_view_model_provider.dart';
 
@@ -68,6 +70,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 },
               ),
             ],
+          ),
+        ),
+        const HBGap.lg(),
+        HBCard(
+          child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: const HBText('Privacidade e Dados'),
+            subtitle: const HBText('Consentimentos, exportação e exclusão'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(AppRoutes.privacy),
           ),
         ),
         const HBGap.lg(),

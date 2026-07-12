@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../profile/domain/value_objects/value_objects.dart';
+import '../../../privacy/domain/entities/entities.dart';
 import '../../domain/entities/entities.dart';
 import '../providers/onboarding_providers.dart';
 import '../states/onboarding_state.dart';
@@ -184,6 +185,17 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             .read(onboardingViewModelProvider.notifier)
             .updateDraft,
       ),
+      OnboardingStep.documents => _DocumentsStep(
+        accepted: state.draft.documentsAccepted,
+        onChanged: (value) => ref
+            .read(onboardingViewModelProvider.notifier)
+            .updateDraft(state.draft.copyWith(documentsAccepted: value)),
+        onOpen: (document) => HBDialog.info(
+          context,
+          title: '${document.title} • v${document.version}',
+          message: document.content,
+        ),
+      ),
       OnboardingStep.completion => const OnboardingStepContent(
         icon: AppIcons.success,
         title: 'Pronto para comecar',
@@ -252,6 +264,50 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         .read(onboardingViewModelProvider.notifier)
         .setNotificationsEnabled(isEnabled);
   }
+}
+
+class _DocumentsStep extends StatelessWidget {
+  const _DocumentsStep({
+    required this.accepted,
+    required this.onChanged,
+    required this.onOpen,
+  });
+
+  final bool accepted;
+  final ValueChanged<bool> onChanged;
+  final ValueChanged<PrivacyDocument> onOpen;
+
+  @override
+  Widget build(BuildContext context) => OnboardingStepContent(
+    icon: Icons.privacy_tip_outlined,
+    title: 'Privacidade e uso dos dados',
+    description:
+        'Leia e aceite os documentos obrigatórios para concluir sua configuração.',
+    children: [
+      ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: const HBText('Política de Privacidade'),
+        subtitle: const HBText('Versão ${PrivacyDocuments.privacyVersion}'),
+        trailing: const Icon(Icons.open_in_new),
+        onTap: () => onOpen(PrivacyDocuments.policy),
+      ),
+      ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: const HBText('Termos de Uso'),
+        subtitle: const HBText('Versão ${PrivacyDocuments.termsVersion}'),
+        trailing: const Icon(Icons.open_in_new),
+        onTap: () => onOpen(PrivacyDocuments.terms),
+      ),
+      CheckboxListTile(
+        contentPadding: EdgeInsets.zero,
+        value: accepted,
+        onChanged: (value) => onChanged(value ?? false),
+        title: const HBText(
+          'Li e aceito os Termos de Uso e a Política de Privacidade.',
+        ),
+      ),
+    ],
+  );
 }
 
 class _OnboardingHeader extends StatelessWidget {

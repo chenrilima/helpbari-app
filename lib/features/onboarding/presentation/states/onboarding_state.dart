@@ -7,6 +7,7 @@ enum OnboardingStep {
   permissions,
   goals,
   initialData,
+  documents,
   completion,
 }
 

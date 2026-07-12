@@ -16,6 +16,7 @@ final class OnboardingProfileDraft {
     this.currentWeightConfirmedAsInitial = false,
     this.waterGoalConfirmed = false,
     this.notificationsConfirmed = false,
+    this.documentsAccepted = false,
   });
 
   factory OnboardingProfileDraft.fromJson(Map<String, Object?> json) {
@@ -37,6 +38,7 @@ final class OnboardingProfileDraft {
           json['currentWeightConfirmedAsInitial'] as bool? ?? false,
       waterGoalConfirmed: json['waterGoalConfirmed'] as bool? ?? false,
       notificationsConfirmed: json['notificationsConfirmed'] as bool? ?? false,
+      documentsAccepted: json['documentsAccepted'] as bool? ?? false,
     );
   }
 
@@ -54,6 +56,7 @@ final class OnboardingProfileDraft {
   final bool currentWeightConfirmedAsInitial;
   final bool waterGoalConfirmed;
   final bool notificationsConfirmed;
+  final bool documentsAccepted;
 
   OnboardingProfileDraft copyWith({
     String? name,
@@ -70,6 +73,7 @@ final class OnboardingProfileDraft {
     bool? currentWeightConfirmedAsInitial,
     bool? waterGoalConfirmed,
     bool? notificationsConfirmed,
+    bool? documentsAccepted,
   }) {
     return OnboardingProfileDraft(
       name: name ?? this.name,
@@ -89,6 +93,7 @@ final class OnboardingProfileDraft {
       waterGoalConfirmed: waterGoalConfirmed ?? this.waterGoalConfirmed,
       notificationsConfirmed:
           notificationsConfirmed ?? this.notificationsConfirmed,
+      documentsAccepted: documentsAccepted ?? this.documentsAccepted,
     );
   }
 
@@ -108,6 +113,7 @@ final class OnboardingProfileDraft {
       'currentWeightConfirmedAsInitial': currentWeightConfirmedAsInitial,
       'waterGoalConfirmed': waterGoalConfirmed,
       'notificationsConfirmed': notificationsConfirmed,
+      'documentsAccepted': documentsAccepted,
     };
   }
 
