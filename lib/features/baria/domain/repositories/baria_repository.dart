@@ -1,6 +1,7 @@
 import '../models/models.dart';
 
 abstract interface class BariaRepository {
+  Future<BariaContext> getContext();
   Future<BariaInsight> getDailyInsight();
 
   Future<List<BariaMessage>> getConversationHistory();

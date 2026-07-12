@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../auth/presentation/providers/auth_providers.dart';
-import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
-import '../../../water/presentation/providers/water_view_model_provider.dart';
+import '../../../../core/services/service_providers.dart';
+import '../../../../core/services/clock_service.dart';
+import '../../../../core/services/uuid_service.dart';
+import '../../../../core/sync/sync.dart';
+import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../domain/models/models.dart';
 import '../../domain/usecases/baria_use_cases.dart';
 import '../providers/baria_use_cases_provider.dart';
@@ -13,19 +16,18 @@ import 'baria_state.dart';
 class BariaViewModel extends Notifier<BariaState> {
   int _insightRequest = 0;
   BariaUseCases get _bariaUseCases => ref.read(bariaUseCasesProvider);
+  ClockService get _clock => ref.read(clockServiceProvider);
+  UuidService get _uuid => ref.read(uuidServiceProvider);
 
   @override
   BariaState build() {
-    ref.listen(waterViewModelProvider, (previous, next) {
-      if (previous != null &&
-          previous.isLoading &&
-          !next.isLoading &&
-          next.errorMessage == null) {
+    ref.listen(homeViewModelProvider, (previous, next) {
+      if (previous != null && previous != next && !next.isLoading) {
         unawaited(loadDailyInsight());
       }
     });
-    ref.listen(dailyWaterGoalProvider, (previous, next) {
-      if (previous != null && next.hasValue) {
+    ref.listen(syncManagerProvider, (previous, next) {
+      if (previous?.lastSyncAt != next.lastSyncAt) {
         unawaited(loadDailyInsight());
       }
     });
@@ -64,9 +66,9 @@ class BariaViewModel extends Notifier<BariaState> {
     try {
       // Save user message
       final userMsg = BariaMessage(
-        id: DateTime.now().toIso8601String(),
+        id: _uuid.generate(),
         content: userMessage,
-        timestamp: DateTime.now(),
+        timestamp: _clock.now(),
         isFromUser: true,
       );
       await _bariaUseCases.saveMessage(userMsg);
@@ -81,9 +83,9 @@ class BariaViewModel extends Notifier<BariaState> {
       // Generate and save response
       final response = await _bariaUseCases.generateResponse(userMessage);
       final responseMsg = BariaMessage(
-        id: DateTime.now().toIso8601String(),
+        id: _uuid.generate(),
         content: response,
-        timestamp: DateTime.now(),
+        timestamp: _clock.now(),
         isFromUser: false,
       );
       await _bariaUseCases.saveMessage(responseMsg);
