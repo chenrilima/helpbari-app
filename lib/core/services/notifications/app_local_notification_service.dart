@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/data/latest.dart' as timezone_data;
 import 'package:timezone/timezone.dart' as timezone;
@@ -19,10 +22,8 @@ class AppLocalNotificationService implements LocalNotificationService {
   AppLocalNotificationService({
     required LoggerService logger,
     FlutterLocalNotificationsPlugin? plugin,
-    String localTimeZoneName = 'America/Sao_Paulo',
   }) : _logger = logger,
-       _plugin = plugin ?? FlutterLocalNotificationsPlugin(),
-       _localTimeZoneName = localTimeZoneName;
+       _plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
   static const _channelId = 'helpbari_reminders';
   static const _channelName = 'Lembretes';
@@ -31,16 +32,27 @@ class AppLocalNotificationService implements LocalNotificationService {
 
   final LoggerService _logger;
   final FlutterLocalNotificationsPlugin _plugin;
-  final String _localTimeZoneName;
+  final StreamController<LocalNotificationPayload> _taps =
+      StreamController<LocalNotificationPayload>.broadcast();
 
   bool _initialized = false;
+  String _localTimeZoneName = 'UTC';
+  LocalNotificationPayload? _pendingLaunchPayload;
+
+  @override
+  Stream<LocalNotificationPayload> get taps async* {
+    final pending = _pendingLaunchPayload;
+    _pendingLaunchPayload = null;
+    if (pending != null) yield pending;
+    yield* _taps.stream;
+  }
 
   @override
   Future<void> initialize() async {
     if (_initialized) return;
 
     timezone_data.initializeTimeZones();
-    timezone.setLocalLocation(timezone.getLocation(_localTimeZoneName));
+    await _configureLocalTimeZone();
 
     const androidSettings = AndroidInitializationSettings(
       '@mipmap/ic_launcher',
@@ -63,6 +75,11 @@ class AppLocalNotificationService implements LocalNotificationService {
     );
 
     _initialized = true;
+    final launch = await _plugin.getNotificationAppLaunchDetails();
+    final launchResponse = launch?.notificationResponse;
+    if (launch?.didNotificationLaunchApp ?? false) {
+      _emitPayload(launchResponse?.payload, retainForFirstListener: true);
+    }
   }
 
   @override
@@ -90,6 +107,29 @@ class AppLocalNotificationService implements LocalNotificationService {
         false;
 
     return androidGranted && iosGranted;
+  }
+
+  @override
+  Future<NotificationPermissionState> permissionState() async {
+    final status = await Permission.notification.status;
+    if (status.isGranted) return NotificationPermissionState.granted;
+    if (status.isPermanentlyDenied) {
+      return NotificationPermissionState.permanentlyDenied;
+    }
+    return NotificationPermissionState.denied;
+  }
+
+  @override
+  Future<String> localTimeZoneName() async {
+    await initialize();
+    await _configureLocalTimeZone();
+    return _localTimeZoneName;
+  }
+
+  @override
+  Future<int> pendingCount() async {
+    await initialize();
+    return (await _plugin.pendingNotificationRequests()).length;
   }
 
   @override
@@ -131,7 +171,9 @@ class AppLocalNotificationService implements LocalNotificationService {
 
   @override
   Future<void> cancelPayload(LocalNotificationPayload payload) {
-    return cancel(notificationKey(payload.source, payload.entityId));
+    return cancel(
+      notificationKey(payload.userId, payload.source, payload.entityId),
+    );
   }
 
   @override
@@ -215,16 +257,35 @@ class AppLocalNotificationService implements LocalNotificationService {
   }
 
   void _handleTap(NotificationResponse response) {
-    final payload = LocalNotificationPayload.decode(response.payload);
+    _emitPayload(response.payload);
+  }
+
+  void _emitPayload(String? encoded, {bool retainForFirstListener = false}) {
+    final payload = LocalNotificationPayload.decode(encoded);
 
     if (payload == null) {
       _logger.warning('Payload de notificacao invalido.');
       return;
     }
 
-    _logger.info(
-      'Notificacao aberta: ${payload.source.name}/${payload.entityId}',
-    );
+    _logger.info('Local notification opened (${payload.source.name}).');
+    if (retainForFirstListener) {
+      _pendingLaunchPayload = payload;
+    } else {
+      _taps.add(payload);
+    }
+  }
+
+  Future<void> _configureLocalTimeZone() async {
+    try {
+      final identifier = (await FlutterTimezone.getLocalTimezone()).identifier;
+      timezone.setLocalLocation(timezone.getLocation(identifier));
+      _localTimeZoneName = identifier;
+    } catch (_) {
+      _localTimeZoneName = 'UTC';
+      timezone.setLocalLocation(timezone.UTC);
+      _logger.warning('Unable to resolve device timezone; using UTC.');
+    }
   }
 
   TargetPlatform get _platform => defaultTargetPlatform;

@@ -31,6 +31,7 @@ import '../../features/progress/presentation/pages/progress_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../core/supabase/session/session_manager_provider.dart';
+import '../../core/services/service_providers.dart';
 import '../../features/auth/presentation/guards/auth_guard.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/reset_password_page.dart';
@@ -47,6 +48,7 @@ import '../../features/weight/presentation/pages/register_weight_page.dart';
 import '../../features/weight/presentation/pages/weight_page.dart';
 import '../../features/weight/domain/entities/entities.dart' show WeightRecord;
 import 'app_routes.dart';
+import 'notification_navigation.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final refreshListenable = _GoRouterRefreshStream(
@@ -236,7 +238,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
   );
 
+  final notificationTapSubscription = ref
+      .read(notificationSchedulerProvider)
+      .taps
+      .listen((payload) {
+        final activeUserId = ref.read(authSessionProvider)?.id;
+        if (activeUserId == null || payload.userId != activeUserId) return;
+        final location = notificationLocation(payload);
+        if (location != null) router.go(location);
+      });
+
   ref.onDispose(() {
+    unawaited(notificationTapSubscription.cancel());
     refreshListenable.dispose();
     router.dispose();
   });

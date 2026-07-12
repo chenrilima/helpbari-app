@@ -314,6 +314,16 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),
     ]);
+    try {
+      final settings = await ref.read(settingsUseCasesProvider).getSettings();
+      await ref.read(settingsReminderSyncServiceProvider).restore(settings);
+    } catch (error) {
+      ref
+          .read(loggerServiceProvider)
+          .warning(
+            'Notification restore after sync failed (${error.runtimeType}).',
+          );
+    }
   };
 });
 

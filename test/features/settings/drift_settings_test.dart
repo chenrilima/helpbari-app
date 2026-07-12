@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:drift/native.dart';
@@ -134,26 +135,38 @@ void main() {
   test('post-commit reminder application is idempotent', () async {
     final settingsUseCases = SettingsUseCases(_SettingsRepository());
     final notifications = _Notifications();
+    final scheduler = NotificationScheduler(
+      notifications: notifications,
+      clock: const _Clock(),
+      logger: _Logger(),
+    );
     final service = SettingsReminderSyncService(
       vitaminUseCases: VitaminUseCases(_VitaminRepository()),
       vitaminReminders: VitaminReminderService(
         settingsUseCases: settingsUseCases,
-        notifications: notifications,
+        scheduler: scheduler,
+        clock: const _Clock(),
+        userId: 'user-a',
       ),
       medicationUseCases: MedicationUseCases(_MedicationRepository()),
       medicationReminders: MedicationReminderService(
         settingsUseCases: settingsUseCases,
-        notifications: notifications,
+        scheduler: scheduler,
+        clock: const _Clock(),
+        userId: 'user-a',
       ),
       appointmentUseCases: AppointmentUseCases(_AppointmentRepository()),
       appointmentReminders: AppointmentReminderService(
         settingsUseCases: settingsUseCases,
-        notifications: notifications,
+        scheduler: scheduler,
+        userId: 'user-a',
       ),
+      scheduler: scheduler,
+      userId: 'user-a',
     );
     const settings = AppSettings(id: 'user-a');
     expect(await service.applyAfterCommit(settings), isTrue);
-    expect(await service.applyAfterCommit(settings), isFalse);
+    expect(await service.applyAfterCommit(settings), isTrue);
   });
 
   test('sync repository pushes, pulls and applies remote settings', () async {
@@ -375,6 +388,8 @@ class _AppointmentRepository implements AppointmentRepository {
 }
 
 class _Notifications implements LocalNotificationService {
+  final StreamController<LocalNotificationPayload> controller =
+      StreamController<LocalNotificationPayload>.broadcast();
   @override
   Future<void> cancel(String key) async {}
   @override
@@ -385,6 +400,15 @@ class _Notifications implements LocalNotificationService {
   Future<void> initialize() async {}
   @override
   Future<bool> requestPermissions() async => true;
+  @override
+  Future<NotificationPermissionState> permissionState() async =>
+      NotificationPermissionState.granted;
+  @override
+  Future<String> localTimeZoneName() async => 'America/Sao_Paulo';
+  @override
+  Future<int> pendingCount() async => 0;
+  @override
+  Stream<LocalNotificationPayload> get taps => controller.stream;
   @override
   Future<void> reschedule(
     Iterable<LocalNotificationSchedule> schedules,

@@ -5,34 +5,44 @@ import '../domain/entities/entities.dart';
 class VitaminReminderService {
   const VitaminReminderService({
     required SettingsUseCases settingsUseCases,
-    required LocalNotificationService notifications,
+    required NotificationScheduler scheduler,
+    required ClockService clock,
+    required String userId,
   }) : _settingsUseCases = settingsUseCases,
-       _notifications = notifications;
+       _scheduler = scheduler,
+       _clock = clock,
+       _userId = userId;
 
   final SettingsUseCases _settingsUseCases;
-  final LocalNotificationService _notifications;
+  final NotificationScheduler _scheduler;
+  final ClockService _clock;
+  final String _userId;
 
   Future<void> scheduleIfEnabled(Vitamin vitamin) async {
     final settings = await _settingsUseCases.getSettings();
 
     if (!settings.vitaminRemindersEnabled) return;
 
-    await _notifications.scheduleRecurring(_vitaminSchedule(vitamin));
+    await _scheduler.schedule(_vitaminSchedule(vitamin));
   }
 
   Future<void> rescheduleIfEnabled(Vitamin vitamin) async {
     final settings = await _settingsUseCases.getSettings();
 
-    if (!settings.vitaminRemindersEnabled) return;
+    if (!settings.vitaminRemindersEnabled) {
+      await cancel(vitamin.id);
+      return;
+    }
 
-    await _notifications.update(_vitaminSchedule(vitamin));
+    await _scheduler.schedule(_vitaminSchedule(vitamin));
   }
 
   Future<void> cancel(String vitaminId) {
-    return _notifications.cancelPayload(
+    return _scheduler.cancel(
       LocalNotificationPayload(
         source: NotificationSource.vitamin,
         entityId: vitaminId,
+        userId: _userId,
       ),
     );
   }
@@ -40,11 +50,16 @@ class VitaminReminderService {
   LocalNotificationSchedule _vitaminSchedule(Vitamin vitamin) {
     return NotificationSchedules.dailyReminder(
       source: NotificationSource.vitamin,
+      userId: _userId,
       entityId: vitamin.id,
       title: 'Hora da vitamina',
       body: 'Registre ${vitamin.formattedName}.',
       hour: vitamin.scheduleTime.hour,
       minute: vitamin.scheduleTime.minute,
+      now: _clock.now(),
     );
   }
+
+  LocalNotificationSchedule scheduleFor(Vitamin vitamin) =>
+      _vitaminSchedule(vitamin);
 }
