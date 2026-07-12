@@ -6,9 +6,14 @@ import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/exam_view_model_provider.dart';
+import '../../domain/entities/entities.dart';
+import '../../../../core/media/media.dart';
+import '../../../../shared/widgets/media/media_widgets.dart';
+import '../../application/exam_attachment_service.dart';
 
 class RegisterExamPage extends ConsumerStatefulWidget {
-  const RegisterExamPage({super.key});
+  const RegisterExamPage({super.key, this.exam});
+  final Exam? exam;
 
   @override
   ConsumerState<RegisterExamPage> createState() => _RegisterExamPageState();
@@ -17,16 +22,28 @@ class RegisterExamPage extends ConsumerStatefulWidget {
 class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
-  final _laboratoryController = TextEditingController();
-  final _notesController = TextEditingController();
+  late final TextEditingController _nameController;
+  late final TextEditingController _laboratoryController;
+  late final TextEditingController _notesController;
 
   late DateTime _selectedDate;
+  MediaFile? _attachment;
+  bool _removeAttachment = false;
+  bool _saving = false;
+  bool get _editing => widget.exam != null;
 
   @override
   void initState() {
     super.initState();
-    _selectedDate = ref.read(clockServiceProvider).now();
+    _nameController = TextEditingController(
+      text: widget.exam?.name.value ?? '',
+    );
+    _laboratoryController = TextEditingController(
+      text: widget.exam?.laboratory ?? '',
+    );
+    _notesController = TextEditingController(text: widget.exam?.notes ?? '');
+    _selectedDate =
+        widget.exam?.examDate.value ?? ref.read(clockServiceProvider).now();
   }
 
   @override
@@ -55,24 +72,51 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
   }
 
   Future<void> _save() async {
+    if (_saving) return;
     final formState = _formKey.currentState;
 
     if (formState == null || !formState.validate()) {
       return;
     }
 
-    await ref
-        .read(examViewModelProvider.notifier)
-        .createExam(
-          name: _nameController.text.trim(),
-          examDate: _selectedDate,
-          laboratory: _laboratoryController.text.trim(),
-          notes: _notesController.text.trim(),
-        );
+    setState(() => _saving = true);
+    final vm = ref.read(examViewModelProvider.notifier);
+    final success = _editing
+        ? await vm.updateExam(
+            widget.exam!,
+            name: _nameController.text.trim(),
+            examDate: _selectedDate,
+            laboratory: _laboratoryController.text.trim(),
+            notes: _notesController.text.trim(),
+            attachment: _attachment,
+            removeAttachment: _removeAttachment,
+          )
+        : await vm.createExam(
+            name: _nameController.text.trim(),
+            examDate: _selectedDate,
+            laboratory: _laboratoryController.text.trim(),
+            notes: _notesController.text.trim(),
+            attachment: _attachment,
+          );
 
     if (!mounted) return;
 
-    HBSnackBar.success(context, message: 'Exame cadastrado com sucesso.');
+    if (!success) {
+      setState(() => _saving = false);
+      HBSnackBar.error(
+        context,
+        message:
+            ref.read(examViewModelProvider).errorMessage ??
+            'Não foi possível salvar o exame.',
+      );
+      return;
+    }
+    HBSnackBar.success(
+      context,
+      message: _editing
+          ? 'Exame atualizado com sucesso.'
+          : 'Exame cadastrado com sucesso.',
+    );
 
     context.pop(true);
   }
@@ -84,52 +128,83 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
         '${_selectedDate.month.toString().padLeft(2, '0')}/'
         '${_selectedDate.year}';
 
-    return HBPage(
-      appBar: const HBAppBar(
-        title: 'Cadastrar exame',
-        subtitle: 'Acompanhe seus exames realizados',
-      ),
-      children: [
-        HBCard(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                HBTextField(
-                  controller: _nameController,
-                  label: 'Nome do exame',
-                  validator: AppValidators.examName,
-                ),
+    return HBLoadingOverlay(
+      isLoading: _saving,
+      message: 'Salvando exame...',
+      child: HBPage(
+        appBar: HBAppBar(
+          title: _editing ? 'Editar exame' : 'Cadastrar exame',
+          subtitle: 'Acompanhe seus exames realizados',
+        ),
+        children: [
+          HBCard(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  HBTextField(
+                    controller: _nameController,
+                    label: 'Nome do exame',
+                    validator: AppValidators.examName,
+                  ),
 
-                const HBGap.md(),
+                  const HBGap.md(),
+                  MediaAttachmentPicker(
+                    initialFiles: _attachment == null
+                        ? const []
+                        : [_attachment!],
+                    validationConfig: ExamAttachmentService.validationConfig,
+                    onChanged: (files) =>
+                        setState(() => _attachment = files.firstOrNull),
+                    onError: (error) =>
+                        HBSnackBar.error(context, message: error.message),
+                  ),
+                  if (_editing &&
+                      widget.exam!.hasAttachment &&
+                      _attachment == null) ...[
+                    const HBGap.sm(),
+                    CheckboxListTile(
+                      value: _removeAttachment,
+                      contentPadding: EdgeInsets.zero,
+                      title: const HBText('Remover anexo atual'),
+                      onChanged: (v) =>
+                          setState(() => _removeAttachment = v ?? false),
+                    ),
+                  ],
 
-                HBTextField(
-                  controller: _laboratoryController,
-                  label: 'Laboratório',
-                  validator: AppValidators.optionalText,
-                ),
+                  const HBGap.md(),
 
-                const HBGap.md(),
+                  HBTextField(
+                    controller: _laboratoryController,
+                    label: 'Laboratório',
+                    validator: AppValidators.optionalText,
+                  ),
 
-                HBButton(label: 'Data: $formattedDate', onPressed: _pickDate),
+                  const HBGap.md(),
 
-                const HBGap.md(),
+                  HBButton(label: 'Data: $formattedDate', onPressed: _pickDate),
 
-                HBTextField(
-                  controller: _notesController,
-                  label: 'Observações',
-                  maxLines: 4,
-                  validator: AppValidators.optionalText,
-                ),
+                  const HBGap.md(),
 
-                const HBGap.xl(),
+                  HBTextField(
+                    controller: _notesController,
+                    label: 'Observações',
+                    maxLines: 4,
+                    validator: AppValidators.optionalText,
+                  ),
 
-                HBButton(label: 'Salvar exame', onPressed: _save),
-              ],
+                  const HBGap.xl(),
+
+                  HBButton(
+                    label: _editing ? 'Salvar alterações' : 'Salvar exame',
+                    onPressed: _saving ? null : _save,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

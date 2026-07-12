@@ -5,6 +5,7 @@ import 'daos/water_dao.dart';
 import 'daos/weight_dao.dart';
 import 'daos/meal_dao.dart';
 import 'daos/appointment_dao.dart';
+import 'daos/exam_dao.dart';
 
 final driftAvailableProvider = Provider<bool>((ref) => true);
 
@@ -32,4 +33,7 @@ final mealDaoProvider = FutureProvider<MealDao>((ref) async {
 });
 final appointmentDaoProvider = FutureProvider<AppointmentDao>(
   (ref) async => (await ref.watch(appDatabaseProvider.future)).appointmentDao,
+);
+final examDaoProvider = FutureProvider<ExamDao>(
+  (ref) async => (await ref.watch(appDatabaseProvider.future)).examDao,
 );

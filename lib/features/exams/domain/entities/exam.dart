@@ -33,6 +33,7 @@ class Exam extends Entity {
     String? laboratory,
     String? notes,
     String? attachmentPath,
+    bool clearAttachmentPath = false,
   }) {
     return Exam(
       id: id,
@@ -40,7 +41,9 @@ class Exam extends Entity {
       examDate: examDate ?? this.examDate,
       laboratory: laboratory ?? this.laboratory,
       notes: notes ?? this.notes,
-      attachmentPath: attachmentPath ?? this.attachmentPath,
+      attachmentPath: clearAttachmentPath
+          ? null
+          : attachmentPath ?? this.attachmentPath,
     );
   }
 }

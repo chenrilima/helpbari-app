@@ -88,6 +88,37 @@ class ExamDto {
     );
   }
 
+  Map<String, dynamic> toSupabaseRow({required String userId}) => {
+    'id': id,
+    'user_id': userId,
+    'name': name,
+    'exam_date': examDate.toUtc().toIso8601String(),
+    'laboratory': laboratory,
+    'notes': notes,
+    'attachment_path': attachmentPath,
+    'created_at': syncMetadata.createdAt.toUtc().toIso8601String(),
+    'updated_at': syncMetadata.updatedAt.toUtc().toIso8601String(),
+    'deleted_at': syncMetadata.deletedAt?.toUtc().toIso8601String(),
+  };
+  factory ExamDto.fromSupabaseRow(Map<String, dynamic> row) => ExamDto(
+    id: row['id'] as String,
+    name: row['name'] as String,
+    examDate: DateTime.parse(row['exam_date'] as String),
+    laboratory: row['laboratory'] as String?,
+    notes: row['notes'] as String?,
+    attachmentPath: row['attachment_path'] as String?,
+    syncMetadata: SyncMetadata(
+      id: row['id'] as String,
+      userId: row['user_id'] as String,
+      createdAt: DateTime.parse(row['created_at'] as String),
+      updatedAt: DateTime.parse(row['updated_at'] as String),
+      deletedAt: row['deleted_at'] == null
+          ? null
+          : DateTime.parse(row['deleted_at'] as String),
+      syncStatus: SyncStatus.synced,
+    ),
+  );
+
   static SyncStatus _nextSyncStatus(SyncStatus? currentStatus) {
     return switch (currentStatus) {
       SyncStatus.synced => SyncStatus.pendingUpdate,

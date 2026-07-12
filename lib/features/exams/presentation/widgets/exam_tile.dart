@@ -4,9 +4,16 @@ import '../../../../design_system/design_system.dart';
 import '../../domain/entities/entities.dart';
 
 class ExamTile extends StatelessWidget {
-  const ExamTile({required this.exam, super.key});
+  const ExamTile({
+    required this.exam,
+    required this.onView,
+    required this.onEdit,
+    required this.onDelete,
+    super.key,
+  });
 
   final Exam exam;
+  final VoidCallback onView, onEdit, onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +53,27 @@ class ExamTile extends StatelessWidget {
               ],
             ),
           ],
+          const HBGap.sm(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                tooltip: 'Detalhes',
+                onPressed: onView,
+                icon: const Icon(Icons.visibility_outlined),
+              ),
+              IconButton(
+                tooltip: 'Editar',
+                onPressed: onEdit,
+                icon: const Icon(Icons.edit_outlined),
+              ),
+              IconButton(
+                tooltip: 'Excluir',
+                onPressed: onDelete,
+                icon: const Icon(Icons.delete_outline, color: AppColors.danger),
+              ),
+            ],
+          ),
         ],
       ),
     );
