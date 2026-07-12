@@ -32,6 +32,11 @@ class ReportSummaryCard extends StatelessWidget {
             'Gerado em ${AppDateFormatter.shortWithTime(report.generatedAt)}',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
+          const HBGap.xs(),
+          HBText(
+            'Versão ${report.reportVersion}',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
           if (report.savedPath != null) ...[
             const HBGap.xs(),
             HBText(

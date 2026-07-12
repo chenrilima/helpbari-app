@@ -10,16 +10,16 @@ import '../providers/medical_report_providers.dart';
 import '../states/medical_report_state.dart';
 
 class MedicalReportViewModel extends Notifier<MedicalReportState> {
-  late final MedicalReportUseCases _useCases;
-  late final LoggerService _logger;
+  MedicalReportUseCases get _useCases =>
+      ref.read(medicalReportUseCasesProvider);
+  LoggerService get _logger => ref.read(loggerServiceProvider);
 
   @override
   MedicalReportState build() {
-    _useCases = ref.read(medicalReportUseCasesProvider);
-    _logger = ref.read(loggerServiceProvider);
-
     return const MedicalReportState();
   }
+
+  Future<GeneratedMedicalReport?> retry() => generate();
 
   Future<GeneratedMedicalReport?> generate() async {
     state = state.copyWith(isGenerating: true, clearError: true);

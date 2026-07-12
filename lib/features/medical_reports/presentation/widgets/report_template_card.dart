@@ -27,7 +27,7 @@ class ReportTemplateCard extends StatelessWidget {
             children: const [
               _TemplatePill('PDF'),
               _TemplatePill('Gráficos'),
-              _TemplatePill('Anexos futuros'),
+              _TemplatePill('Referências de exames'),
             ],
           ),
         ],

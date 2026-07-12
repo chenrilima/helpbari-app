@@ -77,8 +77,27 @@ class MedicalReportsPage extends ConsumerWidget {
           const HBGap.xl(),
           const HBLoading(message: 'Gerando relatório médico...'),
         ],
+        if (state.errorMessage != null && !state.isBusy) ...[
+          const HBGap.xl(),
+          HBEmptyState(
+            title: 'Não foi possível gerar o relatório',
+            description: state.errorMessage!,
+            icon: Icons.error_outline,
+            actionLabel: 'Tentar novamente',
+            onActionPressed: viewModel.retry,
+          ),
+        ],
         if (state.report != null) ...[
           const HBGap.xl(),
+          if (!state.report!.hasClinicalData) ...[
+            const HBEmptyState(
+              title: 'Relatório sem dados clínicos',
+              description:
+                  'O PDF foi gerado com campos vazios. Registre informações de saúde para obter um relatório completo.',
+              icon: Icons.description_outlined,
+            ),
+            const HBGap.md(),
+          ],
           ReportSummaryCard(report: state.report!),
         ],
       ],

@@ -4,11 +4,13 @@ import '../../../appointments/domain/usecases/use_cases.dart';
 import '../../../exams/domain/usecases/use_cases.dart';
 import '../../../meals/domain/usecases/use_cases.dart';
 import '../../../medications/domain/usecases/use_cases.dart';
+import '../../../medications/domain/entities/medication_log.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../settings/domain/entities/entities.dart';
 import '../../../settings/domain/usecases/use_cases.dart';
 import '../../../vitamins/domain/usecases/vitamin_use_cases.dart';
+import '../../../vitamins/domain/entities/vitamin_log.dart';
 import '../../../water/domain/entities/entities.dart';
 import '../../../water/domain/usecases/use_cases.dart';
 import '../../../weight/domain/usecases/use_cases.dart';
@@ -70,6 +72,13 @@ class MedicalReportUseCases {
     required ReportTemplate template,
     List<ReportAttachment> attachments = const [],
   }) async {
+    final now = _clock.now();
+    final periodStart = DateTime(
+      now.year,
+      now.month,
+      now.day,
+    ).subtract(const Duration(days: 29));
+    final periodEnd = DateTime(now.year, now.month, now.day);
     final results = await Future.wait([
       _profileUseCases.getProfile(),
       _weightUseCases.getHistory(),
@@ -80,14 +89,8 @@ class MedicalReportUseCases {
       _appointmentUseCases.getAll(),
       _examUseCases.getAll(),
       _settingsUseCases.getSettings(),
-      _vitaminUseCases.getLogs(
-        DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
-        DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
-      ),
-      _medicationUseCases.getLogs(
-        DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
-        DateTime(_clock.now().year, _clock.now().month, _clock.now().day),
-      ),
+      _vitaminUseCases.getLogs(periodStart, periodEnd),
+      _medicationUseCases.getLogs(periodStart, periodEnd),
     ]);
 
     final profile = results[0] as Profile?;
@@ -99,9 +102,8 @@ class MedicalReportUseCases {
     final appointments = results[6] as List;
     final exams = results[7] as List;
     final settings = results[8] as AppSettings;
-    final vitaminLogs = results[9] as List;
-    final medicationLogs = results[10] as List;
-    final now = _clock.now();
+    final vitaminLogs = results[9] as List<VitaminLog>;
+    final medicationLogs = results[10] as List<MedicationLog>;
     final currentWeight = weightHistory.isEmpty
         ? null
         : weightHistory.first.weight.value as double;
@@ -113,11 +115,31 @@ class MedicalReportUseCases {
     final totalWaterToday = waterHistory
         .where((record) => _isSameDay(record.recordedAt, now))
         .fold<int>(0, (total, record) => total + record.amount.valueInMl);
+    final waterInPeriod = waterHistory
+        .where((record) => !record.recordedAt.isBefore(periodStart))
+        .toList();
+    final averageDailyWaterMl = waterInPeriod.isEmpty
+        ? 0
+        : waterInPeriod.fold<int>(
+                0,
+                (total, record) => total + record.amount.valueInMl,
+              ) ~/
+              30;
     final todayMeals = meals.where((meal) => meal.wasRegisteredToday).toList();
+    final mealsInPeriod = meals
+        .where((meal) => !meal.mealDate.value.isBefore(periodStart))
+        .toList();
     final totalProteinToday = todayMeals.fold<int>(
       0,
       (total, meal) => total + ((meal.proteinGrams as int?) ?? 0),
     );
+    final averageDailyProteinGrams = mealsInPeriod.isEmpty
+        ? 0
+        : mealsInPeriod.fold<int>(
+                0,
+                (total, meal) => total + ((meal.proteinGrams as int?) ?? 0),
+              ) ~/
+              30;
     final upcomingAppointments = appointments
         .where((appointment) => appointment.isUpcoming)
         .toList();
@@ -171,6 +193,24 @@ class MedicalReportUseCases {
             ),
       weightProgress: weightProgress,
     );
+    final vitaminAdherence = _adherence(
+      vitaminLogs.map((log) => log.status.name),
+    );
+    final medicationAdherence = _adherence(
+      medicationLogs.map((log) => log.status.name),
+    );
+    final observations = _automaticObservations(
+      settings: settings,
+      averageDailyWaterMl: averageDailyWaterMl,
+      averageDailyProteinGrams: averageDailyProteinGrams,
+      proteinGoal: proteinGoal,
+      vitaminAdherence: vitaminAdherence,
+      medicationAdherence: medicationAdherence,
+      upcomingAppointments: upcomingAppointments.length,
+      hasRecentExams: exams.any(
+        (exam) => !exam.examDate.value.isBefore(periodStart),
+      ),
+    );
 
     return MedicalReportSnapshot(
       generatedAt: now,
@@ -179,15 +219,72 @@ class MedicalReportUseCases {
       weightHistory: List.unmodifiable(weightHistory),
       waterHistory: List.unmodifiable(waterHistory),
       vitamins: List.unmodifiable(vitamins),
-      vitaminLogs: List.unmodifiable(vitaminLogs.cast()),
+      vitaminLogs: List.unmodifiable(vitaminLogs),
       medications: List.unmodifiable(medications),
-      medicationLogs: List.unmodifiable(medicationLogs.cast()),
+      medicationLogs: List.unmodifiable(medicationLogs),
       meals: List.unmodifiable(meals),
       appointments: List.unmodifiable(appointments),
       exams: List.unmodifiable(exams),
       dailySummary: dailySummary,
+      reportVersion: '1.0',
+      periodStart: periodStart,
+      averageDailyWaterMl: averageDailyWaterMl,
+      mealsInPeriod: mealsInPeriod.length,
+      averageDailyProteinGrams: averageDailyProteinGrams,
+      vitaminAdherencePercent: vitaminAdherence,
+      medicationAdherencePercent: medicationAdherence,
+      automaticObservations: List.unmodifiable(observations),
       attachments: attachments,
     );
+  }
+
+  double? _adherence(Iterable<String> statuses) {
+    final resolved = statuses.where((status) => status != 'pending').toList();
+    if (resolved.isEmpty) return null;
+    return resolved.where((status) => status == 'taken').length /
+        resolved.length *
+        100;
+  }
+
+  List<String> _automaticObservations({
+    required AppSettings settings,
+    required int averageDailyWaterMl,
+    required int averageDailyProteinGrams,
+    required int proteinGoal,
+    required double? vitaminAdherence,
+    required double? medicationAdherence,
+    required int upcomingAppointments,
+    required bool hasRecentExams,
+  }) {
+    final observations = <String>[];
+    if (averageDailyWaterMl > 0 &&
+        averageDailyWaterMl < settings.dailyWaterGoalMl) {
+      observations.add(
+        'A média diária de água no período ficou abaixo da meta configurada.',
+      );
+    }
+    if (proteinGoal > 0 &&
+        averageDailyProteinGrams > 0 &&
+        averageDailyProteinGrams < proteinGoal) {
+      observations.add(
+        'A média de proteína registrada ficou abaixo da estimativa diária.',
+      );
+    }
+    if (vitaminAdherence != null && vitaminAdherence < 80) {
+      observations.add('A adesão registrada às vitaminas ficou abaixo de 80%.');
+    }
+    if (medicationAdherence != null && medicationAdherence < 80) {
+      observations.add(
+        'A adesão registrada aos medicamentos ficou abaixo de 80%.',
+      );
+    }
+    if (upcomingAppointments == 0) {
+      observations.add('Não há consulta futura registrada no aplicativo.');
+    }
+    if (!hasRecentExams) {
+      observations.add('Não há exame registrado nos últimos 30 dias.');
+    }
+    return observations;
   }
 
   bool _isSameDay(DateTime date, DateTime reference) {

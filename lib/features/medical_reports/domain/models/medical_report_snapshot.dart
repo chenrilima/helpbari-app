@@ -23,6 +23,14 @@ class MedicalReportSnapshot {
     required this.appointments,
     required this.exams,
     required this.dailySummary,
+    required this.reportVersion,
+    required this.periodStart,
+    required this.averageDailyWaterMl,
+    required this.mealsInPeriod,
+    required this.averageDailyProteinGrams,
+    required this.vitaminAdherencePercent,
+    required this.medicationAdherencePercent,
+    required this.automaticObservations,
     this.profile,
     this.attachments = const [],
   });
@@ -40,6 +48,14 @@ class MedicalReportSnapshot {
   final List<Appointment> appointments;
   final List<Exam> exams;
   final DailySummary dailySummary;
+  final String reportVersion;
+  final DateTime periodStart;
+  final int averageDailyWaterMl;
+  final int mealsInPeriod;
+  final int averageDailyProteinGrams;
+  final double? vitaminAdherencePercent;
+  final double? medicationAdherencePercent;
+  final List<String> automaticObservations;
   final List<ReportAttachment> attachments;
 
   WeightRecord? get latestWeight {
@@ -51,4 +67,19 @@ class MedicalReportSnapshot {
   int get pendingVitamins => dailySummary.pendingVitamins;
 
   int get pendingMedications => dailySummary.pendingMedications;
+
+  bool get hasClinicalData =>
+      profile != null ||
+      weightHistory.isNotEmpty ||
+      waterHistory.isNotEmpty ||
+      meals.isNotEmpty ||
+      vitamins.isNotEmpty ||
+      medications.isNotEmpty ||
+      appointments.isNotEmpty ||
+      exams.isNotEmpty;
+
+  List<Appointment> get upcomingAppointments =>
+      appointments.where((appointment) => appointment.isUpcoming).toList();
+
+  List<Exam> get latestExams => exams.take(10).toList();
 }
