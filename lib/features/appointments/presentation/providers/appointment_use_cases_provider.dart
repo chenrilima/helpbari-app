@@ -49,8 +49,13 @@ final appointmentUseCasesProvider = Provider<AppointmentUseCases>(
 );
 
 final appointmentReminderServiceProvider = Provider<AppointmentReminderService>(
-  (ref) => AppointmentReminderService(
-    settingsUseCases: ref.read(settingsUseCasesProvider),
-    notifications: ref.read(localNotificationServiceProvider),
-  ),
+  (ref) {
+    final userId =
+        ref.watch(authSessionProvider)?.id ?? anonymousAppointmentUserId;
+    return AppointmentReminderService(
+      settingsUseCases: ref.read(settingsUseCasesProvider),
+      scheduler: ref.read(notificationSchedulerProvider),
+      userId: userId,
+    );
+  },
 );

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../design_system/design_system.dart';
 import 'bootstrap/sync_bootstrap_provider.dart';
+import 'bootstrap/notification_bootstrap_provider.dart';
 import 'router/app_router.dart';
 
 class HelpBariApp extends ConsumerStatefulWidget {
@@ -30,12 +31,14 @@ class _HelpBariAppState extends ConsumerState<HelpBariApp>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       ref.read(syncBootstrapProvider).onResumed();
+      ref.read(notificationBootstrapProvider).onResumed();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     ref.watch(syncBootstrapProvider);
+    ref.watch(notificationBootstrapProvider);
     return MaterialApp.router(
       title: 'HelpBari',
       debugShowCheckedModeBanner: false,

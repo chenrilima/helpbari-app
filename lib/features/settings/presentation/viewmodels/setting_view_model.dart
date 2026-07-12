@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/sync/sync_providers.dart';
+import '../../../../core/services/service_providers.dart';
 import '../providers/settings_reminder_sync_provider.dart';
 import '../providers/setting_use_cases_provider.dart';
 import '../states/setting_state.dart';
@@ -33,34 +34,24 @@ class SettingsViewModel extends Notifier<SettingsState> {
   }
 
   Future<void> toggleVitaminReminders(bool enabled) async {
-    await _mutate(() async {
-      await ref.read(settingsUseCasesProvider).toggleVitaminReminders(enabled);
-      await ref
-          .read(settingsReminderSyncServiceProvider)
-          .syncVitaminReminders(enabled);
-    });
+    await _mutate(
+      () => ref.read(settingsUseCasesProvider).toggleVitaminReminders(enabled),
+    );
   }
 
   Future<void> toggleMedicationReminders(bool enabled) async {
-    await _mutate(() async {
-      await ref
-          .read(settingsUseCasesProvider)
-          .toggleMedicationReminders(enabled);
-      await ref
-          .read(settingsReminderSyncServiceProvider)
-          .syncMedicationReminders(enabled);
-    });
+    await _mutate(
+      () =>
+          ref.read(settingsUseCasesProvider).toggleMedicationReminders(enabled),
+    );
   }
 
   Future<void> toggleAppointmentReminders(bool enabled) async {
-    await _mutate(() async {
-      await ref
+    await _mutate(
+      () => ref
           .read(settingsUseCasesProvider)
-          .toggleAppointmentReminders(enabled);
-      await ref
-          .read(settingsReminderSyncServiceProvider)
-          .syncAppointmentReminders(enabled);
-    });
+          .toggleAppointmentReminders(enabled),
+    );
   }
 
   Future<void> toggleMealTracking(bool enabled) async {
@@ -77,6 +68,18 @@ class SettingsViewModel extends Notifier<SettingsState> {
       _invalidateConsumers();
       await loadSettings();
       _invalidateConsumers();
+      try {
+        final settings = await ref.read(settingsUseCasesProvider).getSettings();
+        await ref
+            .read(settingsReminderSyncServiceProvider)
+            .applyAfterCommit(settings);
+      } catch (error) {
+        ref
+            .read(loggerServiceProvider)
+            .warning(
+              'Notification settings reconciliation failed (${error.runtimeType}).',
+            );
+      }
 
       // Drift is already committed. Network work must not change local success.
       unawaited(

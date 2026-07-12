@@ -45,9 +45,14 @@ final medicationUseCasesProvider = Provider<MedicationUseCases>(
     ref.watch(medicationLogRepositoryProvider),
   ),
 );
-final medicationReminderServiceProvider = Provider<MedicationReminderService>(
-  (ref) => MedicationReminderService(
+final medicationReminderServiceProvider = Provider<MedicationReminderService>((
+  ref,
+) {
+  final userId = ref.watch(authSessionProvider)?.id ?? 'anonymous';
+  return MedicationReminderService(
     settingsUseCases: ref.read(settingsUseCasesProvider),
-    notifications: ref.read(localNotificationServiceProvider),
-  ),
-);
+    scheduler: ref.read(notificationSchedulerProvider),
+    clock: ref.read(clockServiceProvider),
+    userId: userId,
+  );
+});

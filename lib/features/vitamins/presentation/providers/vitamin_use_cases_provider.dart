@@ -44,9 +44,12 @@ final vitaminUseCasesProvider = Provider<VitaminUseCases>(
     ref.watch(vitaminLogRepositoryProvider),
   ),
 );
-final vitaminReminderServiceProvider = Provider<VitaminReminderService>(
-  (ref) => VitaminReminderService(
+final vitaminReminderServiceProvider = Provider<VitaminReminderService>((ref) {
+  final userId = ref.watch(authSessionProvider)?.id ?? 'anonymous';
+  return VitaminReminderService(
     settingsUseCases: ref.read(settingsUseCasesProvider),
-    notifications: ref.read(localNotificationServiceProvider),
-  ),
-);
+    scheduler: ref.read(notificationSchedulerProvider),
+    clock: ref.read(clockServiceProvider),
+    userId: userId,
+  );
+});

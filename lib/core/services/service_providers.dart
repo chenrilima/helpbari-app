@@ -37,3 +37,20 @@ final localNotificationServiceProvider = Provider<LocalNotificationService>((
 ) {
   return AppLocalNotificationService(logger: ref.read(loggerServiceProvider));
 });
+
+final notificationSchedulerProvider = Provider<NotificationScheduler>((ref) {
+  final scheduler = NotificationScheduler(
+    notifications: ref.watch(localNotificationServiceProvider),
+    clock: ref.watch(clockServiceProvider),
+    logger: ref.watch(loggerServiceProvider),
+  );
+  ref.onDispose(scheduler.dispose);
+  return scheduler;
+});
+
+final notificationSchedulerStateProvider =
+    StreamProvider<NotificationSchedulerState>((ref) async* {
+      final scheduler = ref.watch(notificationSchedulerProvider);
+      yield scheduler.state;
+      yield* scheduler.states;
+    });

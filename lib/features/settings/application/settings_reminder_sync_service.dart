@@ -1,3 +1,4 @@
+import '../../../core/services/services.dart';
 import '../../appointments/application/appointment_reminder_service.dart';
 import '../../appointments/domain/usecases/use_cases.dart';
 import '../../medications/application/medication_reminder_service.dart';
@@ -14,12 +15,16 @@ class SettingsReminderSyncService {
     required MedicationReminderService medicationReminders,
     required AppointmentUseCases appointmentUseCases,
     required AppointmentReminderService appointmentReminders,
+    required NotificationScheduler scheduler,
+    required String userId,
   }) : _vitaminUseCases = vitaminUseCases,
        _vitaminReminders = vitaminReminders,
        _medicationUseCases = medicationUseCases,
        _medicationReminders = medicationReminders,
        _appointmentUseCases = appointmentUseCases,
-       _appointmentReminders = appointmentReminders;
+       _appointmentReminders = appointmentReminders,
+       _scheduler = scheduler,
+       _userId = userId;
 
   final VitaminUseCases _vitaminUseCases;
   final VitaminReminderService _vitaminReminders;
@@ -27,55 +32,35 @@ class SettingsReminderSyncService {
   final MedicationReminderService _medicationReminders;
   final AppointmentUseCases _appointmentUseCases;
   final AppointmentReminderService _appointmentReminders;
-  String? _lastAppliedFingerprint;
+  final NotificationScheduler _scheduler;
+  final String _userId;
 
   Future<bool> applyAfterCommit(AppSettings settings) async {
-    final fingerprint = [
-      settings.vitaminRemindersEnabled,
-      settings.medicationRemindersEnabled,
-      settings.appointmentRemindersEnabled,
-    ].join(':');
-    if (_lastAppliedFingerprint == fingerprint) return false;
-    await syncVitaminReminders(settings.vitaminRemindersEnabled);
-    await syncMedicationReminders(settings.medicationRemindersEnabled);
-    await syncAppointmentReminders(settings.appointmentRemindersEnabled);
-    _lastAppliedFingerprint = fingerprint;
+    await restore(settings);
     return true;
   }
 
-  Future<void> syncVitaminReminders(bool enabled) async {
-    final vitamins = await _vitaminUseCases.getAll();
-
-    for (final vitamin in vitamins) {
-      if (enabled) {
-        await _vitaminReminders.rescheduleIfEnabled(vitamin);
-      } else {
-        await _vitaminReminders.cancel(vitamin.id);
-      }
+  Future<void> restore(AppSettings settings) async {
+    final schedules = <LocalNotificationSchedule>[];
+    if (settings.vitaminRemindersEnabled) {
+      schedules.addAll(
+        (await _vitaminUseCases.getAll()).map(_vitaminReminders.scheduleFor),
+      );
     }
-  }
-
-  Future<void> syncMedicationReminders(bool enabled) async {
-    final medications = await _medicationUseCases.getAll();
-
-    for (final medication in medications) {
-      if (enabled) {
-        await _medicationReminders.rescheduleIfEnabled(medication);
-      } else {
-        await _medicationReminders.cancel(medication.id);
-      }
+    if (settings.medicationRemindersEnabled) {
+      schedules.addAll(
+        (await _medicationUseCases.getAll()).map(
+          _medicationReminders.scheduleFor,
+        ),
+      );
     }
-  }
-
-  Future<void> syncAppointmentReminders(bool enabled) async {
-    final appointments = await _appointmentUseCases.getAll();
-
-    for (final appointment in appointments) {
-      if (enabled) {
-        await _appointmentReminders.rescheduleIfEnabled(appointment);
-      } else {
-        await _appointmentReminders.cancel(appointment.id);
-      }
+    if (settings.appointmentRemindersEnabled) {
+      schedules.addAll(
+        (await _appointmentUseCases.getAll())
+            .where((appointment) => appointment.isUpcoming)
+            .map(_appointmentReminders.scheduleFor),
+      );
     }
+    await _scheduler.restore(userId: _userId, schedules: schedules);
   }
 }

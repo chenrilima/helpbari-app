@@ -5,12 +5,15 @@ import '../domain/entities/entities.dart';
 class AppointmentReminderService {
   const AppointmentReminderService({
     required SettingsUseCases settingsUseCases,
-    required LocalNotificationService notifications,
+    required NotificationScheduler scheduler,
+    required String userId,
   }) : _settingsUseCases = settingsUseCases,
-       _notifications = notifications;
+       _scheduler = scheduler,
+       _userId = userId;
 
   final SettingsUseCases _settingsUseCases;
-  final LocalNotificationService _notifications;
+  final NotificationScheduler _scheduler;
+  final String _userId;
 
   Future<void> scheduleIfEnabled(Appointment appointment) async {
     final settings = await _settingsUseCases.getSettings();
@@ -19,7 +22,7 @@ class AppointmentReminderService {
       return;
     }
 
-    await _notifications.scheduleOnce(_appointmentSchedule(appointment));
+    await _scheduler.schedule(_appointmentSchedule(appointment));
   }
 
   Future<void> rescheduleIfEnabled(Appointment appointment) async {
@@ -30,7 +33,7 @@ class AppointmentReminderService {
       return;
     }
 
-    await _notifications.update(_appointmentSchedule(appointment));
+    await _scheduler.schedule(_appointmentSchedule(appointment));
   }
 
   Future<void> applyAfterCommit(Appointment appointment) =>
@@ -39,10 +42,11 @@ class AppointmentReminderService {
       : cancel(appointment.id);
 
   Future<void> cancel(String appointmentId) {
-    return _notifications.cancelPayload(
+    return _scheduler.cancel(
       LocalNotificationPayload(
         source: NotificationSource.appointment,
         entityId: appointmentId,
+        userId: _userId,
       ),
     );
   }
@@ -50,6 +54,7 @@ class AppointmentReminderService {
   LocalNotificationSchedule _appointmentSchedule(Appointment appointment) {
     return NotificationSchedules.reminder(
       source: NotificationSource.appointment,
+      userId: _userId,
       entityId: appointment.id,
       title: 'Consulta agendada',
       body: appointment.location == null
@@ -58,4 +63,7 @@ class AppointmentReminderService {
       scheduledAt: appointment.date.value,
     );
   }
+
+  LocalNotificationSchedule scheduleFor(Appointment appointment) =>
+      _appointmentSchedule(appointment);
 }
