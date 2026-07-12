@@ -6,6 +6,8 @@ class BariaUseCases {
 
   final BariaRepository _repository;
 
+  Future<BariaContext> getContext() => _repository.getContext();
+
   Future<BariaInsight> getDailyInsight() {
     return _repository.getDailyInsight();
   }

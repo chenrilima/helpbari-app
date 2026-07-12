@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../../design_system/design_system.dart';
 
 const List<String> _suggestions = [
-  'Como está minha hidratação?',
-  'Como melhorar meu Health Score?',
-  'O que ficou pendente hoje?',
-  'Resumo da minha jornada',
-  'Preparar para consulta',
+  'Quanto falta para minha meta de água?',
+  'Como foi minha semana?',
+  'Esqueci vitaminas hoje?',
+  'Quais registros estão pendentes?',
+  'Quando é minha próxima consulta?',
 ];
 
 class BariaSuggestionsSection extends StatelessWidget {
