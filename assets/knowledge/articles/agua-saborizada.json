@@ -1,0 +1,55 @@
+{
+    "id": "agua-saborizada",
+    "title": "Água saborizada ajuda na hidratação?",
+    "subtitle": "Uma alternativa para quem tem dificuldade em beber água.",
+    "summary": "Água saborizada naturalmente pode aumentar a aceitação da hidratação em alguns pacientes.",
+    "blocks": [
+        {
+            "id": "intro",
+            "type": "markdown",
+            "content": "Adicionar frutas ou ervas à água pode tornar seu consumo mais agradável para algumas pessoas."
+        },
+        {
+            "id": "tips",
+            "type": "list",
+            "title": "Sugestões",
+            "items": [
+                "Limão.",
+                "Laranja.",
+                "Hortelã.",
+                "Pepino.",
+                "Gengibre (quando bem tolerado)."
+            ]
+        },
+        {
+            "id": "warning",
+            "type": "warning",
+            "title": "Evite açúcar",
+            "content": "Não utilize xaropes, refrigerantes ou adoçantes em excesso para preparar água saborizada."
+        }
+    ],
+    "faq": [],
+    "tags": [
+        "água",
+        "hidratação"
+    ],
+    "categoryId": "hydration",
+    "bariatricPhases": [
+        "pós-operatório inicial",
+        "manutenção"
+    ],
+    "surgeryTypes": [
+        "bypass gástrico",
+        "sleeve gástrico"
+    ],
+    "readingTimeMinutes": 2,
+    "relatedArticleIds": [
+        "quanto-devo-beber-por-dia"
+    ],
+    "sources": [
+        "sbcbm-pos-operatorio-2024"
+    ],
+    "evidenceLevel": "consensus",
+    "lastReviewedAt": "2026-07-13",
+    "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação da equipe assistencial."
+}

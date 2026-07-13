@@ -1,0 +1,48 @@
+{
+    "id": "bebidas-alcoolicas",
+    "title": "Bebidas alcoólicas após a cirurgia bariátrica",
+    "subtitle": "Conheça os riscos e os cuidados necessários.",
+    "summary": "Após a cirurgia bariátrica, o organismo pode absorver álcool de forma diferente, aumentando riscos à saúde.",
+    "blocks": [
+        {
+            "id": "intro",
+            "type": "markdown",
+            "content": "A absorção do álcool pode ocorrer mais rapidamente após alguns tipos de cirurgia bariátrica, aumentando seus efeitos."
+        },
+        {
+            "id": "warning",
+            "type": "warning",
+            "title": "Evite principalmente no pós-operatório inicial",
+            "content": "O consumo de bebidas alcoólicas deve seguir exclusivamente a orientação da equipe assistencial."
+        },
+        {
+            "id": "medical",
+            "type": "medicalAlert",
+            "title": "Procure orientação",
+            "content": "Caso tenha dúvidas sobre quando ou se poderá consumir bebidas alcoólicas, converse com seu médico e nutricionista."
+        }
+    ],
+    "faq": [],
+    "tags": [
+        "álcool",
+        "hidratação"
+    ],
+    "categoryId": "hydration",
+    "bariatricPhases": [
+        "manutenção"
+    ],
+    "surgeryTypes": [
+        "bypass gástrico",
+        "sleeve gástrico"
+    ],
+    "readingTimeMinutes": 3,
+    "relatedArticleIds": [
+        "quanto-devo-beber-por-dia"
+    ],
+    "sources": [
+        "sbcbm-pos-operatorio-2024"
+    ],
+    "evidenceLevel": "high",
+    "lastReviewedAt": "2026-07-13",
+    "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação da equipe assistencial."
+}

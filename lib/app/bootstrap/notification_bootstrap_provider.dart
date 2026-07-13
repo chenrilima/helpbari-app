@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'sync_bootstrap_provider.dart';
 import '../../core/services/service_providers.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/settings/presentation/providers/setting_use_cases_provider.dart';
@@ -50,6 +51,8 @@ class NotificationBootstrapCoordinator {
   }
 
   Future<void> _restore(String userId) async {
+    if (_ref.read(authSessionProvider)?.id != userId) return;
+    await _ref.read(syncBootstrapProvider).waitForInitialSync(userId);
     if (_ref.read(authSessionProvider)?.id != userId) return;
     final settings = await _ref.read(settingsUseCasesProvider).getSettings();
     if (_ref.read(authSessionProvider)?.id != userId) return;

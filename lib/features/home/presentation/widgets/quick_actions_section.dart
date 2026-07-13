@@ -95,6 +95,13 @@ class QuickActionsSection extends StatelessWidget {
             ),
             const HBGap.md(),
             QuickActionCard(
+              icon: Icons.menu_book_outlined,
+              title: 'Academia',
+              subtitle: 'Artigos e orientações',
+              onTap: () => _open(context, AppRoutes.academy),
+            ),
+            const HBGap.md(),
+            QuickActionCard(
               icon: Icons.settings_outlined,
               title: 'Configurações',
               subtitle: 'Abrir',

@@ -1,0 +1,54 @@
+{
+    "id": "erros-comuns-na-hidratacao",
+    "title": "Erros comuns na hidratação após a bariátrica",
+    "subtitle": "Conheça hábitos que podem dificultar sua recuperação.",
+    "summary": "Pequenos hábitos inadequados podem prejudicar a hidratação diária e aumentar o risco de complicações.",
+    "blocks": [
+        {
+            "id": "list",
+            "type": "list",
+            "title": "Erros frequentes",
+            "items": [
+                "Esperar sentir sede.",
+                "Beber grandes volumes de uma vez.",
+                "Esquecer de levar água ao sair.",
+                "Trocar água por bebidas açucaradas.",
+                "Não registrar a ingestão diária."
+            ]
+        },
+        {
+            "id": "quote",
+            "type": "quote",
+            "content": "Criar uma rotina costuma ser mais importante do que aumentar a quantidade de água em um único momento."
+        },
+        {
+            "id": "medical",
+            "type": "medicalAlert",
+            "title": "Quando procurar ajuda",
+            "content": "Caso apresente sinais persistentes de desidratação, procure orientação da equipe responsável."
+        }
+    ],
+    "faq": [],
+    "tags": [
+        "hidratação",
+        "rotina"
+    ],
+    "categoryId": "hydration",
+    "bariatricPhases": [
+        "manutenção"
+    ],
+    "surgeryTypes": [
+        "bypass gástrico",
+        "sleeve gástrico"
+    ],
+    "readingTimeMinutes": 3,
+    "relatedArticleIds": [
+        "como-atingir-a-meta-diaria"
+    ],
+    "sources": [
+        "sbcbm-pos-operatorio-2024"
+    ],
+    "evidenceLevel": "consensus",
+    "lastReviewedAt": "2026-07-13",
+    "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação da equipe assistencial."
+}

@@ -10,6 +10,11 @@ import '../../features/appointments/presentation/pages/appointments_page.dart';
 import '../../features/appointments/presentation/pages/register_appointment_page.dart';
 import '../../features/appointments/domain/entities/entities.dart'
     show Appointment;
+import '../../features/academy/presentation/pages/academy_article_page.dart';
+import '../../features/academy/presentation/pages/academy_faq_page.dart';
+import '../../features/academy/presentation/pages/academy_glossary_page.dart';
+import '../../features/academy/presentation/pages/academy_history_page.dart';
+import '../../features/academy/presentation/pages/academy_page.dart';
 import '../../features/baria/presentation/pages/baria_page.dart';
 import '../../features/exams/presentation/pages/exams_page.dart';
 import '../../features/exams/presentation/pages/register_exam_page.dart';
@@ -50,6 +55,7 @@ import '../../features/weight/presentation/pages/weight_page.dart';
 import '../../features/weight/domain/entities/entities.dart' show WeightRecord;
 import 'app_routes.dart';
 import 'notification_navigation.dart';
+import 'onboarding_guard.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final refreshListenable = _GoRouterRefreshStream(
@@ -77,23 +83,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   }
 
   final router = GoRouter(
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.splash,
     refreshListenable: refreshListenable,
     redirect: (context, state) {
       final location = state.uri.path;
       final onboardingState = ref.read(onboardingViewModelProvider);
-      final isOnboardingRoute = location == AppRoutes.onboarding;
-
-      if (!onboardingState.introductionCompleted) {
-        return isOnboardingRoute ? null : AppRoutes.onboarding;
-      }
-
       final session = ref.read(authSessionProvider);
-      if (session == null && isOnboardingRoute) return AppRoutes.login;
-      if (session != null && !onboardingState.userCompleted) {
-        return isOnboardingRoute ? null : AppRoutes.onboarding;
-      }
-      if (session != null && isOnboardingRoute) return AppRoutes.home;
+      final onboardingRedirect = OnboardingGuard.redirect(
+        location: location,
+        session: session,
+        state: onboardingState,
+      );
+      if (onboardingRedirect != null) return onboardingRedirect;
 
       final authRedirect = AuthGuard.redirect(
         location: location,
@@ -237,6 +238,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const SettingsPage(),
       ),
       GoRoute(path: AppRoutes.privacy, builder: (_, _) => const PrivacyPage()),
+      GoRoute(path: AppRoutes.academy, builder: (_, _) => const AcademyPage()),
+      GoRoute(
+        path: AppRoutes.academyArticle,
+        builder: (_, state) =>
+            AcademyArticlePage(articleId: state.pathParameters['articleId']!),
+      ),
+      GoRoute(
+        path: AppRoutes.academyFaq,
+        builder: (_, _) => const AcademyFaqPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.academyGlossary,
+        builder: (_, _) => const AcademyGlossaryPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.academyHistory,
+        builder: (_, _) => const AcademyHistoryPage(),
+      ),
     ],
   );
 

@@ -6,9 +6,11 @@ abstract interface class OnboardingRepository {
   bool hasConsumedDraft(String userId);
   int getResumeStep(String? userId);
 
-  OnboardingProfileDraft getDraft();
+  OnboardingProfileDraft getDraft(String? userId);
 
-  Future<void> saveDraft(OnboardingProfileDraft draft);
+  Future<void> saveDraft(String? userId, OnboardingProfileDraft draft);
+  Future<void> claimPreAuthDraft(String userId);
+  Future<void> clearDraft(String userId);
 
   Future<void> completeIntroduction();
   Future<void> saveResumeStep(String? userId, int step);

@@ -1,0 +1,70 @@
+{
+  "id": "cafe-e-cafeina",
+  "title": "Posso tomar café após a cirurgia bariátrica?",
+  "subtitle": "Conheça os cuidados relacionados à cafeína.",
+  "summary": "A reintrodução do café depende da fase da recuperação e da orientação da equipe assistencial.",
+  "blocks": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "content": "O café faz parte da rotina de muitas pessoas, porém sua reintrodução após a cirurgia bariátrica deve ser individualizada."
+    },
+    {
+      "id": "effects",
+      "type": "heading",
+      "content": "Por que existe cuidado?"
+    },
+    {
+      "id": "effects-content",
+      "type": "markdown",
+      "content": "A cafeína pode aumentar sintomas como desconforto gástrico em alguns pacientes. Além disso, bebidas com açúcar ou creme podem aumentar significativamente a ingestão calórica."
+    },
+    {
+      "id": "tips",
+      "type": "list",
+      "title": "Boas práticas",
+      "items": [
+        "Pergunte à sua equipe quando reintroduzir o café.",
+        "Evite bebidas muito açucaradas.",
+        "Observe sua tolerância individual.",
+        "Mantenha a hidratação adequada ao longo do dia."
+      ]
+    },
+    {
+      "id": "warning",
+      "type": "warning",
+      "title": "Nem todo café é igual",
+      "content": "Preparações com chantilly, xaropes ou açúcar possuem características diferentes do café puro."
+    },
+    {
+      "id": "medical",
+      "type": "medicalAlert",
+      "title": "Quando procurar ajuda",
+      "content": "Se ocorrer dor persistente, náuseas intensas ou vômitos após o consumo, interrompa a ingestão e procure orientação."
+    }
+  ],
+  "faq": [],
+  "tags": [
+    "café",
+    "cafeína",
+    "hidratação"
+  ],
+  "categoryId": "hydration",
+  "bariatricPhases": [
+    "manutenção"
+  ],
+  "surgeryTypes": [
+    "bypass gástrico",
+    "sleeve gástrico"
+  ],
+  "readingTimeMinutes": 3,
+  "relatedArticleIds": [
+    "hidratacao-pos-operatorio"
+  ],
+  "sources": [
+    "sbcbm-pos-operatorio-2024"
+  ],
+  "evidenceLevel": "moderate",
+  "lastReviewedAt": "2026-07-13",
+  "medicalDisclaimer": "Este conteúdo possui finalidade educativa e não substitui avaliação individual da equipe assistencial."
+}

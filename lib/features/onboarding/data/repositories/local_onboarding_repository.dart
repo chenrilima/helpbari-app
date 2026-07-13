@@ -7,6 +7,7 @@ final class LocalOnboardingRepository implements OnboardingRepository {
 
   static const _completedKey = 'onboarding.completed.v1';
   static const _draftKey = 'onboarding.profileDraft.v1';
+  static const _preAuthDraftKey = 'onboarding.preauth.v3.draft';
   static const _introductionKey = 'onboarding.introduction.completed.v2';
   static const _userPrefix = 'onboarding.user.v2';
 
@@ -34,8 +35,10 @@ final class LocalOnboardingRepository implements OnboardingRepository {
       0;
 
   @override
-  OnboardingProfileDraft getDraft() {
-    final encoded = _storage.getString(_draftKey);
+  OnboardingProfileDraft getDraft(String? userId) {
+    final encoded = userId == null
+        ? _storage.getString(_preAuthDraftKey) ?? _storage.getString(_draftKey)
+        : _storage.getString(_userDraftKey(userId));
 
     if (encoded == null) {
       return const OnboardingProfileDraft();
@@ -45,9 +48,32 @@ final class LocalOnboardingRepository implements OnboardingRepository {
   }
 
   @override
-  Future<void> saveDraft(OnboardingProfileDraft draft) async {
-    await _storage.setString(_draftKey, draft.encode());
+  Future<void> saveDraft(String? userId, OnboardingProfileDraft draft) async {
+    await _storage.setString(
+      userId == null ? _preAuthDraftKey : _userDraftKey(userId),
+      draft.encode(),
+    );
   }
+
+  @override
+  Future<void> claimPreAuthDraft(String userId) async {
+    if (!getDraft(userId).isEmpty || hasConsumedDraft(userId)) return;
+    final preAuth = getDraft(null);
+    if (preAuth.isEmpty) return;
+    await saveDraft(userId, preAuth);
+    await _storage.setString(
+      _preAuthDraftKey,
+      const OnboardingProfileDraft().encode(),
+    );
+    await _storage.setString(
+      _draftKey,
+      const OnboardingProfileDraft().encode(),
+    );
+  }
+
+  @override
+  Future<void> clearDraft(String userId) =>
+      saveDraft(userId, const OnboardingProfileDraft());
 
   @override
   Future<void> completeIntroduction() =>
@@ -66,4 +92,6 @@ final class LocalOnboardingRepository implements OnboardingRepository {
   @override
   Future<void> markDraftConsumed(String userId) =>
       _storage.setBool('$_userPrefix.$userId.draftConsumed', true);
+
+  String _userDraftKey(String userId) => '$_userPrefix.$userId.draft';
 }

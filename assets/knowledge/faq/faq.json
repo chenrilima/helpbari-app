@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "faq-hydration-goal",
+      "question": "Qual deve ser minha meta diária de líquidos?",
+      "answer": "A meta deve ser individualizada pela equipe assistencial, considerando fase pós-operatória, tolerância e condições clínicas.",
+      "categoryId": "hydration",
+      "articleId": "hidratacao-pos-operatorio"
+    },
+    {
+      "id": "faq-meta-liquidos",
+      "question": "Existe uma quantidade obrigatória de líquidos para todos os pacientes?",
+      "answer": "Não. A meta deve ser individualizada conforme orientação da equipe assistencial, considerando fase pós-operatória, tolerância e condições clínicas.",
+      "categoryId": "hydration",
+      "articleId": "quanto-devo-beber-por-dia"
+    },
+    {
+      "id": "faq-agua-com-gas",
+      "question": "Água com gás aumenta o estômago?",
+      "answer": "Não existem evidências de que a água com gás aumente o estômago. Entretanto, ela pode causar desconforto em alguns pacientes, principalmente no pós-operatório inicial.",
+      "categoryId": "hydration",
+      "articleId": "agua-com-gas"
+    },
+    {
+      "id": "faq-beber-durante-refeicao",
+      "question": "Quanto tempo devo esperar para beber líquidos após comer?",
+      "answer": "O intervalo pode variar conforme a orientação da equipe assistencial e a fase pós-operatória. Não existe um tempo único para todos os pacientes.",
+      "categoryId": "hydration",
+      "articleId": "agua-durante-as-refeicoes"
+    },
+    {
+      "id": "faq-cafe-pos-bariatrica",
+      "question": "Quando posso voltar a tomar café?",
+      "answer": "A reintrodução do café deve seguir a recomendação da equipe assistencial, pois depende da fase da recuperação e da tolerância individual.",
+      "categoryId": "hydration",
+      "articleId": "cafe-e-cafeina"
+    },
+    {
+      "id": "faq-meta-hidratacao",
+      "question": "Como posso lembrar de beber água durante o dia?",
+      "answer": "Criar metas por período, usar garrafas graduadas e registrar a ingestão no HelpBari pode ajudar a manter uma rotina de hidratação.",
+      "categoryId": "hydration",
+      "articleId": "como-atingir-a-meta-diaria"
+    },
+    {
+      "id": "faq-chas",
+      "question": "Todo chá pode ser consumido após a cirurgia bariátrica?",
+      "answer": "Não. Alguns chás podem interagir com medicamentos ou causar desconforto. Sempre confirme com sua equipe assistencial.",
+      "categoryId": "hydration",
+      "articleId": "chas-apos-bariatrica"
+    },
+    {
+      "id": "faq-isotonicos",
+      "question": "Posso substituir água por isotônico?",
+      "answer": "Não. A água continua sendo a principal fonte de hidratação. Isotônicos só devem ser utilizados quando houver indicação profissional.",
+      "categoryId": "hydration",
+      "articleId": "isotonicos"
+    },
+    {
+      "id": "faq-agua-saborizada",
+      "question": "Água saborizada conta como hidratação?",
+      "answer": "Sim, desde que preparada sem açúcar e respeitando a orientação da equipe assistencial.",
+      "categoryId": "hydration",
+      "articleId": "agua-saborizada"
+    },
+    {
+      "id": "faq-nao-consigo-beber-agua",
+      "question": "É normal ter dificuldade para beber água nos primeiros dias?",
+      "answer": "Pode acontecer, mas a dificuldade persistente deve ser comunicada à equipe assistencial para evitar desidratação.",
+      "categoryId": "hydration",
+      "articleId": "nao-consigo-beber-agua"
+    },
+    {
+      "id": "faq-erros-hidratacao",
+      "question": "Esperar sentir sede é um bom indicador?",
+      "answer": "Não. A sede costuma aparecer quando o organismo já iniciou um processo de déficit de líquidos.",
+      "categoryId": "hydration",
+      "articleId": "erros-comuns-na-hidratacao"
+    },
+    {
+      "id": "faq-exercicio",
+      "question": "Preciso beber mais água quando faço atividade física?",
+      "answer": "A necessidade pode aumentar conforme intensidade, duração e condições ambientais. Siga a orientação da equipe assistencial.",
+      "categoryId": "hydration",
+      "articleId": "hidratacao-atividade-fisica"
+    },
+    {
+      "id": "faq-alcool",
+      "question": "O álcool faz mais efeito após a bariátrica?",
+      "answer": "Em muitos pacientes, sim. A absorção pode ocorrer mais rapidamente dependendo do procedimento realizado.",
+      "categoryId": "hydration",
+      "articleId": "bebidas-alcoolicas"
+    }
+  ]
+}
