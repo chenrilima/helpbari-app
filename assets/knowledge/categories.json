@@ -1,0 +1,14 @@
+{
+  "categories": [
+    {
+      "id": "hydration",
+      "name": "Hidratação",
+      "description": "Orientações sobre ingestão de líquidos e prevenção da desidratação."
+    },
+    {
+      "id": "nutrition",
+      "name": "Nutrição",
+      "description": "Conteúdos sobre alimentação e suplementação na jornada bariátrica."
+    }
+  ]
+}

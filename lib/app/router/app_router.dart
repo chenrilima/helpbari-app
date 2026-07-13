@@ -10,6 +10,11 @@ import '../../features/appointments/presentation/pages/appointments_page.dart';
 import '../../features/appointments/presentation/pages/register_appointment_page.dart';
 import '../../features/appointments/domain/entities/entities.dart'
     show Appointment;
+import '../../features/academy/presentation/pages/academy_article_page.dart';
+import '../../features/academy/presentation/pages/academy_faq_page.dart';
+import '../../features/academy/presentation/pages/academy_glossary_page.dart';
+import '../../features/academy/presentation/pages/academy_history_page.dart';
+import '../../features/academy/presentation/pages/academy_page.dart';
 import '../../features/baria/presentation/pages/baria_page.dart';
 import '../../features/exams/presentation/pages/exams_page.dart';
 import '../../features/exams/presentation/pages/register_exam_page.dart';
@@ -237,6 +242,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const SettingsPage(),
       ),
       GoRoute(path: AppRoutes.privacy, builder: (_, _) => const PrivacyPage()),
+      GoRoute(path: AppRoutes.academy, builder: (_, _) => const AcademyPage()),
+      GoRoute(
+        path: AppRoutes.academyArticle,
+        builder: (_, state) =>
+            AcademyArticlePage(articleId: state.pathParameters['articleId']!),
+      ),
+      GoRoute(
+        path: AppRoutes.academyFaq,
+        builder: (_, _) => const AcademyFaqPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.academyGlossary,
+        builder: (_, _) => const AcademyGlossaryPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.academyHistory,
+        builder: (_, _) => const AcademyHistoryPage(),
+      ),
     ],
   );
 

@@ -1,0 +1,96 @@
+{
+  "id": "hidratacao-pos-operatorio",
+  "title": "Hidratação no pós-operatório",
+  "subtitle": "Estratégias práticas para beber líquidos com segurança",
+  "summary": "Entenda como distribuir a ingestão de líquidos e reconhecer quando procurar ajuda profissional.",
+  "blocks": [
+    {
+      "id": "introduction",
+      "type": "heading",
+      "content": "Por que a hidratação merece atenção"
+    },
+    {
+      "id": "overview",
+      "type": "markdown",
+      "content": "Depois da cirurgia, o volume tolerado por vez costuma ser menor. **Pequenos goles ao longo do dia** ajudam a atingir a meta definida pela equipe assistencial."
+    },
+    {
+      "id": "routine",
+      "type": "list",
+      "title": "Organize a rotina",
+      "items": [
+        "Mantenha uma garrafa identificada por perto.",
+        "Distribua os líquidos ao longo do dia.",
+        "Siga os intervalos orientados entre refeições e líquidos."
+      ]
+    },
+    {
+      "id": "daily-check",
+      "type": "checklist",
+      "checklistItems": [
+        {"text": "Comecei a hidratação no início do dia."},
+        {"text": "Observei a cor da urina."},
+        {"text": "Registrei o volume conforme orientação da equipe."}
+      ]
+    },
+    {
+      "id": "quote",
+      "type": "quote",
+      "content": "A melhor meta é aquela individualizada pela sua equipe de saúde."
+    },
+    {
+      "id": "warning",
+      "type": "warning",
+      "title": "Atenção à tolerância",
+      "content": "Não force grandes volumes de uma só vez. Dor, náusea ou vômito persistente precisam ser comunicados à equipe."
+    },
+    {
+      "id": "medical-alert",
+      "type": "medicalAlert",
+      "title": "Procure avaliação",
+      "content": "Busque atendimento se não conseguir manter líquidos, apresentar desmaio, confusão ou redução importante da urina."
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "faqIds": ["faq-hydration-goal"]
+    },
+    {
+      "id": "tolerance-table",
+      "type": "table",
+      "table": {
+        "headers": ["Situação", "Conduta geral"],
+        "rows": [
+          ["Boa tolerância", "Manter pequenos goles frequentes"],
+          ["Náusea persistente", "Interromper e contatar a equipe assistencial"]
+        ]
+      }
+    },
+    {
+      "id": "future-image",
+      "type": "image",
+      "image": {
+        "assetPath": "assets/knowledge/images/hydration-example.webp",
+        "altText": "Ilustração futura sobre distribuição de líquidos",
+        "caption": "Espaço preparado para mídia revisada pela equipe clínica."
+      }
+    }
+  ],
+  "faq": [
+    {
+      "id": "faq-hydration-temperature",
+      "question": "A temperatura do líquido faz diferença?",
+      "answer": "A tolerância varia. Use a temperatura indicada pela equipe e evite opções que provoquem desconforto."
+    }
+  ],
+  "tags": ["água", "hidratação", "pós-operatório"],
+  "categoryId": "hydration",
+  "bariatricPhases": ["pós-operatório inicial", "manutenção"],
+  "surgeryTypes": ["bypass gástrico", "sleeve gástrico"],
+  "readingTimeMinutes": 6,
+  "relatedArticleIds": ["sinais-de-desidratacao"],
+  "sources": ["asmbs-nutrition-2016"],
+  "evidenceLevel": "moderate",
+  "lastReviewedAt": "2026-07-01",
+  "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação, diagnóstico ou orientação da sua equipe de saúde."
+}

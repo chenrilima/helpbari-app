@@ -1,0 +1,30 @@
+{
+  "id": "sinais-de-desidratacao",
+  "title": "Sinais de desidratação",
+  "subtitle": "Reconheça alertas e saiba quando buscar ajuda",
+  "summary": "Conheça sinais comuns de baixa ingestão de líquidos e situações que exigem avaliação profissional.",
+  "blocks": [
+    {
+      "id": "signs",
+      "type": "markdown",
+      "content": "Sede, boca seca, tontura e urina escura podem acompanhar a desidratação. Esses sinais devem ser avaliados junto ao seu estado geral."
+    },
+    {
+      "id": "urgent",
+      "type": "medicalAlert",
+      "title": "Sinais de alarme",
+      "content": "Desmaio, confusão, fraqueza intensa ou incapacidade de manter líquidos justificam atendimento imediato."
+    }
+  ],
+  "faq": [],
+  "tags": ["desidratação", "sinais de alerta", "hidratação"],
+  "categoryId": "hydration",
+  "bariatricPhases": ["pós-operatório inicial", "manutenção"],
+  "surgeryTypes": ["bypass gástrico", "sleeve gástrico"],
+  "readingTimeMinutes": 3,
+  "relatedArticleIds": ["hidratacao-pos-operatorio"],
+  "sources": ["asmbs-nutrition-2016"],
+  "evidenceLevel": "consensus",
+  "lastReviewedAt": "2026-07-01",
+  "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação, diagnóstico ou orientação da sua equipe de saúde."
+}

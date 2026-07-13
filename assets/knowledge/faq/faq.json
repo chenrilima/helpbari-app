@@ -1,0 +1,11 @@
+{
+  "items": [
+    {
+      "id": "faq-hydration-goal",
+      "question": "Qual deve ser minha meta diária de líquidos?",
+      "answer": "A meta deve ser individualizada pela equipe assistencial, considerando fase pós-operatória, tolerância e condições clínicas.",
+      "categoryId": "hydration",
+      "articleId": "hidratacao-pos-operatorio"
+    }
+  ]
+}

@@ -56,6 +56,7 @@ dependencies:
   mime: ^2.0.0
   pdf: ^3.11.3
   printing: ^5.14.2
+  flutter_markdown: ^0.7.7+1
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/knowledge/
+    - assets/knowledge/articles/
+    - assets/knowledge/faq/
+    - assets/knowledge/glossary/
+    - assets/knowledge/references/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "2026.07.1",
+  "categories": "assets/knowledge/categories.json",
+  "articles": [
+    "assets/knowledge/articles/hidratacao-pos-operatorio.json",
+    "assets/knowledge/articles/sinais-de-desidratacao.json"
+  ],
+  "faq": "assets/knowledge/faq/faq.json",
+  "glossary": "assets/knowledge/glossary/glossary.json",
+  "references": "assets/knowledge/references/references.json"
+}

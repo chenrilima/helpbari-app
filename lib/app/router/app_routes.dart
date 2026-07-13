@@ -28,4 +28,13 @@ abstract final class AppRoutes {
   static const medicalReports = '/medical-reports';
   static const settings = '/settings';
   static const privacy = '/privacy';
+  static const academy = '/academy';
+  static const academyArticle = '/academy/article/:articleId';
+  static const academyFaq = '/academy/faq';
+  static const academyGlossary = '/academy/glossary';
+  static const academyHistory = '/academy/history';
+
+  static String academyArticlePath(String articleId) {
+    return '/academy/article/${Uri.encodeComponent(articleId)}';
+  }
 }
