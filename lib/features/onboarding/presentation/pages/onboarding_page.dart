@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,7 +25,8 @@ class OnboardingPage extends ConsumerStatefulWidget {
   ConsumerState<OnboardingPage> createState() => _OnboardingPageState();
 }
 
-class _OnboardingPageState extends ConsumerState<OnboardingPage> {
+class _OnboardingPageState extends ConsumerState<OnboardingPage>
+    with WidgetsBindingObserver {
   final _initialDataFormKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
   late final TextEditingController _surgeryDateController;
@@ -34,10 +37,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   late final TextEditingController _initialWeightController;
   late final TextEditingController _targetWeightController;
   bool _isHandlingAction = false;
+  bool _isHydratingControllers = false;
+  Timer? _draftSaveDebounce;
+  ProviderSubscription<OnboardingState>? _draftSubscription;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     final draft = ref.read(onboardingViewModelProvider).draft;
     _nameController = TextEditingController(text: draft.name);
@@ -48,10 +55,23 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _heightController = TextEditingController(text: draft.height);
     _initialWeightController = TextEditingController(text: draft.initialWeight);
     _targetWeightController = TextEditingController(text: draft.targetWeight);
+    for (final controller in _textControllers) {
+      controller.addListener(_scheduleDraftSave);
+    }
+    _draftSubscription = ref.listenManual(
+      onboardingViewModelProvider,
+      (previous, next) => _hydrateControllers(next.draft),
+    );
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _draftSaveDebounce?.cancel();
+    _draftSubscription?.close();
+    for (final controller in _textControllers) {
+      controller.removeListener(_scheduleDraftSave);
+    }
     _nameController.dispose();
     _surgeryDateController.dispose();
     _currentWeightController.dispose();
@@ -61,6 +81,59 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _initialWeightController.dispose();
     _targetWeightController.dispose();
     super.dispose();
+  }
+
+  List<TextEditingController> get _textControllers => [
+    _nameController,
+    _surgeryDateController,
+    _currentWeightController,
+    _waterGoalController,
+    _birthDateController,
+    _heightController,
+    _initialWeightController,
+    _targetWeightController,
+  ];
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.detached) {
+      _draftSaveDebounce?.cancel();
+      unawaited(
+        _persistInitialData(ref.read(onboardingViewModelProvider).draft),
+      );
+    }
+  }
+
+  void _scheduleDraftSave() {
+    if (_isHydratingControllers) return;
+    _draftSaveDebounce?.cancel();
+    _draftSaveDebounce = Timer(const Duration(milliseconds: 400), () {
+      unawaited(
+        _persistInitialData(ref.read(onboardingViewModelProvider).draft),
+      );
+    });
+  }
+
+  void _hydrateControllers(OnboardingProfileDraft draft) {
+    _isHydratingControllers = true;
+    _hydrateController(_nameController, draft.name);
+    _hydrateController(_surgeryDateController, draft.surgeryDate);
+    _hydrateController(_currentWeightController, draft.currentWeight);
+    _hydrateController(_waterGoalController, draft.waterGoal);
+    _hydrateController(_birthDateController, draft.birthDate);
+    _hydrateController(_heightController, draft.height);
+    _hydrateController(_initialWeightController, draft.initialWeight);
+    _hydrateController(_targetWeightController, draft.targetWeight);
+    _isHydratingControllers = false;
+  }
+
+  void _hydrateController(TextEditingController controller, String value) {
+    if (controller.text.isEmpty && value.isNotEmpty) {
+      controller.text = value;
+    }
   }
 
   @override
@@ -85,6 +158,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         children: [
           _OnboardingHeader(
             canGoBack: !state.isFirstStep,
+            canSkip: !state.isAuthenticated,
             onBack: viewModel.previous,
             onSkip: () => _handleSkip(state),
           ),
@@ -100,6 +174,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           _OnboardingActions(
             isLastStep: state.isLastStep,
             isSaving: state.isSaving || _isHandlingAction,
+            canContinue:
+                state.currentStep != OnboardingStep.documents ||
+                state.draft.documentsAccepted,
             onNext: () => _handleNext(state),
             onFinish: () => _handleFinish(state),
           ),
@@ -109,6 +186,17 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Widget _buildStep(BuildContext context, OnboardingState state) {
+    if (state.resolutionFailed) {
+      return HBEmptyState(
+        icon: Icons.sync_problem_outlined,
+        title: 'Não foi possível restaurar seus dados',
+        description:
+            state.errorMessage ?? 'Verifique sua conexão e tente novamente.',
+        actionLabel: 'Tentar novamente',
+        onActionPressed: () =>
+            ref.read(onboardingViewModelProvider.notifier).refreshForSession(),
+      );
+    }
     return switch (state.currentStep) {
       OnboardingStep.splash => const OnboardingStepContent(
         icon: AppIcons.health,
@@ -188,10 +276,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             .updateDraft,
       ),
       OnboardingStep.documents => _DocumentsStep(
-        accepted: state.draft.documentsAccepted,
-        onChanged: (value) => ref
+        termsAccepted: state.draft.termsAccepted,
+        privacyPolicyAccepted: state.draft.privacyPolicyAccepted,
+        onTermsChanged: (value) => ref
             .read(onboardingViewModelProvider.notifier)
-            .updateDraft(state.draft.copyWith(documentsAccepted: value)),
+            .updateDraft(state.draft.copyWith(termsAccepted: value)),
+        onPrivacyChanged: (value) => ref
+            .read(onboardingViewModelProvider.notifier)
+            .updateDraft(state.draft.copyWith(privacyPolicyAccepted: value)),
         onOpen: (document) => HBDialog.info(
           context,
           title: '${document.title} • v${document.version}',
@@ -202,7 +294,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         icon: AppIcons.success,
         title: 'Pronto para começar',
         description:
-            'Sua configuração inicial foi salva neste dispositivo. Quando houver conexão, esses dados poderão ser sincronizados.',
+            'Sua configuração inicial foi salva. Quando houver conexão, os dados pendentes serão sincronizados com segurança.',
         children: [
           _BenefitLine(
             icon: AppIcons.profile,
@@ -228,7 +320,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       await _persistInitialData(state.draft);
     }
 
-    viewModel.next();
+    await viewModel.next();
     if (mounted && _isHandlingAction) {
       setState(() => _isHandlingAction = false);
     }
@@ -285,13 +377,17 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
 class _DocumentsStep extends StatelessWidget {
   const _DocumentsStep({
-    required this.accepted,
-    required this.onChanged,
+    required this.termsAccepted,
+    required this.privacyPolicyAccepted,
+    required this.onTermsChanged,
+    required this.onPrivacyChanged,
     required this.onOpen,
   });
 
-  final bool accepted;
-  final ValueChanged<bool> onChanged;
+  final bool termsAccepted;
+  final bool privacyPolicyAccepted;
+  final ValueChanged<bool> onTermsChanged;
+  final ValueChanged<bool> onPrivacyChanged;
   final ValueChanged<PrivacyDocument> onOpen;
 
   @override
@@ -301,28 +397,36 @@ class _DocumentsStep extends StatelessWidget {
     description:
         'Leia e aceite os documentos obrigatórios para concluir sua configuração.',
     children: [
-      ListTile(
+      CheckboxListTile(
         contentPadding: EdgeInsets.zero,
+        value: privacyPolicyAccepted,
         title: const HBText('Política de Privacidade'),
         subtitle: const HBText('Versão ${PrivacyDocuments.privacyVersion}'),
-        trailing: const Icon(Icons.open_in_new),
-        onTap: () => onOpen(PrivacyDocuments.policy),
-      ),
-      ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: const HBText('Termos de Uso'),
-        subtitle: const HBText('Versão ${PrivacyDocuments.termsVersion}'),
-        trailing: const Icon(Icons.open_in_new),
-        onTap: () => onOpen(PrivacyDocuments.terms),
+        secondary: IconButton(
+          tooltip: 'Abrir Política de Privacidade',
+          icon: const Icon(Icons.open_in_new),
+          onPressed: () => onOpen(PrivacyDocuments.policy),
+        ),
+        onChanged: (value) => onPrivacyChanged(value ?? false),
       ),
       CheckboxListTile(
         contentPadding: EdgeInsets.zero,
-        value: accepted,
-        onChanged: (value) => onChanged(value ?? false),
-        title: const HBText(
-          'Li e aceito os Termos de Uso e a Política de Privacidade.',
+        value: termsAccepted,
+        title: const HBText('Termos de Uso'),
+        subtitle: const HBText('Versão ${PrivacyDocuments.termsVersion}'),
+        secondary: IconButton(
+          tooltip: 'Abrir Termos de Uso',
+          icon: const Icon(Icons.open_in_new),
+          onPressed: () => onOpen(PrivacyDocuments.terms),
         ),
+        onChanged: (value) => onTermsChanged(value ?? false),
       ),
+      if (!termsAccepted || !privacyPolicyAccepted)
+        Semantics(
+          label:
+              'Aceites pendentes. Aceite os Termos de Uso e a Política de Privacidade para continuar.',
+          child: const HBText('Aceite os dois documentos para continuar.'),
+        ),
     ],
   );
 }
@@ -330,11 +434,13 @@ class _DocumentsStep extends StatelessWidget {
 class _OnboardingHeader extends StatelessWidget {
   const _OnboardingHeader({
     required this.canGoBack,
+    required this.canSkip,
     required this.onBack,
     required this.onSkip,
   });
 
   final bool canGoBack;
+  final bool canSkip;
   final VoidCallback onBack;
   final VoidCallback onSkip;
 
@@ -354,7 +460,10 @@ class _OnboardingHeader extends StatelessWidget {
               : null,
         ),
         const Spacer(),
-        TextButton(onPressed: onSkip, child: const Text('Pular')),
+        if (canSkip)
+          TextButton(onPressed: onSkip, child: const Text('Pular'))
+        else
+          const SizedBox(width: AppSizes.buttonMinTapTarget),
       ],
     );
   }
@@ -364,12 +473,14 @@ class _OnboardingActions extends StatelessWidget {
   const _OnboardingActions({
     required this.isLastStep,
     required this.isSaving,
+    required this.canContinue,
     required this.onNext,
     required this.onFinish,
   });
 
   final bool isLastStep;
   final bool isSaving;
+  final bool canContinue;
   final VoidCallback onNext;
   final VoidCallback onFinish;
 
@@ -379,7 +490,9 @@ class _OnboardingActions extends StatelessWidget {
       label: isLastStep ? 'Concluir' : 'Continuar',
       icon: isLastStep ? AppIcons.success : Icons.arrow_forward,
       isLoading: isSaving,
-      onPressed: isSaving ? null : (isLastStep ? onFinish : onNext),
+      onPressed: isSaving || !canContinue
+          ? null
+          : (isLastStep ? onFinish : onNext),
     );
   }
 }

@@ -11,6 +11,7 @@ class HBScaffold extends StatelessWidget {
     this.appBar,
     this.floatingActionButton,
     this.resizeToAvoidBottomInset,
+    this.scrollable = true,
   });
 
   final Widget child;
@@ -19,6 +20,7 @@ class HBScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final Widget? floatingActionButton;
   final bool? resizeToAvoidBottomInset;
+  final bool scrollable;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,11 @@ class HBScaffold extends StatelessWidget {
       appBar: appBar,
       floatingActionButton: floatingActionButton,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      body: HBResponsivePage(padding: padding, child: child),
+      body: HBResponsivePage(
+        padding: padding,
+        scrollable: scrollable,
+        child: child,
+      ),
     );
   }
 }

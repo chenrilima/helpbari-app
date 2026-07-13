@@ -6,7 +6,6 @@ class AuthGuard {
 
   static const publicRoutes = {
     AppRoutes.splash,
-    AppRoutes.onboarding,
     AppRoutes.login,
     AppRoutes.signUp,
     AppRoutes.resetPassword,
@@ -35,9 +34,12 @@ class AuthGuard {
             : isPublicRoute
             ? AppRoutes.home
             : null,
-      AuthUnauthenticated() ||
-      AuthPasswordRecoverySent() ||
-      AuthFailure() => isPublicRoute ? null : AppRoutes.login,
+      AuthUnauthenticated() || AuthPasswordRecoverySent() || AuthFailure() =>
+        location == AppRoutes.login ||
+                location == AppRoutes.signUp ||
+                location == AppRoutes.resetPassword
+            ? null
+            : AppRoutes.login,
     };
   }
 }

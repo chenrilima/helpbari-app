@@ -7,10 +7,12 @@ class HBResponsivePage extends StatelessWidget {
     required this.child,
     super.key,
     this.padding = const EdgeInsets.all(AppSpacing.lg),
+    this.scrollable = true,
   });
 
   final Widget child;
   final EdgeInsetsGeometry padding;
+  final bool scrollable;
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +23,19 @@ class HBResponsivePage extends StatelessWidget {
               ? AppBreakpoints.medium
               : double.infinity;
 
-          return SingleChildScrollView(
-            padding: padding,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: maxWidth),
-                child: child,
-              ),
+          final constrainedChild = Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth),
+              child: child,
             ),
           );
+          if (scrollable) {
+            return SingleChildScrollView(
+              padding: padding,
+              child: constrainedChild,
+            );
+          }
+          return Padding(padding: padding, child: constrainedChild);
         },
       ),
     );

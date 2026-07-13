@@ -315,7 +315,9 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(profileViewModelProvider);
     ref.invalidate(privacyRepositoryProvider);
     ref.invalidate(privacyViewModelProvider);
-    ref.invalidate(onboardingViewModelProvider);
+    await ref
+        .read(onboardingViewModelProvider.notifier)
+        .refreshForSession(waitForRemote: false);
     await ref.read(settingsViewModelProvider.notifier).loadSettings();
     await Future.wait([
       ref.read(waterViewModelProvider.notifier).loadHistory(),

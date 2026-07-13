@@ -11,6 +11,7 @@ class AcademyFaqPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final catalog = ref.watch(knowledgeCatalogProvider);
     return HBPage(
+      scrollable: false,
       appBar: const HBAppBar(title: 'Perguntas frequentes'),
       children: [
         Expanded(

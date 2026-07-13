@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/services/local_storage_service.dart';
 import 'package:helpbari/features/onboarding/data/repositories/local_onboarding_repository.dart';
 import 'package:helpbari/features/onboarding/domain/entities/entities.dart';
+import 'package:helpbari/features/onboarding/domain/usecases/use_cases.dart';
 
 void main() {
   late _Storage storage;
@@ -14,7 +15,7 @@ void main() {
 
   test('first access has pending global introduction and empty draft', () {
     expect(repository.hasCompletedIntroduction(), isFalse);
-    expect(repository.getDraft().name, isEmpty);
+    expect(repository.getDraft(null).name, isEmpty);
   });
 
   test('legacy introduction marker is read but never deleted', () {
@@ -25,9 +26,9 @@ void main() {
 
   test('partial draft and pre-auth resume survive login', () async {
     const draft = OnboardingProfileDraft(name: 'Ana', currentWeight: '90');
-    await repository.saveDraft(draft);
+    await repository.saveDraft(null, draft);
     await repository.saveResumeStep(null, 4);
-    expect(repository.getDraft().name, 'Ana');
+    expect(repository.getDraft(null).name, 'Ana');
     expect(repository.getResumeStep(null), 4);
     expect(repository.hasCompletedForUser('user-a'), isFalse);
   });
@@ -57,7 +58,7 @@ void main() {
     await repository.markDraftConsumed('user-a');
     expect(repository.hasConsumedDraft('user-a'), isTrue);
     expect(repository.hasConsumedDraft('user-b'), isFalse);
-    expect(repository.getDraft(), isNotNull);
+    expect(repository.getDraft('user-a'), isNotNull);
   });
 
   test('new confirmation fields remain backward compatible', () {
@@ -70,6 +71,66 @@ void main() {
     expect(draft.notificationsConfirmed, isFalse);
     expect(draft.currentWeightConfirmedAsInitial, isFalse);
     expect(draft.documentsAccepted, isFalse);
+  });
+
+  test(
+    'pre-auth draft is claimed once and isolated by authenticated user',
+    () async {
+      const preAuth = OnboardingProfileDraft(name: 'Ana');
+      await repository.saveDraft(null, preAuth);
+
+      await repository.claimPreAuthDraft('user-a');
+      await repository.saveDraft(
+        'user-b',
+        const OnboardingProfileDraft(name: 'Bruna'),
+      );
+
+      expect(repository.getDraft('user-a').name, 'Ana');
+      expect(repository.getDraft('user-b').name, 'Bruna');
+      expect(repository.getDraft(null).name, isEmpty);
+    },
+  );
+
+  test('clearDraft removes only the selected user draft', () async {
+    await repository.saveDraft(
+      'user-a',
+      const OnboardingProfileDraft(name: 'Ana'),
+    );
+    await repository.saveDraft(
+      'user-b',
+      const OnboardingProfileDraft(name: 'Bruna'),
+    );
+
+    await repository.clearDraft('user-a');
+
+    expect(repository.getDraft('user-a').isEmpty, isTrue);
+    expect(repository.getDraft('user-b').name, 'Bruna');
+  });
+
+  test('legal validation requires each current document acceptance', () {
+    final useCases = OnboardingUseCases(repository);
+
+    expect(
+      () => useCases.validateLegalAcceptance(
+        const OnboardingProfileDraft(privacyPolicyAccepted: true),
+      ),
+      throwsA(isA<Exception>()),
+    );
+    expect(
+      () => useCases.validateLegalAcceptance(
+        const OnboardingProfileDraft(termsAccepted: true),
+      ),
+      throwsA(isA<Exception>()),
+    );
+    expect(
+      () => useCases.validateLegalAcceptance(
+        const OnboardingProfileDraft(
+          termsAccepted: true,
+          privacyPolicyAccepted: true,
+        ),
+      ),
+      returnsNormally,
+    );
   });
 }
 

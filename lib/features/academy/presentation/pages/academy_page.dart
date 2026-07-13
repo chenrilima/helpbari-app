@@ -53,6 +53,7 @@ class _AcademyPageState extends ConsumerState<AcademyPage> {
     });
 
     return HBPage(
+      scrollable: false,
       appBar: HBAppBar(
         title: 'Academia Bariátrica',
         subtitle: 'Conhecimento confiável, sempre offline',

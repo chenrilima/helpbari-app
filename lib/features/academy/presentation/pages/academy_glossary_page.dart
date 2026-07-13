@@ -26,6 +26,7 @@ class _AcademyGlossaryPageState extends ConsumerState<AcademyGlossaryPage> {
   Widget build(BuildContext context) {
     final catalog = ref.watch(knowledgeCatalogProvider);
     return HBPage(
+      scrollable: false,
       appBar: const HBAppBar(title: 'Glossário'),
       children: [
         HBTextField(

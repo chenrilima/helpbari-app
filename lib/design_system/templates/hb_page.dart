@@ -11,18 +11,21 @@ class HBPage extends StatelessWidget {
     this.appBar,
     this.header,
     this.padding = const EdgeInsets.all(AppSpacing.lg),
+    this.scrollable = true,
   });
 
   final PreferredSizeWidget? appBar;
   final Widget? header;
   final List<Widget> children;
   final EdgeInsetsGeometry padding;
+  final bool scrollable;
 
   @override
   Widget build(BuildContext context) {
     return HBScaffold(
       appBar: appBar,
       padding: padding,
+      scrollable: scrollable,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -1,36 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../../app/router/app_routes.dart';
 import '../../../../design_system/design_system.dart';
-import '../viewmodels/auth_providers.dart';
-import '../states/auth_state.dart';
 
-class SplashPage extends ConsumerWidget {
+class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authViewModelProvider);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      switch (authState) {
-        case AuthAuthenticated():
-        case AuthPasswordUpdated():
-          context.go(AppRoutes.home);
-        case AuthPasswordRecoveryReady():
-          context.go(AppRoutes.resetPassword);
-        case AuthUnauthenticated():
-        case AuthPasswordRecoverySent():
-        case AuthFailure():
-          context.go(AppRoutes.login);
-        case AuthInitial():
-        case AuthLoading():
-          break;
-      }
-    });
-
+  Widget build(BuildContext context) {
     return HBPage(
       children: [
         Column(

@@ -55,6 +55,7 @@ import '../../features/weight/presentation/pages/weight_page.dart';
 import '../../features/weight/domain/entities/entities.dart' show WeightRecord;
 import 'app_routes.dart';
 import 'notification_navigation.dart';
+import 'onboarding_guard.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final refreshListenable = _GoRouterRefreshStream(
@@ -82,23 +83,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   }
 
   final router = GoRouter(
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.splash,
     refreshListenable: refreshListenable,
     redirect: (context, state) {
       final location = state.uri.path;
       final onboardingState = ref.read(onboardingViewModelProvider);
-      final isOnboardingRoute = location == AppRoutes.onboarding;
-
-      if (!onboardingState.introductionCompleted) {
-        return isOnboardingRoute ? null : AppRoutes.onboarding;
-      }
-
       final session = ref.read(authSessionProvider);
-      if (session == null && isOnboardingRoute) return AppRoutes.login;
-      if (session != null && !onboardingState.userCompleted) {
-        return isOnboardingRoute ? null : AppRoutes.onboarding;
-      }
-      if (session != null && isOnboardingRoute) return AppRoutes.home;
+      final onboardingRedirect = OnboardingGuard.redirect(
+        location: location,
+        session: session,
+        state: onboardingState,
+      );
+      if (onboardingRedirect != null) return onboardingRedirect;
 
       final authRedirect = AuthGuard.redirect(
         location: location,

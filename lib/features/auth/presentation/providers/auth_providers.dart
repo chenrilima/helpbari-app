@@ -72,6 +72,7 @@ final authSessionProvider = Provider<AuthUser?>((ref) {
 
   return switch (authState) {
     AuthAuthenticated(:final user) => user,
+    AuthPasswordUpdated(:final user) => user,
     _ => null,
   };
 });

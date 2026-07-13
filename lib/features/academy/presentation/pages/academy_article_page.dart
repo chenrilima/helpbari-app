@@ -35,10 +35,12 @@ class _AcademyArticlePageState extends ConsumerState<AcademyArticlePage> {
     final state = ref.watch(academyViewModelProvider);
     return article.when(
       loading: () => const HBPage(
+        scrollable: false,
         appBar: HBAppBar(title: 'Artigo'),
         children: [Expanded(child: HBLoading(message: 'Abrindo artigo...'))],
       ),
       error: (_, _) => HBPage(
+        scrollable: false,
         appBar: const HBAppBar(title: 'Artigo'),
         children: [
           Expanded(
@@ -54,6 +56,7 @@ class _AcademyArticlePageState extends ConsumerState<AcademyArticlePage> {
         ],
       ),
       data: (value) => HBPage(
+        scrollable: false,
         appBar: HBAppBar(
           title: value.title,
           subtitle: '${value.readingTimeMinutes} min de leitura',

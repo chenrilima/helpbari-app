@@ -16,7 +16,9 @@ final class OnboardingProfileDraft {
     this.currentWeightConfirmedAsInitial = false,
     this.waterGoalConfirmed = false,
     this.notificationsConfirmed = false,
-    this.documentsAccepted = false,
+    this.termsAccepted = false,
+    this.privacyPolicyAccepted = false,
+    this.currentWeightRecordId = '',
   });
 
   factory OnboardingProfileDraft.fromJson(Map<String, Object?> json) {
@@ -38,7 +40,15 @@ final class OnboardingProfileDraft {
           json['currentWeightConfirmedAsInitial'] as bool? ?? false,
       waterGoalConfirmed: json['waterGoalConfirmed'] as bool? ?? false,
       notificationsConfirmed: json['notificationsConfirmed'] as bool? ?? false,
-      documentsAccepted: json['documentsAccepted'] as bool? ?? false,
+      termsAccepted:
+          json['termsAccepted'] as bool? ??
+          json['documentsAccepted'] as bool? ??
+          false,
+      privacyPolicyAccepted:
+          json['privacyPolicyAccepted'] as bool? ??
+          json['documentsAccepted'] as bool? ??
+          false,
+      currentWeightRecordId: json['currentWeightRecordId'] as String? ?? '',
     );
   }
 
@@ -56,7 +66,22 @@ final class OnboardingProfileDraft {
   final bool currentWeightConfirmedAsInitial;
   final bool waterGoalConfirmed;
   final bool notificationsConfirmed;
-  final bool documentsAccepted;
+  final bool termsAccepted;
+  final bool privacyPolicyAccepted;
+  final String currentWeightRecordId;
+
+  bool get documentsAccepted => termsAccepted && privacyPolicyAccepted;
+
+  bool get isEmpty =>
+      name.isEmpty &&
+      surgeryDate.isEmpty &&
+      currentWeight.isEmpty &&
+      waterGoal.isEmpty &&
+      objectives.isEmpty &&
+      birthDate.isEmpty &&
+      height.isEmpty &&
+      initialWeight.isEmpty &&
+      targetWeight.isEmpty;
 
   OnboardingProfileDraft copyWith({
     String? name,
@@ -73,7 +98,9 @@ final class OnboardingProfileDraft {
     bool? currentWeightConfirmedAsInitial,
     bool? waterGoalConfirmed,
     bool? notificationsConfirmed,
-    bool? documentsAccepted,
+    bool? termsAccepted,
+    bool? privacyPolicyAccepted,
+    String? currentWeightRecordId,
   }) {
     return OnboardingProfileDraft(
       name: name ?? this.name,
@@ -93,7 +120,11 @@ final class OnboardingProfileDraft {
       waterGoalConfirmed: waterGoalConfirmed ?? this.waterGoalConfirmed,
       notificationsConfirmed:
           notificationsConfirmed ?? this.notificationsConfirmed,
-      documentsAccepted: documentsAccepted ?? this.documentsAccepted,
+      termsAccepted: termsAccepted ?? this.termsAccepted,
+      privacyPolicyAccepted:
+          privacyPolicyAccepted ?? this.privacyPolicyAccepted,
+      currentWeightRecordId:
+          currentWeightRecordId ?? this.currentWeightRecordId,
     );
   }
 
@@ -113,7 +144,9 @@ final class OnboardingProfileDraft {
       'currentWeightConfirmedAsInitial': currentWeightConfirmedAsInitial,
       'waterGoalConfirmed': waterGoalConfirmed,
       'notificationsConfirmed': notificationsConfirmed,
-      'documentsAccepted': documentsAccepted,
+      'termsAccepted': termsAccepted,
+      'privacyPolicyAccepted': privacyPolicyAccepted,
+      'currentWeightRecordId': currentWeightRecordId,
     };
   }
 

@@ -16,6 +16,7 @@ class AcademyHistoryPage extends ConsumerWidget {
     final catalog = ref.watch(knowledgeCatalogProvider);
     final userData = ref.watch(knowledgeUserDataProvider);
     return HBPage(
+      scrollable: false,
       appBar: const HBAppBar(title: 'Histórico de leitura'),
       children: [
         Expanded(
