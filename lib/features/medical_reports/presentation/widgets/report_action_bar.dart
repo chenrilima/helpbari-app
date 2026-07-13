@@ -35,26 +35,33 @@ class ReportActionBar extends StatelessWidget {
           onPressed: onGenerate,
         ),
         const HBGap.md(),
-        Row(
-          children: [
-            Expanded(
-              child: HBButton(
-                label: 'Baixar',
-                icon: Icons.download_outlined,
-                isLoading: isDownloading,
-                onPressed: onDownload,
-              ),
-            ),
-            const HBGap.horizontal(AppSpacing.md),
-            Expanded(
-              child: HBButton(
-                label: 'Compartilhar',
-                icon: Icons.ios_share_outlined,
-                isLoading: isSharing,
-                onPressed: onShare,
-              ),
-            ),
-          ],
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final download = HBButton(
+              label: 'Baixar',
+              icon: Icons.download_outlined,
+              isLoading: isDownloading,
+              onPressed: onDownload,
+            );
+            final share = HBButton(
+              label: 'Compartilhar',
+              icon: Icons.ios_share_outlined,
+              isLoading: isSharing,
+              onPressed: onShare,
+            );
+
+            if (constraints.maxWidth < AppBreakpoints.compact) {
+              return Column(children: [download, const HBGap.md(), share]);
+            }
+
+            return Row(
+              children: [
+                Expanded(child: download),
+                const HBGap.horizontal(AppSpacing.md),
+                Expanded(child: share),
+              ],
+            );
+          },
         ),
         const HBGap.md(),
         HBButton(

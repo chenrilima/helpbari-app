@@ -33,10 +33,19 @@ class _BariaPageState extends ConsumerState<BariaPage> {
     final state = ref.watch(bariaViewModelProvider);
 
     ref.listen<BariaState>(bariaViewModelProvider, (previous, next) {
-      if (next.error != null) {
+      if (next.error != null && next.error != previous?.error) {
         HBSnackBar.error(context, message: next.error!);
       }
     });
+
+    if (state.isLoading &&
+        state.dailyInsight == null &&
+        state.conversationMessages.isEmpty) {
+      return const HBPage(
+        appBar: HBAppBar(title: 'BarIA'),
+        children: [HBLoading(message: 'Preparando sua análise...')],
+      );
+    }
 
     return HBPage(
       appBar: HBAppBar(
@@ -44,6 +53,18 @@ class _BariaPageState extends ConsumerState<BariaPage> {
         subtitle: 'Sua assistente bariátrica inteligente',
       ),
       children: [
+        if (state.error != null &&
+            state.dailyInsight == null &&
+            state.conversationMessages.isEmpty) ...[
+          HBEmptyState(
+            title: 'BarIA indisponível',
+            description: state.error!,
+            icon: Icons.error_outline,
+            actionLabel: 'Tentar novamente',
+            onActionPressed: _loadData,
+          ),
+          const HBGap.lg(),
+        ],
         if (state.dailyInsight != null) ...[
           BariaDailyAnalysisCard(insight: state.dailyInsight!),
           const HBGap.xl(),
@@ -58,6 +79,15 @@ class _BariaPageState extends ConsumerState<BariaPage> {
         const HBGap.lg(),
         if (state.conversationMessages.isNotEmpty) ...[
           BariaMessageList(messages: state.conversationMessages),
+          const HBGap.lg(),
+        ],
+        if (state.conversationMessages.isEmpty && !state.isLoading) ...[
+          const HBEmptyState(
+            title: 'Conversa ainda não iniciada',
+            description:
+                'Escolha uma sugestão ou envie uma pergunta para começar.',
+            icon: Icons.chat_bubble_outline,
+          ),
           const HBGap.lg(),
         ],
         BariaTextInput(

@@ -77,6 +77,13 @@ class _WaterPageState extends ConsumerState<WaterPage> {
     final state = ref.watch(waterViewModelProvider);
     final goalMl = ref.watch(dailyWaterGoalProvider).value ?? 2000;
 
+    ref.listen(waterViewModelProvider, (previous, next) {
+      if (next.syncWarning != null &&
+          next.syncWarning != previous?.syncWarning) {
+        HBSnackBar.warning(context, message: next.syncWarning!);
+      }
+    });
+
     return HBLoadingOverlay(
       isLoading: state.isLoading,
       message: 'Atualizando hidratação...',

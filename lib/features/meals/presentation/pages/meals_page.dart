@@ -86,6 +86,13 @@ class _MealsPageState extends ConsumerState<MealsPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(mealViewModelProvider);
 
+    ref.listen(mealViewModelProvider, (previous, next) {
+      if (next.syncWarning != null &&
+          next.syncWarning != previous?.syncWarning) {
+        HBSnackBar.warning(context, message: next.syncWarning!);
+      }
+    });
+
     final filteredMeals = state.filteredMeals;
     return HBLoadingOverlay(
       isLoading: state.isLoading,

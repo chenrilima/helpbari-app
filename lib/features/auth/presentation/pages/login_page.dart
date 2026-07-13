@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../states/auth_state.dart';
@@ -29,6 +30,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _signIn() async {
     if (!_formKey.currentState!.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     await ref
         .read(authViewModelProvider.notifier)
@@ -74,13 +76,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     label: 'E-mail',
                     hint: 'seuemail@exemplo.com',
                     keyboardType: TextInputType.emailAddress,
+                    inputFormatters: AppInputFormatters.email,
                     textInputAction: TextInputAction.next,
+                    autofillHints: const [AutofillHints.email],
+                    autofocus: true,
                     validator: AppValidators.email,
                   ),
                   const HBGap.md(),
                   HBPasswordField(
                     controller: _passwordController,
                     textInputAction: TextInputAction.done,
+                    autofillHints: const [AutofillHints.password],
                     validator: AppValidators.password,
                     onFieldSubmitted: (_) => _signIn(),
                   ),
@@ -128,16 +134,16 @@ class _LoginHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 64,
-          height: 64,
+          width: AppSizes.avatarLg,
+          height: AppSizes.avatarLg,
           decoration: BoxDecoration(
             color: AppColors.primaryLight,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(AppRadius.lg),
           ),
           child: const HBIcon(
             Icons.favorite_rounded,
             color: AppColors.primary,
-            size: 32,
+            size: AppSizes.iconLg,
           ),
         ),
         const HBGap.lg(),

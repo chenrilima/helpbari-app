@@ -31,8 +31,8 @@ class BariaSuggestionsSection extends StatelessWidget {
         ),
         const HBGap.md(),
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.sm,
           children: _suggestions
               .map(
                 (suggestion) => _SuggestionChip(
@@ -55,20 +55,28 @@ class _SuggestionChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue),
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.transparent,
-        ),
-        child: HBText(
-          label,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: Colors.blue),
+    return Semantics(
+      button: true,
+      label: label,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppRadius.full),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.primary),
+            borderRadius: BorderRadius.circular(AppRadius.full),
+            color: AppColors.surface,
+          ),
+          child: HBText(
+            label,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.primary),
+          ),
         ),
       ),
     );

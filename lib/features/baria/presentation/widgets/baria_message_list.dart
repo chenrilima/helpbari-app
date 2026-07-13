@@ -32,7 +32,7 @@ class _BariaMessageListState extends State<BariaMessageList> {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
+        duration: AppDurations.normal,
         curve: Curves.easeOut,
       );
     }
@@ -51,13 +51,13 @@ class _BariaMessageListState extends State<BariaMessageList> {
         maxHeight: MediaQuery.of(context).size.height * 0.4,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: ListView.builder(
         controller: _scrollController,
         shrinkWrap: true,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppSpacing.md),
         itemCount: widget.messages.length,
         itemBuilder: (context, index) {
           final message = widget.messages[index];
@@ -79,11 +79,14 @@ class _MessageBubble extends StatelessWidget {
     return Align(
       alignment: isFromUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        margin: const EdgeInsets.only(bottom: AppSpacing.md),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
+        ),
         decoration: BoxDecoration(
-          color: isFromUser ? Colors.blue[100] : Colors.grey[200],
-          borderRadius: BorderRadius.circular(12),
+          color: isFromUser ? AppColors.primaryLight : AppColors.background,
+          borderRadius: BorderRadius.circular(AppRadius.md),
         ),
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,

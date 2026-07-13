@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../design_system/design_system.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../domain/entities/entities.dart';
 import '../providers/privacy_providers.dart';
 import '../states/privacy_state.dart';
@@ -114,46 +116,26 @@ class _PrivacyPageState extends ConsumerState<PrivacyPage> {
       barrierDismissible: false,
     );
     if (first != true || !mounted) return;
-    final phrase = TextEditingController();
-    final password = TextEditingController();
+    final formKey = GlobalKey<_DestructiveConfirmationFormState>();
     final confirmedPassword = await HBDialog.custom<String>(
       context,
       title: 'Confirmação final',
       barrierDismissible: false,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: phrase,
-            decoration: const InputDecoration(labelText: 'Digite EXCLUIR'),
-          ),
-          if (state.passwordRequired) ...[
-            const HBGap.md(),
-            TextField(
-              controller: password,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Senha atual'),
-            ),
-          ],
-        ],
+      content: _DestructiveConfirmationForm(
+        key: formKey,
+        passwordRequired: state.passwordRequired,
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => formKey.currentState?.cancel(),
           child: const Text('Cancelar'),
         ),
         TextButton(
-          onPressed: () {
-            if (phrase.text.trim() != 'EXCLUIR') return;
-            if (state.passwordRequired && password.text.isEmpty) return;
-            Navigator.of(context).pop(password.text);
-          },
+          onPressed: () => formKey.currentState?.submit(),
           child: const Text('Excluir definitivamente'),
         ),
       ],
     );
-    phrase.dispose();
-    password.dispose();
     if (confirmedPassword == null || !mounted) return;
     final viewModel = ref.read(privacyViewModelProvider.notifier);
     if (account) {
@@ -161,6 +143,80 @@ class _PrivacyPageState extends ConsumerState<PrivacyPage> {
     } else {
       await viewModel.deleteData(password: confirmedPassword);
     }
+  }
+}
+
+class _DestructiveConfirmationForm extends StatefulWidget {
+  const _DestructiveConfirmationForm({
+    required this.passwordRequired,
+    super.key,
+  });
+
+  final bool passwordRequired;
+
+  @override
+  State<_DestructiveConfirmationForm> createState() =>
+      _DestructiveConfirmationFormState();
+}
+
+class _DestructiveConfirmationFormState
+    extends State<_DestructiveConfirmationForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _phraseController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _phraseController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void cancel() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
+  }
+
+  void submit() {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop(_passwordController.text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          HBTextField(
+            controller: _phraseController,
+            label: 'Digite EXCLUIR',
+            inputFormatters: AppInputFormatters.text(maxLength: 7),
+            textCapitalization: TextCapitalization.characters,
+            textInputAction: widget.passwordRequired
+                ? TextInputAction.next
+                : TextInputAction.done,
+            autofocus: true,
+            validator: (value) => value?.trim() == 'EXCLUIR'
+                ? null
+                : 'Digite EXCLUIR para confirmar.',
+            onFieldSubmitted: widget.passwordRequired ? null : (_) => submit(),
+          ),
+          if (widget.passwordRequired) ...[
+            const HBGap.md(),
+            HBPasswordField(
+              controller: _passwordController,
+              label: 'Senha atual',
+              textInputAction: TextInputAction.done,
+              validator: AppValidators.password,
+              onFieldSubmitted: (_) => submit(),
+            ),
+          ],
+        ],
+      ),
+    );
   }
 }
 

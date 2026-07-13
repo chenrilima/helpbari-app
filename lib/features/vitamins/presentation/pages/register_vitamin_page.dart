@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/validators/app_validators.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/vitamin_view_model_provider.dart';
 import '../../domain/entities/vitamin.dart';
@@ -56,9 +57,11 @@ class _RegisterVitaminPageState extends ConsumerState<RegisterVitaminPage> {
   }
 
   Future<void> _submit() async {
+    if (_submitting) return;
     final formState = _formKey.currentState;
 
     if (formState == null || !formState.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     setState(() => _submitting = true);
     final notifier = ref.read(vitaminViewModelProvider.notifier);
@@ -82,12 +85,7 @@ class _RegisterVitaminPageState extends ConsumerState<RegisterVitaminPage> {
       HBSnackBar.error(context, message: 'Não foi possível salvar a vitamina.');
       return;
     }
-    HBSnackBar.success(
-      context,
-      message: _editing
-          ? 'Vitamina atualizada com sucesso.'
-          : 'Vitamina cadastrada com sucesso.',
-    );
+    HBSnackBar.success(context, message: 'Vitamina salva no aparelho.');
 
     context.pop(true);
   }
@@ -115,12 +113,16 @@ class _RegisterVitaminPageState extends ConsumerState<RegisterVitaminPage> {
                     label: 'Nome da vitamina',
                     hint: 'Ex: B12, Ferro, Multivitamínico',
                     textInputAction: TextInputAction.done,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
+                    textCapitalization: TextCapitalization.words,
+                    autofocus: !_editing,
                     validator: AppValidators.vitaminName,
+                    onFieldSubmitted: (_) => _submit(),
                   ),
                   const HBGap.md(),
                   HBButton(
                     label: 'Horário: $formattedHour:$formattedMinute',
-                    onPressed: _selectTime,
+                    onPressed: _submitting ? null : _selectTime,
                   ),
                   const HBGap.xl(),
                   HBButton(

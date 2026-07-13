@@ -57,23 +57,33 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           subtitle: 'Suas informações pessoais',
         ),
         children: [
-          HBEmptyState(
-            title: 'Complete seu perfil',
-            description:
-                'Precisamos de algumas informações para personalizar sua jornada.',
-            icon: AppIcons.profile,
-            actionLabel: 'Completar perfil',
-            onActionPressed: () {
-              context.pushAndRefresh(
-                AppRoutes.completeProfile,
-                onRefresh: () {
-                  return ref
-                      .read(profileViewModelProvider.notifier)
-                      .loadProfile();
-                },
-              );
-            },
-          ),
+          if (state.errorMessage != null)
+            HBEmptyState(
+              title: 'Não foi possível carregar o perfil',
+              description: state.errorMessage!,
+              icon: Icons.error_outline,
+              actionLabel: 'Tentar novamente',
+              onActionPressed: () =>
+                  ref.read(profileViewModelProvider.notifier).loadProfile(),
+            )
+          else
+            HBEmptyState(
+              title: 'Complete seu perfil',
+              description:
+                  'Precisamos de algumas informações para personalizar sua jornada.',
+              icon: AppIcons.profile,
+              actionLabel: 'Completar perfil',
+              onActionPressed: () {
+                context.pushAndRefresh(
+                  AppRoutes.completeProfile,
+                  onRefresh: () {
+                    return ref
+                        .read(profileViewModelProvider.notifier)
+                        .loadProfile();
+                  },
+                );
+              },
+            ),
         ],
       );
     }
@@ -102,24 +112,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             IconButton(
               tooltip: 'Excluir perfil',
               onPressed: () async {
-                final confirmed = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Excluir perfil?'),
-                    content: const Text(
+                final confirmed = await HBDialog.confirm(
+                  context,
+                  title: 'Excluir perfil?',
+                  message:
                       'O perfil será removido deste aparelho e sincronizado quando houver conexão.',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text('Cancelar'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text('Excluir'),
-                      ),
-                    ],
-                  ),
+                  confirmLabel: 'Excluir',
+                  barrierDismissible: false,
                 );
                 if (confirmed == true) {
                   await ref

@@ -42,7 +42,7 @@ class BariaViewModel extends Notifier<BariaState> {
 
   Future<void> loadDailyInsight() async {
     final request = ++_insightRequest;
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true, clearError: true);
     try {
       final insight = await _bariaUseCases.getDailyInsight();
       if (request != _insightRequest) return;
@@ -64,6 +64,7 @@ class BariaViewModel extends Notifier<BariaState> {
 
   Future<void> sendMessage(String userMessage) async {
     try {
+      state = state.copyWith(clearError: true);
       // Save user message
       final userMsg = BariaMessage(
         id: _uuid.generate(),

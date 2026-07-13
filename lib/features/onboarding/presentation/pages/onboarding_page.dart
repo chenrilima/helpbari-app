@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../profile/domain/value_objects/value_objects.dart';
 import '../../../privacy/domain/entities/entities.dart';
@@ -22,6 +24,7 @@ class OnboardingPage extends ConsumerStatefulWidget {
 }
 
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
+  final _initialDataFormKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
   late final TextEditingController _surgeryDateController;
   late final TextEditingController _currentWeightController;
@@ -30,6 +33,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   late final TextEditingController _heightController;
   late final TextEditingController _initialWeightController;
   late final TextEditingController _targetWeightController;
+  bool _isHandlingAction = false;
 
   @override
   void initState() {
@@ -95,12 +99,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           const HBGap.xl(),
           _OnboardingActions(
             isLastStep: state.isLastStep,
-            isSaving: state.isSaving,
+            isSaving: state.isSaving || _isHandlingAction,
             onNext: () => _handleNext(state),
-            onFinish: () async {
-              await _persistInitialData(state.draft);
-              await viewModel.complete();
-            },
+            onFinish: () => _handleFinish(state),
           ),
         ],
       ),
@@ -113,11 +114,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         icon: AppIcons.health,
         title: 'HelpBari',
         description:
-            'Um cuidado simples para organizar sua rotina bariatrica desde o primeiro acesso.',
+            'Um cuidado simples para organizar sua rotina bariátrica desde o primeiro acesso.',
         children: [
           _BenefitLine(
             icon: AppIcons.success,
-            text: 'Acompanhamento diario em poucos toques',
+            text: 'Acompanhamento diário em poucos toques',
           ),
           _BenefitLine(
             icon: AppIcons.calendar,
@@ -133,11 +134,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         children: [
           _BenefitLine(
             icon: AppIcons.water,
-            text: 'Metas de agua e alimentacao visiveis no inicio',
+            text: 'Metas de água e alimentação visíveis no início',
           ),
           _BenefitLine(
             icon: AppIcons.weight,
-            text: 'Historico de peso preparado para acompanhar evolucao',
+            text: 'Histórico de peso preparado para acompanhar evolução',
           ),
         ],
       ),
@@ -145,7 +146,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         icon: AppIcons.dashboard,
         title: 'Tudo reunido no mesmo lugar',
         description:
-            'O HelpBari conecta registros de saude, tarefas do dia e progresso para reduzir esquecimentos.',
+            'O HelpBari conecta registros de saúde, tarefas do dia e progresso para reduzir esquecimentos.',
         children: [
           _BenefitLine(
             icon: AppIcons.vitamin,
@@ -157,7 +158,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           ),
           _BenefitLine(
             icon: AppIcons.meal,
-            text: 'Refeicoes registradas com foco em proteina',
+            text: 'Refeições registradas com foco em proteína',
           ),
         ],
       ),
@@ -180,6 +181,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         heightController: _heightController,
         initialWeightController: _initialWeightController,
         targetWeightController: _targetWeightController,
+        formKey: _initialDataFormKey,
         draft: state.draft,
         onDraftChanged: ref
             .read(onboardingViewModelProvider.notifier)
@@ -198,9 +200,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       ),
       OnboardingStep.completion => const OnboardingStepContent(
         icon: AppIcons.success,
-        title: 'Pronto para comecar',
+        title: 'Pronto para começar',
         description:
-            'Sua configuracao inicial foi salva neste dispositivo. Quando a conta estiver conectada, esses dados poderao ser sincronizados com o Supabase.',
+            'Sua configuração inicial foi salva neste dispositivo. Quando houver conexão, esses dados poderão ser sincronizados.',
         children: [
           _BenefitLine(
             icon: AppIcons.profile,
@@ -208,7 +210,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           ),
           _BenefitLine(
             icon: AppIcons.settings,
-            text: 'Preferencias salvas localmente',
+            text: 'Preferências salvas localmente',
           ),
         ],
       ),
@@ -216,13 +218,28 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Future<void> _handleNext(OnboardingState state) async {
+    if (_isHandlingAction) return;
     final viewModel = ref.read(onboardingViewModelProvider.notifier);
 
     if (state.currentStep == OnboardingStep.initialData) {
+      if (!(_initialDataFormKey.currentState?.validate() ?? false)) return;
+      FocusManager.instance.primaryFocus?.unfocus();
+      setState(() => _isHandlingAction = true);
       await _persistInitialData(state.draft);
     }
 
     viewModel.next();
+    if (mounted && _isHandlingAction) {
+      setState(() => _isHandlingAction = false);
+    }
+  }
+
+  Future<void> _handleFinish(OnboardingState state) async {
+    if (_isHandlingAction) return;
+    setState(() => _isHandlingAction = true);
+    await _persistInitialData(state.draft);
+    await ref.read(onboardingViewModelProvider.notifier).complete();
+    if (mounted) setState(() => _isHandlingAction = false);
   }
 
   Future<void> _handleSkip(OnboardingState state) async {
@@ -380,9 +397,9 @@ class _PermissionsStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return OnboardingStepContent(
       icon: AppIcons.warning,
-      title: 'Permissoes importantes',
+      title: 'Permissões importantes',
       description:
-          'Ative notificacoes para receber lembretes de agua, medicamentos, vitaminas, exames e consultas.',
+          'Ative notificações para receber lembretes de água, medicamentos, vitaminas, exames e consultas.',
       children: [
         HBCard(
           child: Row(
@@ -391,7 +408,7 @@ class _PermissionsStep extends StatelessWidget {
               const HBGap.horizontal(AppSpacing.md),
               Expanded(
                 child: HBText(
-                  'Voce pode alterar essa decisao depois nos ajustes do aparelho.',
+                  'Você pode alterar essa decisão depois nos ajustes do aparelho.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -419,20 +436,20 @@ class _GoalsStep extends StatelessWidget {
   static const _objectives = [
     (
       id: 'hydration',
-      label: 'Beber mais agua',
-      description: 'Acompanhar volume diario e lembretes.',
+      label: 'Beber mais água',
+      description: 'Acompanhar volume diário e lembretes.',
       icon: AppIcons.water,
     ),
     (
       id: 'protein',
-      label: 'Bater proteina',
-      description: 'Registrar refeicoes com foco nutricional.',
+      label: 'Bater proteína',
+      description: 'Registrar refeições com foco nutricional.',
       icon: AppIcons.meal,
     ),
     (
       id: 'weight',
       label: 'Monitorar peso',
-      description: 'Ver historico e tendencia de progresso.',
+      description: 'Ver histórico e tendência de progresso.',
       icon: AppIcons.weight,
     ),
     (
@@ -449,7 +466,7 @@ class _GoalsStep extends StatelessWidget {
       icon: AppIcons.dashboard,
       title: 'Quais objetivos importam agora?',
       description:
-          'Escolha uma ou mais prioridades para personalizar sua experiencia inicial.',
+          'Escolha uma ou mais prioridades para personalizar sua experiência inicial.',
       children: [
         for (final objective in _objectives) ...[
           OnboardingOptionTile(
@@ -476,6 +493,7 @@ class _InitialDataStep extends StatelessWidget {
     required this.heightController,
     required this.initialWeightController,
     required this.targetWeightController,
+    required this.formKey,
     required this.draft,
     required this.onDraftChanged,
   });
@@ -488,6 +506,7 @@ class _InitialDataStep extends StatelessWidget {
   final TextEditingController heightController;
   final TextEditingController initialWeightController;
   final TextEditingController targetWeightController;
+  final GlobalKey<FormState> formKey;
   final OnboardingProfileDraft draft;
   final ValueChanged<OnboardingProfileDraft> onDraftChanged;
 
@@ -497,122 +516,165 @@ class _InitialDataStep extends StatelessWidget {
       icon: AppIcons.profile,
       title: 'Dados iniciais',
       description:
-          'Essas informacoes ajudam a deixar metas e atalhos mais proximos da sua realidade.',
+          'Essas informações ajudam a deixar metas e atalhos mais próximos da sua realidade.',
       children: [
-        HBTextField(
-          controller: nameController,
-          label: 'Nome',
-          textInputAction: TextInputAction.next,
-          prefixIcon: AppIcons.profile,
-        ),
-        const HBGap.md(),
-        HBTextField(
-          controller: surgeryDateController,
-          label: 'Data da cirurgia',
-          hint: 'dd/mm/aaaa',
-          keyboardType: TextInputType.datetime,
-          textInputAction: TextInputAction.next,
-          prefixIcon: AppIcons.calendar,
-        ),
-        const HBGap.md(),
-        HBTextField(
-          controller: birthDateController,
-          label: 'Data de nascimento',
-          hint: 'dd/mm/aaaa',
-          keyboardType: TextInputType.datetime,
-          textInputAction: TextInputAction.next,
-          prefixIcon: AppIcons.calendar,
-        ),
-        const HBGap.md(),
-        HBTextField(
-          controller: heightController,
-          label: 'Altura em cm',
-          keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.next,
-          prefixIcon: AppIcons.profile,
-        ),
-        const HBGap.md(),
-        HBTextField(
-          controller: currentWeightController,
-          label: 'Peso atual',
-          hint: 'kg',
-          keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.next,
-          prefixIcon: AppIcons.weight,
-        ),
-        const HBGap.md(),
-        CheckboxListTile(
-          contentPadding: EdgeInsets.zero,
-          value: draft.currentWeightConfirmedAsInitial,
-          title: const Text('Usar o peso atual como peso inicial'),
-          subtitle: const Text('Só será usado após esta confirmação.'),
-          onChanged: (value) => onDraftChanged(
-            draft.copyWith(currentWeightConfirmedAsInitial: value ?? false),
-          ),
-        ),
-        HBTextField(
-          controller: initialWeightController,
-          label: 'Peso inicial confirmado',
-          hint: 'kg',
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          textInputAction: TextInputAction.next,
-          prefixIcon: AppIcons.weight,
-        ),
-        const HBGap.md(),
-        HBTextField(
-          controller: targetWeightController,
-          label: 'Peso objetivo (opcional)',
-          hint: 'kg',
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          textInputAction: TextInputAction.next,
-          prefixIcon: AppIcons.weight,
-        ),
-        const HBGap.md(),
-        DropdownButtonFormField<SurgeryType>(
-          initialValue: SurgeryType.values.firstWhere(
-            (value) => value.name == draft.surgeryType,
-            orElse: () => SurgeryType.other,
-          ),
-          decoration: const InputDecoration(labelText: 'Tipo de cirurgia'),
-          items: SurgeryType.values
-              .map(
-                (value) =>
-                    DropdownMenuItem(value: value, child: Text(value.label)),
-              )
-              .toList(),
-          onChanged: (value) {
-            if (value != null) {
-              onDraftChanged(draft.copyWith(surgeryType: value.name));
-            }
-          },
-        ),
-        const HBGap.md(),
-        HBTextField(
-          controller: waterGoalController,
-          label: 'Meta de agua',
-          hint: 'ml por dia',
-          keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.done,
-          prefixIcon: AppIcons.water,
-        ),
-        CheckboxListTile(
-          contentPadding: EdgeInsets.zero,
-          value: draft.waterGoalConfirmed,
-          title: const Text('Confirmo esta meta diária de água'),
-          onChanged: (value) => onDraftChanged(
-            draft.copyWith(waterGoalConfirmed: value ?? false),
-          ),
-        ),
-        CheckboxListTile(
-          contentPadding: EdgeInsets.zero,
-          value: draft.notificationsConfirmed,
-          title: Text(
-            draft.notificationsEnabled
-                ? 'Confirmo ativar lembretes de vitaminas, medicamentos e consultas'
-                : 'Confirmo manter esses lembretes desativados',
-          ),
-          onChanged: (value) => onDraftChanged(
-            draft.copyWith(notificationsConfirmed: value ?? false),
+        Form(
+          key: formKey,
+          child: Column(
+            children: [
+              HBTextField(
+                controller: nameController,
+                label: 'Nome',
+                textInputAction: TextInputAction.next,
+                prefixIcon: AppIcons.profile,
+                inputFormatters: AppInputFormatters.text(maxLength: 120),
+                textCapitalization: TextCapitalization.words,
+                autofocus: true,
+                validator: AppValidators.profileName,
+              ),
+              const HBGap.md(),
+              HBTextField(
+                controller: surgeryDateController,
+                label: 'Data da cirurgia',
+                hint: 'dd/mm/aaaa',
+                keyboardType: TextInputType.datetime,
+                inputFormatters: [AppInputFormatters.date],
+                textInputAction: TextInputAction.next,
+                prefixIcon: AppIcons.calendar,
+                validator: AppValidators.date,
+              ),
+              const HBGap.md(),
+              HBTextField(
+                controller: birthDateController,
+                label: 'Data de nascimento',
+                hint: 'dd/mm/aaaa',
+                keyboardType: TextInputType.datetime,
+                inputFormatters: [AppInputFormatters.date],
+                textInputAction: TextInputAction.next,
+                prefixIcon: AppIcons.calendar,
+                validator: AppValidators.date,
+              ),
+              const HBGap.md(),
+              HBTextField(
+                controller: heightController,
+                label: 'Altura em cm',
+                keyboardType: TextInputType.number,
+                inputFormatters: AppInputFormatters.digits(maxLength: 3),
+                textInputAction: TextInputAction.next,
+                prefixIcon: AppIcons.profile,
+                validator: AppValidators.height,
+              ),
+              const HBGap.md(),
+              HBTextField(
+                controller: currentWeightController,
+                label: 'Peso atual',
+                hint: 'kg',
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: AppInputFormatters.decimal(),
+                textInputAction: TextInputAction.next,
+                prefixIcon: AppIcons.weight,
+                validator: (value) => draft.currentWeightConfirmedAsInitial
+                    ? AppValidators.weight(value)
+                    : AppValidators.optionalWeight(value),
+              ),
+              const HBGap.md(),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: draft.currentWeightConfirmedAsInitial,
+                title: const Text('Usar o peso atual como peso inicial'),
+                subtitle: const Text('Só será usado após esta confirmação.'),
+                onChanged: (value) => onDraftChanged(
+                  draft.copyWith(
+                    currentWeightConfirmedAsInitial: value ?? false,
+                  ),
+                ),
+              ),
+              HBTextField(
+                controller: initialWeightController,
+                label: 'Peso inicial confirmado',
+                hint: 'kg',
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: AppInputFormatters.decimal(),
+                textInputAction: TextInputAction.next,
+                prefixIcon: AppIcons.weight,
+                validator: (value) =>
+                    draft.currentWeightConfirmedAsInitial &&
+                        (value?.trim().isEmpty ?? true)
+                    ? null
+                    : AppValidators.weight(value),
+              ),
+              const HBGap.md(),
+              HBTextField(
+                controller: targetWeightController,
+                label: 'Peso objetivo (opcional)',
+                hint: 'kg',
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: AppInputFormatters.decimal(),
+                textInputAction: TextInputAction.next,
+                prefixIcon: AppIcons.weight,
+                validator: AppValidators.optionalWeight,
+              ),
+              const HBGap.md(),
+              DropdownButtonFormField<SurgeryType>(
+                initialValue: SurgeryType.values.firstWhere(
+                  (value) => value.name == draft.surgeryType,
+                  orElse: () => SurgeryType.other,
+                ),
+                decoration: const InputDecoration(
+                  labelText: 'Tipo de cirurgia',
+                ),
+                items: SurgeryType.values
+                    .map(
+                      (value) => DropdownMenuItem(
+                        value: value,
+                        child: Text(value.label),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    onDraftChanged(draft.copyWith(surgeryType: value.name));
+                  }
+                },
+              ),
+              const HBGap.md(),
+              HBTextField(
+                controller: waterGoalController,
+                label: 'Meta de água',
+                hint: 'ml por dia',
+                keyboardType: TextInputType.number,
+                inputFormatters: AppInputFormatters.digits(maxLength: 4),
+                textInputAction: TextInputAction.done,
+                prefixIcon: AppIcons.water,
+                validator: AppValidators.waterGoal,
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: draft.waterGoalConfirmed,
+                title: const Text('Confirmo esta meta diária de água'),
+                onChanged: (value) => onDraftChanged(
+                  draft.copyWith(waterGoalConfirmed: value ?? false),
+                ),
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: draft.notificationsConfirmed,
+                title: Text(
+                  draft.notificationsEnabled
+                      ? 'Confirmo ativar lembretes de vitaminas, medicamentos e consultas'
+                      : 'Confirmo manter esses lembretes desativados',
+                ),
+                onChanged: (value) => onDraftChanged(
+                  draft.copyWith(notificationsConfirmed: value ?? false),
+                ),
+              ),
+            ],
           ),
         ),
       ],

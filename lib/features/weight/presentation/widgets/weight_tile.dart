@@ -23,7 +23,7 @@ class WeightTile extends StatelessWidget {
         children: [
           const Icon(Icons.monitor_weight_outlined),
 
-          const SizedBox(width: 16),
+          const HBGap.horizontal(AppSpacing.md),
 
           Expanded(
             child: Column(
@@ -40,7 +40,7 @@ class WeightTile extends StatelessWidget {
                 ),
 
                 if (record.hasNotes) ...[
-                  const SizedBox(height: 8),
+                  const HBGap.sm(),
 
                   HBText(record.notes!.value),
                 ],

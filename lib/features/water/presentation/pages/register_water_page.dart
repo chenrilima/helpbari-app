@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/services/service_providers.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
 import '../../domain/entities/entities.dart';
@@ -89,17 +91,7 @@ class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
       );
       return;
     }
-    final syncWarning = ref.read(waterViewModelProvider).syncWarning;
-    if (syncWarning != null) {
-      HBSnackBar.warning(context, message: syncWarning);
-    } else {
-      HBSnackBar.success(
-        context,
-        message: _isEditing
-            ? 'Registro atualizado e sincronizado.'
-            : 'Água registrada e sincronizada.',
-      );
-    }
+    HBSnackBar.success(context, message: 'Registro de água salvo no aparelho.');
     context.pop(true);
   }
 
@@ -113,7 +105,7 @@ class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
     final goalMl = ref.watch(dailyWaterGoalProvider).value ?? 2000;
     return HBLoadingOverlay(
       isLoading: isBusy,
-      message: 'Salvando e sincronizando...',
+      message: 'Salvando água...',
       child: HBPage(
         appBar: HBAppBar(
           title: _isEditing ? 'Editar água' : 'Registrar água',
@@ -135,13 +127,11 @@ class _RegisterWaterPageState extends ConsumerState<RegisterWaterPage> {
                     label: 'Quantidade (ml)',
                     hint: 'Ex: 300',
                     keyboardType: TextInputType.number,
-                    validator: (value) {
-                      final amount = int.tryParse(value?.trim() ?? '');
-                      if (amount == null || amount <= 0 || amount > 10000) {
-                        return 'Informe uma quantidade entre 1 e 10000 ml.';
-                      }
-                      return null;
-                    },
+                    inputFormatters: AppInputFormatters.digits(maxLength: 5),
+                    textInputAction: TextInputAction.done,
+                    autofocus: !_isEditing,
+                    validator: AppValidators.waterAmount,
+                    onFieldSubmitted: (_) => _submit(),
                   ),
                   const HBGap.md(),
                   HBButton(

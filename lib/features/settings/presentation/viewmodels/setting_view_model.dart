@@ -20,11 +20,17 @@ class SettingsViewModel extends Notifier<SettingsState> {
   }
 
   Future<void> loadSettings() async {
-    state = state.copyWith(isLoading: true);
-
-    final settings = await ref.read(settingsUseCasesProvider).getSettings();
-
-    state = state.copyWith(settings: settings, isLoading: false);
+    state = state.copyWith(isLoading: true, clearError: true);
+    try {
+      final settings = await ref.read(settingsUseCasesProvider).getSettings();
+      state = state.copyWith(
+        settings: settings,
+        isLoading: false,
+        hasLoaded: true,
+      );
+    } catch (error) {
+      state = state.copyWith(isLoading: false, errorMessage: error.toString());
+    }
   }
 
   Future<void> updateDailyWaterGoal(int goalMl) async {
@@ -63,6 +69,7 @@ class SettingsViewModel extends Notifier<SettingsState> {
   Future<void> _mutate(Future<void> Function() persistLocally) async {
     if (_isMutating) return;
     _isMutating = true;
+    state = state.copyWith(isSaving: true, clearError: true);
     try {
       await persistLocally();
       _invalidateConsumers();
@@ -88,8 +95,11 @@ class SettingsViewModel extends Notifier<SettingsState> {
             .syncNow()
             .catchError((_) => null),
       );
+    } catch (error) {
+      state = state.copyWith(errorMessage: error.toString());
     } finally {
       _isMutating = false;
+      state = state.copyWith(isSaving: false);
     }
   }
 

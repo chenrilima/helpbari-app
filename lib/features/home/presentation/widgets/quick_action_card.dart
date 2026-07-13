@@ -27,7 +27,11 @@ class QuickActionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ExcludeSemantics(
-              child: Icon(icon, color: AppColors.primary, size: 28),
+              child: Icon(
+                icon,
+                color: AppColors.primary,
+                size: AppSizes.iconLg,
+              ),
             ),
 
             const HBGap.md(),
