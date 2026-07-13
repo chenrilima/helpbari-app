@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/services/service_providers.dart';
+import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/exam_view_model_provider.dart';
@@ -78,6 +80,7 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
     if (formState == null || !formState.validate()) {
       return;
     }
+    FocusManager.instance.primaryFocus?.unfocus();
 
     setState(() => _saving = true);
     final vm = ref.read(examViewModelProvider.notifier);
@@ -123,10 +126,7 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate =
-        '${_selectedDate.day.toString().padLeft(2, '0')}/'
-        '${_selectedDate.month.toString().padLeft(2, '0')}/'
-        '${_selectedDate.year}';
+    final formattedDate = AppDateFormatter.short(_selectedDate);
 
     return HBLoadingOverlay(
       isLoading: _saving,
@@ -145,6 +145,11 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
                   HBTextField(
                     controller: _nameController,
                     label: 'Nome do exame',
+                    hint: 'Ex: Hemograma completo',
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
+                    textCapitalization: TextCapitalization.sentences,
+                    autofocus: !_editing,
                     validator: AppValidators.examName,
                   ),
 
@@ -177,12 +182,18 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
                   HBTextField(
                     controller: _laboratoryController,
                     label: 'Laboratório',
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
+                    textCapitalization: TextCapitalization.words,
                     validator: AppValidators.optionalText,
                   ),
 
                   const HBGap.md(),
 
-                  HBButton(label: 'Data: $formattedDate', onPressed: _pickDate),
+                  HBButton(
+                    label: 'Data: $formattedDate',
+                    onPressed: _saving ? null : _pickDate,
+                  ),
 
                   const HBGap.md(),
 
@@ -190,7 +201,11 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
                     controller: _notesController,
                     label: 'Observações',
                     maxLines: 4,
+                    textInputAction: TextInputAction.done,
+                    inputFormatters: AppInputFormatters.text(maxLength: 500),
+                    textCapitalization: TextCapitalization.sentences,
                     validator: AppValidators.optionalText,
+                    onFieldSubmitted: (_) => _save(),
                   ),
 
                   const HBGap.xl(),

@@ -64,7 +64,7 @@ class ProfileViewModel extends Notifier<ProfileState> {
   }
 
   Future<void> saveProfile(CreateProfileForm form) async {
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, clearError: true);
 
     try {
       final height = Height.create(form.height);

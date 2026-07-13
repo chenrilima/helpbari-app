@@ -172,8 +172,7 @@ class _HBCustomDialogContent extends StatelessWidget {
         namesRoute: true,
         explicitChildNodes: true,
         label: semanticLabel ?? title,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSizes.pageMaxWidth),
+        child: _HBDialogViewport(
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
@@ -190,8 +189,10 @@ class _HBCustomDialogContent extends StatelessWidget {
                 const HBGap.md(),
                 content,
                 const HBGap.lg(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                Wrap(
+                  alignment: WrapAlignment.end,
+                  spacing: AppSpacing.sm,
+                  runSpacing: AppSpacing.sm,
                   children: actions,
                 ),
               ],
@@ -238,8 +239,7 @@ class _HBDialogContent extends StatelessWidget {
         namesRoute: true,
         explicitChildNodes: true,
         label: semanticLabel ?? '$title. $message',
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSizes.pageMaxWidth),
+        child: _HBDialogViewport(
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
@@ -310,6 +310,31 @@ class _HBDialogContent extends StatelessWidget {
       HBDialogType.warning => Icons.warning_amber_outlined,
       HBDialogType.error => Icons.error_outline,
     };
+  }
+}
+
+class _HBDialogViewport extends StatelessWidget {
+  const _HBDialogViewport({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final availableHeight =
+        mediaQuery.size.height -
+        mediaQuery.viewInsets.bottom -
+        (AppSpacing.xl * 2);
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: AppSizes.pageMaxWidth,
+        maxHeight: availableHeight > AppSizes.buttonHeight
+            ? availableHeight
+            : AppSizes.buttonHeight,
+      ),
+      child: SingleChildScrollView(child: child),
+    );
   }
 }
 

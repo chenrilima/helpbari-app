@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../states/auth_state.dart';
@@ -31,6 +32,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
 
   Future<void> _resetPassword() async {
     if (!_formKey.currentState!.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     await ref
         .read(authViewModelProvider.notifier)
@@ -39,6 +41,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
 
   Future<void> _updatePassword() async {
     if (!_formKey.currentState!.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     await ref
         .read(authViewModelProvider.notifier)
@@ -153,7 +156,10 @@ class _RecoveryEmailForm extends StatelessWidget {
           label: 'E-mail',
           hint: 'seuemail@exemplo.com',
           keyboardType: TextInputType.emailAddress,
+          inputFormatters: AppInputFormatters.email,
           textInputAction: TextInputAction.done,
+          autofillHints: const [AutofillHints.email],
+          autofocus: true,
           validator: AppValidators.email,
           onFieldSubmitted: (_) => onSubmit(),
         ),
@@ -193,6 +199,8 @@ class _NewPasswordForm extends StatelessWidget {
         HBPasswordField(
           controller: passwordController,
           textInputAction: TextInputAction.next,
+          autofillHints: const [AutofillHints.newPassword],
+          autofocus: true,
           validator: AppValidators.newPassword,
         ),
         const HBGap.md(),
@@ -200,6 +208,7 @@ class _NewPasswordForm extends StatelessWidget {
           controller: confirmPasswordController,
           label: 'Confirmar senha',
           textInputAction: TextInputAction.done,
+          autofillHints: const [AutofillHints.newPassword],
           validator: (value) {
             final validation = AppValidators.newPassword(value);
             if (validation != null) return validation;

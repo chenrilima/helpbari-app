@@ -28,7 +28,16 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
         .read(vitaminViewModelProvider.notifier)
         .deleteVitamin(id);
     if (!mounted) return;
-    if (ok) HBSnackBar.success(context, message: 'Vitamina excluída.');
+    if (ok) {
+      HBSnackBar.success(context, message: 'Vitamina excluída.');
+    } else {
+      HBSnackBar.error(
+        context,
+        message:
+            ref.read(vitaminViewModelProvider).errorMessage ??
+            'Não foi possível excluir a vitamina.',
+      );
+    }
   }
 
   @override
@@ -44,83 +53,97 @@ class _VitaminsPageState extends ConsumerState<VitaminsPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(vitaminViewModelProvider);
 
-    return HBPage(
-      appBar: const HBAppBar(title: 'Cadastro de vitaminas'),
-      children: [
-        HBText(
-          'Acompanhe seus suplementos diários.',
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-        ),
-        const HBGap.xl(),
-        const VitaminAdherenceChartWidget(),
-        const HBGap.xl(),
-        if (state.isLoading && !state.hasVitamins)
-          const Center(child: CircularProgressIndicator())
-        else if (state.errorMessage != null && !state.hasVitamins)
-          HBEmptyState(
-            title: 'Não foi possível carregar',
-            description: state.errorMessage!,
-            icon: AppIcons.vitamin,
-          )
-        else if (!state.hasVitamins)
-          const HBEmptyState(
-            title: 'Nenhuma vitamina cadastrada',
-            description:
-                'Cadastre seus suplementos para acompanhar sua rotina diária.',
-            icon: AppIcons.vitamin,
-          )
-        else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: state.vitamins.length,
-            separatorBuilder: (_, _) => const HBGap.md(),
-            itemBuilder: (_, index) {
-              final vitamin = state.vitamins[index];
+    ref.listen(vitaminViewModelProvider, (previous, next) {
+      if (next.syncWarning != null &&
+          next.syncWarning != previous?.syncWarning) {
+        HBSnackBar.warning(context, message: next.syncWarning!);
+      }
+    });
 
-              return VitaminTile(
-                vitamin: vitamin,
-                status: state.statusFor(vitamin.id),
-                onTaken: () {
-                  ref
-                      .read(vitaminViewModelProvider.notifier)
-                      .markAsTaken(vitamin.id);
-                },
-                onSkipped: () {
-                  ref
-                      .read(vitaminViewModelProvider.notifier)
-                      .markAsSkipped(vitamin.id);
-                },
-                onEdit: () async {
-                  await context.push<bool>(
-                    AppRoutes.registerVitamin,
-                    extra: vitamin,
-                  );
-                  await ref
+    return HBLoadingOverlay(
+      isLoading: state.isLoading && state.hasVitamins,
+      message: 'Atualizando vitaminas...',
+      child: HBPage(
+        appBar: const HBAppBar(title: 'Cadastro de vitaminas'),
+        children: [
+          HBText(
+            'Acompanhe seus suplementos diários.',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+          ),
+          const HBGap.xl(),
+          const VitaminAdherenceChartWidget(),
+          const HBGap.xl(),
+          if (state.isLoading && !state.hasVitamins)
+            const HBLoading(message: 'Carregando vitaminas...')
+          else if (state.errorMessage != null && !state.hasVitamins)
+            HBEmptyState(
+              title: 'Não foi possível carregar',
+              description: state.errorMessage!,
+              icon: AppIcons.vitamin,
+              actionLabel: 'Tentar novamente',
+              onActionPressed: () =>
+                  ref.read(vitaminViewModelProvider.notifier).loadVitamins(),
+            )
+          else if (!state.hasVitamins)
+            const HBEmptyState(
+              title: 'Nenhuma vitamina cadastrada',
+              description:
+                  'Cadastre seus suplementos para acompanhar sua rotina diária.',
+              icon: AppIcons.vitamin,
+            )
+          else
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: state.vitamins.length,
+              separatorBuilder: (_, _) => const HBGap.md(),
+              itemBuilder: (_, index) {
+                final vitamin = state.vitamins[index];
+
+                return VitaminTile(
+                  vitamin: vitamin,
+                  status: state.statusFor(vitamin.id),
+                  onTaken: () {
+                    ref
+                        .read(vitaminViewModelProvider.notifier)
+                        .markAsTaken(vitamin.id);
+                  },
+                  onSkipped: () {
+                    ref
+                        .read(vitaminViewModelProvider.notifier)
+                        .markAsSkipped(vitamin.id);
+                  },
+                  onEdit: () async {
+                    await context.push<bool>(
+                      AppRoutes.registerVitamin,
+                      extra: vitamin,
+                    );
+                    await ref
+                        .read(vitaminViewModelProvider.notifier)
+                        .loadVitamins();
+                  },
+                  onDelete: () => _delete(vitamin.id),
+                );
+              },
+            ),
+          const HBGap.xl(),
+          HBButton(
+            label: 'Cadastrar vitamina',
+            onPressed: () {
+              context.pushAndRefresh(
+                AppRoutes.registerVitamin,
+                onRefresh: () {
+                  return ref
                       .read(vitaminViewModelProvider.notifier)
                       .loadVitamins();
                 },
-                onDelete: () => _delete(vitamin.id),
               );
             },
           ),
-        const HBGap.xl(),
-        HBButton(
-          label: 'Cadastrar vitamina',
-          onPressed: () {
-            context.pushAndRefresh(
-              AppRoutes.registerVitamin,
-              onRefresh: () {
-                return ref
-                    .read(vitaminViewModelProvider.notifier)
-                    .loadVitamins();
-              },
-            );
-          },
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

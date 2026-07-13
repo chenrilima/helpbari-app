@@ -8,6 +8,9 @@ class HBPasswordField extends StatefulWidget {
     this.textInputAction,
     this.validator,
     this.onFieldSubmitted,
+    this.autofillHints,
+    this.autofocus = false,
+    this.focusNode,
     this.semanticLabel,
   });
 
@@ -16,6 +19,9 @@ class HBPasswordField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onFieldSubmitted;
+  final Iterable<String>? autofillHints;
+  final bool autofocus;
+  final FocusNode? focusNode;
   final String? semanticLabel;
 
   @override
@@ -39,7 +45,12 @@ class _HBPasswordFieldState extends State<HBPasswordField> {
       child: TextFormField(
         controller: widget.controller,
         obscureText: _obscureText,
+        autofocus: widget.autofocus,
+        focusNode: widget.focusNode,
         textInputAction: widget.textInputAction,
+        autofillHints: widget.autofillHints,
+        enableSuggestions: false,
+        autocorrect: false,
         validator: widget.validator,
         onFieldSubmitted: widget.onFieldSubmitted,
         decoration: InputDecoration(

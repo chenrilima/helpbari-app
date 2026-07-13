@@ -18,12 +18,13 @@ class BariaState {
     List<BariaMessage>? conversationMessages,
     bool? isLoading,
     String? error,
+    bool clearError = false,
   }) {
     return BariaState(
       dailyInsight: dailyInsight ?? this.dailyInsight,
       conversationMessages: conversationMessages ?? this.conversationMessages,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      error: clearError ? null : error ?? this.error,
     );
   }
 

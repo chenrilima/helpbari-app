@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/formatters/app_input_formatters.dart';
+import '../../../../design_system/design_system.dart';
+
 class BariaTextInput extends StatefulWidget {
   const BariaTextInput({
     required this.onSendMessage,
@@ -30,6 +33,7 @@ class _BariaTextInputState extends State<BariaTextInput> {
   }
 
   void _sendMessage() {
+    if (widget.isLoading) return;
     final message = _controller.text.trim();
     if (message.isEmpty) return;
 
@@ -40,43 +44,41 @@ class _BariaTextInputState extends State<BariaTextInput> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
-          child: TextField(
+          child: HBTextField(
             controller: _controller,
+            label: 'Mensagem para a BarIA',
+            hint: 'Digite sua pergunta...',
             enabled: !widget.isLoading,
-            decoration: InputDecoration(
-              hintText: 'Digite sua pergunta...',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 12,
-              ),
-            ),
-            maxLines: null,
+            minLines: 1,
+            maxLines: 4,
+            inputFormatters: AppInputFormatters.text(maxLength: 500),
+            textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.newline,
           ),
         ),
-        const SizedBox(width: 12),
-        GestureDetector(
-          onTap: widget.isLoading ? null : _sendMessage,
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: widget.isLoading ? Colors.grey : Colors.blue,
-              borderRadius: BorderRadius.circular(12),
+        const HBGap.horizontal(AppSpacing.sm),
+        Semantics(
+          button: true,
+          label: widget.isLoading ? 'Enviando mensagem' : 'Enviar mensagem',
+          child: SizedBox(
+            width: AppSizes.buttonMinTapTarget,
+            height: AppSizes.buttonMinTapTarget,
+            child: IconButton.filled(
+              tooltip: 'Enviar mensagem',
+              onPressed: widget.isLoading ? null : _sendMessage,
+              icon: widget.isLoading
+                  ? const SizedBox.square(
+                      dimension: AppSizes.iconSm,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: AppColors.onPrimary,
+                      ),
+                    )
+                  : const Icon(Icons.send_rounded),
             ),
-            child: widget.isLoading
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  )
-                : const Icon(Icons.send, color: Colors.white),
           ),
         ),
       ],

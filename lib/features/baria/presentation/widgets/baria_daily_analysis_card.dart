@@ -16,8 +16,8 @@ class BariaDailyAnalysisCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.wb_sunny_outlined, size: 24),
-              const SizedBox(width: 12),
+              const Icon(Icons.wb_sunny_outlined, size: AppSizes.iconMd),
+              const HBGap.horizontal(AppSpacing.md),
               Expanded(
                 child: HBText(
                   insight.title,
@@ -36,16 +36,19 @@ class BariaDailyAnalysisCard extends StatelessWidget {
           if (insight.healthScoreImprovement != null) ...[
             const HBGap.md(),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              padding: const EdgeInsets.symmetric(
+                vertical: AppSpacing.sm,
+                horizontal: AppSpacing.md,
+              ),
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
+                color: AppColors.secondaryLight,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               child: HBText(
                 '📈 Potencial de melhora: +${insight.healthScoreImprovement!.toStringAsFixed(1)}',
                 style: Theme.of(
                   context,
-                ).textTheme.bodySmall?.copyWith(color: Colors.green),
+                ).textTheme.bodySmall?.copyWith(color: AppColors.secondary),
               ),
             ),
           ],

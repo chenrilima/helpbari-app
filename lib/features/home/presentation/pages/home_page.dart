@@ -109,7 +109,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             const HBEmptyState(
               title: 'Algumas seções estão indisponíveis',
               description:
-                  'Os demais dados locais continuam disponíveis e serão atualizados novamente no próximo sync.',
+                  'Os demais dados locais continuam disponíveis e serão atualizados na próxima sincronização.',
               icon: Icons.sync_problem_outlined,
             ),
             const HBGap.xl(),

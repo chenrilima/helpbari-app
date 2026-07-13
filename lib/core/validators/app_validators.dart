@@ -10,7 +10,10 @@ abstract final class AppValidators {
     return null;
   }
 
-  static String? optionalText(String? _) {
+  static String? optionalText(String? value) {
+    if ((value?.trim().length ?? 0) > 500) {
+      return 'Use no máximo 500 caracteres.';
+    }
     return null;
   }
 
@@ -18,7 +21,10 @@ abstract final class AppValidators {
     final text = value?.trim() ?? '';
 
     if (text.isEmpty) return 'Informe seu e-mail.';
-    if (!text.contains('@')) return 'Informe um e-mail válido.';
+    if (text.length > 254 ||
+        !RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(text)) {
+      return 'Informe um e-mail válido.';
+    }
 
     return null;
   }
@@ -53,6 +59,7 @@ abstract final class AppValidators {
 
     if (text.isEmpty) return 'Informe seu nome.';
     if (text.length < 3) return 'Informe um nome válido.';
+    if (text.length > 120) return 'O nome está muito longo.';
 
     return null;
   }
@@ -104,6 +111,30 @@ abstract final class AppValidators {
       return 'Informe uma meta entre 500 ml e 6000 ml.';
     }
 
+    return null;
+  }
+
+  static String? waterAmount(String? value) {
+    final amount = int.tryParse(value?.trim() ?? '');
+    if (amount == null || amount < 1 || amount > 10000) {
+      return 'Informe uma quantidade entre 1 e 10000 ml.';
+    }
+    return null;
+  }
+
+  static String? date(String? value) {
+    final parts = (value ?? '').trim().split('/');
+    if (parts.length != 3) return 'Informe uma data válida.';
+    final day = int.tryParse(parts[0]);
+    final month = int.tryParse(parts[1]);
+    final year = int.tryParse(parts[2]);
+    if (day == null || month == null || year == null) {
+      return 'Informe uma data válida.';
+    }
+    final date = DateTime(year, month, day);
+    if (date.day != day || date.month != month || date.year != year) {
+      return 'Informe uma data válida.';
+    }
     return null;
   }
 

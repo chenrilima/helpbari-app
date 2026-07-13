@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
@@ -71,6 +72,7 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
     final formState = _formKey.currentState;
 
     if (formState == null || !formState.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     final form = CreateWeightForm(
       weight: double.parse(_weightController.text.trim().replaceAll(',', '.')),
@@ -131,6 +133,9 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
+                    inputFormatters: AppInputFormatters.decimal(),
+                    textInputAction: TextInputAction.next,
+                    autofocus: !_isEditing,
                     validator: AppValidators.weight,
                   ),
 
@@ -140,6 +145,10 @@ class _RegisterWeightPageState extends ConsumerState<RegisterWeightPage> {
                     controller: _notesController,
                     label: 'Observações (opcional)',
                     maxLines: 3,
+                    textInputAction: TextInputAction.done,
+                    inputFormatters: AppInputFormatters.text(maxLength: 500),
+                    textCapitalization: TextCapitalization.sentences,
+                    onFieldSubmitted: (_) => _submit(),
                     validator: AppValidators.optionalText,
                   ),
 

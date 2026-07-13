@@ -29,6 +29,13 @@ class _MedicationsPageState extends ConsumerState<MedicationsPage> {
         .deleteMedication(id);
     if (mounted && ok) {
       HBSnackBar.success(context, message: 'Medicamento excluído.');
+    } else if (mounted) {
+      HBSnackBar.error(
+        context,
+        message:
+            ref.read(medicationViewModelProvider).errorMessage ??
+            'Não foi possível excluir o medicamento.',
+      );
     }
   }
 
@@ -47,73 +54,86 @@ class _MedicationsPageState extends ConsumerState<MedicationsPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(medicationViewModelProvider);
 
-    return HBPage(
-      appBar: const HBAppBar(
-        title: 'Medicamentos',
-        subtitle: 'Acompanhe sua rotina diária',
-      ),
-      children: [
-        const MedicationAdherenceChartWidget(),
-        const HBGap.xl(),
-        if (state.isLoading && !state.hasMedications)
-          const Center(child: CircularProgressIndicator())
-        else if (state.errorMessage != null && !state.hasMedications)
-          HBEmptyState(
-            title: 'Não foi possível carregar',
-            description: state.errorMessage!,
-            icon: Icons.medication_outlined,
-          )
-        else if (!state.hasMedications)
-          const HBEmptyState(
-            title: 'Nenhum medicamento cadastrado',
-            description: 'Cadastre seus remédios para acompanhar sua rotina.',
-            icon: Icons.medication_outlined,
-          )
-        else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: state.medications.length,
-            separatorBuilder: (_, _) => const HBGap.md(),
-            itemBuilder: (_, index) {
-              final medication = state.medications[index];
+    ref.listen(medicationViewModelProvider, (previous, next) {
+      if (next.syncWarning != null &&
+          next.syncWarning != previous?.syncWarning) {
+        HBSnackBar.warning(context, message: next.syncWarning!);
+      }
+    });
 
-              return MedicationTile(
-                medication: medication,
-                status: state.statusFor(medication.id),
-                onTaken: () {
-                  ref
-                      .read(medicationViewModelProvider.notifier)
-                      .markAsTaken(medication.id);
-                },
-                onSkipped: () {
-                  ref
-                      .read(medicationViewModelProvider.notifier)
-                      .markAsSkipped(medication.id);
-                },
-                onEdit: () async {
-                  await context.push<bool>(
-                    AppRoutes.registerMedication,
-                    extra: medication,
-                  );
-                  await _loadMedications();
-                },
-                onDelete: () => _delete(medication.id),
+    return HBLoadingOverlay(
+      isLoading: state.isLoading && state.hasMedications,
+      message: 'Atualizando medicamentos...',
+      child: HBPage(
+        appBar: const HBAppBar(
+          title: 'Medicamentos',
+          subtitle: 'Acompanhe sua rotina diária',
+        ),
+        children: [
+          const MedicationAdherenceChartWidget(),
+          const HBGap.xl(),
+          if (state.isLoading && !state.hasMedications)
+            const HBLoading(message: 'Carregando medicamentos...')
+          else if (state.errorMessage != null && !state.hasMedications)
+            HBEmptyState(
+              title: 'Não foi possível carregar',
+              description: state.errorMessage!,
+              icon: Icons.medication_outlined,
+              actionLabel: 'Tentar novamente',
+              onActionPressed: _loadMedications,
+            )
+          else if (!state.hasMedications)
+            const HBEmptyState(
+              title: 'Nenhum medicamento cadastrado',
+              description: 'Cadastre seus remédios para acompanhar sua rotina.',
+              icon: Icons.medication_outlined,
+            )
+          else
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: state.medications.length,
+              separatorBuilder: (_, _) => const HBGap.md(),
+              itemBuilder: (_, index) {
+                final medication = state.medications[index];
+
+                return MedicationTile(
+                  medication: medication,
+                  status: state.statusFor(medication.id),
+                  onTaken: () {
+                    ref
+                        .read(medicationViewModelProvider.notifier)
+                        .markAsTaken(medication.id);
+                  },
+                  onSkipped: () {
+                    ref
+                        .read(medicationViewModelProvider.notifier)
+                        .markAsSkipped(medication.id);
+                  },
+                  onEdit: () async {
+                    await context.push<bool>(
+                      AppRoutes.registerMedication,
+                      extra: medication,
+                    );
+                    await _loadMedications();
+                  },
+                  onDelete: () => _delete(medication.id),
+                );
+              },
+            ),
+          const HBGap.xl(),
+          HBButton(
+            label: 'Cadastrar medicamento',
+            onPressed: () {
+              context.pushAndRefresh(
+                AppRoutes.registerMedication,
+                onRefresh: _loadMedications,
+                shouldRefresh: (created) => created == true,
               );
             },
           ),
-        const HBGap.xl(),
-        HBButton(
-          label: 'Cadastrar medicamento',
-          onPressed: () {
-            context.pushAndRefresh(
-              AppRoutes.registerMedication,
-              onRefresh: _loadMedications,
-              shouldRefresh: (created) => created == true,
-            );
-          },
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

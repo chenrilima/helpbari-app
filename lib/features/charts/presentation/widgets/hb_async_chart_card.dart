@@ -53,6 +53,7 @@ class HBAsyncChartCard extends StatelessWidget {
         color: color,
         height: height,
         emptyIcon: emptyIcon,
+        onRetry: onRetry,
       ),
       loading: () => HBChartCard(
         title: title,

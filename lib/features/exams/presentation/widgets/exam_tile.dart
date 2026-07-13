@@ -47,8 +47,8 @@ class ExamTile extends StatelessWidget {
 
             const Row(
               children: [
-                Icon(Icons.attach_file, size: 18),
-                SizedBox(width: 4),
+                Icon(Icons.attach_file, size: AppSizes.iconSm),
+                HBGap.horizontal(AppSpacing.xs),
                 HBText('Resultado anexado'),
               ],
             ),

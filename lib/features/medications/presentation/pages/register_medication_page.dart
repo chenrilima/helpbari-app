@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/validators/app_validators.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/medication_view_model_provider.dart';
 import '../../domain/entities/medication.dart';
@@ -65,9 +66,11 @@ class _RegisterMedicationPageState
   }
 
   Future<void> _submit() async {
+    if (_submitting) return;
     final formState = _formKey.currentState;
 
     if (formState == null || !formState.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     setState(() => _submitting = true);
     final notifier = ref.read(medicationViewModelProvider.notifier);
@@ -98,12 +101,7 @@ class _RegisterMedicationPageState
       );
       return;
     }
-    HBSnackBar.success(
-      context,
-      message: _editing
-          ? 'Medicamento atualizado com sucesso.'
-          : 'Medicamento cadastrado com sucesso.',
-    );
+    HBSnackBar.success(context, message: 'Medicamento salvo no aparelho.');
 
     context.pop(true);
   }
@@ -131,6 +129,9 @@ class _RegisterMedicationPageState
                     label: 'Nome do medicamento',
                     hint: 'Ex: Omeprazol, Losartana',
                     textInputAction: TextInputAction.next,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
+                    textCapitalization: TextCapitalization.words,
+                    autofocus: !_editing,
                     validator: AppValidators.medicationName,
                   ),
                   const HBGap.md(),
@@ -139,19 +140,24 @@ class _RegisterMedicationPageState
                     label: 'Dosagem',
                     hint: 'Ex: 20 mg, 1 comprimido',
                     textInputAction: TextInputAction.next,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
                     validator: AppValidators.optionalText,
                   ),
                   const HBGap.md(),
                   HBButton(
                     label: 'Horário: $hour:$minute',
-                    onPressed: _selectTime,
+                    onPressed: _submitting ? null : _selectTime,
                   ),
                   const HBGap.md(),
                   HBTextField(
                     controller: _notesController,
                     label: 'Observações',
                     maxLines: 3,
+                    textInputAction: TextInputAction.done,
+                    inputFormatters: AppInputFormatters.text(maxLength: 500),
+                    textCapitalization: TextCapitalization.sentences,
                     validator: AppValidators.optionalText,
+                    onFieldSubmitted: (_) => _submit(),
                   ),
                   const HBGap.xl(),
                   HBButton(

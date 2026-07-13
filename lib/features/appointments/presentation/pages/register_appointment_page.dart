@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/formatters/app_date_formatter.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
@@ -89,6 +90,7 @@ class _RegisterAppointmentPageState
     final formState = _formKey.currentState;
 
     if (formState == null || !formState.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     final date = DateTime(
       _selectedDate.year,
@@ -160,6 +162,9 @@ class _RegisterAppointmentPageState
                     label: 'Título',
                     hint: 'Ex: Retorno com cirurgião',
                     textInputAction: TextInputAction.next,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
+                    textCapitalization: TextCapitalization.sentences,
+                    autofocus: !_isEditing,
                     validator: AppValidators.title,
                   ),
                   const HBGap.md(),
@@ -168,6 +173,8 @@ class _RegisterAppointmentPageState
                     label: 'Médico',
                     hint: 'Ex: Dr. João',
                     textInputAction: TextInputAction.next,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
+                    textCapitalization: TextCapitalization.words,
                     validator: AppValidators.optionalText,
                   ),
                   const HBGap.md(),
@@ -176,24 +183,30 @@ class _RegisterAppointmentPageState
                     label: 'Local',
                     hint: 'Ex: Hospital ou clínica',
                     textInputAction: TextInputAction.next,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
+                    textCapitalization: TextCapitalization.words,
                     validator: AppValidators.optionalText,
                   ),
                   const HBGap.md(),
                   HBButton(
                     label: 'Data: ${AppDateFormatter.short(_selectedDate)}',
-                    onPressed: _pickDate,
+                    onPressed: _isSubmitting ? null : _pickDate,
                   ),
                   const HBGap.md(),
                   HBButton(
                     label: 'Hora: ${_selectedTime.format(context)}',
-                    onPressed: _pickTime,
+                    onPressed: _isSubmitting ? null : _pickTime,
                   ),
                   const HBGap.md(),
                   HBTextField(
                     controller: _notesController,
                     label: 'Observações',
                     maxLines: 3,
+                    textInputAction: TextInputAction.done,
+                    inputFormatters: AppInputFormatters.text(maxLength: 500),
+                    textCapitalization: TextCapitalization.sentences,
                     validator: AppValidators.optionalText,
+                    onFieldSubmitted: (_) => _save(),
                   ),
                   const HBGap.xl(),
                   HBButton(

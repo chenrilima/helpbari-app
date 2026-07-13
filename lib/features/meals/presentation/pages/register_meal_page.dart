@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/services/service_providers.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -57,6 +58,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
     final formState = _formKey.currentState;
 
     if (formState == null || !formState.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     final proteinText = _proteinController.text.trim();
     final proteinGrams = proteinText.isEmpty ? null : int.tryParse(proteinText);
@@ -91,17 +93,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
       );
       return;
     }
-    final warning = ref.read(mealViewModelProvider).syncWarning;
-    if (warning != null) {
-      HBSnackBar.warning(context, message: warning);
-    } else {
-      HBSnackBar.success(
-        context,
-        message: _isEditing
-            ? 'Refeição atualizada com sucesso.'
-            : 'Refeição cadastrada com sucesso.',
-      );
-    }
+    HBSnackBar.success(context, message: 'Refeição salva no aparelho.');
 
     context.pop(true);
   }
@@ -146,6 +138,9 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
                     label: 'Nome da refeição',
                     hint: 'Ex: Frango com legumes',
                     textInputAction: TextInputAction.next,
+                    inputFormatters: AppInputFormatters.text(maxLength: 120),
+                    textCapitalization: TextCapitalization.sentences,
+                    autofocus: !_isEditing,
                     validator: AppValidators.mealName,
                   ),
                   const HBGap.md(),
@@ -172,6 +167,7 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
                     label: 'Proteína em gramas',
                     hint: 'Ex: 25',
                     keyboardType: TextInputType.number,
+                    inputFormatters: AppInputFormatters.digits(maxLength: 3),
                     textInputAction: TextInputAction.next,
                     validator: AppValidators.protein,
                   ),
@@ -180,6 +176,10 @@ class _RegisterMealPageState extends ConsumerState<RegisterMealPage> {
                     controller: _notesController,
                     label: 'Observações',
                     maxLines: 3,
+                    textInputAction: TextInputAction.done,
+                    inputFormatters: AppInputFormatters.text(maxLength: 500),
+                    textCapitalization: TextCapitalization.sentences,
+                    onFieldSubmitted: (_) => _submit(),
                     validator: AppValidators.optionalText,
                   ),
                   const HBGap.md(),

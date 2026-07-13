@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../states/auth_state.dart';
@@ -29,6 +30,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
   Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) return;
+    FocusManager.instance.primaryFocus?.unfocus();
 
     await ref
         .read(authViewModelProvider.notifier)
@@ -70,13 +72,17 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     label: 'E-mail',
                     hint: 'seuemail@exemplo.com',
                     keyboardType: TextInputType.emailAddress,
+                    inputFormatters: AppInputFormatters.email,
                     textInputAction: TextInputAction.next,
+                    autofillHints: const [AutofillHints.newUsername],
+                    autofocus: true,
                     validator: AppValidators.email,
                   ),
                   const HBGap.md(),
                   HBPasswordField(
                     controller: _passwordController,
                     textInputAction: TextInputAction.done,
+                    autofillHints: const [AutofillHints.newPassword],
                     validator: AppValidators.newPassword,
                     onFieldSubmitted: (_) => _signUp(),
                   ),
