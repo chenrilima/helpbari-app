@@ -1,0 +1,71 @@
+{
+  "id": "agua-durante-as-refeicoes",
+  "title": "Posso beber água durante as refeições?",
+  "subtitle": "Entenda por que normalmente é recomendado separar líquidos das refeições.",
+  "summary": "Após a cirurgia bariátrica, a ingestão de líquidos costuma ser orientada em horários diferentes das refeições para favorecer a alimentação e reduzir desconfortos.",
+  "blocks": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "content": "Após a cirurgia bariátrica, muitos profissionais recomendam evitar ingerir líquidos junto com as refeições. Essa orientação pode favorecer uma alimentação mais lenta, melhor mastigação e maior tolerância aos alimentos."
+    },
+    {
+      "id": "why",
+      "type": "heading",
+      "content": "Por que separar líquidos e alimentos?"
+    },
+    {
+      "id": "why-content",
+      "type": "markdown",
+      "content": "A recomendação busca evitar desconfortos, reduzir a sensação de estômago cheio muito rapidamente e incentivar que o paciente atinja a ingestão adequada de proteínas e nutrientes."
+    },
+    {
+      "id": "tips",
+      "type": "list",
+      "title": "Orientações gerais",
+      "items": [
+        "Siga sempre a recomendação da sua equipe.",
+        "Mastigue lentamente.",
+        "Evite beber líquidos durante a refeição, salvo orientação diferente.",
+        "Retome a hidratação após o intervalo indicado pela equipe."
+      ]
+    },
+    {
+      "id": "warning",
+      "type": "warning",
+      "title": "Cada paciente é único",
+      "content": "O intervalo entre refeições e líquidos pode variar conforme a cirurgia realizada e a fase do tratamento."
+    },
+    {
+      "id": "medical",
+      "type": "medicalAlert",
+      "title": "Procure orientação",
+      "content": "Caso apresente vômitos frequentes, dor ou dificuldade persistente para alimentar-se, procure sua equipe assistencial."
+    }
+  ],
+  "faq": [],
+  "tags": [
+    "hidratação",
+    "alimentação",
+    "água"
+  ],
+  "categoryId": "hydration",
+  "bariatricPhases": [
+    "pós-operatório inicial",
+    "manutenção"
+  ],
+  "surgeryTypes": [
+    "bypass gástrico",
+    "sleeve gástrico"
+  ],
+  "readingTimeMinutes": 4,
+  "relatedArticleIds": [
+    "hidratacao-pos-operatorio"
+  ],
+  "sources": [
+    "sbcbm-pos-operatorio-2024"
+  ],
+  "evidenceLevel": "high",
+  "lastReviewedAt": "2026-07-13",
+  "medicalDisclaimer": "Este conteúdo possui finalidade educativa e não substitui avaliação individual da equipe assistencial."
+}

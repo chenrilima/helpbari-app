@@ -1,0 +1,77 @@
+{
+  "id": "agua-com-gas",
+  "title": "Posso tomar água com gás?",
+  "subtitle": "Entenda quando ela pode causar desconforto",
+  "summary": "A tolerância à água com gás varia entre os pacientes, principalmente nos primeiros meses após a cirurgia.",
+  "blocks": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "content": "Após a cirurgia bariátrica, muitas pessoas apresentam maior sensibilidade às bebidas gaseificadas. O gás pode aumentar a sensação de estufamento e causar desconforto abdominal."
+    },
+    {
+      "id": "heading",
+      "type": "heading",
+      "content": "É proibido para sempre?"
+    },
+    {
+      "id": "body",
+      "type": "markdown",
+      "content": "Não necessariamente. A possibilidade de consumir água com gás depende da fase pós-operatória, do tipo de cirurgia realizada e da tolerância individual. Muitos profissionais orientam evitar bebidas gaseificadas principalmente nos primeiros meses."
+    },
+    {
+      "id": "tips",
+      "type": "list",
+      "title": "Orientações gerais",
+      "items": [
+        "Nunca introduza por conta própria.",
+        "Converse com sua equipe antes da reintrodução.",
+        "Interrompa o consumo caso apareçam dor ou desconforto."
+      ]
+    },
+    {
+      "id": "warning",
+      "type": "warning",
+      "title": "Importante",
+      "content": "Refrigerantes e outras bebidas gaseificadas adoçadas não devem ser confundidos com água com gás e possuem riscos nutricionais adicionais."
+    },
+    {
+      "id": "medical",
+      "type": "medicalAlert",
+      "title": "Procure orientação",
+      "content": "Persistência de dor abdominal, vômitos ou intolerância deve ser comunicada à equipe responsável."
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "faqIds": [
+        "faq-agua-com-gas"
+      ]
+    }
+  ],
+  "faq": [],
+  "tags": [
+    "água",
+    "água com gás",
+    "hidratação"
+  ],
+  "categoryId": "hydration",
+  "bariatricPhases": [
+    "pós-operatório inicial",
+    "manutenção"
+  ],
+  "surgeryTypes": [
+    "bypass gástrico",
+    "sleeve gástrico"
+  ],
+  "readingTimeMinutes": 3,
+  "relatedArticleIds": [
+    "hidratacao-pos-operatorio"
+  ],
+  "sources": [
+    "sbcbm-pos-operatorio-2024"
+  ],
+  "evidenceLevel": "moderate",
+  "lastReviewedAt": "2026-07-13",
+  "medicalDisclaimer": "Este conteúdo possui finalidade educativa e não substitui avaliação individual da equipe assistencial."
+}

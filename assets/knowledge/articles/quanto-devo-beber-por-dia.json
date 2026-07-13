@@ -1,0 +1,80 @@
+{
+  "id": "quanto-devo-beber-por-dia",
+  "title": "Quanto devo beber de líquidos por dia?",
+  "subtitle": "Entenda por que não existe uma quantidade única para todos",
+  "summary": "A meta diária de líquidos deve ser individualizada conforme a fase pós-operatória, tolerância, atividade física e orientação da equipe de saúde.",
+  "blocks": [
+    {
+      "id": "overview",
+      "type": "markdown",
+      "content": "Após a cirurgia bariátrica, a capacidade do estômago é reduzida. Por isso, a hidratação deve acontecer em pequenos volumes distribuídos durante todo o dia."
+    },
+    {
+      "id": "goal",
+      "type": "heading",
+      "content": "Existe uma meta ideal?"
+    },
+    {
+      "id": "goal-text",
+      "type": "markdown",
+      "content": "Não existe uma quantidade única para todos os pacientes. A meta depende da fase da recuperação, peso corporal, prática de atividade física, clima e outras condições clínicas. Muitos serviços utilizam metas entre **1,5 e 2 litros por dia**, mas somente sua equipe poderá definir a quantidade adequada para você."
+    },
+    {
+      "id": "tips",
+      "type": "list",
+      "title": "Boas práticas",
+      "items": [
+        "Leve sempre uma garrafa com você.",
+        "Beba pequenos goles ao longo do dia.",
+        "Evite esperar sentir sede.",
+        "Registre a ingestão de líquidos no aplicativo."
+      ]
+    },
+    {
+      "id": "warning",
+      "type": "warning",
+      "title": "Não force grandes volumes",
+      "content": "Beber rapidamente ou grandes quantidades de uma vez pode provocar desconforto, náuseas e vômitos."
+    },
+    {
+      "id": "medical",
+      "type": "medicalAlert",
+      "title": "Quando procurar ajuda",
+      "content": "Se você não conseguir manter líquidos por várias horas ou apresentar sinais de desidratação, procure sua equipe assistencial."
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "faqIds": [
+        "faq-meta-liquidos"
+      ]
+    }
+  ],
+  "faq": [],
+  "tags": [
+    "hidratação",
+    "água",
+    "meta diária"
+  ],
+  "categoryId": "hydration",
+  "bariatricPhases": [
+    "pós-operatório inicial",
+    "manutenção"
+  ],
+  "surgeryTypes": [
+    "bypass gástrico",
+    "sleeve gástrico"
+  ],
+  "readingTimeMinutes": 4,
+  "relatedArticleIds": [
+    "hidratacao-pos-operatorio",
+    "sinais-de-desidratacao"
+  ],
+  "sources": [
+    "sbcbm-pos-operatorio-2024",
+    "abeso-pos-operatorio-2024"
+  ],
+  "evidenceLevel": "high",
+  "lastReviewedAt": "2026-07-13",
+  "medicalDisclaimer": "Este conteúdo possui finalidade educativa e não substitui avaliação individual da equipe assistencial."
+}

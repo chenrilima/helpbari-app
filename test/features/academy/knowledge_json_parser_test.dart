@@ -79,6 +79,45 @@ void main() {
         throwsFormatException,
       );
     });
+
+    test('rejects invalid IDs, dates and evidence levels', () {
+      final invalidValues = <String, Object?>{
+        'id': 'Article 1',
+        'lastReviewedAt': '2026-02-30',
+        'evidenceLevel': 'medium',
+      };
+
+      for (final entry in invalidValues.entries) {
+        final invalid = jsonDecode(_articleJson()) as Map<String, Object?>;
+        invalid[entry.key] = entry.value;
+
+        expect(
+          () => KnowledgeJsonParser.parseArticle(
+            jsonEncode(invalid),
+            referencesById: const <String, KnowledgeReference>{
+              'ref-1': reference,
+            },
+          ),
+          throwsFormatException,
+          reason: '${entry.key} should be rejected',
+        );
+      }
+    });
+
+    test('rejects duplicate IDs in relationship lists', () {
+      final invalid = jsonDecode(_articleJson()) as Map<String, Object?>;
+      invalid['sources'] = <String>['ref-1', 'ref-1'];
+
+      expect(
+        () => KnowledgeJsonParser.parseArticle(
+          jsonEncode(invalid),
+          referencesById: const <String, KnowledgeReference>{
+            'ref-1': reference,
+          },
+        ),
+        throwsFormatException,
+      );
+    });
   });
 
   test('asset datasource loads the full catalog without network access', () async {
@@ -99,6 +138,7 @@ void main() {
       'glossary.json': '{"items":[]}',
       'references.json':
           '{"items":[{"id":"ref-1","title":"Reference","authors":"Author","year":2026}]}',
+      'assets/knowledge/images/future.webp': 'image',
     });
 
     final catalog = await AssetKnowledgeDatasource(
@@ -174,7 +214,7 @@ String _articleJson() => jsonEncode(<String, Object?>{
       'id': 'b10',
       'type': 'image',
       'image': <String, Object?>{
-        'assetPath': 'future.webp',
+        'assetPath': 'assets/knowledge/images/future.webp',
         'altText': 'Imagem futura',
       },
     },

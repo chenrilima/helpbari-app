@@ -1,0 +1,70 @@
+{
+  "id": "como-atingir-a-meta-diaria",
+  "title": "Como atingir a meta diária de hidratação",
+  "subtitle": "Pequenas estratégias podem facilitar a rotina.",
+  "summary": "Distribuir os líquidos ao longo do dia costuma ser mais confortável do que tentar ingerir grandes volumes de uma só vez.",
+  "blocks": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "content": "Criar uma rotina de hidratação ajuda muitos pacientes a atingir a meta definida pela equipe assistencial."
+    },
+    {
+      "id": "tips",
+      "type": "list",
+      "title": "Dicas práticas",
+      "items": [
+        "Use uma garrafa graduada.",
+        "Defina metas por período do dia.",
+        "Utilize lembretes do HelpBari.",
+        "Leve água quando sair de casa.",
+        "Observe a cor da urina como um dos indicadores da hidratação."
+      ]
+    },
+    {
+      "id": "check",
+      "type": "checklist",
+      "checklistItems": [
+        {
+          "text": "Levei minha garrafa hoje."
+        },
+        {
+          "text": "Registrei meus líquidos."
+        },
+        {
+          "text": "Atingi a meta diária."
+        }
+      ]
+    },
+    {
+      "id": "quote",
+      "type": "quote",
+      "content": "Pequenos hábitos diários costumam gerar melhores resultados do que grandes mudanças feitas apenas ocasionalmente."
+    }
+  ],
+  "faq": [],
+  "tags": [
+    "hidratação",
+    "meta",
+    "água"
+  ],
+  "categoryId": "hydration",
+  "bariatricPhases": [
+    "manutenção"
+  ],
+  "surgeryTypes": [
+    "bypass gástrico",
+    "sleeve gástrico"
+  ],
+  "readingTimeMinutes": 3,
+  "relatedArticleIds": [
+    "quanto-devo-beber-por-dia",
+    "hidratacao-pos-operatorio"
+  ],
+  "sources": [
+    "sbcbm-pos-operatorio-2024"
+  ],
+  "evidenceLevel": "moderate",
+  "lastReviewedAt": "2026-07-13",
+  "medicalDisclaimer": "Este conteúdo possui finalidade educativa e não substitui avaliação individual da equipe assistencial."
+}

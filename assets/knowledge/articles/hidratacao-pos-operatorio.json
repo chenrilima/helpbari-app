@@ -28,9 +28,15 @@
       "id": "daily-check",
       "type": "checklist",
       "checklistItems": [
-        {"text": "Comecei a hidratação no início do dia."},
-        {"text": "Observei a cor da urina."},
-        {"text": "Registrei o volume conforme orientação da equipe."}
+        {
+          "text": "Comecei a hidratação no início do dia."
+        },
+        {
+          "text": "Observei a cor da urina."
+        },
+        {
+          "text": "Registrei o volume conforme orientação da equipe."
+        }
       ]
     },
     {
@@ -53,26 +59,28 @@
     {
       "id": "faq",
       "type": "faq",
-      "faqIds": ["faq-hydration-goal"]
+      "faqIds": [
+        "faq-hydration-goal"
+      ]
     },
     {
       "id": "tolerance-table",
       "type": "table",
       "table": {
-        "headers": ["Situação", "Conduta geral"],
+        "headers": [
+          "Situação",
+          "Conduta geral"
+        ],
         "rows": [
-          ["Boa tolerância", "Manter pequenos goles frequentes"],
-          ["Náusea persistente", "Interromper e contatar a equipe assistencial"]
+          [
+            "Boa tolerância",
+            "Manter pequenos goles frequentes"
+          ],
+          [
+            "Náusea persistente",
+            "Interromper e contatar a equipe assistencial"
+          ]
         ]
-      }
-    },
-    {
-      "id": "future-image",
-      "type": "image",
-      "image": {
-        "assetPath": "assets/knowledge/images/hydration-example.webp",
-        "altText": "Ilustração futura sobre distribuição de líquidos",
-        "caption": "Espaço preparado para mídia revisada pela equipe clínica."
       }
     }
   ],
@@ -83,13 +91,27 @@
       "answer": "A tolerância varia. Use a temperatura indicada pela equipe e evite opções que provoquem desconforto."
     }
   ],
-  "tags": ["água", "hidratação", "pós-operatório"],
+  "tags": [
+    "água",
+    "hidratação",
+    "pós-operatório"
+  ],
   "categoryId": "hydration",
-  "bariatricPhases": ["pós-operatório inicial", "manutenção"],
-  "surgeryTypes": ["bypass gástrico", "sleeve gástrico"],
+  "bariatricPhases": [
+    "pós-operatório inicial",
+    "manutenção"
+  ],
+  "surgeryTypes": [
+    "bypass gástrico",
+    "sleeve gástrico"
+  ],
   "readingTimeMinutes": 6,
-  "relatedArticleIds": ["sinais-de-desidratacao"],
-  "sources": ["asmbs-nutrition-2016"],
+  "relatedArticleIds": [
+    "sinais-de-desidratacao"
+  ],
+  "sources": [
+    "asmbs-nutrition-2016"
+  ],
   "evidenceLevel": "moderate",
   "lastReviewedAt": "2026-07-01",
   "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação, diagnóstico ou orientação da sua equipe de saúde."

@@ -1,0 +1,53 @@
+{
+    "id": "hidratacao-atividade-fisica",
+    "title": "Hidratação durante a atividade física",
+    "subtitle": "Como adaptar a ingestão de líquidos ao exercício.",
+    "summary": "A prática de atividade física aumenta a necessidade de atenção à hidratação, especialmente após a cirurgia bariátrica.",
+    "blocks": [
+        {
+            "id": "intro",
+            "type": "markdown",
+            "content": "A perda de líquidos pelo suor varia conforme intensidade do exercício, temperatura ambiente e características individuais."
+        },
+        {
+            "id": "tips",
+            "type": "list",
+            "title": "Recomendações gerais",
+            "items": [
+                "Comece o exercício hidratado.",
+                "Faça pequenos goles durante a atividade quando permitido.",
+                "Continue hidratando-se após terminar.",
+                "Observe sinais de tontura ou fraqueza."
+            ]
+        },
+        {
+            "id": "medical",
+            "type": "medicalAlert",
+            "title": "Interrompa o exercício",
+            "content": "Caso surjam tontura intensa, confusão, desmaio ou incapacidade de manter líquidos."
+        }
+    ],
+    "faq": [],
+    "tags": [
+        "hidratação",
+        "atividade física"
+    ],
+    "categoryId": "hydration",
+    "bariatricPhases": [
+        "manutenção"
+    ],
+    "surgeryTypes": [
+        "bypass gástrico",
+        "sleeve gástrico"
+    ],
+    "readingTimeMinutes": 3,
+    "relatedArticleIds": [
+        "quanto-devo-beber-por-dia"
+    ],
+    "sources": [
+        "sbcbm-pos-operatorio-2024"
+    ],
+    "evidenceLevel": "moderate",
+    "lastReviewedAt": "2026-07-13",
+    "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação da equipe assistencial."
+}

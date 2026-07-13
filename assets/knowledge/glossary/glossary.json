@@ -4,13 +4,17 @@
       "id": "bypass-gastrico",
       "term": "Bypass gástrico",
       "definition": "Técnica bariátrica que combina redução do reservatório gástrico com desvio de parte do intestino delgado.",
-      "relatedTerms": ["sleeve gástrico"]
+      "relatedTerms": [
+        "Sleeve gástrico"
+      ]
     },
     {
       "id": "sleeve-gastrico",
       "term": "Sleeve gástrico",
       "definition": "Técnica bariátrica que reduz o estômago longitudinalmente, preservando o trânsito intestinal.",
-      "relatedTerms": ["bypass gástrico"]
+      "relatedTerms": [
+        "Bypass gástrico"
+      ]
     }
   ]
 }

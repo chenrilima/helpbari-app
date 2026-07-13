@@ -1,0 +1,58 @@
+{
+  "id": "isotonicos",
+  "title": "Posso tomar isotônicos?",
+  "subtitle": "Entenda quando eles podem ou não ser indicados.",
+  "summary": "Os isotônicos não fazem parte da rotina da maioria dos pacientes bariátricos e só devem ser utilizados quando houver indicação profissional.",
+  "blocks": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "content": "Embora sejam conhecidos por repor eletrólitos, os isotônicos podem conter quantidades significativas de açúcar."
+    },
+    {
+      "id": "when",
+      "type": "heading",
+      "content": "Quando podem ser utilizados?"
+    },
+    {
+      "id": "when-content",
+      "type": "markdown",
+      "content": "Em situações específicas, como episódios de perda importante de líquidos ou atividade física intensa, o profissional poderá indicar alternativas apropriadas."
+    },
+    {
+      "id": "warning",
+      "type": "warning",
+      "title": "Evite automedicação",
+      "content": "Não substitua água por isotônicos sem orientação profissional."
+    },
+    {
+      "id": "medical",
+      "type": "medicalAlert",
+      "title": "Quando procurar ajuda",
+      "content": "Persistência de vômitos, diarreia ou sinais de desidratação requer avaliação médica."
+    }
+  ],
+  "faq": [],
+  "tags": [
+    "isotônico",
+    "hidratação"
+  ],
+  "categoryId": "hydration",
+  "bariatricPhases": [
+    "manutenção"
+  ],
+  "surgeryTypes": [
+    "bypass gástrico",
+    "sleeve gástrico"
+  ],
+  "readingTimeMinutes": 3,
+  "relatedArticleIds": [
+    "sinais-de-desidratacao"
+  ],
+  "sources": [
+    "sbcbm-pos-operatorio-2024"
+  ],
+  "evidenceLevel": "moderate",
+  "lastReviewedAt": "2026-07-13",
+  "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação da equipe assistencial."
+}

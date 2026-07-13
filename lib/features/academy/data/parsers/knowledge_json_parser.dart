@@ -23,6 +23,9 @@ class KnowledgeManifestData {
 }
 
 abstract final class KnowledgeJsonParser {
+  static final RegExp _idPattern = RegExp(r'^[a-z0-9]+(?:-[a-z0-9]+)*$');
+  static final RegExp _datePattern = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+
   static KnowledgeManifestData parseManifest(String source) {
     final json = _object(jsonDecode(source), 'manifest');
     final schemaVersion = _integer(json, 'schemaVersion');
@@ -33,7 +36,7 @@ abstract final class KnowledgeJsonParser {
       schemaVersion: schemaVersion,
       contentVersion: _string(json, 'contentVersion'),
       categoryPath: _string(json, 'categories'),
-      articlePaths: _strings(json, 'articles', allowEmpty: true),
+      articlePaths: _uniqueStrings(json, 'articles', allowEmpty: true),
       faqPath: _string(json, 'faq'),
       glossaryPath: _string(json, 'glossary'),
       referencePath: _string(json, 'references'),
@@ -46,7 +49,7 @@ abstract final class KnowledgeJsonParser {
         .map((item) {
           final json = _object(item, 'category');
           return KnowledgeCategory(
-            id: _string(json, 'id'),
+            id: _id(json, 'id'),
             name: _string(json, 'name'),
             description: _string(json, 'description'),
           );
@@ -66,7 +69,7 @@ abstract final class KnowledgeJsonParser {
         .map((item) {
           final json = _object(item, 'glossary entry');
           return KnowledgeGlossaryEntry(
-            id: _string(json, 'id'),
+            id: _id(json, 'id'),
             term: _string(json, 'term'),
             definition: _string(json, 'definition'),
             relatedTerms: _optionalStrings(json, 'relatedTerms'),
@@ -80,7 +83,7 @@ abstract final class KnowledgeJsonParser {
         .map((item) {
           final json = _object(item, 'reference');
           return KnowledgeReference(
-            id: _string(json, 'id'),
+            id: _id(json, 'id'),
             title: _string(json, 'title'),
             authors: _string(json, 'authors'),
             year: _integer(json, 'year'),
@@ -95,8 +98,8 @@ abstract final class KnowledgeJsonParser {
     required Map<String, KnowledgeReference> referencesById,
   }) {
     final json = _object(jsonDecode(source), 'article');
-    final id = _string(json, 'id');
-    final sourceIds = _strings(json, 'sources');
+    final id = _id(json, 'id');
+    final sourceIds = _uniqueIds(json, 'sources');
     final sources = sourceIds
         .map((sourceId) {
           final reference = referencesById[sourceId];
@@ -122,12 +125,12 @@ abstract final class KnowledgeJsonParser {
       faq: _optionalList(json, 'faq')
           .map((item) => _faq(_object(item, 'article faq'), articleId: id))
           .toList(growable: false),
-      tags: _strings(json, 'tags'),
-      categoryId: _string(json, 'categoryId'),
-      bariatricPhases: _strings(json, 'bariatricPhases'),
-      surgeryTypes: _strings(json, 'surgeryTypes'),
+      tags: _uniqueStrings(json, 'tags'),
+      categoryId: _id(json, 'categoryId'),
+      bariatricPhases: _uniqueStrings(json, 'bariatricPhases'),
+      surgeryTypes: _uniqueStrings(json, 'surgeryTypes'),
       readingTimeMinutes: _positiveInteger(json, 'readingTimeMinutes'),
-      relatedArticleIds: _optionalStrings(json, 'relatedArticleIds'),
+      relatedArticleIds: _optionalUniqueIds(json, 'relatedArticleIds'),
       sources: sources,
       evidenceLevel: _enumByName(
         KnowledgeEvidenceLevel.values,
@@ -141,11 +144,11 @@ abstract final class KnowledgeJsonParser {
 
   static KnowledgeFaq _faq(Map<String, Object?> json, {String? articleId}) {
     return KnowledgeFaq(
-      id: _string(json, 'id'),
+      id: _id(json, 'id'),
       question: _string(json, 'question'),
       answer: _string(json, 'answer'),
-      articleId: _optionalString(json, 'articleId') ?? articleId,
-      categoryId: _optionalString(json, 'categoryId'),
+      articleId: _optionalId(json, 'articleId') ?? articleId,
+      categoryId: _optionalId(json, 'categoryId'),
     );
   }
 
@@ -153,7 +156,7 @@ abstract final class KnowledgeJsonParser {
     Map<String, Object?> json, {
     required String articleId,
   }) {
-    final id = _string(json, 'id');
+    final id = _id(json, 'id');
     final type = _enumByName(
       KnowledgeBlockType.values,
       _string(json, 'type'),
@@ -166,7 +169,7 @@ abstract final class KnowledgeJsonParser {
       type: type,
       title: _optionalString(json, 'title'),
       content: _optionalString(json, 'content'),
-      items: _optionalStrings(json, 'items'),
+      items: _optionalUniqueStrings(json, 'items'),
       checklistItems: _optionalList(json, 'checklistItems')
           .map((item) {
             final checklist = _object(item, 'checklist item');
@@ -176,7 +179,7 @@ abstract final class KnowledgeJsonParser {
             );
           })
           .toList(growable: false),
-      faqIds: _optionalStrings(json, 'faqIds'),
+      faqIds: _optionalUniqueIds(json, 'faqIds'),
       table: tableJson == null
           ? null
           : _table(_object(tableJson, 'table'), articleId: articleId),
@@ -222,7 +225,7 @@ abstract final class KnowledgeJsonParser {
 
   static KnowledgeImage _image(Map<String, Object?> json) {
     return KnowledgeImage(
-      assetPath: _string(json, 'assetPath'),
+      assetPath: _knowledgeImagePath(json, 'assetPath'),
       altText: _string(json, 'altText'),
       caption: _optionalString(json, 'caption'),
     );
@@ -288,6 +291,31 @@ abstract final class KnowledgeJsonParser {
     return _string(json, key);
   }
 
+  static String _id(Map<String, Object?> json, String key) {
+    final value = _string(json, key);
+    if (!_idPattern.hasMatch(value)) {
+      throw FormatException('Invalid $key: $value');
+    }
+    return value;
+  }
+
+  static String? _optionalId(Map<String, Object?> json, String key) {
+    if (!json.containsKey(key) || json[key] == null) return null;
+    return _id(json, key);
+  }
+
+  static String _knowledgeImagePath(Map<String, Object?> json, String key) {
+    final value = _string(json, key);
+    final extension = value.split('.').last.toLowerCase();
+    const allowedExtensions = <String>{'jpg', 'jpeg', 'png', 'webp'};
+    if (!value.startsWith('assets/knowledge/images/') ||
+        value.contains('..') ||
+        !allowedExtensions.contains(extension)) {
+      throw FormatException('Invalid $key: $value');
+    }
+    return value;
+  }
+
   static int _integer(Map<String, Object?> json, String key) {
     final value = json[key];
     if (value is! int) throw FormatException('Invalid $key');
@@ -329,10 +357,59 @@ abstract final class KnowledgeJsonParser {
     return _strings(json, key, allowEmpty: true);
   }
 
+  static List<String> _uniqueStrings(
+    Map<String, Object?> json,
+    String key, {
+    bool allowEmpty = false,
+  }) {
+    final values = _strings(json, key, allowEmpty: allowEmpty);
+    if (values.toSet().length != values.length) {
+      throw FormatException('Duplicate value in $key');
+    }
+    return values;
+  }
+
+  static List<String> _optionalUniqueStrings(
+    Map<String, Object?> json,
+    String key,
+  ) {
+    if (!json.containsKey(key)) return const <String>[];
+    return _uniqueStrings(json, key, allowEmpty: true);
+  }
+
+  static List<String> _uniqueIds(
+    Map<String, Object?> json,
+    String key, {
+    bool allowEmpty = false,
+  }) {
+    final values = _uniqueStrings(json, key, allowEmpty: allowEmpty);
+    for (final value in values) {
+      if (!_idPattern.hasMatch(value)) {
+        throw FormatException('Invalid value in $key: $value');
+      }
+    }
+    return values;
+  }
+
+  static List<String> _optionalUniqueIds(
+    Map<String, Object?> json,
+    String key,
+  ) {
+    if (!json.containsKey(key)) return const <String>[];
+    return _uniqueIds(json, key, allowEmpty: true);
+  }
+
   static DateTime _date(Map<String, Object?> json, String key) {
     final value = _string(json, key);
-    final date = DateTime.tryParse(value);
-    if (date == null) throw FormatException('Invalid $key');
+    if (!_datePattern.hasMatch(value)) throw FormatException('Invalid $key');
+    final parts = value.split('-');
+    final year = int.parse(parts[0]);
+    final month = int.parse(parts[1]);
+    final day = int.parse(parts[2]);
+    final date = DateTime.utc(year, month, day);
+    if (date.year != year || date.month != month || date.day != day) {
+      throw FormatException('Invalid $key');
+    }
     return date;
   }
 

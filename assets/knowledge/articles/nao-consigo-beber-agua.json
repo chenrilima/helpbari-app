@@ -1,0 +1,62 @@
+{
+    "id": "nao-consigo-beber-agua",
+    "title": "Não consigo beber água. O que fazer?",
+    "subtitle": "Entenda possíveis causas e quando procurar ajuda.",
+    "summary": "Alguns pacientes apresentam dificuldade para ingerir líquidos após a cirurgia bariátrica. Conheça medidas simples e sinais que exigem avaliação médica.",
+    "blocks": [
+        {
+            "id": "intro",
+            "type": "markdown",
+            "content": "Nos primeiros dias ou semanas após a cirurgia é comum que pequenos volumes provoquem desconforto. A hidratação deve acontecer de forma lenta e contínua."
+        },
+        {
+            "id": "tips",
+            "type": "list",
+            "title": "O que pode ajudar",
+            "items": [
+                "Faça pequenos goles.",
+                "Experimente temperaturas diferentes.",
+                "Utilize copos pequenos.",
+                "Evite ingerir grandes volumes rapidamente.",
+                "Registre sua hidratação no HelpBari."
+            ]
+        },
+        {
+            "id": "warning",
+            "type": "warning",
+            "title": "Não espere piorar",
+            "content": "Reduzir muito a ingestão de líquidos aumenta o risco de desidratação."
+        },
+        {
+            "id": "medical",
+            "type": "medicalAlert",
+            "title": "Procure atendimento",
+            "content": "Se não conseguir ingerir líquidos durante várias horas, apresentar vômitos persistentes, tontura intensa ou redução importante da urina, procure atendimento imediatamente."
+        }
+    ],
+    "faq": [],
+    "tags": [
+        "hidratação",
+        "água",
+        "desidratação"
+    ],
+    "categoryId": "hydration",
+    "bariatricPhases": [
+        "pós-operatório inicial"
+    ],
+    "surgeryTypes": [
+        "bypass gástrico",
+        "sleeve gástrico"
+    ],
+    "readingTimeMinutes": 3,
+    "relatedArticleIds": [
+        "sinais-de-desidratacao",
+        "hidratacao-pos-operatorio"
+    ],
+    "sources": [
+        "sbcbm-pos-operatorio-2024"
+    ],
+    "evidenceLevel": "high",
+    "lastReviewedAt": "2026-07-13",
+    "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação da equipe assistencial."
+}

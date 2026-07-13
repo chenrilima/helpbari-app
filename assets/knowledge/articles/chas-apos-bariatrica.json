@@ -1,0 +1,64 @@
+{
+  "id": "chas-apos-bariatrica",
+  "title": "Posso tomar chás após a cirurgia bariátrica?",
+  "subtitle": "Conheça os cuidados e a melhor forma de introduzir os chás na rotina.",
+  "summary": "Alguns chás podem fazer parte da hidratação, desde que respeitando a orientação da equipe assistencial e evitando preparações açucaradas.",
+  "blocks": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "content": "Os chás sem açúcar podem contribuir para a hidratação diária quando liberados pela equipe responsável."
+    },
+    {
+      "id": "types",
+      "type": "heading",
+      "content": "Todo chá é permitido?"
+    },
+    {
+      "id": "types-content",
+      "type": "markdown",
+      "content": "Nem todos. Algumas ervas podem interagir com medicamentos ou provocar desconforto gastrointestinal. Sempre confirme com seu nutricionista ou médico."
+    },
+    {
+      "id": "tips",
+      "type": "list",
+      "title": "Boas práticas",
+      "items": [
+        "Prefira chás sem açúcar.",
+        "Evite temperaturas muito altas.",
+        "Observe sua tolerância.",
+        "Considere o chá como complemento da hidratação, e não substituto completo da água."
+      ]
+    },
+    {
+      "id": "medical",
+      "type": "medicalAlert",
+      "title": "Procure orientação",
+      "content": "Caso apresente náuseas, dor abdominal ou outro sintoma após consumir determinado chá, suspenda o uso e procure orientação."
+    }
+  ],
+  "faq": [],
+  "tags": [
+    "chá",
+    "hidratação",
+    "líquidos"
+  ],
+  "categoryId": "hydration",
+  "bariatricPhases": [
+    "manutenção"
+  ],
+  "surgeryTypes": [
+    "bypass gástrico",
+    "sleeve gástrico"
+  ],
+  "readingTimeMinutes": 3,
+  "relatedArticleIds": [
+    "hidratacao-pos-operatorio"
+  ],
+  "sources": [
+    "sbcbm-pos-operatorio-2024"
+  ],
+  "evidenceLevel": "moderate",
+  "lastReviewedAt": "2026-07-13",
+  "medicalDisclaimer": "Este conteúdo é educativo e não substitui avaliação da equipe assistencial."
+}
