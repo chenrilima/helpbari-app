@@ -49,6 +49,13 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       switch (next) {
         case AuthAuthenticated():
           context.go(AppRoutes.home);
+        case AuthEmailConfirmationRequired():
+          HBSnackBar.success(
+            context,
+            message:
+                'Confira seu e-mail para confirmar a conta antes de entrar.',
+          );
+          context.go(AppRoutes.login);
         case AuthFailure(:final message):
           HBSnackBar.error(context, message: message);
         default:

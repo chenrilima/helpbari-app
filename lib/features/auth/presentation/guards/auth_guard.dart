@@ -34,7 +34,10 @@ class AuthGuard {
             : isPublicRoute
             ? AppRoutes.home
             : null,
-      AuthUnauthenticated() || AuthPasswordRecoverySent() || AuthFailure() =>
+      AuthUnauthenticated() ||
+      AuthEmailConfirmationRequired() ||
+      AuthPasswordRecoverySent() ||
+      AuthFailure() =>
         location == AppRoutes.login ||
                 location == AppRoutes.signUp ||
                 location == AppRoutes.resetPassword

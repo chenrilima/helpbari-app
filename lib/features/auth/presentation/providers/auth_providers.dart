@@ -30,7 +30,7 @@ final authDatasourceProvider = Provider<AuthDatasource>((ref) {
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final client = ref.watch(supabaseClientProvider);
 
-  if (client == null && Environment.isDev) {
+  if (client == null && Environment.allowDevAuth) {
     final repository = DevAuthRepository();
     ref.onDispose(repository.dispose);
     return repository;
@@ -69,10 +69,16 @@ final authViewModelProvider = NotifierProvider<AuthViewModel, AuthState>(
 
 final authSessionProvider = Provider<AuthUser?>((ref) {
   final authState = ref.watch(authViewModelProvider);
+  final repository = ref.watch(authRepositoryProvider);
 
-  return switch (authState) {
+  final stateUser = switch (authState) {
     AuthAuthenticated(:final user) => user,
     AuthPasswordUpdated(:final user) => user,
     _ => null,
   };
+  final repositoryUser = repository.currentUser;
+  if (!repository.hasSession || stateUser?.id != repositoryUser?.id) {
+    return null;
+  }
+  return stateUser;
 });

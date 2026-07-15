@@ -14,6 +14,12 @@ Future<void> bootstrap({
 
   AppLogger.info('Starting HelpBari in ${Environment.name} mode');
 
+  if (!Environment.isDev && !Environment.hasSupabaseConfig) {
+    throw StateError(
+      'Supabase configuration is required in ${Environment.name}.',
+    );
+  }
+
   await SupabaseConfig.initialize();
 
   await builder();

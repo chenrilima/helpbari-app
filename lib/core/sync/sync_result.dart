@@ -22,7 +22,7 @@ class SyncResult {
   final List<SyncConflict> conflicts;
   final List<SyncError> errors;
 
-  bool get isSuccess => errors.isEmpty;
+  bool get isSuccess => repositoriesProcessed > 0 && errors.isEmpty;
   bool get hasConflicts => conflicts.isNotEmpty;
 
   SyncResult copyWith({

@@ -51,6 +51,16 @@ void main() {
     );
   });
 
+  test('email confirmation does not grant access to Home', () {
+    expect(
+      AuthGuard.redirect(
+        location: AppRoutes.home,
+        authState: const AuthEmailConfirmationRequired(),
+      ),
+      AppRoutes.login,
+    );
+  });
+
   test('authenticated public-route access proceeds toward the app', () {
     expect(
       AuthGuard.redirect(

@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../logger/app_logger.dart';
+import '../supabase/supabase_client_provider.dart';
+import '../../features/auth/presentation/providers/auth_providers.dart';
 import 'sync_engine.dart';
 import 'sync_providers.dart';
 import 'sync_result.dart';
@@ -40,6 +42,13 @@ class SyncManager extends Notifier<SyncState> {
   }
 
   Future<SyncResult?> _performSync() async {
+    final user = ref.read(authSessionProvider);
+    SyncPhase? unavailablePhase;
+    if (user == null) {
+      unavailablePhase = SyncPhase.unavailableNoUser;
+    } else if (ref.read(supabaseClientProvider) == null) {
+      unavailablePhase = SyncPhase.unavailableNoRemoteClient;
+    }
     state = state.copyWith(phase: SyncPhase.syncing, clearError: true);
 
     final result = await _engine.sync(
@@ -49,8 +58,15 @@ class SyncManager extends Notifier<SyncState> {
     );
     final persisted = await _stateRepository.getState();
 
+    final phase = result.isSuccess
+        ? SyncPhase.success
+        : result.repositoriesProcessed == 0
+        ? unavailablePhase ?? SyncPhase.skippedNoRepositories
+        : result.pushed > 0 || result.pulled > 0
+        ? SyncPhase.partialFailure
+        : SyncPhase.failure;
     state = persisted.copyWith(
-      phase: result.isSuccess ? SyncPhase.success : SyncPhase.failure,
+      phase: phase,
       lastResult: result,
       errorMessage: result.isSuccess ? null : result.errors.first.message,
       clearError: result.isSuccess,

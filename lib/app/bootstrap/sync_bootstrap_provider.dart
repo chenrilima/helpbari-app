@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/sync/sync.dart';
+import '../../core/logger/app_logger.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 
 final syncBootstrapProvider = Provider<SyncBootstrapCoordinator>((ref) {
@@ -27,7 +28,18 @@ class SyncBootstrapCoordinator {
         _initialSyncs.clear();
         return;
       }
-      unawaited(_ensureInitialSync(next.id).catchError((_) {}));
+      unawaited(
+        _ensureInitialSync(next.id).catchError((
+          Object error,
+          StackTrace stack,
+        ) {
+          AppLogger.error(
+            'Initial sync failed (${error.runtimeType}).',
+            error: error,
+            stackTrace: stack,
+          );
+        }),
+      );
     }, fireImmediately: true);
   }
 
@@ -44,8 +56,13 @@ class SyncBootstrapCoordinator {
         timedOut.future,
         ?cancelled,
       ]);
-    } catch (_) {
+    } catch (error, stackTrace) {
       // Sync errors are represented by SyncResult; bootstrap must remain usable.
+      AppLogger.error(
+        'Initial sync wait failed (${error.runtimeType}).',
+        error: error,
+        stackTrace: stackTrace,
+      );
     } finally {
       timer.cancel();
     }
@@ -62,8 +79,13 @@ class SyncBootstrapCoordinator {
     if (userId == null) return;
     try {
       await _ref.read(syncManagerProvider.notifier).syncNow();
-    } catch (_) {
+    } catch (error, stackTrace) {
       // Manual retry preserves the offline-first UI on infrastructure errors.
+      AppLogger.error(
+        'Manual sync retry failed (${error.runtimeType}).',
+        error: error,
+        stackTrace: stackTrace,
+      );
     }
   }
 

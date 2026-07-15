@@ -7,6 +7,60 @@ import 'package:helpbari/core/sync/sync.dart';
 
 void main() {
   group('SyncEngine', () {
+    test('does not report an empty repository set as success', () async {
+      final engine = SyncEngine(
+        stateRepository: _FakeSyncStateRepository(),
+        clock: const _FixedClock(),
+      );
+
+      final result = await engine.sync(
+        repositories: const [],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.isSuccess, isFalse);
+      expect(result.repositoriesProcessed, 0);
+      expect(result.errors.single.operation, 'availability');
+    });
+
+    test(
+      'refuses local development identity before repository access',
+      () async {
+        final repository = _FakeSyncableRepository();
+        final engine = SyncEngine(
+          stateRepository: _FakeSyncStateRepository(),
+          clock: const _FixedClock(),
+        );
+
+        final result = await engine.sync(
+          repositories: [repository],
+          appVersion: '1.0.0',
+          userId: 'dev-user',
+        );
+
+        expect(result.isSuccess, isFalse);
+        expect(result.errors.single.operation, 'identity');
+        expect(repository.pullCalls, 0);
+      },
+    );
+
+    test('requires an authenticated user', () async {
+      final engine = SyncEngine(
+        stateRepository: _FakeSyncStateRepository(),
+        clock: const _FixedClock(),
+      );
+
+      final result = await engine.sync(
+        repositories: const [],
+        appVersion: '1.0.0',
+        userId: null,
+      );
+
+      expect(result.isSuccess, isFalse);
+      expect(result.errors.single.operation, 'availability');
+    });
+
     test('SyncManager shares one in-flight sync without a loop', () async {
       final gate = Completer<void>();
       final repository = _FakeSyncableRepository(pullGate: gate);
