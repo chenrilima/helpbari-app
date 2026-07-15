@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 enum AppEnvironment { dev, staging, prod }
 
 abstract final class Environment {
@@ -17,6 +19,7 @@ abstract final class Environment {
     'ENV',
     defaultValue: 'dev',
   );
+  static const _allowDevAuth = bool.fromEnvironment('ALLOW_DEV_AUTH');
 
   static AppEnvironment get configuredEnvironment {
     return switch (environmentName.toLowerCase()) {
@@ -31,6 +34,10 @@ abstract final class Environment {
   static bool get isStaging => current == AppEnvironment.staging;
 
   static bool get isProd => current == AppEnvironment.prod;
+
+  /// Local authentication is an opt-in development tool and is never
+  /// available in a distributable release build.
+  static bool get allowDevAuth => isDev && _allowDevAuth && !kReleaseMode;
 
   static String get name => current.name;
 

@@ -1,6 +1,15 @@
 import 'sync_result.dart';
 
-enum SyncPhase { idle, syncing, success, failure }
+enum SyncPhase {
+  idle,
+  unavailableNoUser,
+  unavailableNoRemoteClient,
+  skippedNoRepositories,
+  syncing,
+  success,
+  partialFailure,
+  failure,
+}
 
 class SyncState {
   const SyncState({

@@ -54,13 +54,17 @@ class AuthViewModel extends Notifier<AuthState> {
     state = const AuthLoading();
 
     final result = await _useCases.signInWithEmailAndPassword(
-      email: email,
+      email: email.trim().toLowerCase(),
       password: password,
     );
 
     switch (result) {
       case Success(:final data):
-        state = AuthAuthenticated(data);
+        state = _hasValidSession(data.id)
+            ? AuthAuthenticated(data)
+            : const AuthFailure(
+                'Não foi possível restaurar uma sessão válida.',
+              );
       case Failure(:final exception):
         state = AuthFailure(exception.message);
     }
@@ -73,13 +77,15 @@ class AuthViewModel extends Notifier<AuthState> {
     state = const AuthLoading();
 
     final result = await _useCases.signUpWithEmailAndPassword(
-      email: email,
+      email: email.trim().toLowerCase(),
       password: password,
     );
 
     switch (result) {
       case Success(:final data):
-        state = AuthAuthenticated(data);
+        state = _hasValidSession(data.id)
+            ? AuthAuthenticated(data)
+            : const AuthEmailConfirmationRequired();
       case Failure(:final exception):
         state = AuthFailure(exception.message);
     }
@@ -135,5 +141,10 @@ class AuthViewModel extends Notifier<AuthState> {
       case Failure(:final exception):
         state = AuthFailure(exception.message);
     }
+  }
+
+  bool _hasValidSession(String userId) {
+    final repository = ref.read(authRepositoryProvider);
+    return repository.hasSession && repository.currentUser?.id == userId;
   }
 }

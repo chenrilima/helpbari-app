@@ -38,7 +38,34 @@ class SyncEngine {
     final conflicts = <SyncConflict>[];
     final errors = <SyncError>[];
 
-    for (final repository in repositories) {
+    if (userId == null || userId.isEmpty) {
+      errors.add(
+        const SyncError(
+          repositoryKey: 'sync',
+          message: 'Sincronização indisponível sem usuário autenticado.',
+          operation: 'availability',
+        ),
+      );
+    } else if (userId == 'dev-user' || userId == 'anonymous') {
+      errors.add(
+        const SyncError(
+          repositoryKey: 'sync',
+          message: 'Identidade local de desenvolvimento não pode sincronizar.',
+          operation: 'identity',
+        ),
+      );
+    } else if (repositories.isEmpty) {
+      errors.add(
+        const SyncError(
+          repositoryKey: 'sync',
+          message: 'Nenhum repositório de sincronização está disponível.',
+          operation: 'availability',
+        ),
+      );
+    }
+
+    for (final repository
+        in errors.isEmpty ? repositories : const <SyncableRepository>[]) {
       repositoriesProcessed++;
       final updatedAfter = repository is RepositorySyncCursor
           ? await (repository as RepositorySyncCursor).getLastPullAt()

@@ -22,6 +22,10 @@ final class AuthUnauthenticated extends AuthState {
   const AuthUnauthenticated();
 }
 
+final class AuthEmailConfirmationRequired extends AuthState {
+  const AuthEmailConfirmationRequired();
+}
+
 final class AuthPasswordRecoverySent extends AuthState {
   const AuthPasswordRecoverySent(this.email);
 
