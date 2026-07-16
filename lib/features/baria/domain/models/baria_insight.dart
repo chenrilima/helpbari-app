@@ -1,51 +1,59 @@
+enum BariaInsightPriority { critical, high, medium, low }
+
+enum BariaInsightCategory {
+  health,
+  water,
+  weight,
+  nutrition,
+  vitamins,
+  medications,
+  appointments,
+  academy,
+  reports,
+  general,
+}
+
+enum BariaInsightActionType { route, article, faq, glossary, none }
+
+class BariaInsightAction {
+  const BariaInsightAction({
+    required this.type,
+    required this.label,
+    this.destination,
+  });
+
+  const BariaInsightAction.none()
+    : type = BariaInsightActionType.none,
+      label = '',
+      destination = null;
+
+  final BariaInsightActionType type;
+  final String label;
+  final String? destination;
+}
+
 class BariaInsight {
   const BariaInsight({
     required this.id,
     required this.title,
-    required this.message,
+    required String message,
     required this.createdAt,
+    this.priority = BariaInsightPriority.low,
+    this.category = BariaInsightCategory.general,
+    this.action = const BariaInsightAction.none(),
+    this.source = 'HelpBari',
     this.healthScoreImprovement,
-  });
+  }) : description = message;
 
   final String id;
   final String title;
-  final String message;
+  final String description;
+  final BariaInsightPriority priority;
+  final BariaInsightCategory category;
+  final BariaInsightAction action;
+  final String source;
   final DateTime createdAt;
   final double? healthScoreImprovement;
 
-  BariaInsight copyWith({
-    String? id,
-    String? title,
-    String? message,
-    DateTime? createdAt,
-    double? healthScoreImprovement,
-  }) {
-    return BariaInsight(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      message: message ?? this.message,
-      createdAt: createdAt ?? this.createdAt,
-      healthScoreImprovement:
-          healthScoreImprovement ?? this.healthScoreImprovement,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is BariaInsight &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          title == other.title &&
-          message == other.message &&
-          createdAt == other.createdAt &&
-          healthScoreImprovement == other.healthScoreImprovement;
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      title.hashCode ^
-      message.hashCode ^
-      createdAt.hashCode ^
-      healthScoreImprovement.hashCode;
+  String get message => description;
 }

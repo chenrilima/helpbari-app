@@ -5,6 +5,7 @@ import '../../../../core/sync/sync.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
+import '../../../academy/presentation/providers/academy_providers.dart';
 import '../../application/baria_service.dart';
 import '../../data/repositories/contextual_baria_repository.dart';
 import '../../domain/repositories/baria_repository.dart';
@@ -18,6 +19,7 @@ final bariaServiceProvider = Provider<BariaService>((ref) {
     clock: ref.watch(clockServiceProvider),
     syncState: () => ref.read(syncManagerProvider),
     userId: userId,
+    knowledge: ref.watch(knowledgeUseCasesProvider),
   );
 });
 

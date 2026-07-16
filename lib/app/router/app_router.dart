@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' show GlobalKey, NavigatorState;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:helpbari/features/meals/presentation/pages/meals_page.dart';
@@ -30,7 +31,6 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
 import '../../features/profile/presentation/pages/complete_profile_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
-import '../../features/profile/presentation/guards/profile_guard.dart';
 import '../../features/profile/presentation/providers/profile_view_model_provider.dart';
 import '../../features/progress/presentation/pages/progress_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
@@ -38,7 +38,6 @@ import '../../features/privacy/presentation/pages/privacy_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../core/supabase/session/session_manager_provider.dart';
 import '../../core/services/service_providers.dart';
-import '../../features/auth/presentation/guards/auth_guard.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/reset_password_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
@@ -54,8 +53,10 @@ import '../../features/weight/presentation/pages/register_weight_page.dart';
 import '../../features/weight/presentation/pages/weight_page.dart';
 import '../../features/weight/domain/entities/entities.dart' show WeightRecord;
 import 'app_routes.dart';
+import 'app_redirect_resolver.dart';
 import 'notification_navigation.dart';
-import 'onboarding_guard.dart';
+
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final refreshListenable = _GoRouterRefreshStream(
@@ -83,31 +84,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   }
 
   final router = GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.splash,
     refreshListenable: refreshListenable,
     redirect: (context, state) {
       final location = state.uri.path;
       final onboardingState = ref.read(onboardingViewModelProvider);
       final session = ref.read(authSessionProvider);
-      final onboardingRedirect = OnboardingGuard.redirect(
+      return AppRedirectResolver.resolve(
         location: location,
         session: session,
-        state: onboardingState,
-      );
-      if (onboardingRedirect != null) return onboardingRedirect;
-
-      final authRedirect = AuthGuard.redirect(
-        location: location,
+        onboardingState: onboardingState,
         authState: ref.read(authViewModelProvider),
+        profileState: ref.read(profileViewModelProvider),
       );
-      if (authRedirect != null) return authRedirect;
-      if (session != null) {
-        return ProfileGuard.redirect(
-          location: location,
-          state: ref.read(profileViewModelProvider),
-        );
-      }
-      return null;
     },
     routes: [
       GoRoute(

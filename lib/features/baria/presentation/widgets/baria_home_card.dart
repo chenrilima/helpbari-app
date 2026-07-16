@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
-import '../../../../app/router/app_routes.dart';
 import '../../../../design_system/design_system.dart';
 import '../../domain/models/models.dart';
+import 'baria_sheet.dart';
 
 class BariaHomeCard extends StatelessWidget {
   const BariaHomeCard({required this.insight, super.key});
@@ -17,7 +15,7 @@ class BariaHomeCard extends StatelessWidget {
       label: 'Abrir BarIA. ${insight.message}',
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        onTap: () => context.push(AppRoutes.baria),
+        onTap: () => BariaSheet.show(context),
         child: HBCard(
           child: Row(
             children: [

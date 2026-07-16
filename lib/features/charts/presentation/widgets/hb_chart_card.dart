@@ -82,12 +82,14 @@ class HBChartCard extends StatelessWidget {
       return SizedBox(
         key: const ValueKey('chart-empty'),
         height: height,
-        child: HBEmptyState(
-          title: currentSeries?.emptyTitle ?? 'Sem dados suficientes',
-          description:
-              currentSeries?.emptyDescription ??
-              'Registre novas informações para visualizar este gráfico.',
-          icon: emptyIcon,
+        child: SingleChildScrollView(
+          child: HBEmptyState(
+            title: currentSeries?.emptyTitle ?? 'Sem dados suficientes',
+            description:
+                currentSeries?.emptyDescription ??
+                'Registre novas informações para visualizar este gráfico.',
+            icon: emptyIcon,
+          ),
         ),
       );
     }

@@ -47,4 +47,38 @@ void main() {
     await tester.tap(find.text('Tentar novamente'));
     expect(retried, isTrue);
   });
+
+  testWidgets('empty adherence state does not overflow a narrow card', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(313, 500);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: HBChartCard(
+            title: 'Vitaminas',
+            period: ChartPeriod.sevenDays,
+            onPeriodChanged: (_) {},
+            series: const ChartSeries(
+              title: 'Aderência de vitaminas',
+              type: ChartType.bar,
+              unit: '%',
+              points: <ChartPoint>[],
+              emptyTitle: 'Sem registros de adesão no período',
+              emptyDescription:
+                  'Registre tomado, ignorado ou pendente para acompanhar.',
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Sem registros de adesão no período'), findsOneWidget);
+  });
 }

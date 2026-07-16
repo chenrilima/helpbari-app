@@ -3,11 +3,16 @@ import '../../application/baria_service.dart';
 import '../../../home/domain/models/models.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/baria_repository.dart';
+import '../../domain/services/baria_insight_engine.dart';
 
 class ContextualBariaRepository implements BariaRepository {
-  ContextualBariaRepository(this._service);
+  ContextualBariaRepository(
+    this._service, {
+    BariaInsightEngine engine = const BariaInsightEngine(),
+  }) : _engine = engine;
 
   final BariaContextService _service;
+  final BariaInsightEngine _engine;
   final List<BariaMessage> _conversationHistory = [];
   static const _notice =
       'Este é um indicador de acompanhamento e não substitui avaliação clínica.';
@@ -18,13 +23,17 @@ class ContextualBariaRepository implements BariaRepository {
   @override
   Future<BariaInsight> getDailyInsight() async {
     final context = await getContext();
-    final insights = _service.insights(context);
-    final message = insights.isEmpty
+    final insights = _engine.generate(context);
+    final legacyInsights = _service.insights(context);
+    final message = insights.isNotEmpty
+        ? insights.first.description
+        : legacyInsights.isEmpty
         ? 'Não há dados suficientes para gerar um insight hoje.'
-        : insights.first;
+        : legacyInsights.first;
+    if (insights.isNotEmpty) return insights.first;
     return BariaInsight(
       id: '${context.userId}:${context.generatedAt.toIso8601String()}',
-      title: insights.isEmpty
+      title: legacyInsights.isEmpty
           ? 'Continue registrando'
           : 'Resumo determinístico',
       message: '$message $_notice',

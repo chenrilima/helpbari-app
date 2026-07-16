@@ -6,12 +6,16 @@ class BariaState {
     this.conversationMessages = const [],
     this.isLoading = false,
     this.error,
+    this.context,
+    this.insights = const <BariaInsight>[],
   });
 
   final BariaInsight? dailyInsight;
   final List<BariaMessage> conversationMessages;
   final bool isLoading;
   final String? error;
+  final BariaContext? context;
+  final List<BariaInsight> insights;
 
   BariaState copyWith({
     BariaInsight? dailyInsight,
@@ -19,12 +23,16 @@ class BariaState {
     bool? isLoading,
     String? error,
     bool clearError = false,
+    BariaContext? context,
+    List<BariaInsight>? insights,
   }) {
     return BariaState(
       dailyInsight: dailyInsight ?? this.dailyInsight,
       conversationMessages: conversationMessages ?? this.conversationMessages,
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : error ?? this.error,
+      context: context ?? this.context,
+      insights: insights ?? this.insights,
     );
   }
 
