@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../design_system/design_system.dart';
 import '../../domain/models/models.dart';
@@ -91,9 +92,21 @@ class _MessageBubble extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
         ),
-        child: HBText(
-          message.content,
-          style: Theme.of(context).textTheme.bodySmall,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HBText(
+              message.content,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            if (message.action?.destination != null) ...[
+              const HBGap.sm(),
+              HBButton(
+                label: message.action!.label,
+                onPressed: () => context.push(message.action!.destination!),
+              ),
+            ],
+          ],
         ),
       ),
     );

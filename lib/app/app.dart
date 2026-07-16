@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../design_system/design_system.dart';
+import '../features/auth/presentation/providers/auth_providers.dart';
+import '../features/baria/presentation/widgets/baria_fab.dart';
+import '../features/baria/presentation/widgets/baria_sheet.dart';
 import 'bootstrap/sync_bootstrap_provider.dart';
 import 'bootstrap/notification_bootstrap_provider.dart';
 import 'router/app_router.dart';
@@ -39,11 +42,49 @@ class _HelpBariAppState extends ConsumerState<HelpBariApp>
   Widget build(BuildContext context) {
     ref.watch(syncBootstrapProvider);
     ref.watch(notificationBootstrapProvider);
+    final router = ref.watch(appRouterProvider);
+    final isAuthenticated = ref.watch(authSessionProvider) != null;
     return MaterialApp.router(
       title: 'HelpBari',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      routerConfig: ref.watch(appRouterProvider),
+      routerConfig: router,
+      builder: (context, child) => BariaGlobalOverlay(
+        child: AnimatedBuilder(
+          animation: router.routeInformationProvider,
+          builder: (context, _) {
+            final String path = router.routeInformationProvider.value.uri.path;
+            const hiddenPaths = <String>{
+              '/',
+              '/onboarding',
+              '/login',
+              '/sign-up',
+              '/reset-password',
+              '/complete-profile',
+              '/baria',
+            };
+            return Stack(
+              children: [
+                ?child,
+                if (isAuthenticated && !hiddenPaths.contains(path))
+                  Positioned(
+                    right: AppSpacing.lg,
+                    bottom: AppSpacing.lg,
+                    child: BariaFab(
+                      onPressed: () {
+                        final navigatorContext =
+                            rootNavigatorKey.currentContext;
+                        if (navigatorContext != null) {
+                          BariaSheet.show(navigatorContext);
+                        }
+                      },
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

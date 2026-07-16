@@ -44,9 +44,22 @@ class BariaViewModel extends Notifier<BariaState> {
     final request = ++_insightRequest;
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      final insight = await _bariaUseCases.getDailyInsight();
+      final values = await Future.wait<Object>([
+        _bariaUseCases.getContext(),
+        _bariaUseCases.getInsights(),
+      ]);
+      final context = values[0] as BariaContext;
+      final insights = values[1] as List<BariaInsight>;
+      final insight = insights.isEmpty
+          ? await _bariaUseCases.getDailyInsight()
+          : insights.first;
       if (request != _insightRequest) return;
-      state = state.copyWith(dailyInsight: insight, isLoading: false);
+      state = state.copyWith(
+        dailyInsight: insight,
+        context: context,
+        insights: insights,
+        isLoading: false,
+      );
     } catch (e) {
       if (request != _insightRequest) return;
       state = state.copyWith(error: e.toString(), isLoading: false);
@@ -88,6 +101,7 @@ class BariaViewModel extends Notifier<BariaState> {
         content: response,
         timestamp: _clock.now(),
         isFromUser: false,
+        action: _knowledgeAction(userMessage),
       );
       await _bariaUseCases.saveMessage(responseMsg);
 
@@ -104,5 +118,39 @@ class BariaViewModel extends Notifier<BariaState> {
 
   Future<void> handleSuggestion(String suggestion) async {
     await sendMessage(suggestion);
+  }
+
+  BariaInsightAction? _knowledgeAction(String query) {
+    final normalized = query.toLowerCase();
+    if (normalized.contains('faq') ||
+        normalized.contains('pergunta frequente')) {
+      return const BariaInsightAction(
+        type: BariaInsightActionType.faq,
+        label: 'Ver FAQ',
+        destination: '/academy/faq',
+      );
+    }
+    if (normalized.contains('glossário') || normalized.contains('glossario')) {
+      return const BariaInsightAction(
+        type: BariaInsightActionType.glossary,
+        label: 'Ver glossário',
+        destination: '/academy/glossary',
+      );
+    }
+    for (final article in state.context?.recommendedArticles ?? const []) {
+      final terms = <String>[
+        article.title,
+        article.categoryId,
+        ...article.tags,
+      ];
+      if (terms.any((term) => normalized.contains(term.toLowerCase()))) {
+        return BariaInsightAction(
+          type: BariaInsightActionType.article,
+          label: 'Ler artigo',
+          destination: '/academy/article/${Uri.encodeComponent(article.id)}',
+        );
+      }
+    }
+    return null;
   }
 }
