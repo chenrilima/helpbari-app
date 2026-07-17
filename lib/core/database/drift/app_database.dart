@@ -13,6 +13,7 @@ import 'daos/medication_dao.dart';
 import 'daos/medication_log_dao.dart';
 import 'daos/privacy_consent_dao.dart';
 import 'daos/document_intelligence_dao.dart';
+import 'daos/bioimpedance_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
@@ -39,6 +40,7 @@ import 'tables/medication_log_records.dart';
 import 'tables/medication_cutovers.dart';
 import 'tables/privacy_consent_records.dart';
 import 'tables/document_intelligence_records.dart';
+import 'tables/bioimpedance_records.dart';
 
 part 'app_database.g.dart';
 
@@ -71,6 +73,7 @@ part 'app_database.g.dart';
     DocumentInputRecords,
     DocumentProcessingRecords,
     ExtractedFieldRecords,
+    BioimpedanceRecords,
   ],
   daos: [
     WaterDao,
@@ -86,6 +89,7 @@ part 'app_database.g.dart';
     MedicationLogDao,
     PrivacyConsentDao,
     DocumentIntelligenceDao,
+    BioimpedanceDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -93,7 +97,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 13;
+  int get schemaVersion => 14;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -149,6 +153,9 @@ class AppDatabase extends _$AppDatabase {
         await migrator.createTable(documentInputRecords);
         await migrator.createTable(documentProcessingRecords);
         await migrator.createTable(extractedFieldRecords);
+      }
+      if (from < 14) {
+        await migrator.createTable(bioimpedanceRecords);
       }
     },
     beforeOpen: (details) async {

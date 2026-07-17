@@ -15,6 +15,7 @@ enum DetectedDocumentType {
   medicalReport,
   prescription,
   examRequest,
+  bioimpedanceReport,
   unknown,
 }
 

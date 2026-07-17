@@ -61,6 +61,11 @@ import '../../features/medications/data/repositories/medication_sync_repository.
 import '../../features/medications/data/repositories/medication_log_sync_repository.dart';
 import '../../features/medications/presentation/providers/medication_use_cases_provider.dart';
 import '../../features/medications/presentation/providers/medication_view_model_provider.dart';
+import '../../features/bioimpedance/data/datasources/bioimpedance_supabase_datasource.dart';
+import '../../features/bioimpedance/data/datasources/drift_bioimpedance_local_datasource.dart';
+import '../../features/bioimpedance/data/repositories/bioimpedance_sync_repository.dart';
+import '../../features/bioimpedance/presentation/providers/bioimpedance_use_cases_provider.dart';
+import '../../features/bioimpedance/presentation/providers/bioimpedance_view_model_provider.dart';
 import '../../features/document_intelligence/data/datasources/document_processing_supabase_datasource.dart';
 import '../../features/document_intelligence/data/repositories/document_processing_sync_repository.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
@@ -241,6 +246,17 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       ),
       userId: user.id,
     ),
+    BioimpedanceSyncRepository(
+      local: () async => DriftBioimpedanceLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).bioimpedanceDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: BioimpedanceSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+    ),
     DocumentProcessingSyncRepository(
       local: () async =>
           (await ref.read(appDatabaseProvider.future)).documentIntelligenceDao,
@@ -314,6 +330,8 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(vitaminAdherenceChartSeriesProvider);
     ref.invalidate(medicationUseCasesProvider);
     ref.invalidate(medicationViewModelProvider);
+    ref.invalidate(bioimpedanceUseCasesProvider);
+    ref.invalidate(bioimpedanceViewModelProvider);
     ref.invalidate(medicationAdherenceChartSeriesProvider);
     ref.invalidate(weightChartSeriesProvider);
     ref.invalidate(progressViewModelProvider);
@@ -337,6 +355,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(examViewModelProvider.notifier).loadItems(),
       ref.read(vitaminViewModelProvider.notifier).loadVitamins(),
       ref.read(medicationViewModelProvider.notifier).loadMedications(),
+      ref.read(bioimpedanceViewModelProvider.notifier).loadHistory(),
       ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),

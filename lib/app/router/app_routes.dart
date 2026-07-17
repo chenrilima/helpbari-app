@@ -26,6 +26,9 @@ abstract final class AppRoutes {
   static const meals = '/meals';
   static const registerMeal = '/mealsRegister';
   static const medicalReports = '/medical-reports';
+  static const bioimpedance = '/bioimpedance';
+  static const registerBioimpedance = '/register-bioimpedance';
+  static const bioimpedanceDetails = '/bioimpedance-details';
   static const settings = '/settings';
   static const privacy = '/privacy';
   static const academy = '/academy';

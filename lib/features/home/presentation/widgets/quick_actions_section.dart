@@ -95,6 +95,13 @@ class QuickActionsSection extends StatelessWidget {
             ),
             const HBGap.md(),
             QuickActionCard(
+              icon: AppIcons.health,
+              title: 'Bioimpedância',
+              subtitle: 'Avaliações',
+              onTap: () => _open(context, AppRoutes.bioimpedance),
+            ),
+            const HBGap.md(),
+            QuickActionCard(
               icon: Icons.menu_book_outlined,
               title: 'Academia',
               subtitle: 'Artigos e orientações',
