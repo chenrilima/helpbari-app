@@ -61,6 +61,8 @@ import '../../features/medications/data/repositories/medication_sync_repository.
 import '../../features/medications/data/repositories/medication_log_sync_repository.dart';
 import '../../features/medications/presentation/providers/medication_use_cases_provider.dart';
 import '../../features/medications/presentation/providers/medication_view_model_provider.dart';
+import '../../features/document_intelligence/data/datasources/document_processing_supabase_datasource.dart';
+import '../../features/document_intelligence/data/repositories/document_processing_sync_repository.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -235,6 +237,14 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
         userId: user.id,
       ),
       remote: MedicationLogSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+    ),
+    DocumentProcessingSyncRepository(
+      local: () async =>
+          (await ref.read(appDatabaseProvider.future)).documentIntelligenceDao,
+      remote: DocumentProcessingSupabaseDatasource(
         ref.watch(supabaseDatabaseProvider),
       ),
       userId: user.id,
