@@ -9,6 +9,8 @@ import '../../../../core/validators/app_validators.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/appointment_view_model_provider.dart';
 import '../../domain/entities/entities.dart';
+import '../../../document_intelligence/domain/entities/document_models.dart';
+import '../../../document_intelligence/presentation/widgets/document_import_card.dart';
 
 class RegisterAppointmentPage extends ConsumerStatefulWidget {
   const RegisterAppointmentPage({super.key, this.appointment});
@@ -152,6 +154,8 @@ class _RegisterAppointmentPageState
           subtitle: 'Acompanhe suas consultas médicas',
         ),
         children: [
+          DocumentImportCard(onConfirmed: _applyDocumentFields),
+          const HBGap.xl(),
           HBCard(
             child: Form(
               key: _formKey,
@@ -220,5 +224,33 @@ class _RegisterAppointmentPageState
         ],
       ),
     );
+  }
+
+  void _applyDocumentFields(
+    DetectedDocumentType type,
+    List<ExtractedField> fields,
+  ) {
+    final specialty = _field(fields, 'specialty');
+    final professional = _field(fields, 'professional');
+    final recommendations =
+        _field(fields, 'recommendations') ?? _field(fields, 'summary');
+    if (specialty != null && _titleController.text.trim().isEmpty) {
+      _titleController.text = 'Consulta - $specialty';
+    }
+    if (professional != null && _doctorController.text.trim().isEmpty) {
+      _doctorController.text = professional;
+    }
+    if (recommendations != null && _notesController.text.trim().isEmpty) {
+      _notesController.text = recommendations;
+    }
+  }
+
+  String? _field(List<ExtractedField> fields, String key) {
+    for (final field in fields) {
+      if (field.key == key) {
+        return field.confirmedValue ?? field.normalizedValue ?? field.rawValue;
+      }
+    }
+    return null;
   }
 }

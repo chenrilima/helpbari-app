@@ -12,6 +12,8 @@ import '../../domain/entities/entities.dart';
 import '../../../../core/media/media.dart';
 import '../../../../shared/widgets/media/media_widgets.dart';
 import '../../application/exam_attachment_service.dart';
+import '../../../document_intelligence/domain/entities/document_models.dart';
+import '../../../document_intelligence/presentation/widgets/document_import_card.dart';
 
 class RegisterExamPage extends ConsumerStatefulWidget {
   const RegisterExamPage({super.key, this.exam});
@@ -137,6 +139,8 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
           subtitle: 'Acompanhe seus exames realizados',
         ),
         children: [
+          DocumentImportCard(onConfirmed: _applyDocumentFields),
+          const HBGap.xl(),
           HBCard(
             child: Form(
               key: _formKey,
@@ -221,5 +225,40 @@ class _RegisterExamPageState extends ConsumerState<RegisterExamPage> {
         ],
       ),
     );
+  }
+
+  void _applyDocumentFields(
+    DetectedDocumentType type,
+    List<ExtractedField> fields,
+  ) {
+    final name =
+        _field(fields, 'exam_name') ??
+        _field(fields, 'requested_exams') ??
+        _field(fields, 'result');
+    final laboratory = _field(fields, 'laboratory');
+    if (name != null && _nameController.text.trim().isEmpty) {
+      _nameController.text = name;
+    }
+    if (laboratory != null && _laboratoryController.text.trim().isEmpty) {
+      _laboratoryController.text = laboratory;
+    }
+    final summary = fields
+        .map(
+          (field) =>
+              '${field.label}: ${field.confirmedValue ?? field.normalizedValue ?? field.rawValue}',
+        )
+        .join('\n');
+    if (summary.isNotEmpty && _notesController.text.trim().isEmpty) {
+      _notesController.text = summary;
+    }
+  }
+
+  String? _field(List<ExtractedField> fields, String key) {
+    for (final field in fields) {
+      if (field.key == key) {
+        return field.confirmedValue ?? field.normalizedValue ?? field.rawValue;
+      }
+    }
+    return null;
   }
 }

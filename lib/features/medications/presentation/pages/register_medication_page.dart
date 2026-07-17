@@ -7,6 +7,8 @@ import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/medication_view_model_provider.dart';
 import '../../domain/entities/medication.dart';
+import '../../../document_intelligence/domain/entities/document_models.dart';
+import '../../../document_intelligence/presentation/widgets/document_import_card.dart';
 
 class RegisterMedicationPage extends ConsumerStatefulWidget {
   const RegisterMedicationPage({super.key, this.medication});
@@ -119,6 +121,8 @@ class _RegisterMedicationPageState
           subtitle: 'Configure sua rotina de remédios',
         ),
         children: [
+          DocumentImportCard(onConfirmed: _applyDocumentFields),
+          const HBGap.xl(),
           HBCard(
             child: Form(
               key: _formKey,
@@ -173,5 +177,32 @@ class _RegisterMedicationPageState
         ],
       ),
     );
+  }
+
+  void _applyDocumentFields(
+    DetectedDocumentType type,
+    List<ExtractedField> fields,
+  ) {
+    final medication = _field(fields, 'medication');
+    final dosage = _field(fields, 'dosage');
+    final frequency = _field(fields, 'frequency');
+    if (medication != null && _nameController.text.trim().isEmpty) {
+      _nameController.text = medication;
+    }
+    if (dosage != null && _dosageController.text.trim().isEmpty) {
+      _dosageController.text = dosage;
+    }
+    if (frequency != null && _notesController.text.trim().isEmpty) {
+      _notesController.text = frequency;
+    }
+  }
+
+  String? _field(List<ExtractedField> fields, String key) {
+    for (final field in fields) {
+      if (field.key == key) {
+        return field.confirmedValue ?? field.normalizedValue ?? field.rawValue;
+      }
+    }
+    return null;
   }
 }

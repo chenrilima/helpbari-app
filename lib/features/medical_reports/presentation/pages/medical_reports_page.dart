@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../design_system/design_system.dart';
+import '../../../document_intelligence/domain/entities/document_models.dart';
+import '../../../document_intelligence/presentation/widgets/document_import_card.dart';
 import '../providers/medical_report_providers.dart';
 import '../widgets/report_action_bar.dart';
 import '../widgets/report_summary_card.dart';
@@ -29,6 +31,16 @@ class MedicalReportsPage extends ConsumerWidget {
         HBText(
           'Gere um PDF consolidado para acompanhamento médico.',
           style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const HBGap.xl(),
+        DocumentImportCard(
+          onConfirmed: (DetectedDocumentType type, List<ExtractedField> fields) {
+            HBSnackBar.success(
+              context,
+              message:
+                  'Documento revisado. Relatórios médicos continuam sendo gerados a partir dos dados salvos no app.',
+            );
+          },
         ),
         const HBGap.xl(),
         const ReportTemplateCard(),
