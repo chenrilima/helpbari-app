@@ -27,6 +27,12 @@ class DocumentImportCard extends ConsumerStatefulWidget {
 }
 
 class _DocumentImportCardState extends ConsumerState<DocumentImportCard> {
+  static const _documentProcessingConfig = MediaProcessingConfig(
+    compressImages: false,
+    cropImages: false,
+    cacheFiles: true,
+  );
+
   DocumentProcessing? _processing;
   List<ExtractedField> _fields = const [];
   final Map<String, TextEditingController> _controllers = {};
@@ -56,6 +62,7 @@ class _DocumentImportCardState extends ConsumerState<DocumentImportCard> {
             label: 'Documento para análise',
             emptyLabel: 'Tirar foto ou escolher arquivo',
             initialFiles: const [],
+            processingConfig: _documentProcessingConfig,
             onChanged: (files) {
               if (files.isNotEmpty) _process(files.single);
             },
@@ -84,6 +91,13 @@ class _DocumentImportCardState extends ConsumerState<DocumentImportCard> {
               'Confiança: ${_processing!.generalConfidence.confidenceLevel.name}',
             ),
             const HBGap.md(),
+            if (_fields.isEmpty) ...[
+              const HBText(
+                'Não encontramos campos legíveis para preencher automaticamente. '
+                'Tente uma foto mais aproximada, com melhor contraste, ou recorte apenas a área das medidas.',
+              ),
+              const HBGap.md(),
+            ],
             for (final field in _fields) ...[
               HBTextField(
                 controller: _controllers[field.id]!,
