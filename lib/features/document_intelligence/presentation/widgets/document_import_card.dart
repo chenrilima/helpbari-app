@@ -19,8 +19,13 @@ typedef DocumentConfirmed =
     void Function(DetectedDocumentType type, List<ExtractedField> fields);
 
 class DocumentImportCard extends ConsumerStatefulWidget {
-  const DocumentImportCard({required this.onConfirmed, super.key});
+  const DocumentImportCard({
+    required this.onConfirmed,
+    this.onProcessingConfirmed,
+    super.key,
+  });
   final DocumentConfirmed onConfirmed;
+  final ValueChanged<DocumentProcessing>? onProcessingConfirmed;
 
   @override
   ConsumerState<DocumentImportCard> createState() => _DocumentImportCardState();
@@ -239,6 +244,7 @@ class _DocumentImportCardState extends ConsumerState<DocumentImportCard> {
     );
     await repository.saveProcessing(userId, confirmedProcessing);
     await repository.replaceFields(userId, processing.id, confirmed);
+    widget.onProcessingConfirmed?.call(confirmedProcessing);
     widget.onConfirmed(processing.detectedType, confirmed);
     if (mounted) {
       HBSnackBar.success(context, message: 'Documento revisado e confirmado.');
@@ -251,6 +257,7 @@ class _DocumentImportCardState extends ConsumerState<DocumentImportCard> {
     DetectedDocumentType.medicalReport => 'relatório',
     DetectedDocumentType.prescription => 'receita',
     DetectedDocumentType.examRequest => 'pedido de exames',
+    DetectedDocumentType.bioimpedanceReport => 'laudo de bioimpedância',
     DetectedDocumentType.unknown => 'documento não reconhecido',
   };
 }

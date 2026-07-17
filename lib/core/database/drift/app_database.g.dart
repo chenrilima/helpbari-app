@@ -18127,6 +18127,2732 @@ class ExtractedFieldRecordsCompanion
   }
 }
 
+class $BioimpedanceRecordsTable extends BioimpedanceRecords
+    with TableInfo<$BioimpedanceRecordsTable, BioimpedanceRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BioimpedanceRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _measuredAtMeta = const VerificationMeta(
+    'measuredAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> measuredAt = GeneratedColumn<DateTime>(
+    'measured_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _weightKgMeta = const VerificationMeta(
+    'weightKg',
+  );
+  @override
+  late final GeneratedColumn<double> weightKg = GeneratedColumn<double>(
+    'weight_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _muscleMassKgMeta = const VerificationMeta(
+    'muscleMassKg',
+  );
+  @override
+  late final GeneratedColumn<double> muscleMassKg = GeneratedColumn<double>(
+    'muscle_mass_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bodyFatMassKgMeta = const VerificationMeta(
+    'bodyFatMassKg',
+  );
+  @override
+  late final GeneratedColumn<double> bodyFatMassKg = GeneratedColumn<double>(
+    'body_fat_mass_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bodyWaterPercentageMeta =
+      const VerificationMeta('bodyWaterPercentage');
+  @override
+  late final GeneratedColumn<double> bodyWaterPercentage =
+      GeneratedColumn<double>(
+        'body_water_percentage',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _bodyFatPercentageMeta = const VerificationMeta(
+    'bodyFatPercentage',
+  );
+  @override
+  late final GeneratedColumn<double> bodyFatPercentage =
+      GeneratedColumn<double>(
+        'body_fat_percentage',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _skeletalMuscleMassKgMeta =
+      const VerificationMeta('skeletalMuscleMassKg');
+  @override
+  late final GeneratedColumn<double> skeletalMuscleMassKg =
+      GeneratedColumn<double>(
+        'skeletal_muscle_mass_kg',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _leanBodyMassKgMeta = const VerificationMeta(
+    'leanBodyMassKg',
+  );
+  @override
+  late final GeneratedColumn<double> leanBodyMassKg = GeneratedColumn<double>(
+    'lean_body_mass_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _fatFreeMassKgMeta = const VerificationMeta(
+    'fatFreeMassKg',
+  );
+  @override
+  late final GeneratedColumn<double> fatFreeMassKg = GeneratedColumn<double>(
+    'fat_free_mass_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _visceralFatLevelMeta = const VerificationMeta(
+    'visceralFatLevel',
+  );
+  @override
+  late final GeneratedColumn<double> visceralFatLevel = GeneratedColumn<double>(
+    'visceral_fat_level',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _visceralFatAreaCm2Meta =
+      const VerificationMeta('visceralFatAreaCm2');
+  @override
+  late final GeneratedColumn<double> visceralFatAreaCm2 =
+      GeneratedColumn<double>(
+        'visceral_fat_area_cm2',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _subcutaneousFatPercentageMeta =
+      const VerificationMeta('subcutaneousFatPercentage');
+  @override
+  late final GeneratedColumn<double> subcutaneousFatPercentage =
+      GeneratedColumn<double>(
+        'subcutaneous_fat_percentage',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _proteinPercentageMeta = const VerificationMeta(
+    'proteinPercentage',
+  );
+  @override
+  late final GeneratedColumn<double> proteinPercentage =
+      GeneratedColumn<double>(
+        'protein_percentage',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _mineralMassKgMeta = const VerificationMeta(
+    'mineralMassKg',
+  );
+  @override
+  late final GeneratedColumn<double> mineralMassKg = GeneratedColumn<double>(
+    'mineral_mass_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _boneMassKgMeta = const VerificationMeta(
+    'boneMassKg',
+  );
+  @override
+  late final GeneratedColumn<double> boneMassKg = GeneratedColumn<double>(
+    'bone_mass_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bmiMeta = const VerificationMeta('bmi');
+  @override
+  late final GeneratedColumn<double> bmi = GeneratedColumn<double>(
+    'bmi',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _basalMetabolicRateKcalMeta =
+      const VerificationMeta('basalMetabolicRateKcal');
+  @override
+  late final GeneratedColumn<double> basalMetabolicRateKcal =
+      GeneratedColumn<double>(
+        'basal_metabolic_rate_kcal',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _metabolicAgeMeta = const VerificationMeta(
+    'metabolicAge',
+  );
+  @override
+  late final GeneratedColumn<int> metabolicAge = GeneratedColumn<int>(
+    'metabolic_age',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _waistHipRatioMeta = const VerificationMeta(
+    'waistHipRatio',
+  );
+  @override
+  late final GeneratedColumn<double> waistHipRatio = GeneratedColumn<double>(
+    'waist_hip_ratio',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _waistCircumferenceCmMeta =
+      const VerificationMeta('waistCircumferenceCm');
+  @override
+  late final GeneratedColumn<double> waistCircumferenceCm =
+      GeneratedColumn<double>(
+        'waist_circumference_cm',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _hipCircumferenceCmMeta =
+      const VerificationMeta('hipCircumferenceCm');
+  @override
+  late final GeneratedColumn<double> hipCircumferenceCm =
+      GeneratedColumn<double>(
+        'hip_circumference_cm',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _bodyCellMassKgMeta = const VerificationMeta(
+    'bodyCellMassKg',
+  );
+  @override
+  late final GeneratedColumn<double> bodyCellMassKg = GeneratedColumn<double>(
+    'body_cell_mass_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _intracellularWaterLitersMeta =
+      const VerificationMeta('intracellularWaterLiters');
+  @override
+  late final GeneratedColumn<double> intracellularWaterLiters =
+      GeneratedColumn<double>(
+        'intracellular_water_liters',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _extracellularWaterLitersMeta =
+      const VerificationMeta('extracellularWaterLiters');
+  @override
+  late final GeneratedColumn<double> extracellularWaterLiters =
+      GeneratedColumn<double>(
+        'extracellular_water_liters',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _totalBodyWaterLitersMeta =
+      const VerificationMeta('totalBodyWaterLiters');
+  @override
+  late final GeneratedColumn<double> totalBodyWaterLiters =
+      GeneratedColumn<double>(
+        'total_body_water_liters',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _phaseAngleDegreesMeta = const VerificationMeta(
+    'phaseAngleDegrees',
+  );
+  @override
+  late final GeneratedColumn<double> phaseAngleDegrees =
+      GeneratedColumn<double>(
+        'phase_angle_degrees',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _bodyScoreMeta = const VerificationMeta(
+    'bodyScore',
+  );
+  @override
+  late final GeneratedColumn<double> bodyScore = GeneratedColumn<double>(
+    'body_score',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recommendedWeightKgMeta =
+      const VerificationMeta('recommendedWeightKg');
+  @override
+  late final GeneratedColumn<double> recommendedWeightKg =
+      GeneratedColumn<double>(
+        'recommended_weight_kg',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _weightControlKgMeta = const VerificationMeta(
+    'weightControlKg',
+  );
+  @override
+  late final GeneratedColumn<double> weightControlKg = GeneratedColumn<double>(
+    'weight_control_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _fatControlKgMeta = const VerificationMeta(
+    'fatControlKg',
+  );
+  @override
+  late final GeneratedColumn<double> fatControlKg = GeneratedColumn<double>(
+    'fat_control_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _muscleControlKgMeta = const VerificationMeta(
+    'muscleControlKg',
+  );
+  @override
+  late final GeneratedColumn<double> muscleControlKg = GeneratedColumn<double>(
+    'muscle_control_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _deviceNameMeta = const VerificationMeta(
+    'deviceName',
+  );
+  @override
+  late final GeneratedColumn<String> deviceName = GeneratedColumn<String>(
+    'device_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _clinicNameMeta = const VerificationMeta(
+    'clinicName',
+  );
+  @override
+  late final GeneratedColumn<String> clinicName = GeneratedColumn<String>(
+    'clinic_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _professionalNameMeta = const VerificationMeta(
+    'professionalName',
+  );
+  @override
+  late final GeneratedColumn<String> professionalName = GeneratedColumn<String>(
+    'professional_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceDocumentIdMeta = const VerificationMeta(
+    'sourceDocumentId',
+  );
+  @override
+  late final GeneratedColumn<String> sourceDocumentId = GeneratedColumn<String>(
+    'source_document_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _additionalMetricsJsonMeta =
+      const VerificationMeta('additionalMetricsJson');
+  @override
+  late final GeneratedColumn<String> additionalMetricsJson =
+      GeneratedColumn<String>(
+        'additional_metrics_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('{}'),
+      );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    measuredAt,
+    weightKg,
+    muscleMassKg,
+    bodyFatMassKg,
+    bodyWaterPercentage,
+    bodyFatPercentage,
+    skeletalMuscleMassKg,
+    leanBodyMassKg,
+    fatFreeMassKg,
+    visceralFatLevel,
+    visceralFatAreaCm2,
+    subcutaneousFatPercentage,
+    proteinPercentage,
+    mineralMassKg,
+    boneMassKg,
+    bmi,
+    basalMetabolicRateKcal,
+    metabolicAge,
+    waistHipRatio,
+    waistCircumferenceCm,
+    hipCircumferenceCm,
+    bodyCellMassKg,
+    intracellularWaterLiters,
+    extracellularWaterLiters,
+    totalBodyWaterLiters,
+    phaseAngleDegrees,
+    bodyScore,
+    recommendedWeightKg,
+    weightControlKg,
+    fatControlKg,
+    muscleControlKg,
+    deviceName,
+    clinicName,
+    professionalName,
+    notes,
+    sourceDocumentId,
+    source,
+    additionalMetricsJson,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'bioimpedance_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BioimpedanceRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('measured_at')) {
+      context.handle(
+        _measuredAtMeta,
+        measuredAt.isAcceptableOrUnknown(data['measured_at']!, _measuredAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_measuredAtMeta);
+    }
+    if (data.containsKey('weight_kg')) {
+      context.handle(
+        _weightKgMeta,
+        weightKg.isAcceptableOrUnknown(data['weight_kg']!, _weightKgMeta),
+      );
+    }
+    if (data.containsKey('muscle_mass_kg')) {
+      context.handle(
+        _muscleMassKgMeta,
+        muscleMassKg.isAcceptableOrUnknown(
+          data['muscle_mass_kg']!,
+          _muscleMassKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('body_fat_mass_kg')) {
+      context.handle(
+        _bodyFatMassKgMeta,
+        bodyFatMassKg.isAcceptableOrUnknown(
+          data['body_fat_mass_kg']!,
+          _bodyFatMassKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('body_water_percentage')) {
+      context.handle(
+        _bodyWaterPercentageMeta,
+        bodyWaterPercentage.isAcceptableOrUnknown(
+          data['body_water_percentage']!,
+          _bodyWaterPercentageMeta,
+        ),
+      );
+    }
+    if (data.containsKey('body_fat_percentage')) {
+      context.handle(
+        _bodyFatPercentageMeta,
+        bodyFatPercentage.isAcceptableOrUnknown(
+          data['body_fat_percentage']!,
+          _bodyFatPercentageMeta,
+        ),
+      );
+    }
+    if (data.containsKey('skeletal_muscle_mass_kg')) {
+      context.handle(
+        _skeletalMuscleMassKgMeta,
+        skeletalMuscleMassKg.isAcceptableOrUnknown(
+          data['skeletal_muscle_mass_kg']!,
+          _skeletalMuscleMassKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('lean_body_mass_kg')) {
+      context.handle(
+        _leanBodyMassKgMeta,
+        leanBodyMassKg.isAcceptableOrUnknown(
+          data['lean_body_mass_kg']!,
+          _leanBodyMassKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('fat_free_mass_kg')) {
+      context.handle(
+        _fatFreeMassKgMeta,
+        fatFreeMassKg.isAcceptableOrUnknown(
+          data['fat_free_mass_kg']!,
+          _fatFreeMassKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visceral_fat_level')) {
+      context.handle(
+        _visceralFatLevelMeta,
+        visceralFatLevel.isAcceptableOrUnknown(
+          data['visceral_fat_level']!,
+          _visceralFatLevelMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visceral_fat_area_cm2')) {
+      context.handle(
+        _visceralFatAreaCm2Meta,
+        visceralFatAreaCm2.isAcceptableOrUnknown(
+          data['visceral_fat_area_cm2']!,
+          _visceralFatAreaCm2Meta,
+        ),
+      );
+    }
+    if (data.containsKey('subcutaneous_fat_percentage')) {
+      context.handle(
+        _subcutaneousFatPercentageMeta,
+        subcutaneousFatPercentage.isAcceptableOrUnknown(
+          data['subcutaneous_fat_percentage']!,
+          _subcutaneousFatPercentageMeta,
+        ),
+      );
+    }
+    if (data.containsKey('protein_percentage')) {
+      context.handle(
+        _proteinPercentageMeta,
+        proteinPercentage.isAcceptableOrUnknown(
+          data['protein_percentage']!,
+          _proteinPercentageMeta,
+        ),
+      );
+    }
+    if (data.containsKey('mineral_mass_kg')) {
+      context.handle(
+        _mineralMassKgMeta,
+        mineralMassKg.isAcceptableOrUnknown(
+          data['mineral_mass_kg']!,
+          _mineralMassKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('bone_mass_kg')) {
+      context.handle(
+        _boneMassKgMeta,
+        boneMassKg.isAcceptableOrUnknown(
+          data['bone_mass_kg']!,
+          _boneMassKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('bmi')) {
+      context.handle(
+        _bmiMeta,
+        bmi.isAcceptableOrUnknown(data['bmi']!, _bmiMeta),
+      );
+    }
+    if (data.containsKey('basal_metabolic_rate_kcal')) {
+      context.handle(
+        _basalMetabolicRateKcalMeta,
+        basalMetabolicRateKcal.isAcceptableOrUnknown(
+          data['basal_metabolic_rate_kcal']!,
+          _basalMetabolicRateKcalMeta,
+        ),
+      );
+    }
+    if (data.containsKey('metabolic_age')) {
+      context.handle(
+        _metabolicAgeMeta,
+        metabolicAge.isAcceptableOrUnknown(
+          data['metabolic_age']!,
+          _metabolicAgeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('waist_hip_ratio')) {
+      context.handle(
+        _waistHipRatioMeta,
+        waistHipRatio.isAcceptableOrUnknown(
+          data['waist_hip_ratio']!,
+          _waistHipRatioMeta,
+        ),
+      );
+    }
+    if (data.containsKey('waist_circumference_cm')) {
+      context.handle(
+        _waistCircumferenceCmMeta,
+        waistCircumferenceCm.isAcceptableOrUnknown(
+          data['waist_circumference_cm']!,
+          _waistCircumferenceCmMeta,
+        ),
+      );
+    }
+    if (data.containsKey('hip_circumference_cm')) {
+      context.handle(
+        _hipCircumferenceCmMeta,
+        hipCircumferenceCm.isAcceptableOrUnknown(
+          data['hip_circumference_cm']!,
+          _hipCircumferenceCmMeta,
+        ),
+      );
+    }
+    if (data.containsKey('body_cell_mass_kg')) {
+      context.handle(
+        _bodyCellMassKgMeta,
+        bodyCellMassKg.isAcceptableOrUnknown(
+          data['body_cell_mass_kg']!,
+          _bodyCellMassKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('intracellular_water_liters')) {
+      context.handle(
+        _intracellularWaterLitersMeta,
+        intracellularWaterLiters.isAcceptableOrUnknown(
+          data['intracellular_water_liters']!,
+          _intracellularWaterLitersMeta,
+        ),
+      );
+    }
+    if (data.containsKey('extracellular_water_liters')) {
+      context.handle(
+        _extracellularWaterLitersMeta,
+        extracellularWaterLiters.isAcceptableOrUnknown(
+          data['extracellular_water_liters']!,
+          _extracellularWaterLitersMeta,
+        ),
+      );
+    }
+    if (data.containsKey('total_body_water_liters')) {
+      context.handle(
+        _totalBodyWaterLitersMeta,
+        totalBodyWaterLiters.isAcceptableOrUnknown(
+          data['total_body_water_liters']!,
+          _totalBodyWaterLitersMeta,
+        ),
+      );
+    }
+    if (data.containsKey('phase_angle_degrees')) {
+      context.handle(
+        _phaseAngleDegreesMeta,
+        phaseAngleDegrees.isAcceptableOrUnknown(
+          data['phase_angle_degrees']!,
+          _phaseAngleDegreesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('body_score')) {
+      context.handle(
+        _bodyScoreMeta,
+        bodyScore.isAcceptableOrUnknown(data['body_score']!, _bodyScoreMeta),
+      );
+    }
+    if (data.containsKey('recommended_weight_kg')) {
+      context.handle(
+        _recommendedWeightKgMeta,
+        recommendedWeightKg.isAcceptableOrUnknown(
+          data['recommended_weight_kg']!,
+          _recommendedWeightKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('weight_control_kg')) {
+      context.handle(
+        _weightControlKgMeta,
+        weightControlKg.isAcceptableOrUnknown(
+          data['weight_control_kg']!,
+          _weightControlKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('fat_control_kg')) {
+      context.handle(
+        _fatControlKgMeta,
+        fatControlKg.isAcceptableOrUnknown(
+          data['fat_control_kg']!,
+          _fatControlKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('muscle_control_kg')) {
+      context.handle(
+        _muscleControlKgMeta,
+        muscleControlKg.isAcceptableOrUnknown(
+          data['muscle_control_kg']!,
+          _muscleControlKgMeta,
+        ),
+      );
+    }
+    if (data.containsKey('device_name')) {
+      context.handle(
+        _deviceNameMeta,
+        deviceName.isAcceptableOrUnknown(data['device_name']!, _deviceNameMeta),
+      );
+    }
+    if (data.containsKey('clinic_name')) {
+      context.handle(
+        _clinicNameMeta,
+        clinicName.isAcceptableOrUnknown(data['clinic_name']!, _clinicNameMeta),
+      );
+    }
+    if (data.containsKey('professional_name')) {
+      context.handle(
+        _professionalNameMeta,
+        professionalName.isAcceptableOrUnknown(
+          data['professional_name']!,
+          _professionalNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('source_document_id')) {
+      context.handle(
+        _sourceDocumentIdMeta,
+        sourceDocumentId.isAcceptableOrUnknown(
+          data['source_document_id']!,
+          _sourceDocumentIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('additional_metrics_json')) {
+      context.handle(
+        _additionalMetricsJsonMeta,
+        additionalMetricsJson.isAcceptableOrUnknown(
+          data['additional_metrics_json']!,
+          _additionalMetricsJsonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  BioimpedanceRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BioimpedanceRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      measuredAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}measured_at'],
+      )!,
+      weightKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}weight_kg'],
+      ),
+      muscleMassKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}muscle_mass_kg'],
+      ),
+      bodyFatMassKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}body_fat_mass_kg'],
+      ),
+      bodyWaterPercentage: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}body_water_percentage'],
+      ),
+      bodyFatPercentage: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}body_fat_percentage'],
+      ),
+      skeletalMuscleMassKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}skeletal_muscle_mass_kg'],
+      ),
+      leanBodyMassKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lean_body_mass_kg'],
+      ),
+      fatFreeMassKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}fat_free_mass_kg'],
+      ),
+      visceralFatLevel: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}visceral_fat_level'],
+      ),
+      visceralFatAreaCm2: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}visceral_fat_area_cm2'],
+      ),
+      subcutaneousFatPercentage: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}subcutaneous_fat_percentage'],
+      ),
+      proteinPercentage: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}protein_percentage'],
+      ),
+      mineralMassKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}mineral_mass_kg'],
+      ),
+      boneMassKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}bone_mass_kg'],
+      ),
+      bmi: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}bmi'],
+      ),
+      basalMetabolicRateKcal: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}basal_metabolic_rate_kcal'],
+      ),
+      metabolicAge: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}metabolic_age'],
+      ),
+      waistHipRatio: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}waist_hip_ratio'],
+      ),
+      waistCircumferenceCm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}waist_circumference_cm'],
+      ),
+      hipCircumferenceCm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}hip_circumference_cm'],
+      ),
+      bodyCellMassKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}body_cell_mass_kg'],
+      ),
+      intracellularWaterLiters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}intracellular_water_liters'],
+      ),
+      extracellularWaterLiters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}extracellular_water_liters'],
+      ),
+      totalBodyWaterLiters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}total_body_water_liters'],
+      ),
+      phaseAngleDegrees: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}phase_angle_degrees'],
+      ),
+      bodyScore: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}body_score'],
+      ),
+      recommendedWeightKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}recommended_weight_kg'],
+      ),
+      weightControlKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}weight_control_kg'],
+      ),
+      fatControlKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}fat_control_kg'],
+      ),
+      muscleControlKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}muscle_control_kg'],
+      ),
+      deviceName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_name'],
+      ),
+      clinicName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}clinic_name'],
+      ),
+      professionalName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}professional_name'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      sourceDocumentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_document_id'],
+      ),
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      additionalMetricsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}additional_metrics_json'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $BioimpedanceRecordsTable createAlias(String alias) {
+    return $BioimpedanceRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class BioimpedanceRecord extends DataClass
+    implements Insertable<BioimpedanceRecord> {
+  final String id;
+  final String userId;
+  final DateTime measuredAt;
+  final double? weightKg;
+  final double? muscleMassKg;
+  final double? bodyFatMassKg;
+  final double? bodyWaterPercentage;
+  final double? bodyFatPercentage;
+  final double? skeletalMuscleMassKg;
+  final double? leanBodyMassKg;
+  final double? fatFreeMassKg;
+  final double? visceralFatLevel;
+  final double? visceralFatAreaCm2;
+  final double? subcutaneousFatPercentage;
+  final double? proteinPercentage;
+  final double? mineralMassKg;
+  final double? boneMassKg;
+  final double? bmi;
+  final double? basalMetabolicRateKcal;
+  final int? metabolicAge;
+  final double? waistHipRatio;
+  final double? waistCircumferenceCm;
+  final double? hipCircumferenceCm;
+  final double? bodyCellMassKg;
+  final double? intracellularWaterLiters;
+  final double? extracellularWaterLiters;
+  final double? totalBodyWaterLiters;
+  final double? phaseAngleDegrees;
+  final double? bodyScore;
+  final double? recommendedWeightKg;
+  final double? weightControlKg;
+  final double? fatControlKg;
+  final double? muscleControlKg;
+  final String? deviceName;
+  final String? clinicName;
+  final String? professionalName;
+  final String? notes;
+  final String? sourceDocumentId;
+  final String source;
+  final String additionalMetricsJson;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const BioimpedanceRecord({
+    required this.id,
+    required this.userId,
+    required this.measuredAt,
+    this.weightKg,
+    this.muscleMassKg,
+    this.bodyFatMassKg,
+    this.bodyWaterPercentage,
+    this.bodyFatPercentage,
+    this.skeletalMuscleMassKg,
+    this.leanBodyMassKg,
+    this.fatFreeMassKg,
+    this.visceralFatLevel,
+    this.visceralFatAreaCm2,
+    this.subcutaneousFatPercentage,
+    this.proteinPercentage,
+    this.mineralMassKg,
+    this.boneMassKg,
+    this.bmi,
+    this.basalMetabolicRateKcal,
+    this.metabolicAge,
+    this.waistHipRatio,
+    this.waistCircumferenceCm,
+    this.hipCircumferenceCm,
+    this.bodyCellMassKg,
+    this.intracellularWaterLiters,
+    this.extracellularWaterLiters,
+    this.totalBodyWaterLiters,
+    this.phaseAngleDegrees,
+    this.bodyScore,
+    this.recommendedWeightKg,
+    this.weightControlKg,
+    this.fatControlKg,
+    this.muscleControlKg,
+    this.deviceName,
+    this.clinicName,
+    this.professionalName,
+    this.notes,
+    this.sourceDocumentId,
+    required this.source,
+    required this.additionalMetricsJson,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['measured_at'] = Variable<DateTime>(measuredAt);
+    if (!nullToAbsent || weightKg != null) {
+      map['weight_kg'] = Variable<double>(weightKg);
+    }
+    if (!nullToAbsent || muscleMassKg != null) {
+      map['muscle_mass_kg'] = Variable<double>(muscleMassKg);
+    }
+    if (!nullToAbsent || bodyFatMassKg != null) {
+      map['body_fat_mass_kg'] = Variable<double>(bodyFatMassKg);
+    }
+    if (!nullToAbsent || bodyWaterPercentage != null) {
+      map['body_water_percentage'] = Variable<double>(bodyWaterPercentage);
+    }
+    if (!nullToAbsent || bodyFatPercentage != null) {
+      map['body_fat_percentage'] = Variable<double>(bodyFatPercentage);
+    }
+    if (!nullToAbsent || skeletalMuscleMassKg != null) {
+      map['skeletal_muscle_mass_kg'] = Variable<double>(skeletalMuscleMassKg);
+    }
+    if (!nullToAbsent || leanBodyMassKg != null) {
+      map['lean_body_mass_kg'] = Variable<double>(leanBodyMassKg);
+    }
+    if (!nullToAbsent || fatFreeMassKg != null) {
+      map['fat_free_mass_kg'] = Variable<double>(fatFreeMassKg);
+    }
+    if (!nullToAbsent || visceralFatLevel != null) {
+      map['visceral_fat_level'] = Variable<double>(visceralFatLevel);
+    }
+    if (!nullToAbsent || visceralFatAreaCm2 != null) {
+      map['visceral_fat_area_cm2'] = Variable<double>(visceralFatAreaCm2);
+    }
+    if (!nullToAbsent || subcutaneousFatPercentage != null) {
+      map['subcutaneous_fat_percentage'] = Variable<double>(
+        subcutaneousFatPercentage,
+      );
+    }
+    if (!nullToAbsent || proteinPercentage != null) {
+      map['protein_percentage'] = Variable<double>(proteinPercentage);
+    }
+    if (!nullToAbsent || mineralMassKg != null) {
+      map['mineral_mass_kg'] = Variable<double>(mineralMassKg);
+    }
+    if (!nullToAbsent || boneMassKg != null) {
+      map['bone_mass_kg'] = Variable<double>(boneMassKg);
+    }
+    if (!nullToAbsent || bmi != null) {
+      map['bmi'] = Variable<double>(bmi);
+    }
+    if (!nullToAbsent || basalMetabolicRateKcal != null) {
+      map['basal_metabolic_rate_kcal'] = Variable<double>(
+        basalMetabolicRateKcal,
+      );
+    }
+    if (!nullToAbsent || metabolicAge != null) {
+      map['metabolic_age'] = Variable<int>(metabolicAge);
+    }
+    if (!nullToAbsent || waistHipRatio != null) {
+      map['waist_hip_ratio'] = Variable<double>(waistHipRatio);
+    }
+    if (!nullToAbsent || waistCircumferenceCm != null) {
+      map['waist_circumference_cm'] = Variable<double>(waistCircumferenceCm);
+    }
+    if (!nullToAbsent || hipCircumferenceCm != null) {
+      map['hip_circumference_cm'] = Variable<double>(hipCircumferenceCm);
+    }
+    if (!nullToAbsent || bodyCellMassKg != null) {
+      map['body_cell_mass_kg'] = Variable<double>(bodyCellMassKg);
+    }
+    if (!nullToAbsent || intracellularWaterLiters != null) {
+      map['intracellular_water_liters'] = Variable<double>(
+        intracellularWaterLiters,
+      );
+    }
+    if (!nullToAbsent || extracellularWaterLiters != null) {
+      map['extracellular_water_liters'] = Variable<double>(
+        extracellularWaterLiters,
+      );
+    }
+    if (!nullToAbsent || totalBodyWaterLiters != null) {
+      map['total_body_water_liters'] = Variable<double>(totalBodyWaterLiters);
+    }
+    if (!nullToAbsent || phaseAngleDegrees != null) {
+      map['phase_angle_degrees'] = Variable<double>(phaseAngleDegrees);
+    }
+    if (!nullToAbsent || bodyScore != null) {
+      map['body_score'] = Variable<double>(bodyScore);
+    }
+    if (!nullToAbsent || recommendedWeightKg != null) {
+      map['recommended_weight_kg'] = Variable<double>(recommendedWeightKg);
+    }
+    if (!nullToAbsent || weightControlKg != null) {
+      map['weight_control_kg'] = Variable<double>(weightControlKg);
+    }
+    if (!nullToAbsent || fatControlKg != null) {
+      map['fat_control_kg'] = Variable<double>(fatControlKg);
+    }
+    if (!nullToAbsent || muscleControlKg != null) {
+      map['muscle_control_kg'] = Variable<double>(muscleControlKg);
+    }
+    if (!nullToAbsent || deviceName != null) {
+      map['device_name'] = Variable<String>(deviceName);
+    }
+    if (!nullToAbsent || clinicName != null) {
+      map['clinic_name'] = Variable<String>(clinicName);
+    }
+    if (!nullToAbsent || professionalName != null) {
+      map['professional_name'] = Variable<String>(professionalName);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || sourceDocumentId != null) {
+      map['source_document_id'] = Variable<String>(sourceDocumentId);
+    }
+    map['source'] = Variable<String>(source);
+    map['additional_metrics_json'] = Variable<String>(additionalMetricsJson);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  BioimpedanceRecordsCompanion toCompanion(bool nullToAbsent) {
+    return BioimpedanceRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      measuredAt: Value(measuredAt),
+      weightKg: weightKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(weightKg),
+      muscleMassKg: muscleMassKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(muscleMassKg),
+      bodyFatMassKg: bodyFatMassKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyFatMassKg),
+      bodyWaterPercentage: bodyWaterPercentage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyWaterPercentage),
+      bodyFatPercentage: bodyFatPercentage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyFatPercentage),
+      skeletalMuscleMassKg: skeletalMuscleMassKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(skeletalMuscleMassKg),
+      leanBodyMassKg: leanBodyMassKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(leanBodyMassKg),
+      fatFreeMassKg: fatFreeMassKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fatFreeMassKg),
+      visceralFatLevel: visceralFatLevel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(visceralFatLevel),
+      visceralFatAreaCm2: visceralFatAreaCm2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(visceralFatAreaCm2),
+      subcutaneousFatPercentage:
+          subcutaneousFatPercentage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subcutaneousFatPercentage),
+      proteinPercentage: proteinPercentage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(proteinPercentage),
+      mineralMassKg: mineralMassKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mineralMassKg),
+      boneMassKg: boneMassKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(boneMassKg),
+      bmi: bmi == null && nullToAbsent ? const Value.absent() : Value(bmi),
+      basalMetabolicRateKcal: basalMetabolicRateKcal == null && nullToAbsent
+          ? const Value.absent()
+          : Value(basalMetabolicRateKcal),
+      metabolicAge: metabolicAge == null && nullToAbsent
+          ? const Value.absent()
+          : Value(metabolicAge),
+      waistHipRatio: waistHipRatio == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waistHipRatio),
+      waistCircumferenceCm: waistCircumferenceCm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waistCircumferenceCm),
+      hipCircumferenceCm: hipCircumferenceCm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hipCircumferenceCm),
+      bodyCellMassKg: bodyCellMassKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyCellMassKg),
+      intracellularWaterLiters: intracellularWaterLiters == null && nullToAbsent
+          ? const Value.absent()
+          : Value(intracellularWaterLiters),
+      extracellularWaterLiters: extracellularWaterLiters == null && nullToAbsent
+          ? const Value.absent()
+          : Value(extracellularWaterLiters),
+      totalBodyWaterLiters: totalBodyWaterLiters == null && nullToAbsent
+          ? const Value.absent()
+          : Value(totalBodyWaterLiters),
+      phaseAngleDegrees: phaseAngleDegrees == null && nullToAbsent
+          ? const Value.absent()
+          : Value(phaseAngleDegrees),
+      bodyScore: bodyScore == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyScore),
+      recommendedWeightKg: recommendedWeightKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(recommendedWeightKg),
+      weightControlKg: weightControlKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(weightControlKg),
+      fatControlKg: fatControlKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fatControlKg),
+      muscleControlKg: muscleControlKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(muscleControlKg),
+      deviceName: deviceName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deviceName),
+      clinicName: clinicName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clinicName),
+      professionalName: professionalName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(professionalName),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      sourceDocumentId: sourceDocumentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceDocumentId),
+      source: Value(source),
+      additionalMetricsJson: Value(additionalMetricsJson),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory BioimpedanceRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BioimpedanceRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      measuredAt: serializer.fromJson<DateTime>(json['measuredAt']),
+      weightKg: serializer.fromJson<double?>(json['weightKg']),
+      muscleMassKg: serializer.fromJson<double?>(json['muscleMassKg']),
+      bodyFatMassKg: serializer.fromJson<double?>(json['bodyFatMassKg']),
+      bodyWaterPercentage: serializer.fromJson<double?>(
+        json['bodyWaterPercentage'],
+      ),
+      bodyFatPercentage: serializer.fromJson<double?>(
+        json['bodyFatPercentage'],
+      ),
+      skeletalMuscleMassKg: serializer.fromJson<double?>(
+        json['skeletalMuscleMassKg'],
+      ),
+      leanBodyMassKg: serializer.fromJson<double?>(json['leanBodyMassKg']),
+      fatFreeMassKg: serializer.fromJson<double?>(json['fatFreeMassKg']),
+      visceralFatLevel: serializer.fromJson<double?>(json['visceralFatLevel']),
+      visceralFatAreaCm2: serializer.fromJson<double?>(
+        json['visceralFatAreaCm2'],
+      ),
+      subcutaneousFatPercentage: serializer.fromJson<double?>(
+        json['subcutaneousFatPercentage'],
+      ),
+      proteinPercentage: serializer.fromJson<double?>(
+        json['proteinPercentage'],
+      ),
+      mineralMassKg: serializer.fromJson<double?>(json['mineralMassKg']),
+      boneMassKg: serializer.fromJson<double?>(json['boneMassKg']),
+      bmi: serializer.fromJson<double?>(json['bmi']),
+      basalMetabolicRateKcal: serializer.fromJson<double?>(
+        json['basalMetabolicRateKcal'],
+      ),
+      metabolicAge: serializer.fromJson<int?>(json['metabolicAge']),
+      waistHipRatio: serializer.fromJson<double?>(json['waistHipRatio']),
+      waistCircumferenceCm: serializer.fromJson<double?>(
+        json['waistCircumferenceCm'],
+      ),
+      hipCircumferenceCm: serializer.fromJson<double?>(
+        json['hipCircumferenceCm'],
+      ),
+      bodyCellMassKg: serializer.fromJson<double?>(json['bodyCellMassKg']),
+      intracellularWaterLiters: serializer.fromJson<double?>(
+        json['intracellularWaterLiters'],
+      ),
+      extracellularWaterLiters: serializer.fromJson<double?>(
+        json['extracellularWaterLiters'],
+      ),
+      totalBodyWaterLiters: serializer.fromJson<double?>(
+        json['totalBodyWaterLiters'],
+      ),
+      phaseAngleDegrees: serializer.fromJson<double?>(
+        json['phaseAngleDegrees'],
+      ),
+      bodyScore: serializer.fromJson<double?>(json['bodyScore']),
+      recommendedWeightKg: serializer.fromJson<double?>(
+        json['recommendedWeightKg'],
+      ),
+      weightControlKg: serializer.fromJson<double?>(json['weightControlKg']),
+      fatControlKg: serializer.fromJson<double?>(json['fatControlKg']),
+      muscleControlKg: serializer.fromJson<double?>(json['muscleControlKg']),
+      deviceName: serializer.fromJson<String?>(json['deviceName']),
+      clinicName: serializer.fromJson<String?>(json['clinicName']),
+      professionalName: serializer.fromJson<String?>(json['professionalName']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      sourceDocumentId: serializer.fromJson<String?>(json['sourceDocumentId']),
+      source: serializer.fromJson<String>(json['source']),
+      additionalMetricsJson: serializer.fromJson<String>(
+        json['additionalMetricsJson'],
+      ),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'measuredAt': serializer.toJson<DateTime>(measuredAt),
+      'weightKg': serializer.toJson<double?>(weightKg),
+      'muscleMassKg': serializer.toJson<double?>(muscleMassKg),
+      'bodyFatMassKg': serializer.toJson<double?>(bodyFatMassKg),
+      'bodyWaterPercentage': serializer.toJson<double?>(bodyWaterPercentage),
+      'bodyFatPercentage': serializer.toJson<double?>(bodyFatPercentage),
+      'skeletalMuscleMassKg': serializer.toJson<double?>(skeletalMuscleMassKg),
+      'leanBodyMassKg': serializer.toJson<double?>(leanBodyMassKg),
+      'fatFreeMassKg': serializer.toJson<double?>(fatFreeMassKg),
+      'visceralFatLevel': serializer.toJson<double?>(visceralFatLevel),
+      'visceralFatAreaCm2': serializer.toJson<double?>(visceralFatAreaCm2),
+      'subcutaneousFatPercentage': serializer.toJson<double?>(
+        subcutaneousFatPercentage,
+      ),
+      'proteinPercentage': serializer.toJson<double?>(proteinPercentage),
+      'mineralMassKg': serializer.toJson<double?>(mineralMassKg),
+      'boneMassKg': serializer.toJson<double?>(boneMassKg),
+      'bmi': serializer.toJson<double?>(bmi),
+      'basalMetabolicRateKcal': serializer.toJson<double?>(
+        basalMetabolicRateKcal,
+      ),
+      'metabolicAge': serializer.toJson<int?>(metabolicAge),
+      'waistHipRatio': serializer.toJson<double?>(waistHipRatio),
+      'waistCircumferenceCm': serializer.toJson<double?>(waistCircumferenceCm),
+      'hipCircumferenceCm': serializer.toJson<double?>(hipCircumferenceCm),
+      'bodyCellMassKg': serializer.toJson<double?>(bodyCellMassKg),
+      'intracellularWaterLiters': serializer.toJson<double?>(
+        intracellularWaterLiters,
+      ),
+      'extracellularWaterLiters': serializer.toJson<double?>(
+        extracellularWaterLiters,
+      ),
+      'totalBodyWaterLiters': serializer.toJson<double?>(totalBodyWaterLiters),
+      'phaseAngleDegrees': serializer.toJson<double?>(phaseAngleDegrees),
+      'bodyScore': serializer.toJson<double?>(bodyScore),
+      'recommendedWeightKg': serializer.toJson<double?>(recommendedWeightKg),
+      'weightControlKg': serializer.toJson<double?>(weightControlKg),
+      'fatControlKg': serializer.toJson<double?>(fatControlKg),
+      'muscleControlKg': serializer.toJson<double?>(muscleControlKg),
+      'deviceName': serializer.toJson<String?>(deviceName),
+      'clinicName': serializer.toJson<String?>(clinicName),
+      'professionalName': serializer.toJson<String?>(professionalName),
+      'notes': serializer.toJson<String?>(notes),
+      'sourceDocumentId': serializer.toJson<String?>(sourceDocumentId),
+      'source': serializer.toJson<String>(source),
+      'additionalMetricsJson': serializer.toJson<String>(additionalMetricsJson),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  BioimpedanceRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? measuredAt,
+    Value<double?> weightKg = const Value.absent(),
+    Value<double?> muscleMassKg = const Value.absent(),
+    Value<double?> bodyFatMassKg = const Value.absent(),
+    Value<double?> bodyWaterPercentage = const Value.absent(),
+    Value<double?> bodyFatPercentage = const Value.absent(),
+    Value<double?> skeletalMuscleMassKg = const Value.absent(),
+    Value<double?> leanBodyMassKg = const Value.absent(),
+    Value<double?> fatFreeMassKg = const Value.absent(),
+    Value<double?> visceralFatLevel = const Value.absent(),
+    Value<double?> visceralFatAreaCm2 = const Value.absent(),
+    Value<double?> subcutaneousFatPercentage = const Value.absent(),
+    Value<double?> proteinPercentage = const Value.absent(),
+    Value<double?> mineralMassKg = const Value.absent(),
+    Value<double?> boneMassKg = const Value.absent(),
+    Value<double?> bmi = const Value.absent(),
+    Value<double?> basalMetabolicRateKcal = const Value.absent(),
+    Value<int?> metabolicAge = const Value.absent(),
+    Value<double?> waistHipRatio = const Value.absent(),
+    Value<double?> waistCircumferenceCm = const Value.absent(),
+    Value<double?> hipCircumferenceCm = const Value.absent(),
+    Value<double?> bodyCellMassKg = const Value.absent(),
+    Value<double?> intracellularWaterLiters = const Value.absent(),
+    Value<double?> extracellularWaterLiters = const Value.absent(),
+    Value<double?> totalBodyWaterLiters = const Value.absent(),
+    Value<double?> phaseAngleDegrees = const Value.absent(),
+    Value<double?> bodyScore = const Value.absent(),
+    Value<double?> recommendedWeightKg = const Value.absent(),
+    Value<double?> weightControlKg = const Value.absent(),
+    Value<double?> fatControlKg = const Value.absent(),
+    Value<double?> muscleControlKg = const Value.absent(),
+    Value<String?> deviceName = const Value.absent(),
+    Value<String?> clinicName = const Value.absent(),
+    Value<String?> professionalName = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    Value<String?> sourceDocumentId = const Value.absent(),
+    String? source,
+    String? additionalMetricsJson,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => BioimpedanceRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    measuredAt: measuredAt ?? this.measuredAt,
+    weightKg: weightKg.present ? weightKg.value : this.weightKg,
+    muscleMassKg: muscleMassKg.present ? muscleMassKg.value : this.muscleMassKg,
+    bodyFatMassKg: bodyFatMassKg.present
+        ? bodyFatMassKg.value
+        : this.bodyFatMassKg,
+    bodyWaterPercentage: bodyWaterPercentage.present
+        ? bodyWaterPercentage.value
+        : this.bodyWaterPercentage,
+    bodyFatPercentage: bodyFatPercentage.present
+        ? bodyFatPercentage.value
+        : this.bodyFatPercentage,
+    skeletalMuscleMassKg: skeletalMuscleMassKg.present
+        ? skeletalMuscleMassKg.value
+        : this.skeletalMuscleMassKg,
+    leanBodyMassKg: leanBodyMassKg.present
+        ? leanBodyMassKg.value
+        : this.leanBodyMassKg,
+    fatFreeMassKg: fatFreeMassKg.present
+        ? fatFreeMassKg.value
+        : this.fatFreeMassKg,
+    visceralFatLevel: visceralFatLevel.present
+        ? visceralFatLevel.value
+        : this.visceralFatLevel,
+    visceralFatAreaCm2: visceralFatAreaCm2.present
+        ? visceralFatAreaCm2.value
+        : this.visceralFatAreaCm2,
+    subcutaneousFatPercentage: subcutaneousFatPercentage.present
+        ? subcutaneousFatPercentage.value
+        : this.subcutaneousFatPercentage,
+    proteinPercentage: proteinPercentage.present
+        ? proteinPercentage.value
+        : this.proteinPercentage,
+    mineralMassKg: mineralMassKg.present
+        ? mineralMassKg.value
+        : this.mineralMassKg,
+    boneMassKg: boneMassKg.present ? boneMassKg.value : this.boneMassKg,
+    bmi: bmi.present ? bmi.value : this.bmi,
+    basalMetabolicRateKcal: basalMetabolicRateKcal.present
+        ? basalMetabolicRateKcal.value
+        : this.basalMetabolicRateKcal,
+    metabolicAge: metabolicAge.present ? metabolicAge.value : this.metabolicAge,
+    waistHipRatio: waistHipRatio.present
+        ? waistHipRatio.value
+        : this.waistHipRatio,
+    waistCircumferenceCm: waistCircumferenceCm.present
+        ? waistCircumferenceCm.value
+        : this.waistCircumferenceCm,
+    hipCircumferenceCm: hipCircumferenceCm.present
+        ? hipCircumferenceCm.value
+        : this.hipCircumferenceCm,
+    bodyCellMassKg: bodyCellMassKg.present
+        ? bodyCellMassKg.value
+        : this.bodyCellMassKg,
+    intracellularWaterLiters: intracellularWaterLiters.present
+        ? intracellularWaterLiters.value
+        : this.intracellularWaterLiters,
+    extracellularWaterLiters: extracellularWaterLiters.present
+        ? extracellularWaterLiters.value
+        : this.extracellularWaterLiters,
+    totalBodyWaterLiters: totalBodyWaterLiters.present
+        ? totalBodyWaterLiters.value
+        : this.totalBodyWaterLiters,
+    phaseAngleDegrees: phaseAngleDegrees.present
+        ? phaseAngleDegrees.value
+        : this.phaseAngleDegrees,
+    bodyScore: bodyScore.present ? bodyScore.value : this.bodyScore,
+    recommendedWeightKg: recommendedWeightKg.present
+        ? recommendedWeightKg.value
+        : this.recommendedWeightKg,
+    weightControlKg: weightControlKg.present
+        ? weightControlKg.value
+        : this.weightControlKg,
+    fatControlKg: fatControlKg.present ? fatControlKg.value : this.fatControlKg,
+    muscleControlKg: muscleControlKg.present
+        ? muscleControlKg.value
+        : this.muscleControlKg,
+    deviceName: deviceName.present ? deviceName.value : this.deviceName,
+    clinicName: clinicName.present ? clinicName.value : this.clinicName,
+    professionalName: professionalName.present
+        ? professionalName.value
+        : this.professionalName,
+    notes: notes.present ? notes.value : this.notes,
+    sourceDocumentId: sourceDocumentId.present
+        ? sourceDocumentId.value
+        : this.sourceDocumentId,
+    source: source ?? this.source,
+    additionalMetricsJson: additionalMetricsJson ?? this.additionalMetricsJson,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  BioimpedanceRecord copyWithCompanion(BioimpedanceRecordsCompanion data) {
+    return BioimpedanceRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      measuredAt: data.measuredAt.present
+          ? data.measuredAt.value
+          : this.measuredAt,
+      weightKg: data.weightKg.present ? data.weightKg.value : this.weightKg,
+      muscleMassKg: data.muscleMassKg.present
+          ? data.muscleMassKg.value
+          : this.muscleMassKg,
+      bodyFatMassKg: data.bodyFatMassKg.present
+          ? data.bodyFatMassKg.value
+          : this.bodyFatMassKg,
+      bodyWaterPercentage: data.bodyWaterPercentage.present
+          ? data.bodyWaterPercentage.value
+          : this.bodyWaterPercentage,
+      bodyFatPercentage: data.bodyFatPercentage.present
+          ? data.bodyFatPercentage.value
+          : this.bodyFatPercentage,
+      skeletalMuscleMassKg: data.skeletalMuscleMassKg.present
+          ? data.skeletalMuscleMassKg.value
+          : this.skeletalMuscleMassKg,
+      leanBodyMassKg: data.leanBodyMassKg.present
+          ? data.leanBodyMassKg.value
+          : this.leanBodyMassKg,
+      fatFreeMassKg: data.fatFreeMassKg.present
+          ? data.fatFreeMassKg.value
+          : this.fatFreeMassKg,
+      visceralFatLevel: data.visceralFatLevel.present
+          ? data.visceralFatLevel.value
+          : this.visceralFatLevel,
+      visceralFatAreaCm2: data.visceralFatAreaCm2.present
+          ? data.visceralFatAreaCm2.value
+          : this.visceralFatAreaCm2,
+      subcutaneousFatPercentage: data.subcutaneousFatPercentage.present
+          ? data.subcutaneousFatPercentage.value
+          : this.subcutaneousFatPercentage,
+      proteinPercentage: data.proteinPercentage.present
+          ? data.proteinPercentage.value
+          : this.proteinPercentage,
+      mineralMassKg: data.mineralMassKg.present
+          ? data.mineralMassKg.value
+          : this.mineralMassKg,
+      boneMassKg: data.boneMassKg.present
+          ? data.boneMassKg.value
+          : this.boneMassKg,
+      bmi: data.bmi.present ? data.bmi.value : this.bmi,
+      basalMetabolicRateKcal: data.basalMetabolicRateKcal.present
+          ? data.basalMetabolicRateKcal.value
+          : this.basalMetabolicRateKcal,
+      metabolicAge: data.metabolicAge.present
+          ? data.metabolicAge.value
+          : this.metabolicAge,
+      waistHipRatio: data.waistHipRatio.present
+          ? data.waistHipRatio.value
+          : this.waistHipRatio,
+      waistCircumferenceCm: data.waistCircumferenceCm.present
+          ? data.waistCircumferenceCm.value
+          : this.waistCircumferenceCm,
+      hipCircumferenceCm: data.hipCircumferenceCm.present
+          ? data.hipCircumferenceCm.value
+          : this.hipCircumferenceCm,
+      bodyCellMassKg: data.bodyCellMassKg.present
+          ? data.bodyCellMassKg.value
+          : this.bodyCellMassKg,
+      intracellularWaterLiters: data.intracellularWaterLiters.present
+          ? data.intracellularWaterLiters.value
+          : this.intracellularWaterLiters,
+      extracellularWaterLiters: data.extracellularWaterLiters.present
+          ? data.extracellularWaterLiters.value
+          : this.extracellularWaterLiters,
+      totalBodyWaterLiters: data.totalBodyWaterLiters.present
+          ? data.totalBodyWaterLiters.value
+          : this.totalBodyWaterLiters,
+      phaseAngleDegrees: data.phaseAngleDegrees.present
+          ? data.phaseAngleDegrees.value
+          : this.phaseAngleDegrees,
+      bodyScore: data.bodyScore.present ? data.bodyScore.value : this.bodyScore,
+      recommendedWeightKg: data.recommendedWeightKg.present
+          ? data.recommendedWeightKg.value
+          : this.recommendedWeightKg,
+      weightControlKg: data.weightControlKg.present
+          ? data.weightControlKg.value
+          : this.weightControlKg,
+      fatControlKg: data.fatControlKg.present
+          ? data.fatControlKg.value
+          : this.fatControlKg,
+      muscleControlKg: data.muscleControlKg.present
+          ? data.muscleControlKg.value
+          : this.muscleControlKg,
+      deviceName: data.deviceName.present
+          ? data.deviceName.value
+          : this.deviceName,
+      clinicName: data.clinicName.present
+          ? data.clinicName.value
+          : this.clinicName,
+      professionalName: data.professionalName.present
+          ? data.professionalName.value
+          : this.professionalName,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      sourceDocumentId: data.sourceDocumentId.present
+          ? data.sourceDocumentId.value
+          : this.sourceDocumentId,
+      source: data.source.present ? data.source.value : this.source,
+      additionalMetricsJson: data.additionalMetricsJson.present
+          ? data.additionalMetricsJson.value
+          : this.additionalMetricsJson,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BioimpedanceRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('measuredAt: $measuredAt, ')
+          ..write('weightKg: $weightKg, ')
+          ..write('muscleMassKg: $muscleMassKg, ')
+          ..write('bodyFatMassKg: $bodyFatMassKg, ')
+          ..write('bodyWaterPercentage: $bodyWaterPercentage, ')
+          ..write('bodyFatPercentage: $bodyFatPercentage, ')
+          ..write('skeletalMuscleMassKg: $skeletalMuscleMassKg, ')
+          ..write('leanBodyMassKg: $leanBodyMassKg, ')
+          ..write('fatFreeMassKg: $fatFreeMassKg, ')
+          ..write('visceralFatLevel: $visceralFatLevel, ')
+          ..write('visceralFatAreaCm2: $visceralFatAreaCm2, ')
+          ..write('subcutaneousFatPercentage: $subcutaneousFatPercentage, ')
+          ..write('proteinPercentage: $proteinPercentage, ')
+          ..write('mineralMassKg: $mineralMassKg, ')
+          ..write('boneMassKg: $boneMassKg, ')
+          ..write('bmi: $bmi, ')
+          ..write('basalMetabolicRateKcal: $basalMetabolicRateKcal, ')
+          ..write('metabolicAge: $metabolicAge, ')
+          ..write('waistHipRatio: $waistHipRatio, ')
+          ..write('waistCircumferenceCm: $waistCircumferenceCm, ')
+          ..write('hipCircumferenceCm: $hipCircumferenceCm, ')
+          ..write('bodyCellMassKg: $bodyCellMassKg, ')
+          ..write('intracellularWaterLiters: $intracellularWaterLiters, ')
+          ..write('extracellularWaterLiters: $extracellularWaterLiters, ')
+          ..write('totalBodyWaterLiters: $totalBodyWaterLiters, ')
+          ..write('phaseAngleDegrees: $phaseAngleDegrees, ')
+          ..write('bodyScore: $bodyScore, ')
+          ..write('recommendedWeightKg: $recommendedWeightKg, ')
+          ..write('weightControlKg: $weightControlKg, ')
+          ..write('fatControlKg: $fatControlKg, ')
+          ..write('muscleControlKg: $muscleControlKg, ')
+          ..write('deviceName: $deviceName, ')
+          ..write('clinicName: $clinicName, ')
+          ..write('professionalName: $professionalName, ')
+          ..write('notes: $notes, ')
+          ..write('sourceDocumentId: $sourceDocumentId, ')
+          ..write('source: $source, ')
+          ..write('additionalMetricsJson: $additionalMetricsJson, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    userId,
+    measuredAt,
+    weightKg,
+    muscleMassKg,
+    bodyFatMassKg,
+    bodyWaterPercentage,
+    bodyFatPercentage,
+    skeletalMuscleMassKg,
+    leanBodyMassKg,
+    fatFreeMassKg,
+    visceralFatLevel,
+    visceralFatAreaCm2,
+    subcutaneousFatPercentage,
+    proteinPercentage,
+    mineralMassKg,
+    boneMassKg,
+    bmi,
+    basalMetabolicRateKcal,
+    metabolicAge,
+    waistHipRatio,
+    waistCircumferenceCm,
+    hipCircumferenceCm,
+    bodyCellMassKg,
+    intracellularWaterLiters,
+    extracellularWaterLiters,
+    totalBodyWaterLiters,
+    phaseAngleDegrees,
+    bodyScore,
+    recommendedWeightKg,
+    weightControlKg,
+    fatControlKg,
+    muscleControlKg,
+    deviceName,
+    clinicName,
+    professionalName,
+    notes,
+    sourceDocumentId,
+    source,
+    additionalMetricsJson,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BioimpedanceRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.measuredAt == this.measuredAt &&
+          other.weightKg == this.weightKg &&
+          other.muscleMassKg == this.muscleMassKg &&
+          other.bodyFatMassKg == this.bodyFatMassKg &&
+          other.bodyWaterPercentage == this.bodyWaterPercentage &&
+          other.bodyFatPercentage == this.bodyFatPercentage &&
+          other.skeletalMuscleMassKg == this.skeletalMuscleMassKg &&
+          other.leanBodyMassKg == this.leanBodyMassKg &&
+          other.fatFreeMassKg == this.fatFreeMassKg &&
+          other.visceralFatLevel == this.visceralFatLevel &&
+          other.visceralFatAreaCm2 == this.visceralFatAreaCm2 &&
+          other.subcutaneousFatPercentage == this.subcutaneousFatPercentage &&
+          other.proteinPercentage == this.proteinPercentage &&
+          other.mineralMassKg == this.mineralMassKg &&
+          other.boneMassKg == this.boneMassKg &&
+          other.bmi == this.bmi &&
+          other.basalMetabolicRateKcal == this.basalMetabolicRateKcal &&
+          other.metabolicAge == this.metabolicAge &&
+          other.waistHipRatio == this.waistHipRatio &&
+          other.waistCircumferenceCm == this.waistCircumferenceCm &&
+          other.hipCircumferenceCm == this.hipCircumferenceCm &&
+          other.bodyCellMassKg == this.bodyCellMassKg &&
+          other.intracellularWaterLiters == this.intracellularWaterLiters &&
+          other.extracellularWaterLiters == this.extracellularWaterLiters &&
+          other.totalBodyWaterLiters == this.totalBodyWaterLiters &&
+          other.phaseAngleDegrees == this.phaseAngleDegrees &&
+          other.bodyScore == this.bodyScore &&
+          other.recommendedWeightKg == this.recommendedWeightKg &&
+          other.weightControlKg == this.weightControlKg &&
+          other.fatControlKg == this.fatControlKg &&
+          other.muscleControlKg == this.muscleControlKg &&
+          other.deviceName == this.deviceName &&
+          other.clinicName == this.clinicName &&
+          other.professionalName == this.professionalName &&
+          other.notes == this.notes &&
+          other.sourceDocumentId == this.sourceDocumentId &&
+          other.source == this.source &&
+          other.additionalMetricsJson == this.additionalMetricsJson &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class BioimpedanceRecordsCompanion extends UpdateCompanion<BioimpedanceRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> measuredAt;
+  final Value<double?> weightKg;
+  final Value<double?> muscleMassKg;
+  final Value<double?> bodyFatMassKg;
+  final Value<double?> bodyWaterPercentage;
+  final Value<double?> bodyFatPercentage;
+  final Value<double?> skeletalMuscleMassKg;
+  final Value<double?> leanBodyMassKg;
+  final Value<double?> fatFreeMassKg;
+  final Value<double?> visceralFatLevel;
+  final Value<double?> visceralFatAreaCm2;
+  final Value<double?> subcutaneousFatPercentage;
+  final Value<double?> proteinPercentage;
+  final Value<double?> mineralMassKg;
+  final Value<double?> boneMassKg;
+  final Value<double?> bmi;
+  final Value<double?> basalMetabolicRateKcal;
+  final Value<int?> metabolicAge;
+  final Value<double?> waistHipRatio;
+  final Value<double?> waistCircumferenceCm;
+  final Value<double?> hipCircumferenceCm;
+  final Value<double?> bodyCellMassKg;
+  final Value<double?> intracellularWaterLiters;
+  final Value<double?> extracellularWaterLiters;
+  final Value<double?> totalBodyWaterLiters;
+  final Value<double?> phaseAngleDegrees;
+  final Value<double?> bodyScore;
+  final Value<double?> recommendedWeightKg;
+  final Value<double?> weightControlKg;
+  final Value<double?> fatControlKg;
+  final Value<double?> muscleControlKg;
+  final Value<String?> deviceName;
+  final Value<String?> clinicName;
+  final Value<String?> professionalName;
+  final Value<String?> notes;
+  final Value<String?> sourceDocumentId;
+  final Value<String> source;
+  final Value<String> additionalMetricsJson;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const BioimpedanceRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.measuredAt = const Value.absent(),
+    this.weightKg = const Value.absent(),
+    this.muscleMassKg = const Value.absent(),
+    this.bodyFatMassKg = const Value.absent(),
+    this.bodyWaterPercentage = const Value.absent(),
+    this.bodyFatPercentage = const Value.absent(),
+    this.skeletalMuscleMassKg = const Value.absent(),
+    this.leanBodyMassKg = const Value.absent(),
+    this.fatFreeMassKg = const Value.absent(),
+    this.visceralFatLevel = const Value.absent(),
+    this.visceralFatAreaCm2 = const Value.absent(),
+    this.subcutaneousFatPercentage = const Value.absent(),
+    this.proteinPercentage = const Value.absent(),
+    this.mineralMassKg = const Value.absent(),
+    this.boneMassKg = const Value.absent(),
+    this.bmi = const Value.absent(),
+    this.basalMetabolicRateKcal = const Value.absent(),
+    this.metabolicAge = const Value.absent(),
+    this.waistHipRatio = const Value.absent(),
+    this.waistCircumferenceCm = const Value.absent(),
+    this.hipCircumferenceCm = const Value.absent(),
+    this.bodyCellMassKg = const Value.absent(),
+    this.intracellularWaterLiters = const Value.absent(),
+    this.extracellularWaterLiters = const Value.absent(),
+    this.totalBodyWaterLiters = const Value.absent(),
+    this.phaseAngleDegrees = const Value.absent(),
+    this.bodyScore = const Value.absent(),
+    this.recommendedWeightKg = const Value.absent(),
+    this.weightControlKg = const Value.absent(),
+    this.fatControlKg = const Value.absent(),
+    this.muscleControlKg = const Value.absent(),
+    this.deviceName = const Value.absent(),
+    this.clinicName = const Value.absent(),
+    this.professionalName = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.sourceDocumentId = const Value.absent(),
+    this.source = const Value.absent(),
+    this.additionalMetricsJson = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BioimpedanceRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime measuredAt,
+    this.weightKg = const Value.absent(),
+    this.muscleMassKg = const Value.absent(),
+    this.bodyFatMassKg = const Value.absent(),
+    this.bodyWaterPercentage = const Value.absent(),
+    this.bodyFatPercentage = const Value.absent(),
+    this.skeletalMuscleMassKg = const Value.absent(),
+    this.leanBodyMassKg = const Value.absent(),
+    this.fatFreeMassKg = const Value.absent(),
+    this.visceralFatLevel = const Value.absent(),
+    this.visceralFatAreaCm2 = const Value.absent(),
+    this.subcutaneousFatPercentage = const Value.absent(),
+    this.proteinPercentage = const Value.absent(),
+    this.mineralMassKg = const Value.absent(),
+    this.boneMassKg = const Value.absent(),
+    this.bmi = const Value.absent(),
+    this.basalMetabolicRateKcal = const Value.absent(),
+    this.metabolicAge = const Value.absent(),
+    this.waistHipRatio = const Value.absent(),
+    this.waistCircumferenceCm = const Value.absent(),
+    this.hipCircumferenceCm = const Value.absent(),
+    this.bodyCellMassKg = const Value.absent(),
+    this.intracellularWaterLiters = const Value.absent(),
+    this.extracellularWaterLiters = const Value.absent(),
+    this.totalBodyWaterLiters = const Value.absent(),
+    this.phaseAngleDegrees = const Value.absent(),
+    this.bodyScore = const Value.absent(),
+    this.recommendedWeightKg = const Value.absent(),
+    this.weightControlKg = const Value.absent(),
+    this.fatControlKg = const Value.absent(),
+    this.muscleControlKg = const Value.absent(),
+    this.deviceName = const Value.absent(),
+    this.clinicName = const Value.absent(),
+    this.professionalName = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.sourceDocumentId = const Value.absent(),
+    required String source,
+    this.additionalMetricsJson = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       measuredAt = Value(measuredAt),
+       source = Value(source),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<BioimpedanceRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? measuredAt,
+    Expression<double>? weightKg,
+    Expression<double>? muscleMassKg,
+    Expression<double>? bodyFatMassKg,
+    Expression<double>? bodyWaterPercentage,
+    Expression<double>? bodyFatPercentage,
+    Expression<double>? skeletalMuscleMassKg,
+    Expression<double>? leanBodyMassKg,
+    Expression<double>? fatFreeMassKg,
+    Expression<double>? visceralFatLevel,
+    Expression<double>? visceralFatAreaCm2,
+    Expression<double>? subcutaneousFatPercentage,
+    Expression<double>? proteinPercentage,
+    Expression<double>? mineralMassKg,
+    Expression<double>? boneMassKg,
+    Expression<double>? bmi,
+    Expression<double>? basalMetabolicRateKcal,
+    Expression<int>? metabolicAge,
+    Expression<double>? waistHipRatio,
+    Expression<double>? waistCircumferenceCm,
+    Expression<double>? hipCircumferenceCm,
+    Expression<double>? bodyCellMassKg,
+    Expression<double>? intracellularWaterLiters,
+    Expression<double>? extracellularWaterLiters,
+    Expression<double>? totalBodyWaterLiters,
+    Expression<double>? phaseAngleDegrees,
+    Expression<double>? bodyScore,
+    Expression<double>? recommendedWeightKg,
+    Expression<double>? weightControlKg,
+    Expression<double>? fatControlKg,
+    Expression<double>? muscleControlKg,
+    Expression<String>? deviceName,
+    Expression<String>? clinicName,
+    Expression<String>? professionalName,
+    Expression<String>? notes,
+    Expression<String>? sourceDocumentId,
+    Expression<String>? source,
+    Expression<String>? additionalMetricsJson,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (measuredAt != null) 'measured_at': measuredAt,
+      if (weightKg != null) 'weight_kg': weightKg,
+      if (muscleMassKg != null) 'muscle_mass_kg': muscleMassKg,
+      if (bodyFatMassKg != null) 'body_fat_mass_kg': bodyFatMassKg,
+      if (bodyWaterPercentage != null)
+        'body_water_percentage': bodyWaterPercentage,
+      if (bodyFatPercentage != null) 'body_fat_percentage': bodyFatPercentage,
+      if (skeletalMuscleMassKg != null)
+        'skeletal_muscle_mass_kg': skeletalMuscleMassKg,
+      if (leanBodyMassKg != null) 'lean_body_mass_kg': leanBodyMassKg,
+      if (fatFreeMassKg != null) 'fat_free_mass_kg': fatFreeMassKg,
+      if (visceralFatLevel != null) 'visceral_fat_level': visceralFatLevel,
+      if (visceralFatAreaCm2 != null)
+        'visceral_fat_area_cm2': visceralFatAreaCm2,
+      if (subcutaneousFatPercentage != null)
+        'subcutaneous_fat_percentage': subcutaneousFatPercentage,
+      if (proteinPercentage != null) 'protein_percentage': proteinPercentage,
+      if (mineralMassKg != null) 'mineral_mass_kg': mineralMassKg,
+      if (boneMassKg != null) 'bone_mass_kg': boneMassKg,
+      if (bmi != null) 'bmi': bmi,
+      if (basalMetabolicRateKcal != null)
+        'basal_metabolic_rate_kcal': basalMetabolicRateKcal,
+      if (metabolicAge != null) 'metabolic_age': metabolicAge,
+      if (waistHipRatio != null) 'waist_hip_ratio': waistHipRatio,
+      if (waistCircumferenceCm != null)
+        'waist_circumference_cm': waistCircumferenceCm,
+      if (hipCircumferenceCm != null)
+        'hip_circumference_cm': hipCircumferenceCm,
+      if (bodyCellMassKg != null) 'body_cell_mass_kg': bodyCellMassKg,
+      if (intracellularWaterLiters != null)
+        'intracellular_water_liters': intracellularWaterLiters,
+      if (extracellularWaterLiters != null)
+        'extracellular_water_liters': extracellularWaterLiters,
+      if (totalBodyWaterLiters != null)
+        'total_body_water_liters': totalBodyWaterLiters,
+      if (phaseAngleDegrees != null) 'phase_angle_degrees': phaseAngleDegrees,
+      if (bodyScore != null) 'body_score': bodyScore,
+      if (recommendedWeightKg != null)
+        'recommended_weight_kg': recommendedWeightKg,
+      if (weightControlKg != null) 'weight_control_kg': weightControlKg,
+      if (fatControlKg != null) 'fat_control_kg': fatControlKg,
+      if (muscleControlKg != null) 'muscle_control_kg': muscleControlKg,
+      if (deviceName != null) 'device_name': deviceName,
+      if (clinicName != null) 'clinic_name': clinicName,
+      if (professionalName != null) 'professional_name': professionalName,
+      if (notes != null) 'notes': notes,
+      if (sourceDocumentId != null) 'source_document_id': sourceDocumentId,
+      if (source != null) 'source': source,
+      if (additionalMetricsJson != null)
+        'additional_metrics_json': additionalMetricsJson,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BioimpedanceRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? measuredAt,
+    Value<double?>? weightKg,
+    Value<double?>? muscleMassKg,
+    Value<double?>? bodyFatMassKg,
+    Value<double?>? bodyWaterPercentage,
+    Value<double?>? bodyFatPercentage,
+    Value<double?>? skeletalMuscleMassKg,
+    Value<double?>? leanBodyMassKg,
+    Value<double?>? fatFreeMassKg,
+    Value<double?>? visceralFatLevel,
+    Value<double?>? visceralFatAreaCm2,
+    Value<double?>? subcutaneousFatPercentage,
+    Value<double?>? proteinPercentage,
+    Value<double?>? mineralMassKg,
+    Value<double?>? boneMassKg,
+    Value<double?>? bmi,
+    Value<double?>? basalMetabolicRateKcal,
+    Value<int?>? metabolicAge,
+    Value<double?>? waistHipRatio,
+    Value<double?>? waistCircumferenceCm,
+    Value<double?>? hipCircumferenceCm,
+    Value<double?>? bodyCellMassKg,
+    Value<double?>? intracellularWaterLiters,
+    Value<double?>? extracellularWaterLiters,
+    Value<double?>? totalBodyWaterLiters,
+    Value<double?>? phaseAngleDegrees,
+    Value<double?>? bodyScore,
+    Value<double?>? recommendedWeightKg,
+    Value<double?>? weightControlKg,
+    Value<double?>? fatControlKg,
+    Value<double?>? muscleControlKg,
+    Value<String?>? deviceName,
+    Value<String?>? clinicName,
+    Value<String?>? professionalName,
+    Value<String?>? notes,
+    Value<String?>? sourceDocumentId,
+    Value<String>? source,
+    Value<String>? additionalMetricsJson,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return BioimpedanceRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      measuredAt: measuredAt ?? this.measuredAt,
+      weightKg: weightKg ?? this.weightKg,
+      muscleMassKg: muscleMassKg ?? this.muscleMassKg,
+      bodyFatMassKg: bodyFatMassKg ?? this.bodyFatMassKg,
+      bodyWaterPercentage: bodyWaterPercentage ?? this.bodyWaterPercentage,
+      bodyFatPercentage: bodyFatPercentage ?? this.bodyFatPercentage,
+      skeletalMuscleMassKg: skeletalMuscleMassKg ?? this.skeletalMuscleMassKg,
+      leanBodyMassKg: leanBodyMassKg ?? this.leanBodyMassKg,
+      fatFreeMassKg: fatFreeMassKg ?? this.fatFreeMassKg,
+      visceralFatLevel: visceralFatLevel ?? this.visceralFatLevel,
+      visceralFatAreaCm2: visceralFatAreaCm2 ?? this.visceralFatAreaCm2,
+      subcutaneousFatPercentage:
+          subcutaneousFatPercentage ?? this.subcutaneousFatPercentage,
+      proteinPercentage: proteinPercentage ?? this.proteinPercentage,
+      mineralMassKg: mineralMassKg ?? this.mineralMassKg,
+      boneMassKg: boneMassKg ?? this.boneMassKg,
+      bmi: bmi ?? this.bmi,
+      basalMetabolicRateKcal:
+          basalMetabolicRateKcal ?? this.basalMetabolicRateKcal,
+      metabolicAge: metabolicAge ?? this.metabolicAge,
+      waistHipRatio: waistHipRatio ?? this.waistHipRatio,
+      waistCircumferenceCm: waistCircumferenceCm ?? this.waistCircumferenceCm,
+      hipCircumferenceCm: hipCircumferenceCm ?? this.hipCircumferenceCm,
+      bodyCellMassKg: bodyCellMassKg ?? this.bodyCellMassKg,
+      intracellularWaterLiters:
+          intracellularWaterLiters ?? this.intracellularWaterLiters,
+      extracellularWaterLiters:
+          extracellularWaterLiters ?? this.extracellularWaterLiters,
+      totalBodyWaterLiters: totalBodyWaterLiters ?? this.totalBodyWaterLiters,
+      phaseAngleDegrees: phaseAngleDegrees ?? this.phaseAngleDegrees,
+      bodyScore: bodyScore ?? this.bodyScore,
+      recommendedWeightKg: recommendedWeightKg ?? this.recommendedWeightKg,
+      weightControlKg: weightControlKg ?? this.weightControlKg,
+      fatControlKg: fatControlKg ?? this.fatControlKg,
+      muscleControlKg: muscleControlKg ?? this.muscleControlKg,
+      deviceName: deviceName ?? this.deviceName,
+      clinicName: clinicName ?? this.clinicName,
+      professionalName: professionalName ?? this.professionalName,
+      notes: notes ?? this.notes,
+      sourceDocumentId: sourceDocumentId ?? this.sourceDocumentId,
+      source: source ?? this.source,
+      additionalMetricsJson:
+          additionalMetricsJson ?? this.additionalMetricsJson,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (measuredAt.present) {
+      map['measured_at'] = Variable<DateTime>(measuredAt.value);
+    }
+    if (weightKg.present) {
+      map['weight_kg'] = Variable<double>(weightKg.value);
+    }
+    if (muscleMassKg.present) {
+      map['muscle_mass_kg'] = Variable<double>(muscleMassKg.value);
+    }
+    if (bodyFatMassKg.present) {
+      map['body_fat_mass_kg'] = Variable<double>(bodyFatMassKg.value);
+    }
+    if (bodyWaterPercentage.present) {
+      map['body_water_percentage'] = Variable<double>(
+        bodyWaterPercentage.value,
+      );
+    }
+    if (bodyFatPercentage.present) {
+      map['body_fat_percentage'] = Variable<double>(bodyFatPercentage.value);
+    }
+    if (skeletalMuscleMassKg.present) {
+      map['skeletal_muscle_mass_kg'] = Variable<double>(
+        skeletalMuscleMassKg.value,
+      );
+    }
+    if (leanBodyMassKg.present) {
+      map['lean_body_mass_kg'] = Variable<double>(leanBodyMassKg.value);
+    }
+    if (fatFreeMassKg.present) {
+      map['fat_free_mass_kg'] = Variable<double>(fatFreeMassKg.value);
+    }
+    if (visceralFatLevel.present) {
+      map['visceral_fat_level'] = Variable<double>(visceralFatLevel.value);
+    }
+    if (visceralFatAreaCm2.present) {
+      map['visceral_fat_area_cm2'] = Variable<double>(visceralFatAreaCm2.value);
+    }
+    if (subcutaneousFatPercentage.present) {
+      map['subcutaneous_fat_percentage'] = Variable<double>(
+        subcutaneousFatPercentage.value,
+      );
+    }
+    if (proteinPercentage.present) {
+      map['protein_percentage'] = Variable<double>(proteinPercentage.value);
+    }
+    if (mineralMassKg.present) {
+      map['mineral_mass_kg'] = Variable<double>(mineralMassKg.value);
+    }
+    if (boneMassKg.present) {
+      map['bone_mass_kg'] = Variable<double>(boneMassKg.value);
+    }
+    if (bmi.present) {
+      map['bmi'] = Variable<double>(bmi.value);
+    }
+    if (basalMetabolicRateKcal.present) {
+      map['basal_metabolic_rate_kcal'] = Variable<double>(
+        basalMetabolicRateKcal.value,
+      );
+    }
+    if (metabolicAge.present) {
+      map['metabolic_age'] = Variable<int>(metabolicAge.value);
+    }
+    if (waistHipRatio.present) {
+      map['waist_hip_ratio'] = Variable<double>(waistHipRatio.value);
+    }
+    if (waistCircumferenceCm.present) {
+      map['waist_circumference_cm'] = Variable<double>(
+        waistCircumferenceCm.value,
+      );
+    }
+    if (hipCircumferenceCm.present) {
+      map['hip_circumference_cm'] = Variable<double>(hipCircumferenceCm.value);
+    }
+    if (bodyCellMassKg.present) {
+      map['body_cell_mass_kg'] = Variable<double>(bodyCellMassKg.value);
+    }
+    if (intracellularWaterLiters.present) {
+      map['intracellular_water_liters'] = Variable<double>(
+        intracellularWaterLiters.value,
+      );
+    }
+    if (extracellularWaterLiters.present) {
+      map['extracellular_water_liters'] = Variable<double>(
+        extracellularWaterLiters.value,
+      );
+    }
+    if (totalBodyWaterLiters.present) {
+      map['total_body_water_liters'] = Variable<double>(
+        totalBodyWaterLiters.value,
+      );
+    }
+    if (phaseAngleDegrees.present) {
+      map['phase_angle_degrees'] = Variable<double>(phaseAngleDegrees.value);
+    }
+    if (bodyScore.present) {
+      map['body_score'] = Variable<double>(bodyScore.value);
+    }
+    if (recommendedWeightKg.present) {
+      map['recommended_weight_kg'] = Variable<double>(
+        recommendedWeightKg.value,
+      );
+    }
+    if (weightControlKg.present) {
+      map['weight_control_kg'] = Variable<double>(weightControlKg.value);
+    }
+    if (fatControlKg.present) {
+      map['fat_control_kg'] = Variable<double>(fatControlKg.value);
+    }
+    if (muscleControlKg.present) {
+      map['muscle_control_kg'] = Variable<double>(muscleControlKg.value);
+    }
+    if (deviceName.present) {
+      map['device_name'] = Variable<String>(deviceName.value);
+    }
+    if (clinicName.present) {
+      map['clinic_name'] = Variable<String>(clinicName.value);
+    }
+    if (professionalName.present) {
+      map['professional_name'] = Variable<String>(professionalName.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (sourceDocumentId.present) {
+      map['source_document_id'] = Variable<String>(sourceDocumentId.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (additionalMetricsJson.present) {
+      map['additional_metrics_json'] = Variable<String>(
+        additionalMetricsJson.value,
+      );
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BioimpedanceRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('measuredAt: $measuredAt, ')
+          ..write('weightKg: $weightKg, ')
+          ..write('muscleMassKg: $muscleMassKg, ')
+          ..write('bodyFatMassKg: $bodyFatMassKg, ')
+          ..write('bodyWaterPercentage: $bodyWaterPercentage, ')
+          ..write('bodyFatPercentage: $bodyFatPercentage, ')
+          ..write('skeletalMuscleMassKg: $skeletalMuscleMassKg, ')
+          ..write('leanBodyMassKg: $leanBodyMassKg, ')
+          ..write('fatFreeMassKg: $fatFreeMassKg, ')
+          ..write('visceralFatLevel: $visceralFatLevel, ')
+          ..write('visceralFatAreaCm2: $visceralFatAreaCm2, ')
+          ..write('subcutaneousFatPercentage: $subcutaneousFatPercentage, ')
+          ..write('proteinPercentage: $proteinPercentage, ')
+          ..write('mineralMassKg: $mineralMassKg, ')
+          ..write('boneMassKg: $boneMassKg, ')
+          ..write('bmi: $bmi, ')
+          ..write('basalMetabolicRateKcal: $basalMetabolicRateKcal, ')
+          ..write('metabolicAge: $metabolicAge, ')
+          ..write('waistHipRatio: $waistHipRatio, ')
+          ..write('waistCircumferenceCm: $waistCircumferenceCm, ')
+          ..write('hipCircumferenceCm: $hipCircumferenceCm, ')
+          ..write('bodyCellMassKg: $bodyCellMassKg, ')
+          ..write('intracellularWaterLiters: $intracellularWaterLiters, ')
+          ..write('extracellularWaterLiters: $extracellularWaterLiters, ')
+          ..write('totalBodyWaterLiters: $totalBodyWaterLiters, ')
+          ..write('phaseAngleDegrees: $phaseAngleDegrees, ')
+          ..write('bodyScore: $bodyScore, ')
+          ..write('recommendedWeightKg: $recommendedWeightKg, ')
+          ..write('weightControlKg: $weightControlKg, ')
+          ..write('fatControlKg: $fatControlKg, ')
+          ..write('muscleControlKg: $muscleControlKg, ')
+          ..write('deviceName: $deviceName, ')
+          ..write('clinicName: $clinicName, ')
+          ..write('professionalName: $professionalName, ')
+          ..write('notes: $notes, ')
+          ..write('sourceDocumentId: $sourceDocumentId, ')
+          ..write('source: $source, ')
+          ..write('additionalMetricsJson: $additionalMetricsJson, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -18177,6 +20903,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $DocumentProcessingRecordsTable(this);
   late final $ExtractedFieldRecordsTable extractedFieldRecords =
       $ExtractedFieldRecordsTable(this);
+  late final $BioimpedanceRecordsTable bioimpedanceRecords =
+      $BioimpedanceRecordsTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -18301,6 +21029,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'extracted_field_user_processing_idx',
     'CREATE INDEX extracted_field_user_processing_idx ON extracted_field_records (user_id, processing_id, updated_at)',
   );
+  late final Index bioimpedanceUserDeletedMeasuredIdx = Index(
+    'bioimpedance_user_deleted_measured_idx',
+    'CREATE INDEX bioimpedance_user_deleted_measured_idx ON bioimpedance_records (user_id, deleted_at, measured_at)',
+  );
+  late final Index bioimpedanceUserSyncUpdatedIdx = Index(
+    'bioimpedance_user_sync_updated_idx',
+    'CREATE INDEX bioimpedance_user_sync_updated_idx ON bioimpedance_records (user_id, sync_status, updated_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -18321,6 +21057,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final DocumentIntelligenceDao documentIntelligenceDao =
       DocumentIntelligenceDao(this as AppDatabase);
+  late final BioimpedanceDao bioimpedanceDao = BioimpedanceDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -18353,6 +21092,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     documentInputRecords,
     documentProcessingRecords,
     extractedFieldRecords,
+    bioimpedanceRecords,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -18384,6 +21124,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     documentInputUserSyncIdx,
     documentProcessingUserDocumentIdx,
     extractedFieldUserProcessingIdx,
+    bioimpedanceUserDeletedMeasuredIdx,
+    bioimpedanceUserSyncUpdatedIdx,
   ];
 }
 
@@ -27169,6 +29911,1094 @@ typedef $$ExtractedFieldRecordsTableProcessedTableManager =
       ExtractedFieldRecord,
       PrefetchHooks Function()
     >;
+typedef $$BioimpedanceRecordsTableCreateCompanionBuilder =
+    BioimpedanceRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime measuredAt,
+      Value<double?> weightKg,
+      Value<double?> muscleMassKg,
+      Value<double?> bodyFatMassKg,
+      Value<double?> bodyWaterPercentage,
+      Value<double?> bodyFatPercentage,
+      Value<double?> skeletalMuscleMassKg,
+      Value<double?> leanBodyMassKg,
+      Value<double?> fatFreeMassKg,
+      Value<double?> visceralFatLevel,
+      Value<double?> visceralFatAreaCm2,
+      Value<double?> subcutaneousFatPercentage,
+      Value<double?> proteinPercentage,
+      Value<double?> mineralMassKg,
+      Value<double?> boneMassKg,
+      Value<double?> bmi,
+      Value<double?> basalMetabolicRateKcal,
+      Value<int?> metabolicAge,
+      Value<double?> waistHipRatio,
+      Value<double?> waistCircumferenceCm,
+      Value<double?> hipCircumferenceCm,
+      Value<double?> bodyCellMassKg,
+      Value<double?> intracellularWaterLiters,
+      Value<double?> extracellularWaterLiters,
+      Value<double?> totalBodyWaterLiters,
+      Value<double?> phaseAngleDegrees,
+      Value<double?> bodyScore,
+      Value<double?> recommendedWeightKg,
+      Value<double?> weightControlKg,
+      Value<double?> fatControlKg,
+      Value<double?> muscleControlKg,
+      Value<String?> deviceName,
+      Value<String?> clinicName,
+      Value<String?> professionalName,
+      Value<String?> notes,
+      Value<String?> sourceDocumentId,
+      required String source,
+      Value<String> additionalMetricsJson,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$BioimpedanceRecordsTableUpdateCompanionBuilder =
+    BioimpedanceRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> measuredAt,
+      Value<double?> weightKg,
+      Value<double?> muscleMassKg,
+      Value<double?> bodyFatMassKg,
+      Value<double?> bodyWaterPercentage,
+      Value<double?> bodyFatPercentage,
+      Value<double?> skeletalMuscleMassKg,
+      Value<double?> leanBodyMassKg,
+      Value<double?> fatFreeMassKg,
+      Value<double?> visceralFatLevel,
+      Value<double?> visceralFatAreaCm2,
+      Value<double?> subcutaneousFatPercentage,
+      Value<double?> proteinPercentage,
+      Value<double?> mineralMassKg,
+      Value<double?> boneMassKg,
+      Value<double?> bmi,
+      Value<double?> basalMetabolicRateKcal,
+      Value<int?> metabolicAge,
+      Value<double?> waistHipRatio,
+      Value<double?> waistCircumferenceCm,
+      Value<double?> hipCircumferenceCm,
+      Value<double?> bodyCellMassKg,
+      Value<double?> intracellularWaterLiters,
+      Value<double?> extracellularWaterLiters,
+      Value<double?> totalBodyWaterLiters,
+      Value<double?> phaseAngleDegrees,
+      Value<double?> bodyScore,
+      Value<double?> recommendedWeightKg,
+      Value<double?> weightControlKg,
+      Value<double?> fatControlKg,
+      Value<double?> muscleControlKg,
+      Value<String?> deviceName,
+      Value<String?> clinicName,
+      Value<String?> professionalName,
+      Value<String?> notes,
+      Value<String?> sourceDocumentId,
+      Value<String> source,
+      Value<String> additionalMetricsJson,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$BioimpedanceRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $BioimpedanceRecordsTable> {
+  $$BioimpedanceRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get measuredAt => $composableBuilder(
+    column: $table.measuredAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get weightKg => $composableBuilder(
+    column: $table.weightKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get muscleMassKg => $composableBuilder(
+    column: $table.muscleMassKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get bodyFatMassKg => $composableBuilder(
+    column: $table.bodyFatMassKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get bodyWaterPercentage => $composableBuilder(
+    column: $table.bodyWaterPercentage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get bodyFatPercentage => $composableBuilder(
+    column: $table.bodyFatPercentage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get skeletalMuscleMassKg => $composableBuilder(
+    column: $table.skeletalMuscleMassKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get leanBodyMassKg => $composableBuilder(
+    column: $table.leanBodyMassKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get fatFreeMassKg => $composableBuilder(
+    column: $table.fatFreeMassKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get visceralFatLevel => $composableBuilder(
+    column: $table.visceralFatLevel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get visceralFatAreaCm2 => $composableBuilder(
+    column: $table.visceralFatAreaCm2,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get subcutaneousFatPercentage => $composableBuilder(
+    column: $table.subcutaneousFatPercentage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get proteinPercentage => $composableBuilder(
+    column: $table.proteinPercentage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get mineralMassKg => $composableBuilder(
+    column: $table.mineralMassKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get boneMassKg => $composableBuilder(
+    column: $table.boneMassKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get bmi => $composableBuilder(
+    column: $table.bmi,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get basalMetabolicRateKcal => $composableBuilder(
+    column: $table.basalMetabolicRateKcal,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get metabolicAge => $composableBuilder(
+    column: $table.metabolicAge,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get waistHipRatio => $composableBuilder(
+    column: $table.waistHipRatio,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get waistCircumferenceCm => $composableBuilder(
+    column: $table.waistCircumferenceCm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get hipCircumferenceCm => $composableBuilder(
+    column: $table.hipCircumferenceCm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get bodyCellMassKg => $composableBuilder(
+    column: $table.bodyCellMassKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get intracellularWaterLiters => $composableBuilder(
+    column: $table.intracellularWaterLiters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get extracellularWaterLiters => $composableBuilder(
+    column: $table.extracellularWaterLiters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get totalBodyWaterLiters => $composableBuilder(
+    column: $table.totalBodyWaterLiters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get phaseAngleDegrees => $composableBuilder(
+    column: $table.phaseAngleDegrees,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get bodyScore => $composableBuilder(
+    column: $table.bodyScore,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get recommendedWeightKg => $composableBuilder(
+    column: $table.recommendedWeightKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get weightControlKg => $composableBuilder(
+    column: $table.weightControlKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get fatControlKg => $composableBuilder(
+    column: $table.fatControlKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get muscleControlKg => $composableBuilder(
+    column: $table.muscleControlKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceName => $composableBuilder(
+    column: $table.deviceName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get clinicName => $composableBuilder(
+    column: $table.clinicName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get additionalMetricsJson => $composableBuilder(
+    column: $table.additionalMetricsJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$BioimpedanceRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $BioimpedanceRecordsTable> {
+  $$BioimpedanceRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get measuredAt => $composableBuilder(
+    column: $table.measuredAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get weightKg => $composableBuilder(
+    column: $table.weightKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get muscleMassKg => $composableBuilder(
+    column: $table.muscleMassKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get bodyFatMassKg => $composableBuilder(
+    column: $table.bodyFatMassKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get bodyWaterPercentage => $composableBuilder(
+    column: $table.bodyWaterPercentage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get bodyFatPercentage => $composableBuilder(
+    column: $table.bodyFatPercentage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get skeletalMuscleMassKg => $composableBuilder(
+    column: $table.skeletalMuscleMassKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get leanBodyMassKg => $composableBuilder(
+    column: $table.leanBodyMassKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get fatFreeMassKg => $composableBuilder(
+    column: $table.fatFreeMassKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get visceralFatLevel => $composableBuilder(
+    column: $table.visceralFatLevel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get visceralFatAreaCm2 => $composableBuilder(
+    column: $table.visceralFatAreaCm2,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get subcutaneousFatPercentage => $composableBuilder(
+    column: $table.subcutaneousFatPercentage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get proteinPercentage => $composableBuilder(
+    column: $table.proteinPercentage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get mineralMassKg => $composableBuilder(
+    column: $table.mineralMassKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get boneMassKg => $composableBuilder(
+    column: $table.boneMassKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get bmi => $composableBuilder(
+    column: $table.bmi,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get basalMetabolicRateKcal => $composableBuilder(
+    column: $table.basalMetabolicRateKcal,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get metabolicAge => $composableBuilder(
+    column: $table.metabolicAge,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get waistHipRatio => $composableBuilder(
+    column: $table.waistHipRatio,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get waistCircumferenceCm => $composableBuilder(
+    column: $table.waistCircumferenceCm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get hipCircumferenceCm => $composableBuilder(
+    column: $table.hipCircumferenceCm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get bodyCellMassKg => $composableBuilder(
+    column: $table.bodyCellMassKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get intracellularWaterLiters => $composableBuilder(
+    column: $table.intracellularWaterLiters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get extracellularWaterLiters => $composableBuilder(
+    column: $table.extracellularWaterLiters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get totalBodyWaterLiters => $composableBuilder(
+    column: $table.totalBodyWaterLiters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get phaseAngleDegrees => $composableBuilder(
+    column: $table.phaseAngleDegrees,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get bodyScore => $composableBuilder(
+    column: $table.bodyScore,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get recommendedWeightKg => $composableBuilder(
+    column: $table.recommendedWeightKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get weightControlKg => $composableBuilder(
+    column: $table.weightControlKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get fatControlKg => $composableBuilder(
+    column: $table.fatControlKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get muscleControlKg => $composableBuilder(
+    column: $table.muscleControlKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceName => $composableBuilder(
+    column: $table.deviceName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get clinicName => $composableBuilder(
+    column: $table.clinicName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get additionalMetricsJson => $composableBuilder(
+    column: $table.additionalMetricsJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$BioimpedanceRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BioimpedanceRecordsTable> {
+  $$BioimpedanceRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get measuredAt => $composableBuilder(
+    column: $table.measuredAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get weightKg =>
+      $composableBuilder(column: $table.weightKg, builder: (column) => column);
+
+  GeneratedColumn<double> get muscleMassKg => $composableBuilder(
+    column: $table.muscleMassKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get bodyFatMassKg => $composableBuilder(
+    column: $table.bodyFatMassKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get bodyWaterPercentage => $composableBuilder(
+    column: $table.bodyWaterPercentage,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get bodyFatPercentage => $composableBuilder(
+    column: $table.bodyFatPercentage,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get skeletalMuscleMassKg => $composableBuilder(
+    column: $table.skeletalMuscleMassKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get leanBodyMassKg => $composableBuilder(
+    column: $table.leanBodyMassKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get fatFreeMassKg => $composableBuilder(
+    column: $table.fatFreeMassKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get visceralFatLevel => $composableBuilder(
+    column: $table.visceralFatLevel,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get visceralFatAreaCm2 => $composableBuilder(
+    column: $table.visceralFatAreaCm2,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get subcutaneousFatPercentage => $composableBuilder(
+    column: $table.subcutaneousFatPercentage,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get proteinPercentage => $composableBuilder(
+    column: $table.proteinPercentage,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get mineralMassKg => $composableBuilder(
+    column: $table.mineralMassKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get boneMassKg => $composableBuilder(
+    column: $table.boneMassKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get bmi =>
+      $composableBuilder(column: $table.bmi, builder: (column) => column);
+
+  GeneratedColumn<double> get basalMetabolicRateKcal => $composableBuilder(
+    column: $table.basalMetabolicRateKcal,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get metabolicAge => $composableBuilder(
+    column: $table.metabolicAge,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get waistHipRatio => $composableBuilder(
+    column: $table.waistHipRatio,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get waistCircumferenceCm => $composableBuilder(
+    column: $table.waistCircumferenceCm,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get hipCircumferenceCm => $composableBuilder(
+    column: $table.hipCircumferenceCm,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get bodyCellMassKg => $composableBuilder(
+    column: $table.bodyCellMassKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get intracellularWaterLiters => $composableBuilder(
+    column: $table.intracellularWaterLiters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get extracellularWaterLiters => $composableBuilder(
+    column: $table.extracellularWaterLiters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get totalBodyWaterLiters => $composableBuilder(
+    column: $table.totalBodyWaterLiters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get phaseAngleDegrees => $composableBuilder(
+    column: $table.phaseAngleDegrees,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get bodyScore =>
+      $composableBuilder(column: $table.bodyScore, builder: (column) => column);
+
+  GeneratedColumn<double> get recommendedWeightKg => $composableBuilder(
+    column: $table.recommendedWeightKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get weightControlKg => $composableBuilder(
+    column: $table.weightControlKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get fatControlKg => $composableBuilder(
+    column: $table.fatControlKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get muscleControlKg => $composableBuilder(
+    column: $table.muscleControlKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get deviceName => $composableBuilder(
+    column: $table.deviceName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get clinicName => $composableBuilder(
+    column: $table.clinicName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get additionalMetricsJson => $composableBuilder(
+    column: $table.additionalMetricsJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$BioimpedanceRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BioimpedanceRecordsTable,
+          BioimpedanceRecord,
+          $$BioimpedanceRecordsTableFilterComposer,
+          $$BioimpedanceRecordsTableOrderingComposer,
+          $$BioimpedanceRecordsTableAnnotationComposer,
+          $$BioimpedanceRecordsTableCreateCompanionBuilder,
+          $$BioimpedanceRecordsTableUpdateCompanionBuilder,
+          (
+            BioimpedanceRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $BioimpedanceRecordsTable,
+              BioimpedanceRecord
+            >,
+          ),
+          BioimpedanceRecord,
+          PrefetchHooks Function()
+        > {
+  $$BioimpedanceRecordsTableTableManager(
+    _$AppDatabase db,
+    $BioimpedanceRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BioimpedanceRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BioimpedanceRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$BioimpedanceRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> measuredAt = const Value.absent(),
+                Value<double?> weightKg = const Value.absent(),
+                Value<double?> muscleMassKg = const Value.absent(),
+                Value<double?> bodyFatMassKg = const Value.absent(),
+                Value<double?> bodyWaterPercentage = const Value.absent(),
+                Value<double?> bodyFatPercentage = const Value.absent(),
+                Value<double?> skeletalMuscleMassKg = const Value.absent(),
+                Value<double?> leanBodyMassKg = const Value.absent(),
+                Value<double?> fatFreeMassKg = const Value.absent(),
+                Value<double?> visceralFatLevel = const Value.absent(),
+                Value<double?> visceralFatAreaCm2 = const Value.absent(),
+                Value<double?> subcutaneousFatPercentage = const Value.absent(),
+                Value<double?> proteinPercentage = const Value.absent(),
+                Value<double?> mineralMassKg = const Value.absent(),
+                Value<double?> boneMassKg = const Value.absent(),
+                Value<double?> bmi = const Value.absent(),
+                Value<double?> basalMetabolicRateKcal = const Value.absent(),
+                Value<int?> metabolicAge = const Value.absent(),
+                Value<double?> waistHipRatio = const Value.absent(),
+                Value<double?> waistCircumferenceCm = const Value.absent(),
+                Value<double?> hipCircumferenceCm = const Value.absent(),
+                Value<double?> bodyCellMassKg = const Value.absent(),
+                Value<double?> intracellularWaterLiters = const Value.absent(),
+                Value<double?> extracellularWaterLiters = const Value.absent(),
+                Value<double?> totalBodyWaterLiters = const Value.absent(),
+                Value<double?> phaseAngleDegrees = const Value.absent(),
+                Value<double?> bodyScore = const Value.absent(),
+                Value<double?> recommendedWeightKg = const Value.absent(),
+                Value<double?> weightControlKg = const Value.absent(),
+                Value<double?> fatControlKg = const Value.absent(),
+                Value<double?> muscleControlKg = const Value.absent(),
+                Value<String?> deviceName = const Value.absent(),
+                Value<String?> clinicName = const Value.absent(),
+                Value<String?> professionalName = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> sourceDocumentId = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String> additionalMetricsJson = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BioimpedanceRecordsCompanion(
+                id: id,
+                userId: userId,
+                measuredAt: measuredAt,
+                weightKg: weightKg,
+                muscleMassKg: muscleMassKg,
+                bodyFatMassKg: bodyFatMassKg,
+                bodyWaterPercentage: bodyWaterPercentage,
+                bodyFatPercentage: bodyFatPercentage,
+                skeletalMuscleMassKg: skeletalMuscleMassKg,
+                leanBodyMassKg: leanBodyMassKg,
+                fatFreeMassKg: fatFreeMassKg,
+                visceralFatLevel: visceralFatLevel,
+                visceralFatAreaCm2: visceralFatAreaCm2,
+                subcutaneousFatPercentage: subcutaneousFatPercentage,
+                proteinPercentage: proteinPercentage,
+                mineralMassKg: mineralMassKg,
+                boneMassKg: boneMassKg,
+                bmi: bmi,
+                basalMetabolicRateKcal: basalMetabolicRateKcal,
+                metabolicAge: metabolicAge,
+                waistHipRatio: waistHipRatio,
+                waistCircumferenceCm: waistCircumferenceCm,
+                hipCircumferenceCm: hipCircumferenceCm,
+                bodyCellMassKg: bodyCellMassKg,
+                intracellularWaterLiters: intracellularWaterLiters,
+                extracellularWaterLiters: extracellularWaterLiters,
+                totalBodyWaterLiters: totalBodyWaterLiters,
+                phaseAngleDegrees: phaseAngleDegrees,
+                bodyScore: bodyScore,
+                recommendedWeightKg: recommendedWeightKg,
+                weightControlKg: weightControlKg,
+                fatControlKg: fatControlKg,
+                muscleControlKg: muscleControlKg,
+                deviceName: deviceName,
+                clinicName: clinicName,
+                professionalName: professionalName,
+                notes: notes,
+                sourceDocumentId: sourceDocumentId,
+                source: source,
+                additionalMetricsJson: additionalMetricsJson,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime measuredAt,
+                Value<double?> weightKg = const Value.absent(),
+                Value<double?> muscleMassKg = const Value.absent(),
+                Value<double?> bodyFatMassKg = const Value.absent(),
+                Value<double?> bodyWaterPercentage = const Value.absent(),
+                Value<double?> bodyFatPercentage = const Value.absent(),
+                Value<double?> skeletalMuscleMassKg = const Value.absent(),
+                Value<double?> leanBodyMassKg = const Value.absent(),
+                Value<double?> fatFreeMassKg = const Value.absent(),
+                Value<double?> visceralFatLevel = const Value.absent(),
+                Value<double?> visceralFatAreaCm2 = const Value.absent(),
+                Value<double?> subcutaneousFatPercentage = const Value.absent(),
+                Value<double?> proteinPercentage = const Value.absent(),
+                Value<double?> mineralMassKg = const Value.absent(),
+                Value<double?> boneMassKg = const Value.absent(),
+                Value<double?> bmi = const Value.absent(),
+                Value<double?> basalMetabolicRateKcal = const Value.absent(),
+                Value<int?> metabolicAge = const Value.absent(),
+                Value<double?> waistHipRatio = const Value.absent(),
+                Value<double?> waistCircumferenceCm = const Value.absent(),
+                Value<double?> hipCircumferenceCm = const Value.absent(),
+                Value<double?> bodyCellMassKg = const Value.absent(),
+                Value<double?> intracellularWaterLiters = const Value.absent(),
+                Value<double?> extracellularWaterLiters = const Value.absent(),
+                Value<double?> totalBodyWaterLiters = const Value.absent(),
+                Value<double?> phaseAngleDegrees = const Value.absent(),
+                Value<double?> bodyScore = const Value.absent(),
+                Value<double?> recommendedWeightKg = const Value.absent(),
+                Value<double?> weightControlKg = const Value.absent(),
+                Value<double?> fatControlKg = const Value.absent(),
+                Value<double?> muscleControlKg = const Value.absent(),
+                Value<String?> deviceName = const Value.absent(),
+                Value<String?> clinicName = const Value.absent(),
+                Value<String?> professionalName = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> sourceDocumentId = const Value.absent(),
+                required String source,
+                Value<String> additionalMetricsJson = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BioimpedanceRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                measuredAt: measuredAt,
+                weightKg: weightKg,
+                muscleMassKg: muscleMassKg,
+                bodyFatMassKg: bodyFatMassKg,
+                bodyWaterPercentage: bodyWaterPercentage,
+                bodyFatPercentage: bodyFatPercentage,
+                skeletalMuscleMassKg: skeletalMuscleMassKg,
+                leanBodyMassKg: leanBodyMassKg,
+                fatFreeMassKg: fatFreeMassKg,
+                visceralFatLevel: visceralFatLevel,
+                visceralFatAreaCm2: visceralFatAreaCm2,
+                subcutaneousFatPercentage: subcutaneousFatPercentage,
+                proteinPercentage: proteinPercentage,
+                mineralMassKg: mineralMassKg,
+                boneMassKg: boneMassKg,
+                bmi: bmi,
+                basalMetabolicRateKcal: basalMetabolicRateKcal,
+                metabolicAge: metabolicAge,
+                waistHipRatio: waistHipRatio,
+                waistCircumferenceCm: waistCircumferenceCm,
+                hipCircumferenceCm: hipCircumferenceCm,
+                bodyCellMassKg: bodyCellMassKg,
+                intracellularWaterLiters: intracellularWaterLiters,
+                extracellularWaterLiters: extracellularWaterLiters,
+                totalBodyWaterLiters: totalBodyWaterLiters,
+                phaseAngleDegrees: phaseAngleDegrees,
+                bodyScore: bodyScore,
+                recommendedWeightKg: recommendedWeightKg,
+                weightControlKg: weightControlKg,
+                fatControlKg: fatControlKg,
+                muscleControlKg: muscleControlKg,
+                deviceName: deviceName,
+                clinicName: clinicName,
+                professionalName: professionalName,
+                notes: notes,
+                sourceDocumentId: sourceDocumentId,
+                source: source,
+                additionalMetricsJson: additionalMetricsJson,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$BioimpedanceRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BioimpedanceRecordsTable,
+      BioimpedanceRecord,
+      $$BioimpedanceRecordsTableFilterComposer,
+      $$BioimpedanceRecordsTableOrderingComposer,
+      $$BioimpedanceRecordsTableAnnotationComposer,
+      $$BioimpedanceRecordsTableCreateCompanionBuilder,
+      $$BioimpedanceRecordsTableUpdateCompanionBuilder,
+      (
+        BioimpedanceRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $BioimpedanceRecordsTable,
+          BioimpedanceRecord
+        >,
+      ),
+      BioimpedanceRecord,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -27230,4 +31060,6 @@ class $AppDatabaseManager {
       );
   $$ExtractedFieldRecordsTableTableManager get extractedFieldRecords =>
       $$ExtractedFieldRecordsTableTableManager(_db, _db.extractedFieldRecords);
+  $$BioimpedanceRecordsTableTableManager get bioimpedanceRecords =>
+      $$BioimpedanceRecordsTableTableManager(_db, _db.bioimpedanceRecords);
 }

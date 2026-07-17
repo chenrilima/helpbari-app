@@ -17,6 +17,9 @@ import '../../features/academy/presentation/pages/academy_glossary_page.dart';
 import '../../features/academy/presentation/pages/academy_history_page.dart';
 import '../../features/academy/presentation/pages/academy_page.dart';
 import '../../features/baria/presentation/pages/baria_page.dart';
+import '../../features/bioimpedance/presentation/pages/bioimpedance_details_page.dart';
+import '../../features/bioimpedance/presentation/pages/bioimpedance_page.dart';
+import '../../features/bioimpedance/presentation/pages/register_bioimpedance_page.dart';
 import '../../features/exams/presentation/pages/exams_page.dart';
 import '../../features/exams/presentation/pages/register_exam_page.dart';
 import '../../features/exams/presentation/pages/exam_details_page.dart';
@@ -52,6 +55,8 @@ import '../../features/water/domain/entities/entities.dart';
 import '../../features/weight/presentation/pages/register_weight_page.dart';
 import '../../features/weight/presentation/pages/weight_page.dart';
 import '../../features/weight/domain/entities/entities.dart' show WeightRecord;
+import '../../features/bioimpedance/domain/entities/entities.dart'
+    show BioimpedanceRecord;
 import 'app_routes.dart';
 import 'app_redirect_resolver.dart';
 import 'notification_navigation.dart';
@@ -222,6 +227,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.medicalReports,
         builder: (context, state) => const MedicalReportsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.bioimpedance,
+        builder: (context, state) => const BioimpedancePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.registerBioimpedance,
+        builder: (context, state) => RegisterBioimpedancePage(
+          record: state.extra is BioimpedanceRecord
+              ? state.extra! as BioimpedanceRecord
+              : null,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.bioimpedanceDetails,
+        builder: (context, state) =>
+            BioimpedanceDetailsPage(record: state.extra! as BioimpedanceRecord),
       ),
       GoRoute(
         path: AppRoutes.settings,

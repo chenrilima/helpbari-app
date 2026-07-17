@@ -46,6 +46,18 @@ class DeterministicDocumentClassifier implements DocumentClassifier {
       'requisição',
       'requisicao',
     },
+    DetectedDocumentType.bioimpedanceReport: {
+      'bioimpedância',
+      'bioimpedancia',
+      'body composition',
+      'inbody',
+      'tanita',
+      'massa muscular',
+      'body fat',
+      'phase angle',
+      'água corporal',
+      'agua corporal',
+    },
   };
 
   @override
