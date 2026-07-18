@@ -20,10 +20,11 @@ import '../../features/baria/presentation/pages/baria_page.dart';
 import '../../features/bioimpedance/presentation/pages/bioimpedance_details_page.dart';
 import '../../features/bioimpedance/presentation/pages/bioimpedance_page.dart';
 import '../../features/bioimpedance/presentation/pages/register_bioimpedance_page.dart';
-import '../../features/exams/presentation/pages/exams_page.dart';
-import '../../features/exams/presentation/pages/register_exam_page.dart';
-import '../../features/exams/presentation/pages/exam_details_page.dart';
-import '../../features/exams/domain/entities/entities.dart' show Exam;
+import '../../features/medical_exams/domain/entities/entities.dart'
+    show MedicalExam;
+import '../../features/medical_exams/presentation/pages/medical_exam_details_page.dart';
+import '../../features/medical_exams/presentation/pages/medical_exams_page.dart';
+import '../../features/medical_exams/presentation/pages/register_medical_exam_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/meals/presentation/pages/register_meal_page.dart';
 import '../../features/medical_reports/presentation/pages/medical_reports_page.dart';
@@ -185,18 +186,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.exams,
-        builder: (context, state) => const ExamsPage(),
+        builder: (context, state) => const MedicalExamsPage(),
       ),
       GoRoute(
         path: AppRoutes.registerExam,
-        builder: (context, state) => RegisterExamPage(
-          exam: state.extra is Exam ? state.extra! as Exam : null,
+        builder: (context, state) => RegisterMedicalExamPage(
+          exam: state.extra is MedicalExam ? state.extra! as MedicalExam : null,
         ),
       ),
       GoRoute(
         path: AppRoutes.examDetails,
         builder: (context, state) =>
-            ExamDetailsPage(exam: state.extra! as Exam),
+            MedicalExamDetailsPage(exam: state.extra! as MedicalExam),
       ),
       GoRoute(
         path: AppRoutes.progress,

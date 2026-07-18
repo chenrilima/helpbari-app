@@ -20853,6 +20853,3163 @@ class BioimpedanceRecordsCompanion extends UpdateCompanion<BioimpedanceRecord> {
   }
 }
 
+class $MedicalExamsTable extends MedicalExams
+    with TableInfo<$MedicalExamsTable, MedicalExam> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicalExamsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _performedAtMeta = const VerificationMeta(
+    'performedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> performedAt = GeneratedColumn<DateTime>(
+    'performed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _collectedAtMeta = const VerificationMeta(
+    'collectedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> collectedAt = GeneratedColumn<DateTime>(
+    'collected_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _receivedAtMeta = const VerificationMeta(
+    'receivedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> receivedAt = GeneratedColumn<DateTime>(
+    'received_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _laboratoryNameMeta = const VerificationMeta(
+    'laboratoryName',
+  );
+  @override
+  late final GeneratedColumn<String> laboratoryName = GeneratedColumn<String>(
+    'laboratory_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _professionalNameMeta = const VerificationMeta(
+    'professionalName',
+  );
+  @override
+  late final GeneratedColumn<String> professionalName = GeneratedColumn<String>(
+    'professional_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _requestProfessionalNameMeta =
+      const VerificationMeta('requestProfessionalName');
+  @override
+  late final GeneratedColumn<String> requestProfessionalName =
+      GeneratedColumn<String>(
+        'request_professional_name',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _documentNumberMeta = const VerificationMeta(
+    'documentNumber',
+  );
+  @override
+  late final GeneratedColumn<String> documentNumber = GeneratedColumn<String>(
+    'document_number',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceDocumentIdMeta = const VerificationMeta(
+    'sourceDocumentId',
+  );
+  @override
+  late final GeneratedColumn<String> sourceDocumentId = GeneratedColumn<String>(
+    'source_document_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    performedAt,
+    collectedAt,
+    receivedAt,
+    title,
+    category,
+    laboratoryName,
+    professionalName,
+    requestProfessionalName,
+    documentNumber,
+    notes,
+    source,
+    sourceDocumentId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medical_exams';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MedicalExam> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('performed_at')) {
+      context.handle(
+        _performedAtMeta,
+        performedAt.isAcceptableOrUnknown(
+          data['performed_at']!,
+          _performedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_performedAtMeta);
+    }
+    if (data.containsKey('collected_at')) {
+      context.handle(
+        _collectedAtMeta,
+        collectedAt.isAcceptableOrUnknown(
+          data['collected_at']!,
+          _collectedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('received_at')) {
+      context.handle(
+        _receivedAtMeta,
+        receivedAt.isAcceptableOrUnknown(data['received_at']!, _receivedAtMeta),
+      );
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    }
+    if (data.containsKey('laboratory_name')) {
+      context.handle(
+        _laboratoryNameMeta,
+        laboratoryName.isAcceptableOrUnknown(
+          data['laboratory_name']!,
+          _laboratoryNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('professional_name')) {
+      context.handle(
+        _professionalNameMeta,
+        professionalName.isAcceptableOrUnknown(
+          data['professional_name']!,
+          _professionalNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('request_professional_name')) {
+      context.handle(
+        _requestProfessionalNameMeta,
+        requestProfessionalName.isAcceptableOrUnknown(
+          data['request_professional_name']!,
+          _requestProfessionalNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('document_number')) {
+      context.handle(
+        _documentNumberMeta,
+        documentNumber.isAcceptableOrUnknown(
+          data['document_number']!,
+          _documentNumberMeta,
+        ),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('source_document_id')) {
+      context.handle(
+        _sourceDocumentIdMeta,
+        sourceDocumentId.isAcceptableOrUnknown(
+          data['source_document_id']!,
+          _sourceDocumentIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  MedicalExam map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicalExam(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      performedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}performed_at'],
+      )!,
+      collectedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}collected_at'],
+      ),
+      receivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}received_at'],
+      ),
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      ),
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      ),
+      laboratoryName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}laboratory_name'],
+      ),
+      professionalName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}professional_name'],
+      ),
+      requestProfessionalName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_professional_name'],
+      ),
+      documentNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}document_number'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      sourceDocumentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_document_id'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $MedicalExamsTable createAlias(String alias) {
+    return $MedicalExamsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicalExam extends DataClass implements Insertable<MedicalExam> {
+  final String id;
+  final String userId;
+  final DateTime performedAt;
+  final DateTime? collectedAt;
+  final DateTime? receivedAt;
+  final String? title;
+  final String? category;
+  final String? laboratoryName;
+  final String? professionalName;
+  final String? requestProfessionalName;
+  final String? documentNumber;
+  final String? notes;
+  final String source;
+  final String? sourceDocumentId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const MedicalExam({
+    required this.id,
+    required this.userId,
+    required this.performedAt,
+    this.collectedAt,
+    this.receivedAt,
+    this.title,
+    this.category,
+    this.laboratoryName,
+    this.professionalName,
+    this.requestProfessionalName,
+    this.documentNumber,
+    this.notes,
+    required this.source,
+    this.sourceDocumentId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['performed_at'] = Variable<DateTime>(performedAt);
+    if (!nullToAbsent || collectedAt != null) {
+      map['collected_at'] = Variable<DateTime>(collectedAt);
+    }
+    if (!nullToAbsent || receivedAt != null) {
+      map['received_at'] = Variable<DateTime>(receivedAt);
+    }
+    if (!nullToAbsent || title != null) {
+      map['title'] = Variable<String>(title);
+    }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    if (!nullToAbsent || laboratoryName != null) {
+      map['laboratory_name'] = Variable<String>(laboratoryName);
+    }
+    if (!nullToAbsent || professionalName != null) {
+      map['professional_name'] = Variable<String>(professionalName);
+    }
+    if (!nullToAbsent || requestProfessionalName != null) {
+      map['request_professional_name'] = Variable<String>(
+        requestProfessionalName,
+      );
+    }
+    if (!nullToAbsent || documentNumber != null) {
+      map['document_number'] = Variable<String>(documentNumber);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['source'] = Variable<String>(source);
+    if (!nullToAbsent || sourceDocumentId != null) {
+      map['source_document_id'] = Variable<String>(sourceDocumentId);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  MedicalExamsCompanion toCompanion(bool nullToAbsent) {
+    return MedicalExamsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      performedAt: Value(performedAt),
+      collectedAt: collectedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collectedAt),
+      receivedAt: receivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(receivedAt),
+      title: title == null && nullToAbsent
+          ? const Value.absent()
+          : Value(title),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+      laboratoryName: laboratoryName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(laboratoryName),
+      professionalName: professionalName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(professionalName),
+      requestProfessionalName: requestProfessionalName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestProfessionalName),
+      documentNumber: documentNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(documentNumber),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      source: Value(source),
+      sourceDocumentId: sourceDocumentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceDocumentId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory MedicalExam.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicalExam(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      performedAt: serializer.fromJson<DateTime>(json['performedAt']),
+      collectedAt: serializer.fromJson<DateTime?>(json['collectedAt']),
+      receivedAt: serializer.fromJson<DateTime?>(json['receivedAt']),
+      title: serializer.fromJson<String?>(json['title']),
+      category: serializer.fromJson<String?>(json['category']),
+      laboratoryName: serializer.fromJson<String?>(json['laboratoryName']),
+      professionalName: serializer.fromJson<String?>(json['professionalName']),
+      requestProfessionalName: serializer.fromJson<String?>(
+        json['requestProfessionalName'],
+      ),
+      documentNumber: serializer.fromJson<String?>(json['documentNumber']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      source: serializer.fromJson<String>(json['source']),
+      sourceDocumentId: serializer.fromJson<String?>(json['sourceDocumentId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'performedAt': serializer.toJson<DateTime>(performedAt),
+      'collectedAt': serializer.toJson<DateTime?>(collectedAt),
+      'receivedAt': serializer.toJson<DateTime?>(receivedAt),
+      'title': serializer.toJson<String?>(title),
+      'category': serializer.toJson<String?>(category),
+      'laboratoryName': serializer.toJson<String?>(laboratoryName),
+      'professionalName': serializer.toJson<String?>(professionalName),
+      'requestProfessionalName': serializer.toJson<String?>(
+        requestProfessionalName,
+      ),
+      'documentNumber': serializer.toJson<String?>(documentNumber),
+      'notes': serializer.toJson<String?>(notes),
+      'source': serializer.toJson<String>(source),
+      'sourceDocumentId': serializer.toJson<String?>(sourceDocumentId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  MedicalExam copyWith({
+    String? id,
+    String? userId,
+    DateTime? performedAt,
+    Value<DateTime?> collectedAt = const Value.absent(),
+    Value<DateTime?> receivedAt = const Value.absent(),
+    Value<String?> title = const Value.absent(),
+    Value<String?> category = const Value.absent(),
+    Value<String?> laboratoryName = const Value.absent(),
+    Value<String?> professionalName = const Value.absent(),
+    Value<String?> requestProfessionalName = const Value.absent(),
+    Value<String?> documentNumber = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    String? source,
+    Value<String?> sourceDocumentId = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => MedicalExam(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    performedAt: performedAt ?? this.performedAt,
+    collectedAt: collectedAt.present ? collectedAt.value : this.collectedAt,
+    receivedAt: receivedAt.present ? receivedAt.value : this.receivedAt,
+    title: title.present ? title.value : this.title,
+    category: category.present ? category.value : this.category,
+    laboratoryName: laboratoryName.present
+        ? laboratoryName.value
+        : this.laboratoryName,
+    professionalName: professionalName.present
+        ? professionalName.value
+        : this.professionalName,
+    requestProfessionalName: requestProfessionalName.present
+        ? requestProfessionalName.value
+        : this.requestProfessionalName,
+    documentNumber: documentNumber.present
+        ? documentNumber.value
+        : this.documentNumber,
+    notes: notes.present ? notes.value : this.notes,
+    source: source ?? this.source,
+    sourceDocumentId: sourceDocumentId.present
+        ? sourceDocumentId.value
+        : this.sourceDocumentId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  MedicalExam copyWithCompanion(MedicalExamsCompanion data) {
+    return MedicalExam(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      performedAt: data.performedAt.present
+          ? data.performedAt.value
+          : this.performedAt,
+      collectedAt: data.collectedAt.present
+          ? data.collectedAt.value
+          : this.collectedAt,
+      receivedAt: data.receivedAt.present
+          ? data.receivedAt.value
+          : this.receivedAt,
+      title: data.title.present ? data.title.value : this.title,
+      category: data.category.present ? data.category.value : this.category,
+      laboratoryName: data.laboratoryName.present
+          ? data.laboratoryName.value
+          : this.laboratoryName,
+      professionalName: data.professionalName.present
+          ? data.professionalName.value
+          : this.professionalName,
+      requestProfessionalName: data.requestProfessionalName.present
+          ? data.requestProfessionalName.value
+          : this.requestProfessionalName,
+      documentNumber: data.documentNumber.present
+          ? data.documentNumber.value
+          : this.documentNumber,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      source: data.source.present ? data.source.value : this.source,
+      sourceDocumentId: data.sourceDocumentId.present
+          ? data.sourceDocumentId.value
+          : this.sourceDocumentId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalExam(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('performedAt: $performedAt, ')
+          ..write('collectedAt: $collectedAt, ')
+          ..write('receivedAt: $receivedAt, ')
+          ..write('title: $title, ')
+          ..write('category: $category, ')
+          ..write('laboratoryName: $laboratoryName, ')
+          ..write('professionalName: $professionalName, ')
+          ..write('requestProfessionalName: $requestProfessionalName, ')
+          ..write('documentNumber: $documentNumber, ')
+          ..write('notes: $notes, ')
+          ..write('source: $source, ')
+          ..write('sourceDocumentId: $sourceDocumentId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    userId,
+    performedAt,
+    collectedAt,
+    receivedAt,
+    title,
+    category,
+    laboratoryName,
+    professionalName,
+    requestProfessionalName,
+    documentNumber,
+    notes,
+    source,
+    sourceDocumentId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicalExam &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.performedAt == this.performedAt &&
+          other.collectedAt == this.collectedAt &&
+          other.receivedAt == this.receivedAt &&
+          other.title == this.title &&
+          other.category == this.category &&
+          other.laboratoryName == this.laboratoryName &&
+          other.professionalName == this.professionalName &&
+          other.requestProfessionalName == this.requestProfessionalName &&
+          other.documentNumber == this.documentNumber &&
+          other.notes == this.notes &&
+          other.source == this.source &&
+          other.sourceDocumentId == this.sourceDocumentId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class MedicalExamsCompanion extends UpdateCompanion<MedicalExam> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> performedAt;
+  final Value<DateTime?> collectedAt;
+  final Value<DateTime?> receivedAt;
+  final Value<String?> title;
+  final Value<String?> category;
+  final Value<String?> laboratoryName;
+  final Value<String?> professionalName;
+  final Value<String?> requestProfessionalName;
+  final Value<String?> documentNumber;
+  final Value<String?> notes;
+  final Value<String> source;
+  final Value<String?> sourceDocumentId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const MedicalExamsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.performedAt = const Value.absent(),
+    this.collectedAt = const Value.absent(),
+    this.receivedAt = const Value.absent(),
+    this.title = const Value.absent(),
+    this.category = const Value.absent(),
+    this.laboratoryName = const Value.absent(),
+    this.professionalName = const Value.absent(),
+    this.requestProfessionalName = const Value.absent(),
+    this.documentNumber = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.source = const Value.absent(),
+    this.sourceDocumentId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MedicalExamsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime performedAt,
+    this.collectedAt = const Value.absent(),
+    this.receivedAt = const Value.absent(),
+    this.title = const Value.absent(),
+    this.category = const Value.absent(),
+    this.laboratoryName = const Value.absent(),
+    this.professionalName = const Value.absent(),
+    this.requestProfessionalName = const Value.absent(),
+    this.documentNumber = const Value.absent(),
+    this.notes = const Value.absent(),
+    required String source,
+    this.sourceDocumentId = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       performedAt = Value(performedAt),
+       source = Value(source),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<MedicalExam> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? performedAt,
+    Expression<DateTime>? collectedAt,
+    Expression<DateTime>? receivedAt,
+    Expression<String>? title,
+    Expression<String>? category,
+    Expression<String>? laboratoryName,
+    Expression<String>? professionalName,
+    Expression<String>? requestProfessionalName,
+    Expression<String>? documentNumber,
+    Expression<String>? notes,
+    Expression<String>? source,
+    Expression<String>? sourceDocumentId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (performedAt != null) 'performed_at': performedAt,
+      if (collectedAt != null) 'collected_at': collectedAt,
+      if (receivedAt != null) 'received_at': receivedAt,
+      if (title != null) 'title': title,
+      if (category != null) 'category': category,
+      if (laboratoryName != null) 'laboratory_name': laboratoryName,
+      if (professionalName != null) 'professional_name': professionalName,
+      if (requestProfessionalName != null)
+        'request_professional_name': requestProfessionalName,
+      if (documentNumber != null) 'document_number': documentNumber,
+      if (notes != null) 'notes': notes,
+      if (source != null) 'source': source,
+      if (sourceDocumentId != null) 'source_document_id': sourceDocumentId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MedicalExamsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? performedAt,
+    Value<DateTime?>? collectedAt,
+    Value<DateTime?>? receivedAt,
+    Value<String?>? title,
+    Value<String?>? category,
+    Value<String?>? laboratoryName,
+    Value<String?>? professionalName,
+    Value<String?>? requestProfessionalName,
+    Value<String?>? documentNumber,
+    Value<String?>? notes,
+    Value<String>? source,
+    Value<String?>? sourceDocumentId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return MedicalExamsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      performedAt: performedAt ?? this.performedAt,
+      collectedAt: collectedAt ?? this.collectedAt,
+      receivedAt: receivedAt ?? this.receivedAt,
+      title: title ?? this.title,
+      category: category ?? this.category,
+      laboratoryName: laboratoryName ?? this.laboratoryName,
+      professionalName: professionalName ?? this.professionalName,
+      requestProfessionalName:
+          requestProfessionalName ?? this.requestProfessionalName,
+      documentNumber: documentNumber ?? this.documentNumber,
+      notes: notes ?? this.notes,
+      source: source ?? this.source,
+      sourceDocumentId: sourceDocumentId ?? this.sourceDocumentId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (performedAt.present) {
+      map['performed_at'] = Variable<DateTime>(performedAt.value);
+    }
+    if (collectedAt.present) {
+      map['collected_at'] = Variable<DateTime>(collectedAt.value);
+    }
+    if (receivedAt.present) {
+      map['received_at'] = Variable<DateTime>(receivedAt.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (laboratoryName.present) {
+      map['laboratory_name'] = Variable<String>(laboratoryName.value);
+    }
+    if (professionalName.present) {
+      map['professional_name'] = Variable<String>(professionalName.value);
+    }
+    if (requestProfessionalName.present) {
+      map['request_professional_name'] = Variable<String>(
+        requestProfessionalName.value,
+      );
+    }
+    if (documentNumber.present) {
+      map['document_number'] = Variable<String>(documentNumber.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (sourceDocumentId.present) {
+      map['source_document_id'] = Variable<String>(sourceDocumentId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalExamsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('performedAt: $performedAt, ')
+          ..write('collectedAt: $collectedAt, ')
+          ..write('receivedAt: $receivedAt, ')
+          ..write('title: $title, ')
+          ..write('category: $category, ')
+          ..write('laboratoryName: $laboratoryName, ')
+          ..write('professionalName: $professionalName, ')
+          ..write('requestProfessionalName: $requestProfessionalName, ')
+          ..write('documentNumber: $documentNumber, ')
+          ..write('notes: $notes, ')
+          ..write('source: $source, ')
+          ..write('sourceDocumentId: $sourceDocumentId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicalExamResultsTable extends MedicalExamResults
+    with TableInfo<$MedicalExamResultsTable, MedicalExamResult> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicalExamResultsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _medicalExamIdMeta = const VerificationMeta(
+    'medicalExamId',
+  );
+  @override
+  late final GeneratedColumn<String> medicalExamId = GeneratedColumn<String>(
+    'medical_exam_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _canonicalCodeMeta = const VerificationMeta(
+    'canonicalCode',
+  );
+  @override
+  late final GeneratedColumn<String> canonicalCode = GeneratedColumn<String>(
+    'canonical_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _canonicalNameMeta = const VerificationMeta(
+    'canonicalName',
+  );
+  @override
+  late final GeneratedColumn<String> canonicalName = GeneratedColumn<String>(
+    'canonical_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _normalizedNameMeta = const VerificationMeta(
+    'normalizedName',
+  );
+  @override
+  late final GeneratedColumn<String> normalizedName = GeneratedColumn<String>(
+    'normalized_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _valueTypeMeta = const VerificationMeta(
+    'valueType',
+  );
+  @override
+  late final GeneratedColumn<String> valueType = GeneratedColumn<String>(
+    'value_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _numericValueMeta = const VerificationMeta(
+    'numericValue',
+  );
+  @override
+  late final GeneratedColumn<double> numericValue = GeneratedColumn<double>(
+    'numeric_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _textValueMeta = const VerificationMeta(
+    'textValue',
+  );
+  @override
+  late final GeneratedColumn<String> textValue = GeneratedColumn<String>(
+    'text_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _booleanValueMeta = const VerificationMeta(
+    'booleanValue',
+  );
+  @override
+  late final GeneratedColumn<bool> booleanValue = GeneratedColumn<bool>(
+    'boolean_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("boolean_value" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _qualitativeValueMeta = const VerificationMeta(
+    'qualitativeValue',
+  );
+  @override
+  late final GeneratedColumn<String> qualitativeValue = GeneratedColumn<String>(
+    'qualitative_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  @override
+  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
+    'unit',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _normalizedUnitMeta = const VerificationMeta(
+    'normalizedUnit',
+  );
+  @override
+  late final GeneratedColumn<String> normalizedUnit = GeneratedColumn<String>(
+    'normalized_unit',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _referenceRangeTextMeta =
+      const VerificationMeta('referenceRangeText');
+  @override
+  late final GeneratedColumn<String> referenceRangeText =
+      GeneratedColumn<String>(
+        'reference_range_text',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _referenceMinMeta = const VerificationMeta(
+    'referenceMin',
+  );
+  @override
+  late final GeneratedColumn<double> referenceMin = GeneratedColumn<double>(
+    'reference_min',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _referenceMaxMeta = const VerificationMeta(
+    'referenceMax',
+  );
+  @override
+  late final GeneratedColumn<double> referenceMax = GeneratedColumn<double>(
+    'reference_max',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _referenceComparatorMeta =
+      const VerificationMeta('referenceComparator');
+  @override
+  late final GeneratedColumn<String> referenceComparator =
+      GeneratedColumn<String>(
+        'reference_comparator',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _referenceContextMeta = const VerificationMeta(
+    'referenceContext',
+  );
+  @override
+  late final GeneratedColumn<String> referenceContext = GeneratedColumn<String>(
+    'reference_context',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _methodMeta = const VerificationMeta('method');
+  @override
+  late final GeneratedColumn<String> method = GeneratedColumn<String>(
+    'method',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _specimenMeta = const VerificationMeta(
+    'specimen',
+  );
+  @override
+  late final GeneratedColumn<String> specimen = GeneratedColumn<String>(
+    'specimen',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _originalTextMeta = const VerificationMeta(
+    'originalText',
+  );
+  @override
+  late final GeneratedColumn<String> originalText = GeneratedColumn<String>(
+    'original_text',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _confidenceMeta = const VerificationMeta(
+    'confidence',
+  );
+  @override
+  late final GeneratedColumn<double> confidence = GeneratedColumn<double>(
+    'confidence',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    medicalExamId,
+    canonicalCode,
+    canonicalName,
+    displayName,
+    normalizedName,
+    category,
+    valueType,
+    numericValue,
+    textValue,
+    booleanValue,
+    qualitativeValue,
+    unit,
+    normalizedUnit,
+    referenceRangeText,
+    referenceMin,
+    referenceMax,
+    referenceComparator,
+    referenceContext,
+    status,
+    method,
+    specimen,
+    notes,
+    originalText,
+    source,
+    confidence,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medical_exam_results';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MedicalExamResult> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('medical_exam_id')) {
+      context.handle(
+        _medicalExamIdMeta,
+        medicalExamId.isAcceptableOrUnknown(
+          data['medical_exam_id']!,
+          _medicalExamIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_medicalExamIdMeta);
+    }
+    if (data.containsKey('canonical_code')) {
+      context.handle(
+        _canonicalCodeMeta,
+        canonicalCode.isAcceptableOrUnknown(
+          data['canonical_code']!,
+          _canonicalCodeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('canonical_name')) {
+      context.handle(
+        _canonicalNameMeta,
+        canonicalName.isAcceptableOrUnknown(
+          data['canonical_name']!,
+          _canonicalNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_canonicalNameMeta);
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayNameMeta);
+    }
+    if (data.containsKey('normalized_name')) {
+      context.handle(
+        _normalizedNameMeta,
+        normalizedName.isAcceptableOrUnknown(
+          data['normalized_name']!,
+          _normalizedNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_normalizedNameMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    }
+    if (data.containsKey('value_type')) {
+      context.handle(
+        _valueTypeMeta,
+        valueType.isAcceptableOrUnknown(data['value_type']!, _valueTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_valueTypeMeta);
+    }
+    if (data.containsKey('numeric_value')) {
+      context.handle(
+        _numericValueMeta,
+        numericValue.isAcceptableOrUnknown(
+          data['numeric_value']!,
+          _numericValueMeta,
+        ),
+      );
+    }
+    if (data.containsKey('text_value')) {
+      context.handle(
+        _textValueMeta,
+        textValue.isAcceptableOrUnknown(data['text_value']!, _textValueMeta),
+      );
+    }
+    if (data.containsKey('boolean_value')) {
+      context.handle(
+        _booleanValueMeta,
+        booleanValue.isAcceptableOrUnknown(
+          data['boolean_value']!,
+          _booleanValueMeta,
+        ),
+      );
+    }
+    if (data.containsKey('qualitative_value')) {
+      context.handle(
+        _qualitativeValueMeta,
+        qualitativeValue.isAcceptableOrUnknown(
+          data['qualitative_value']!,
+          _qualitativeValueMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unit')) {
+      context.handle(
+        _unitMeta,
+        unit.isAcceptableOrUnknown(data['unit']!, _unitMeta),
+      );
+    }
+    if (data.containsKey('normalized_unit')) {
+      context.handle(
+        _normalizedUnitMeta,
+        normalizedUnit.isAcceptableOrUnknown(
+          data['normalized_unit']!,
+          _normalizedUnitMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reference_range_text')) {
+      context.handle(
+        _referenceRangeTextMeta,
+        referenceRangeText.isAcceptableOrUnknown(
+          data['reference_range_text']!,
+          _referenceRangeTextMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reference_min')) {
+      context.handle(
+        _referenceMinMeta,
+        referenceMin.isAcceptableOrUnknown(
+          data['reference_min']!,
+          _referenceMinMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reference_max')) {
+      context.handle(
+        _referenceMaxMeta,
+        referenceMax.isAcceptableOrUnknown(
+          data['reference_max']!,
+          _referenceMaxMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reference_comparator')) {
+      context.handle(
+        _referenceComparatorMeta,
+        referenceComparator.isAcceptableOrUnknown(
+          data['reference_comparator']!,
+          _referenceComparatorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reference_context')) {
+      context.handle(
+        _referenceContextMeta,
+        referenceContext.isAcceptableOrUnknown(
+          data['reference_context']!,
+          _referenceContextMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('method')) {
+      context.handle(
+        _methodMeta,
+        method.isAcceptableOrUnknown(data['method']!, _methodMeta),
+      );
+    }
+    if (data.containsKey('specimen')) {
+      context.handle(
+        _specimenMeta,
+        specimen.isAcceptableOrUnknown(data['specimen']!, _specimenMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('original_text')) {
+      context.handle(
+        _originalTextMeta,
+        originalText.isAcceptableOrUnknown(
+          data['original_text']!,
+          _originalTextMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('confidence')) {
+      context.handle(
+        _confidenceMeta,
+        confidence.isAcceptableOrUnknown(data['confidence']!, _confidenceMeta),
+      );
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sortOrderMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  MedicalExamResult map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicalExamResult(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      medicalExamId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}medical_exam_id'],
+      )!,
+      canonicalCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}canonical_code'],
+      ),
+      canonicalName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}canonical_name'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      )!,
+      normalizedName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_name'],
+      )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      ),
+      valueType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value_type'],
+      )!,
+      numericValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}numeric_value'],
+      ),
+      textValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}text_value'],
+      ),
+      booleanValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}boolean_value'],
+      ),
+      qualitativeValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}qualitative_value'],
+      ),
+      unit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit'],
+      ),
+      normalizedUnit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_unit'],
+      ),
+      referenceRangeText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reference_range_text'],
+      ),
+      referenceMin: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}reference_min'],
+      ),
+      referenceMax: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}reference_max'],
+      ),
+      referenceComparator: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reference_comparator'],
+      ),
+      referenceContext: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reference_context'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      ),
+      method: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}method'],
+      ),
+      specimen: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}specimen'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      originalText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}original_text'],
+      ),
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      confidence: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}confidence'],
+      ),
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $MedicalExamResultsTable createAlias(String alias) {
+    return $MedicalExamResultsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicalExamResult extends DataClass
+    implements Insertable<MedicalExamResult> {
+  final String id;
+  final String userId;
+  final String medicalExamId;
+  final String? canonicalCode;
+  final String canonicalName;
+  final String displayName;
+  final String normalizedName;
+  final String? category;
+  final String valueType;
+  final double? numericValue;
+  final String? textValue;
+  final bool? booleanValue;
+  final String? qualitativeValue;
+  final String? unit;
+  final String? normalizedUnit;
+  final String? referenceRangeText;
+  final double? referenceMin;
+  final double? referenceMax;
+  final String? referenceComparator;
+  final String? referenceContext;
+  final String? status;
+  final String? method;
+  final String? specimen;
+  final String? notes;
+  final String? originalText;
+  final String source;
+  final double? confidence;
+  final int sortOrder;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const MedicalExamResult({
+    required this.id,
+    required this.userId,
+    required this.medicalExamId,
+    this.canonicalCode,
+    required this.canonicalName,
+    required this.displayName,
+    required this.normalizedName,
+    this.category,
+    required this.valueType,
+    this.numericValue,
+    this.textValue,
+    this.booleanValue,
+    this.qualitativeValue,
+    this.unit,
+    this.normalizedUnit,
+    this.referenceRangeText,
+    this.referenceMin,
+    this.referenceMax,
+    this.referenceComparator,
+    this.referenceContext,
+    this.status,
+    this.method,
+    this.specimen,
+    this.notes,
+    this.originalText,
+    required this.source,
+    this.confidence,
+    required this.sortOrder,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['medical_exam_id'] = Variable<String>(medicalExamId);
+    if (!nullToAbsent || canonicalCode != null) {
+      map['canonical_code'] = Variable<String>(canonicalCode);
+    }
+    map['canonical_name'] = Variable<String>(canonicalName);
+    map['display_name'] = Variable<String>(displayName);
+    map['normalized_name'] = Variable<String>(normalizedName);
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    map['value_type'] = Variable<String>(valueType);
+    if (!nullToAbsent || numericValue != null) {
+      map['numeric_value'] = Variable<double>(numericValue);
+    }
+    if (!nullToAbsent || textValue != null) {
+      map['text_value'] = Variable<String>(textValue);
+    }
+    if (!nullToAbsent || booleanValue != null) {
+      map['boolean_value'] = Variable<bool>(booleanValue);
+    }
+    if (!nullToAbsent || qualitativeValue != null) {
+      map['qualitative_value'] = Variable<String>(qualitativeValue);
+    }
+    if (!nullToAbsent || unit != null) {
+      map['unit'] = Variable<String>(unit);
+    }
+    if (!nullToAbsent || normalizedUnit != null) {
+      map['normalized_unit'] = Variable<String>(normalizedUnit);
+    }
+    if (!nullToAbsent || referenceRangeText != null) {
+      map['reference_range_text'] = Variable<String>(referenceRangeText);
+    }
+    if (!nullToAbsent || referenceMin != null) {
+      map['reference_min'] = Variable<double>(referenceMin);
+    }
+    if (!nullToAbsent || referenceMax != null) {
+      map['reference_max'] = Variable<double>(referenceMax);
+    }
+    if (!nullToAbsent || referenceComparator != null) {
+      map['reference_comparator'] = Variable<String>(referenceComparator);
+    }
+    if (!nullToAbsent || referenceContext != null) {
+      map['reference_context'] = Variable<String>(referenceContext);
+    }
+    if (!nullToAbsent || status != null) {
+      map['status'] = Variable<String>(status);
+    }
+    if (!nullToAbsent || method != null) {
+      map['method'] = Variable<String>(method);
+    }
+    if (!nullToAbsent || specimen != null) {
+      map['specimen'] = Variable<String>(specimen);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || originalText != null) {
+      map['original_text'] = Variable<String>(originalText);
+    }
+    map['source'] = Variable<String>(source);
+    if (!nullToAbsent || confidence != null) {
+      map['confidence'] = Variable<double>(confidence);
+    }
+    map['sort_order'] = Variable<int>(sortOrder);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  MedicalExamResultsCompanion toCompanion(bool nullToAbsent) {
+    return MedicalExamResultsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      medicalExamId: Value(medicalExamId),
+      canonicalCode: canonicalCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(canonicalCode),
+      canonicalName: Value(canonicalName),
+      displayName: Value(displayName),
+      normalizedName: Value(normalizedName),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+      valueType: Value(valueType),
+      numericValue: numericValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(numericValue),
+      textValue: textValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(textValue),
+      booleanValue: booleanValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(booleanValue),
+      qualitativeValue: qualitativeValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(qualitativeValue),
+      unit: unit == null && nullToAbsent ? const Value.absent() : Value(unit),
+      normalizedUnit: normalizedUnit == null && nullToAbsent
+          ? const Value.absent()
+          : Value(normalizedUnit),
+      referenceRangeText: referenceRangeText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referenceRangeText),
+      referenceMin: referenceMin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referenceMin),
+      referenceMax: referenceMax == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referenceMax),
+      referenceComparator: referenceComparator == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referenceComparator),
+      referenceContext: referenceContext == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referenceContext),
+      status: status == null && nullToAbsent
+          ? const Value.absent()
+          : Value(status),
+      method: method == null && nullToAbsent
+          ? const Value.absent()
+          : Value(method),
+      specimen: specimen == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specimen),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      originalText: originalText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(originalText),
+      source: Value(source),
+      confidence: confidence == null && nullToAbsent
+          ? const Value.absent()
+          : Value(confidence),
+      sortOrder: Value(sortOrder),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory MedicalExamResult.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicalExamResult(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      medicalExamId: serializer.fromJson<String>(json['medicalExamId']),
+      canonicalCode: serializer.fromJson<String?>(json['canonicalCode']),
+      canonicalName: serializer.fromJson<String>(json['canonicalName']),
+      displayName: serializer.fromJson<String>(json['displayName']),
+      normalizedName: serializer.fromJson<String>(json['normalizedName']),
+      category: serializer.fromJson<String?>(json['category']),
+      valueType: serializer.fromJson<String>(json['valueType']),
+      numericValue: serializer.fromJson<double?>(json['numericValue']),
+      textValue: serializer.fromJson<String?>(json['textValue']),
+      booleanValue: serializer.fromJson<bool?>(json['booleanValue']),
+      qualitativeValue: serializer.fromJson<String?>(json['qualitativeValue']),
+      unit: serializer.fromJson<String?>(json['unit']),
+      normalizedUnit: serializer.fromJson<String?>(json['normalizedUnit']),
+      referenceRangeText: serializer.fromJson<String?>(
+        json['referenceRangeText'],
+      ),
+      referenceMin: serializer.fromJson<double?>(json['referenceMin']),
+      referenceMax: serializer.fromJson<double?>(json['referenceMax']),
+      referenceComparator: serializer.fromJson<String?>(
+        json['referenceComparator'],
+      ),
+      referenceContext: serializer.fromJson<String?>(json['referenceContext']),
+      status: serializer.fromJson<String?>(json['status']),
+      method: serializer.fromJson<String?>(json['method']),
+      specimen: serializer.fromJson<String?>(json['specimen']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      originalText: serializer.fromJson<String?>(json['originalText']),
+      source: serializer.fromJson<String>(json['source']),
+      confidence: serializer.fromJson<double?>(json['confidence']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'medicalExamId': serializer.toJson<String>(medicalExamId),
+      'canonicalCode': serializer.toJson<String?>(canonicalCode),
+      'canonicalName': serializer.toJson<String>(canonicalName),
+      'displayName': serializer.toJson<String>(displayName),
+      'normalizedName': serializer.toJson<String>(normalizedName),
+      'category': serializer.toJson<String?>(category),
+      'valueType': serializer.toJson<String>(valueType),
+      'numericValue': serializer.toJson<double?>(numericValue),
+      'textValue': serializer.toJson<String?>(textValue),
+      'booleanValue': serializer.toJson<bool?>(booleanValue),
+      'qualitativeValue': serializer.toJson<String?>(qualitativeValue),
+      'unit': serializer.toJson<String?>(unit),
+      'normalizedUnit': serializer.toJson<String?>(normalizedUnit),
+      'referenceRangeText': serializer.toJson<String?>(referenceRangeText),
+      'referenceMin': serializer.toJson<double?>(referenceMin),
+      'referenceMax': serializer.toJson<double?>(referenceMax),
+      'referenceComparator': serializer.toJson<String?>(referenceComparator),
+      'referenceContext': serializer.toJson<String?>(referenceContext),
+      'status': serializer.toJson<String?>(status),
+      'method': serializer.toJson<String?>(method),
+      'specimen': serializer.toJson<String?>(specimen),
+      'notes': serializer.toJson<String?>(notes),
+      'originalText': serializer.toJson<String?>(originalText),
+      'source': serializer.toJson<String>(source),
+      'confidence': serializer.toJson<double?>(confidence),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  MedicalExamResult copyWith({
+    String? id,
+    String? userId,
+    String? medicalExamId,
+    Value<String?> canonicalCode = const Value.absent(),
+    String? canonicalName,
+    String? displayName,
+    String? normalizedName,
+    Value<String?> category = const Value.absent(),
+    String? valueType,
+    Value<double?> numericValue = const Value.absent(),
+    Value<String?> textValue = const Value.absent(),
+    Value<bool?> booleanValue = const Value.absent(),
+    Value<String?> qualitativeValue = const Value.absent(),
+    Value<String?> unit = const Value.absent(),
+    Value<String?> normalizedUnit = const Value.absent(),
+    Value<String?> referenceRangeText = const Value.absent(),
+    Value<double?> referenceMin = const Value.absent(),
+    Value<double?> referenceMax = const Value.absent(),
+    Value<String?> referenceComparator = const Value.absent(),
+    Value<String?> referenceContext = const Value.absent(),
+    Value<String?> status = const Value.absent(),
+    Value<String?> method = const Value.absent(),
+    Value<String?> specimen = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    Value<String?> originalText = const Value.absent(),
+    String? source,
+    Value<double?> confidence = const Value.absent(),
+    int? sortOrder,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => MedicalExamResult(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    medicalExamId: medicalExamId ?? this.medicalExamId,
+    canonicalCode: canonicalCode.present
+        ? canonicalCode.value
+        : this.canonicalCode,
+    canonicalName: canonicalName ?? this.canonicalName,
+    displayName: displayName ?? this.displayName,
+    normalizedName: normalizedName ?? this.normalizedName,
+    category: category.present ? category.value : this.category,
+    valueType: valueType ?? this.valueType,
+    numericValue: numericValue.present ? numericValue.value : this.numericValue,
+    textValue: textValue.present ? textValue.value : this.textValue,
+    booleanValue: booleanValue.present ? booleanValue.value : this.booleanValue,
+    qualitativeValue: qualitativeValue.present
+        ? qualitativeValue.value
+        : this.qualitativeValue,
+    unit: unit.present ? unit.value : this.unit,
+    normalizedUnit: normalizedUnit.present
+        ? normalizedUnit.value
+        : this.normalizedUnit,
+    referenceRangeText: referenceRangeText.present
+        ? referenceRangeText.value
+        : this.referenceRangeText,
+    referenceMin: referenceMin.present ? referenceMin.value : this.referenceMin,
+    referenceMax: referenceMax.present ? referenceMax.value : this.referenceMax,
+    referenceComparator: referenceComparator.present
+        ? referenceComparator.value
+        : this.referenceComparator,
+    referenceContext: referenceContext.present
+        ? referenceContext.value
+        : this.referenceContext,
+    status: status.present ? status.value : this.status,
+    method: method.present ? method.value : this.method,
+    specimen: specimen.present ? specimen.value : this.specimen,
+    notes: notes.present ? notes.value : this.notes,
+    originalText: originalText.present ? originalText.value : this.originalText,
+    source: source ?? this.source,
+    confidence: confidence.present ? confidence.value : this.confidence,
+    sortOrder: sortOrder ?? this.sortOrder,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  MedicalExamResult copyWithCompanion(MedicalExamResultsCompanion data) {
+    return MedicalExamResult(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      medicalExamId: data.medicalExamId.present
+          ? data.medicalExamId.value
+          : this.medicalExamId,
+      canonicalCode: data.canonicalCode.present
+          ? data.canonicalCode.value
+          : this.canonicalCode,
+      canonicalName: data.canonicalName.present
+          ? data.canonicalName.value
+          : this.canonicalName,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      normalizedName: data.normalizedName.present
+          ? data.normalizedName.value
+          : this.normalizedName,
+      category: data.category.present ? data.category.value : this.category,
+      valueType: data.valueType.present ? data.valueType.value : this.valueType,
+      numericValue: data.numericValue.present
+          ? data.numericValue.value
+          : this.numericValue,
+      textValue: data.textValue.present ? data.textValue.value : this.textValue,
+      booleanValue: data.booleanValue.present
+          ? data.booleanValue.value
+          : this.booleanValue,
+      qualitativeValue: data.qualitativeValue.present
+          ? data.qualitativeValue.value
+          : this.qualitativeValue,
+      unit: data.unit.present ? data.unit.value : this.unit,
+      normalizedUnit: data.normalizedUnit.present
+          ? data.normalizedUnit.value
+          : this.normalizedUnit,
+      referenceRangeText: data.referenceRangeText.present
+          ? data.referenceRangeText.value
+          : this.referenceRangeText,
+      referenceMin: data.referenceMin.present
+          ? data.referenceMin.value
+          : this.referenceMin,
+      referenceMax: data.referenceMax.present
+          ? data.referenceMax.value
+          : this.referenceMax,
+      referenceComparator: data.referenceComparator.present
+          ? data.referenceComparator.value
+          : this.referenceComparator,
+      referenceContext: data.referenceContext.present
+          ? data.referenceContext.value
+          : this.referenceContext,
+      status: data.status.present ? data.status.value : this.status,
+      method: data.method.present ? data.method.value : this.method,
+      specimen: data.specimen.present ? data.specimen.value : this.specimen,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      originalText: data.originalText.present
+          ? data.originalText.value
+          : this.originalText,
+      source: data.source.present ? data.source.value : this.source,
+      confidence: data.confidence.present
+          ? data.confidence.value
+          : this.confidence,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalExamResult(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('medicalExamId: $medicalExamId, ')
+          ..write('canonicalCode: $canonicalCode, ')
+          ..write('canonicalName: $canonicalName, ')
+          ..write('displayName: $displayName, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('category: $category, ')
+          ..write('valueType: $valueType, ')
+          ..write('numericValue: $numericValue, ')
+          ..write('textValue: $textValue, ')
+          ..write('booleanValue: $booleanValue, ')
+          ..write('qualitativeValue: $qualitativeValue, ')
+          ..write('unit: $unit, ')
+          ..write('normalizedUnit: $normalizedUnit, ')
+          ..write('referenceRangeText: $referenceRangeText, ')
+          ..write('referenceMin: $referenceMin, ')
+          ..write('referenceMax: $referenceMax, ')
+          ..write('referenceComparator: $referenceComparator, ')
+          ..write('referenceContext: $referenceContext, ')
+          ..write('status: $status, ')
+          ..write('method: $method, ')
+          ..write('specimen: $specimen, ')
+          ..write('notes: $notes, ')
+          ..write('originalText: $originalText, ')
+          ..write('source: $source, ')
+          ..write('confidence: $confidence, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    userId,
+    medicalExamId,
+    canonicalCode,
+    canonicalName,
+    displayName,
+    normalizedName,
+    category,
+    valueType,
+    numericValue,
+    textValue,
+    booleanValue,
+    qualitativeValue,
+    unit,
+    normalizedUnit,
+    referenceRangeText,
+    referenceMin,
+    referenceMax,
+    referenceComparator,
+    referenceContext,
+    status,
+    method,
+    specimen,
+    notes,
+    originalText,
+    source,
+    confidence,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicalExamResult &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.medicalExamId == this.medicalExamId &&
+          other.canonicalCode == this.canonicalCode &&
+          other.canonicalName == this.canonicalName &&
+          other.displayName == this.displayName &&
+          other.normalizedName == this.normalizedName &&
+          other.category == this.category &&
+          other.valueType == this.valueType &&
+          other.numericValue == this.numericValue &&
+          other.textValue == this.textValue &&
+          other.booleanValue == this.booleanValue &&
+          other.qualitativeValue == this.qualitativeValue &&
+          other.unit == this.unit &&
+          other.normalizedUnit == this.normalizedUnit &&
+          other.referenceRangeText == this.referenceRangeText &&
+          other.referenceMin == this.referenceMin &&
+          other.referenceMax == this.referenceMax &&
+          other.referenceComparator == this.referenceComparator &&
+          other.referenceContext == this.referenceContext &&
+          other.status == this.status &&
+          other.method == this.method &&
+          other.specimen == this.specimen &&
+          other.notes == this.notes &&
+          other.originalText == this.originalText &&
+          other.source == this.source &&
+          other.confidence == this.confidence &&
+          other.sortOrder == this.sortOrder &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class MedicalExamResultsCompanion extends UpdateCompanion<MedicalExamResult> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> medicalExamId;
+  final Value<String?> canonicalCode;
+  final Value<String> canonicalName;
+  final Value<String> displayName;
+  final Value<String> normalizedName;
+  final Value<String?> category;
+  final Value<String> valueType;
+  final Value<double?> numericValue;
+  final Value<String?> textValue;
+  final Value<bool?> booleanValue;
+  final Value<String?> qualitativeValue;
+  final Value<String?> unit;
+  final Value<String?> normalizedUnit;
+  final Value<String?> referenceRangeText;
+  final Value<double?> referenceMin;
+  final Value<double?> referenceMax;
+  final Value<String?> referenceComparator;
+  final Value<String?> referenceContext;
+  final Value<String?> status;
+  final Value<String?> method;
+  final Value<String?> specimen;
+  final Value<String?> notes;
+  final Value<String?> originalText;
+  final Value<String> source;
+  final Value<double?> confidence;
+  final Value<int> sortOrder;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const MedicalExamResultsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.medicalExamId = const Value.absent(),
+    this.canonicalCode = const Value.absent(),
+    this.canonicalName = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.normalizedName = const Value.absent(),
+    this.category = const Value.absent(),
+    this.valueType = const Value.absent(),
+    this.numericValue = const Value.absent(),
+    this.textValue = const Value.absent(),
+    this.booleanValue = const Value.absent(),
+    this.qualitativeValue = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.normalizedUnit = const Value.absent(),
+    this.referenceRangeText = const Value.absent(),
+    this.referenceMin = const Value.absent(),
+    this.referenceMax = const Value.absent(),
+    this.referenceComparator = const Value.absent(),
+    this.referenceContext = const Value.absent(),
+    this.status = const Value.absent(),
+    this.method = const Value.absent(),
+    this.specimen = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.originalText = const Value.absent(),
+    this.source = const Value.absent(),
+    this.confidence = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MedicalExamResultsCompanion.insert({
+    required String id,
+    required String userId,
+    required String medicalExamId,
+    this.canonicalCode = const Value.absent(),
+    required String canonicalName,
+    required String displayName,
+    required String normalizedName,
+    this.category = const Value.absent(),
+    required String valueType,
+    this.numericValue = const Value.absent(),
+    this.textValue = const Value.absent(),
+    this.booleanValue = const Value.absent(),
+    this.qualitativeValue = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.normalizedUnit = const Value.absent(),
+    this.referenceRangeText = const Value.absent(),
+    this.referenceMin = const Value.absent(),
+    this.referenceMax = const Value.absent(),
+    this.referenceComparator = const Value.absent(),
+    this.referenceContext = const Value.absent(),
+    this.status = const Value.absent(),
+    this.method = const Value.absent(),
+    this.specimen = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.originalText = const Value.absent(),
+    required String source,
+    this.confidence = const Value.absent(),
+    required int sortOrder,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       medicalExamId = Value(medicalExamId),
+       canonicalName = Value(canonicalName),
+       displayName = Value(displayName),
+       normalizedName = Value(normalizedName),
+       valueType = Value(valueType),
+       source = Value(source),
+       sortOrder = Value(sortOrder),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<MedicalExamResult> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? medicalExamId,
+    Expression<String>? canonicalCode,
+    Expression<String>? canonicalName,
+    Expression<String>? displayName,
+    Expression<String>? normalizedName,
+    Expression<String>? category,
+    Expression<String>? valueType,
+    Expression<double>? numericValue,
+    Expression<String>? textValue,
+    Expression<bool>? booleanValue,
+    Expression<String>? qualitativeValue,
+    Expression<String>? unit,
+    Expression<String>? normalizedUnit,
+    Expression<String>? referenceRangeText,
+    Expression<double>? referenceMin,
+    Expression<double>? referenceMax,
+    Expression<String>? referenceComparator,
+    Expression<String>? referenceContext,
+    Expression<String>? status,
+    Expression<String>? method,
+    Expression<String>? specimen,
+    Expression<String>? notes,
+    Expression<String>? originalText,
+    Expression<String>? source,
+    Expression<double>? confidence,
+    Expression<int>? sortOrder,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (medicalExamId != null) 'medical_exam_id': medicalExamId,
+      if (canonicalCode != null) 'canonical_code': canonicalCode,
+      if (canonicalName != null) 'canonical_name': canonicalName,
+      if (displayName != null) 'display_name': displayName,
+      if (normalizedName != null) 'normalized_name': normalizedName,
+      if (category != null) 'category': category,
+      if (valueType != null) 'value_type': valueType,
+      if (numericValue != null) 'numeric_value': numericValue,
+      if (textValue != null) 'text_value': textValue,
+      if (booleanValue != null) 'boolean_value': booleanValue,
+      if (qualitativeValue != null) 'qualitative_value': qualitativeValue,
+      if (unit != null) 'unit': unit,
+      if (normalizedUnit != null) 'normalized_unit': normalizedUnit,
+      if (referenceRangeText != null)
+        'reference_range_text': referenceRangeText,
+      if (referenceMin != null) 'reference_min': referenceMin,
+      if (referenceMax != null) 'reference_max': referenceMax,
+      if (referenceComparator != null)
+        'reference_comparator': referenceComparator,
+      if (referenceContext != null) 'reference_context': referenceContext,
+      if (status != null) 'status': status,
+      if (method != null) 'method': method,
+      if (specimen != null) 'specimen': specimen,
+      if (notes != null) 'notes': notes,
+      if (originalText != null) 'original_text': originalText,
+      if (source != null) 'source': source,
+      if (confidence != null) 'confidence': confidence,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MedicalExamResultsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? medicalExamId,
+    Value<String?>? canonicalCode,
+    Value<String>? canonicalName,
+    Value<String>? displayName,
+    Value<String>? normalizedName,
+    Value<String?>? category,
+    Value<String>? valueType,
+    Value<double?>? numericValue,
+    Value<String?>? textValue,
+    Value<bool?>? booleanValue,
+    Value<String?>? qualitativeValue,
+    Value<String?>? unit,
+    Value<String?>? normalizedUnit,
+    Value<String?>? referenceRangeText,
+    Value<double?>? referenceMin,
+    Value<double?>? referenceMax,
+    Value<String?>? referenceComparator,
+    Value<String?>? referenceContext,
+    Value<String?>? status,
+    Value<String?>? method,
+    Value<String?>? specimen,
+    Value<String?>? notes,
+    Value<String?>? originalText,
+    Value<String>? source,
+    Value<double?>? confidence,
+    Value<int>? sortOrder,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return MedicalExamResultsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      medicalExamId: medicalExamId ?? this.medicalExamId,
+      canonicalCode: canonicalCode ?? this.canonicalCode,
+      canonicalName: canonicalName ?? this.canonicalName,
+      displayName: displayName ?? this.displayName,
+      normalizedName: normalizedName ?? this.normalizedName,
+      category: category ?? this.category,
+      valueType: valueType ?? this.valueType,
+      numericValue: numericValue ?? this.numericValue,
+      textValue: textValue ?? this.textValue,
+      booleanValue: booleanValue ?? this.booleanValue,
+      qualitativeValue: qualitativeValue ?? this.qualitativeValue,
+      unit: unit ?? this.unit,
+      normalizedUnit: normalizedUnit ?? this.normalizedUnit,
+      referenceRangeText: referenceRangeText ?? this.referenceRangeText,
+      referenceMin: referenceMin ?? this.referenceMin,
+      referenceMax: referenceMax ?? this.referenceMax,
+      referenceComparator: referenceComparator ?? this.referenceComparator,
+      referenceContext: referenceContext ?? this.referenceContext,
+      status: status ?? this.status,
+      method: method ?? this.method,
+      specimen: specimen ?? this.specimen,
+      notes: notes ?? this.notes,
+      originalText: originalText ?? this.originalText,
+      source: source ?? this.source,
+      confidence: confidence ?? this.confidence,
+      sortOrder: sortOrder ?? this.sortOrder,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (medicalExamId.present) {
+      map['medical_exam_id'] = Variable<String>(medicalExamId.value);
+    }
+    if (canonicalCode.present) {
+      map['canonical_code'] = Variable<String>(canonicalCode.value);
+    }
+    if (canonicalName.present) {
+      map['canonical_name'] = Variable<String>(canonicalName.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (normalizedName.present) {
+      map['normalized_name'] = Variable<String>(normalizedName.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (valueType.present) {
+      map['value_type'] = Variable<String>(valueType.value);
+    }
+    if (numericValue.present) {
+      map['numeric_value'] = Variable<double>(numericValue.value);
+    }
+    if (textValue.present) {
+      map['text_value'] = Variable<String>(textValue.value);
+    }
+    if (booleanValue.present) {
+      map['boolean_value'] = Variable<bool>(booleanValue.value);
+    }
+    if (qualitativeValue.present) {
+      map['qualitative_value'] = Variable<String>(qualitativeValue.value);
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(unit.value);
+    }
+    if (normalizedUnit.present) {
+      map['normalized_unit'] = Variable<String>(normalizedUnit.value);
+    }
+    if (referenceRangeText.present) {
+      map['reference_range_text'] = Variable<String>(referenceRangeText.value);
+    }
+    if (referenceMin.present) {
+      map['reference_min'] = Variable<double>(referenceMin.value);
+    }
+    if (referenceMax.present) {
+      map['reference_max'] = Variable<double>(referenceMax.value);
+    }
+    if (referenceComparator.present) {
+      map['reference_comparator'] = Variable<String>(referenceComparator.value);
+    }
+    if (referenceContext.present) {
+      map['reference_context'] = Variable<String>(referenceContext.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (method.present) {
+      map['method'] = Variable<String>(method.value);
+    }
+    if (specimen.present) {
+      map['specimen'] = Variable<String>(specimen.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (originalText.present) {
+      map['original_text'] = Variable<String>(originalText.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (confidence.present) {
+      map['confidence'] = Variable<double>(confidence.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalExamResultsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('medicalExamId: $medicalExamId, ')
+          ..write('canonicalCode: $canonicalCode, ')
+          ..write('canonicalName: $canonicalName, ')
+          ..write('displayName: $displayName, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('category: $category, ')
+          ..write('valueType: $valueType, ')
+          ..write('numericValue: $numericValue, ')
+          ..write('textValue: $textValue, ')
+          ..write('booleanValue: $booleanValue, ')
+          ..write('qualitativeValue: $qualitativeValue, ')
+          ..write('unit: $unit, ')
+          ..write('normalizedUnit: $normalizedUnit, ')
+          ..write('referenceRangeText: $referenceRangeText, ')
+          ..write('referenceMin: $referenceMin, ')
+          ..write('referenceMax: $referenceMax, ')
+          ..write('referenceComparator: $referenceComparator, ')
+          ..write('referenceContext: $referenceContext, ')
+          ..write('status: $status, ')
+          ..write('method: $method, ')
+          ..write('specimen: $specimen, ')
+          ..write('notes: $notes, ')
+          ..write('originalText: $originalText, ')
+          ..write('source: $source, ')
+          ..write('confidence: $confidence, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -20905,6 +24062,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $ExtractedFieldRecordsTable(this);
   late final $BioimpedanceRecordsTable bioimpedanceRecords =
       $BioimpedanceRecordsTable(this);
+  late final $MedicalExamsTable medicalExams = $MedicalExamsTable(this);
+  late final $MedicalExamResultsTable medicalExamResults =
+      $MedicalExamResultsTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -21037,6 +24197,34 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'bioimpedance_user_sync_updated_idx',
     'CREATE INDEX bioimpedance_user_sync_updated_idx ON bioimpedance_records (user_id, sync_status, updated_at)',
   );
+  late final Index medicalExamsUserDeletedPerformedIdx = Index(
+    'medical_exams_user_deleted_performed_idx',
+    'CREATE INDEX medical_exams_user_deleted_performed_idx ON medical_exams (user_id, deleted_at, performed_at)',
+  );
+  late final Index medicalExamsUserSyncUpdatedIdx = Index(
+    'medical_exams_user_sync_updated_idx',
+    'CREATE INDEX medical_exams_user_sync_updated_idx ON medical_exams (user_id, sync_status, updated_at)',
+  );
+  late final Index medicalExamsUserSourceDocumentIdx = Index(
+    'medical_exams_user_source_document_idx',
+    'CREATE INDEX medical_exams_user_source_document_idx ON medical_exams (user_id, source_document_id)',
+  );
+  late final Index medicalExamResultsUserExamSortIdx = Index(
+    'medical_exam_results_user_exam_sort_idx',
+    'CREATE INDEX medical_exam_results_user_exam_sort_idx ON medical_exam_results (user_id, medical_exam_id, sort_order)',
+  );
+  late final Index medicalExamResultsUserDeletedUpdatedIdx = Index(
+    'medical_exam_results_user_deleted_updated_idx',
+    'CREATE INDEX medical_exam_results_user_deleted_updated_idx ON medical_exam_results (user_id, deleted_at, updated_at)',
+  );
+  late final Index medicalExamResultsUserCanonicalCodeIdx = Index(
+    'medical_exam_results_user_canonical_code_idx',
+    'CREATE INDEX medical_exam_results_user_canonical_code_idx ON medical_exam_results (user_id, canonical_code)',
+  );
+  late final Index medicalExamResultsUserNormalizedNameIdx = Index(
+    'medical_exam_results_user_normalized_name_idx',
+    'CREATE INDEX medical_exam_results_user_normalized_name_idx ON medical_exam_results (user_id, normalized_name)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -21058,6 +24246,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final DocumentIntelligenceDao documentIntelligenceDao =
       DocumentIntelligenceDao(this as AppDatabase);
   late final BioimpedanceDao bioimpedanceDao = BioimpedanceDao(
+    this as AppDatabase,
+  );
+  late final MedicalExamDao medicalExamDao = MedicalExamDao(
     this as AppDatabase,
   );
   @override
@@ -21093,6 +24284,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     documentProcessingRecords,
     extractedFieldRecords,
     bioimpedanceRecords,
+    medicalExams,
+    medicalExamResults,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -21126,6 +24319,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     extractedFieldUserProcessingIdx,
     bioimpedanceUserDeletedMeasuredIdx,
     bioimpedanceUserSyncUpdatedIdx,
+    medicalExamsUserDeletedPerformedIdx,
+    medicalExamsUserSyncUpdatedIdx,
+    medicalExamsUserSourceDocumentIdx,
+    medicalExamResultsUserExamSortIdx,
+    medicalExamResultsUserDeletedUpdatedIdx,
+    medicalExamResultsUserCanonicalCodeIdx,
+    medicalExamResultsUserNormalizedNameIdx,
   ];
 }
 
@@ -30999,6 +34199,1357 @@ typedef $$BioimpedanceRecordsTableProcessedTableManager =
       BioimpedanceRecord,
       PrefetchHooks Function()
     >;
+typedef $$MedicalExamsTableCreateCompanionBuilder =
+    MedicalExamsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime performedAt,
+      Value<DateTime?> collectedAt,
+      Value<DateTime?> receivedAt,
+      Value<String?> title,
+      Value<String?> category,
+      Value<String?> laboratoryName,
+      Value<String?> professionalName,
+      Value<String?> requestProfessionalName,
+      Value<String?> documentNumber,
+      Value<String?> notes,
+      required String source,
+      Value<String?> sourceDocumentId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$MedicalExamsTableUpdateCompanionBuilder =
+    MedicalExamsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> performedAt,
+      Value<DateTime?> collectedAt,
+      Value<DateTime?> receivedAt,
+      Value<String?> title,
+      Value<String?> category,
+      Value<String?> laboratoryName,
+      Value<String?> professionalName,
+      Value<String?> requestProfessionalName,
+      Value<String?> documentNumber,
+      Value<String?> notes,
+      Value<String> source,
+      Value<String?> sourceDocumentId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$MedicalExamsTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicalExamsTable> {
+  $$MedicalExamsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get performedAt => $composableBuilder(
+    column: $table.performedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get collectedAt => $composableBuilder(
+    column: $table.collectedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get receivedAt => $composableBuilder(
+    column: $table.receivedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get laboratoryName => $composableBuilder(
+    column: $table.laboratoryName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestProfessionalName => $composableBuilder(
+    column: $table.requestProfessionalName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get documentNumber => $composableBuilder(
+    column: $table.documentNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MedicalExamsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicalExamsTable> {
+  $$MedicalExamsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get performedAt => $composableBuilder(
+    column: $table.performedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get collectedAt => $composableBuilder(
+    column: $table.collectedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get receivedAt => $composableBuilder(
+    column: $table.receivedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get laboratoryName => $composableBuilder(
+    column: $table.laboratoryName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestProfessionalName => $composableBuilder(
+    column: $table.requestProfessionalName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get documentNumber => $composableBuilder(
+    column: $table.documentNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MedicalExamsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicalExamsTable> {
+  $$MedicalExamsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get performedAt => $composableBuilder(
+    column: $table.performedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get collectedAt => $composableBuilder(
+    column: $table.collectedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get receivedAt => $composableBuilder(
+    column: $table.receivedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get laboratoryName => $composableBuilder(
+    column: $table.laboratoryName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestProfessionalName => $composableBuilder(
+    column: $table.requestProfessionalName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get documentNumber => $composableBuilder(
+    column: $table.documentNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$MedicalExamsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MedicalExamsTable,
+          MedicalExam,
+          $$MedicalExamsTableFilterComposer,
+          $$MedicalExamsTableOrderingComposer,
+          $$MedicalExamsTableAnnotationComposer,
+          $$MedicalExamsTableCreateCompanionBuilder,
+          $$MedicalExamsTableUpdateCompanionBuilder,
+          (
+            MedicalExam,
+            BaseReferences<_$AppDatabase, $MedicalExamsTable, MedicalExam>,
+          ),
+          MedicalExam,
+          PrefetchHooks Function()
+        > {
+  $$MedicalExamsTableTableManager(_$AppDatabase db, $MedicalExamsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicalExamsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MedicalExamsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MedicalExamsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> performedAt = const Value.absent(),
+                Value<DateTime?> collectedAt = const Value.absent(),
+                Value<DateTime?> receivedAt = const Value.absent(),
+                Value<String?> title = const Value.absent(),
+                Value<String?> category = const Value.absent(),
+                Value<String?> laboratoryName = const Value.absent(),
+                Value<String?> professionalName = const Value.absent(),
+                Value<String?> requestProfessionalName = const Value.absent(),
+                Value<String?> documentNumber = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String?> sourceDocumentId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalExamsCompanion(
+                id: id,
+                userId: userId,
+                performedAt: performedAt,
+                collectedAt: collectedAt,
+                receivedAt: receivedAt,
+                title: title,
+                category: category,
+                laboratoryName: laboratoryName,
+                professionalName: professionalName,
+                requestProfessionalName: requestProfessionalName,
+                documentNumber: documentNumber,
+                notes: notes,
+                source: source,
+                sourceDocumentId: sourceDocumentId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime performedAt,
+                Value<DateTime?> collectedAt = const Value.absent(),
+                Value<DateTime?> receivedAt = const Value.absent(),
+                Value<String?> title = const Value.absent(),
+                Value<String?> category = const Value.absent(),
+                Value<String?> laboratoryName = const Value.absent(),
+                Value<String?> professionalName = const Value.absent(),
+                Value<String?> requestProfessionalName = const Value.absent(),
+                Value<String?> documentNumber = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                required String source,
+                Value<String?> sourceDocumentId = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalExamsCompanion.insert(
+                id: id,
+                userId: userId,
+                performedAt: performedAt,
+                collectedAt: collectedAt,
+                receivedAt: receivedAt,
+                title: title,
+                category: category,
+                laboratoryName: laboratoryName,
+                professionalName: professionalName,
+                requestProfessionalName: requestProfessionalName,
+                documentNumber: documentNumber,
+                notes: notes,
+                source: source,
+                sourceDocumentId: sourceDocumentId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MedicalExamsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MedicalExamsTable,
+      MedicalExam,
+      $$MedicalExamsTableFilterComposer,
+      $$MedicalExamsTableOrderingComposer,
+      $$MedicalExamsTableAnnotationComposer,
+      $$MedicalExamsTableCreateCompanionBuilder,
+      $$MedicalExamsTableUpdateCompanionBuilder,
+      (
+        MedicalExam,
+        BaseReferences<_$AppDatabase, $MedicalExamsTable, MedicalExam>,
+      ),
+      MedicalExam,
+      PrefetchHooks Function()
+    >;
+typedef $$MedicalExamResultsTableCreateCompanionBuilder =
+    MedicalExamResultsCompanion Function({
+      required String id,
+      required String userId,
+      required String medicalExamId,
+      Value<String?> canonicalCode,
+      required String canonicalName,
+      required String displayName,
+      required String normalizedName,
+      Value<String?> category,
+      required String valueType,
+      Value<double?> numericValue,
+      Value<String?> textValue,
+      Value<bool?> booleanValue,
+      Value<String?> qualitativeValue,
+      Value<String?> unit,
+      Value<String?> normalizedUnit,
+      Value<String?> referenceRangeText,
+      Value<double?> referenceMin,
+      Value<double?> referenceMax,
+      Value<String?> referenceComparator,
+      Value<String?> referenceContext,
+      Value<String?> status,
+      Value<String?> method,
+      Value<String?> specimen,
+      Value<String?> notes,
+      Value<String?> originalText,
+      required String source,
+      Value<double?> confidence,
+      required int sortOrder,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$MedicalExamResultsTableUpdateCompanionBuilder =
+    MedicalExamResultsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> medicalExamId,
+      Value<String?> canonicalCode,
+      Value<String> canonicalName,
+      Value<String> displayName,
+      Value<String> normalizedName,
+      Value<String?> category,
+      Value<String> valueType,
+      Value<double?> numericValue,
+      Value<String?> textValue,
+      Value<bool?> booleanValue,
+      Value<String?> qualitativeValue,
+      Value<String?> unit,
+      Value<String?> normalizedUnit,
+      Value<String?> referenceRangeText,
+      Value<double?> referenceMin,
+      Value<double?> referenceMax,
+      Value<String?> referenceComparator,
+      Value<String?> referenceContext,
+      Value<String?> status,
+      Value<String?> method,
+      Value<String?> specimen,
+      Value<String?> notes,
+      Value<String?> originalText,
+      Value<String> source,
+      Value<double?> confidence,
+      Value<int> sortOrder,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$MedicalExamResultsTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicalExamResultsTable> {
+  $$MedicalExamResultsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get medicalExamId => $composableBuilder(
+    column: $table.medicalExamId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get canonicalCode => $composableBuilder(
+    column: $table.canonicalCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get canonicalName => $composableBuilder(
+    column: $table.canonicalName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get valueType => $composableBuilder(
+    column: $table.valueType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get numericValue => $composableBuilder(
+    column: $table.numericValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get textValue => $composableBuilder(
+    column: $table.textValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get booleanValue => $composableBuilder(
+    column: $table.booleanValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get qualitativeValue => $composableBuilder(
+    column: $table.qualitativeValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedUnit => $composableBuilder(
+    column: $table.normalizedUnit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get referenceRangeText => $composableBuilder(
+    column: $table.referenceRangeText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get referenceMin => $composableBuilder(
+    column: $table.referenceMin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get referenceMax => $composableBuilder(
+    column: $table.referenceMax,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get referenceComparator => $composableBuilder(
+    column: $table.referenceComparator,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get referenceContext => $composableBuilder(
+    column: $table.referenceContext,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get specimen => $composableBuilder(
+    column: $table.specimen,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get originalText => $composableBuilder(
+    column: $table.originalText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get confidence => $composableBuilder(
+    column: $table.confidence,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MedicalExamResultsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicalExamResultsTable> {
+  $$MedicalExamResultsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get medicalExamId => $composableBuilder(
+    column: $table.medicalExamId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get canonicalCode => $composableBuilder(
+    column: $table.canonicalCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get canonicalName => $composableBuilder(
+    column: $table.canonicalName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get valueType => $composableBuilder(
+    column: $table.valueType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get numericValue => $composableBuilder(
+    column: $table.numericValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get textValue => $composableBuilder(
+    column: $table.textValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get booleanValue => $composableBuilder(
+    column: $table.booleanValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get qualitativeValue => $composableBuilder(
+    column: $table.qualitativeValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get normalizedUnit => $composableBuilder(
+    column: $table.normalizedUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get referenceRangeText => $composableBuilder(
+    column: $table.referenceRangeText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get referenceMin => $composableBuilder(
+    column: $table.referenceMin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get referenceMax => $composableBuilder(
+    column: $table.referenceMax,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get referenceComparator => $composableBuilder(
+    column: $table.referenceComparator,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get referenceContext => $composableBuilder(
+    column: $table.referenceContext,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get specimen => $composableBuilder(
+    column: $table.specimen,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get originalText => $composableBuilder(
+    column: $table.originalText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get confidence => $composableBuilder(
+    column: $table.confidence,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MedicalExamResultsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicalExamResultsTable> {
+  $$MedicalExamResultsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get medicalExamId => $composableBuilder(
+    column: $table.medicalExamId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get canonicalCode => $composableBuilder(
+    column: $table.canonicalCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get canonicalName => $composableBuilder(
+    column: $table.canonicalName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get valueType =>
+      $composableBuilder(column: $table.valueType, builder: (column) => column);
+
+  GeneratedColumn<double> get numericValue => $composableBuilder(
+    column: $table.numericValue,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get textValue =>
+      $composableBuilder(column: $table.textValue, builder: (column) => column);
+
+  GeneratedColumn<bool> get booleanValue => $composableBuilder(
+    column: $table.booleanValue,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get qualitativeValue => $composableBuilder(
+    column: $table.qualitativeValue,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumn<String> get normalizedUnit => $composableBuilder(
+    column: $table.normalizedUnit,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get referenceRangeText => $composableBuilder(
+    column: $table.referenceRangeText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get referenceMin => $composableBuilder(
+    column: $table.referenceMin,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get referenceMax => $composableBuilder(
+    column: $table.referenceMax,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get referenceComparator => $composableBuilder(
+    column: $table.referenceComparator,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get referenceContext => $composableBuilder(
+    column: $table.referenceContext,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get method =>
+      $composableBuilder(column: $table.method, builder: (column) => column);
+
+  GeneratedColumn<String> get specimen =>
+      $composableBuilder(column: $table.specimen, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get originalText => $composableBuilder(
+    column: $table.originalText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<double> get confidence => $composableBuilder(
+    column: $table.confidence,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$MedicalExamResultsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MedicalExamResultsTable,
+          MedicalExamResult,
+          $$MedicalExamResultsTableFilterComposer,
+          $$MedicalExamResultsTableOrderingComposer,
+          $$MedicalExamResultsTableAnnotationComposer,
+          $$MedicalExamResultsTableCreateCompanionBuilder,
+          $$MedicalExamResultsTableUpdateCompanionBuilder,
+          (
+            MedicalExamResult,
+            BaseReferences<
+              _$AppDatabase,
+              $MedicalExamResultsTable,
+              MedicalExamResult
+            >,
+          ),
+          MedicalExamResult,
+          PrefetchHooks Function()
+        > {
+  $$MedicalExamResultsTableTableManager(
+    _$AppDatabase db,
+    $MedicalExamResultsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicalExamResultsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MedicalExamResultsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MedicalExamResultsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> medicalExamId = const Value.absent(),
+                Value<String?> canonicalCode = const Value.absent(),
+                Value<String> canonicalName = const Value.absent(),
+                Value<String> displayName = const Value.absent(),
+                Value<String> normalizedName = const Value.absent(),
+                Value<String?> category = const Value.absent(),
+                Value<String> valueType = const Value.absent(),
+                Value<double?> numericValue = const Value.absent(),
+                Value<String?> textValue = const Value.absent(),
+                Value<bool?> booleanValue = const Value.absent(),
+                Value<String?> qualitativeValue = const Value.absent(),
+                Value<String?> unit = const Value.absent(),
+                Value<String?> normalizedUnit = const Value.absent(),
+                Value<String?> referenceRangeText = const Value.absent(),
+                Value<double?> referenceMin = const Value.absent(),
+                Value<double?> referenceMax = const Value.absent(),
+                Value<String?> referenceComparator = const Value.absent(),
+                Value<String?> referenceContext = const Value.absent(),
+                Value<String?> status = const Value.absent(),
+                Value<String?> method = const Value.absent(),
+                Value<String?> specimen = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> originalText = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<double?> confidence = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalExamResultsCompanion(
+                id: id,
+                userId: userId,
+                medicalExamId: medicalExamId,
+                canonicalCode: canonicalCode,
+                canonicalName: canonicalName,
+                displayName: displayName,
+                normalizedName: normalizedName,
+                category: category,
+                valueType: valueType,
+                numericValue: numericValue,
+                textValue: textValue,
+                booleanValue: booleanValue,
+                qualitativeValue: qualitativeValue,
+                unit: unit,
+                normalizedUnit: normalizedUnit,
+                referenceRangeText: referenceRangeText,
+                referenceMin: referenceMin,
+                referenceMax: referenceMax,
+                referenceComparator: referenceComparator,
+                referenceContext: referenceContext,
+                status: status,
+                method: method,
+                specimen: specimen,
+                notes: notes,
+                originalText: originalText,
+                source: source,
+                confidence: confidence,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String medicalExamId,
+                Value<String?> canonicalCode = const Value.absent(),
+                required String canonicalName,
+                required String displayName,
+                required String normalizedName,
+                Value<String?> category = const Value.absent(),
+                required String valueType,
+                Value<double?> numericValue = const Value.absent(),
+                Value<String?> textValue = const Value.absent(),
+                Value<bool?> booleanValue = const Value.absent(),
+                Value<String?> qualitativeValue = const Value.absent(),
+                Value<String?> unit = const Value.absent(),
+                Value<String?> normalizedUnit = const Value.absent(),
+                Value<String?> referenceRangeText = const Value.absent(),
+                Value<double?> referenceMin = const Value.absent(),
+                Value<double?> referenceMax = const Value.absent(),
+                Value<String?> referenceComparator = const Value.absent(),
+                Value<String?> referenceContext = const Value.absent(),
+                Value<String?> status = const Value.absent(),
+                Value<String?> method = const Value.absent(),
+                Value<String?> specimen = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<String?> originalText = const Value.absent(),
+                required String source,
+                Value<double?> confidence = const Value.absent(),
+                required int sortOrder,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalExamResultsCompanion.insert(
+                id: id,
+                userId: userId,
+                medicalExamId: medicalExamId,
+                canonicalCode: canonicalCode,
+                canonicalName: canonicalName,
+                displayName: displayName,
+                normalizedName: normalizedName,
+                category: category,
+                valueType: valueType,
+                numericValue: numericValue,
+                textValue: textValue,
+                booleanValue: booleanValue,
+                qualitativeValue: qualitativeValue,
+                unit: unit,
+                normalizedUnit: normalizedUnit,
+                referenceRangeText: referenceRangeText,
+                referenceMin: referenceMin,
+                referenceMax: referenceMax,
+                referenceComparator: referenceComparator,
+                referenceContext: referenceContext,
+                status: status,
+                method: method,
+                specimen: specimen,
+                notes: notes,
+                originalText: originalText,
+                source: source,
+                confidence: confidence,
+                sortOrder: sortOrder,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MedicalExamResultsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MedicalExamResultsTable,
+      MedicalExamResult,
+      $$MedicalExamResultsTableFilterComposer,
+      $$MedicalExamResultsTableOrderingComposer,
+      $$MedicalExamResultsTableAnnotationComposer,
+      $$MedicalExamResultsTableCreateCompanionBuilder,
+      $$MedicalExamResultsTableUpdateCompanionBuilder,
+      (
+        MedicalExamResult,
+        BaseReferences<
+          _$AppDatabase,
+          $MedicalExamResultsTable,
+          MedicalExamResult
+        >,
+      ),
+      MedicalExamResult,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -31062,4 +35613,8 @@ class $AppDatabaseManager {
       $$ExtractedFieldRecordsTableTableManager(_db, _db.extractedFieldRecords);
   $$BioimpedanceRecordsTableTableManager get bioimpedanceRecords =>
       $$BioimpedanceRecordsTableTableManager(_db, _db.bioimpedanceRecords);
+  $$MedicalExamsTableTableManager get medicalExams =>
+      $$MedicalExamsTableTableManager(_db, _db.medicalExams);
+  $$MedicalExamResultsTableTableManager get medicalExamResults =>
+      $$MedicalExamResultsTableTableManager(_db, _db.medicalExamResults);
 }

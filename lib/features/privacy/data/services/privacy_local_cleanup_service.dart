@@ -92,6 +92,8 @@ class PrivacyLocalCleanupService {
     'vitamin_log_records',
     'vitamin_records',
     'exam_records',
+    'medical_exams',
+    'medical_exam_results',
     'appointment_records',
     'meal_records',
     'weight_records',
