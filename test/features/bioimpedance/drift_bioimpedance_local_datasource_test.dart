@@ -1,6 +1,7 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:helpbari/core/database/drift/app_database.dart' hide BioimpedanceRecord;
+import 'package:helpbari/core/database/drift/app_database.dart'
+    hide BioimpedanceRecord;
 import 'package:helpbari/core/services/clock_service.dart';
 import 'package:helpbari/core/sync/sync.dart';
 import 'package:helpbari/features/bioimpedance/data/datasources/drift_bioimpedance_local_datasource.dart';

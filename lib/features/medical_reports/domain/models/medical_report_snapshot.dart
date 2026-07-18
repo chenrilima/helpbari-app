@@ -1,8 +1,8 @@
 import '../../../../core/health/health.dart';
 import '../../../appointments/domain/entities/entities.dart';
-import '../../../exams/domain/entities/entities.dart';
 import '../../../meals/domain/entities/entities.dart';
 import '../../../medications/domain/entities/entities.dart';
+import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../vitamins/domain/entities/entities.dart';
 import '../../../water/domain/entities/entities.dart';
@@ -46,7 +46,7 @@ class MedicalReportSnapshot {
   final List<MedicationLog> medicationLogs;
   final List<Meal> meals;
   final List<Appointment> appointments;
-  final List<Exam> exams;
+  final List<MedicalExam> exams;
   final DailySummary dailySummary;
   final String reportVersion;
   final DateTime periodStart;
@@ -81,5 +81,5 @@ class MedicalReportSnapshot {
   List<Appointment> get upcomingAppointments =>
       appointments.where((appointment) => appointment.isUpcoming).toList();
 
-  List<Exam> get latestExams => exams.take(10).toList();
+  List<MedicalExam> get latestExams => exams.take(10).toList();
 }

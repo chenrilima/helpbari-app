@@ -218,6 +218,7 @@ class MedicalExam {
     this.documentNumber,
     this.notes,
     this.sourceDocumentId,
+    this.legacyAttachmentPath,
     this.results = const <MedicalExamResult>[],
     this.deletedAt,
   });
@@ -236,6 +237,7 @@ class MedicalExam {
   final String? notes;
   final MedicalExamSource source;
   final String? sourceDocumentId;
+  final String? legacyAttachmentPath;
   final List<MedicalExamResult> results;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -248,6 +250,9 @@ class MedicalExam {
 
   bool get hasDocument =>
       sourceDocumentId != null && sourceDocumentId!.trim().isNotEmpty;
+
+  bool get hasLegacyAttachment =>
+      legacyAttachmentPath != null && legacyAttachmentPath!.trim().isNotEmpty;
 
   int get activeResultsCount =>
       results.where((item) => item.deletedAt == null).length;
@@ -265,6 +270,7 @@ class MedicalExam {
     String? notes,
     MedicalExamSource? source,
     String? sourceDocumentId,
+    String? legacyAttachmentPath,
     List<MedicalExamResult>? results,
     DateTime? updatedAt,
     DateTime? deletedAt,
@@ -285,6 +291,7 @@ class MedicalExam {
     notes: notes ?? this.notes,
     source: source ?? this.source,
     sourceDocumentId: sourceDocumentId ?? this.sourceDocumentId,
+    legacyAttachmentPath: legacyAttachmentPath ?? this.legacyAttachmentPath,
     results: results ?? this.results,
     createdAt: createdAt,
     updatedAt: updatedAt ?? this.updatedAt,

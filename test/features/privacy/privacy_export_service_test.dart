@@ -4,6 +4,8 @@ import 'package:archive/archive.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/health/health.dart';
 import 'package:helpbari/core/services/services.dart';
+import 'package:helpbari/core/sync/sync.dart';
+import 'package:helpbari/features/medical_exams/domain/entities/entities.dart';
 import 'package:helpbari/features/medical_reports/domain/entities/entities.dart';
 import 'package:helpbari/features/medical_reports/domain/models/models.dart';
 import 'package:helpbari/features/privacy/application/privacy_export_service.dart';
@@ -31,6 +33,15 @@ void main() {
       expect(result.fileName, endsWith('.zip'));
       expect(data['metadata']['userId'], 'user-a');
       expect(data['water'], isEmpty);
+      expect((data['medicalExams'] as List), hasLength(1));
+      expect(
+        data['medicalExams'][0]['legacyAttachmentPath'],
+        '/tmp/exam-legacy.jpg',
+      );
+      expect(
+        data['medicalExams'][0]['results'][0]['canonicalCode'],
+        'vitaminD',
+      );
       expect(content, isNot(contains('access_token')));
       expect(content, isNot(contains('refresh_token')));
       expect(content, isNot(contains('internal_logs')));
@@ -61,7 +72,40 @@ MedicalReportSnapshot _snapshot() => MedicalReportSnapshot(
   medicationLogs: const [],
   meals: const [],
   appointments: const [],
-  exams: const [],
+  exams: [
+    MedicalExam(
+      id: 'exam-1',
+      userId: 'user-a',
+      performedAt: DateTime.utc(2026, 7, 15),
+      title: 'Check-up anual',
+      laboratoryName: 'Lab A',
+      legacyAttachmentPath: '/tmp/exam-legacy.jpg',
+      source: MedicalExamSource.imported,
+      results: [
+        MedicalExamResult(
+          id: 'result-1',
+          medicalExamId: 'exam-1',
+          canonicalCode: 'vitaminD',
+          canonicalName: 'Vitamina D',
+          displayName: 'Vitamina D',
+          normalizedName: 'vitamina d',
+          valueType: MedicalExamValueType.numeric,
+          numericValue: 32,
+          unit: 'ng/mL',
+          normalizedUnit: 'ng/mL',
+          referenceRangeText: '30 - 100',
+          source: MedicalExamResultSource.normalizedCatalog,
+          sortOrder: 0,
+          createdAt: DateTime.utc(2026, 7, 15),
+          updatedAt: DateTime.utc(2026, 7, 15),
+          syncStatus: SyncStatus.synced,
+        ),
+      ],
+      createdAt: DateTime.utc(2026, 7, 15),
+      updatedAt: DateTime.utc(2026, 7, 15),
+      syncStatus: SyncStatus.synced,
+    ),
+  ],
   dailySummary: DailySummaryCalculator.calculate(
     waterConsumedMl: 0,
     waterGoalMl: 2000,

@@ -27,6 +27,7 @@ class MedicalExams extends Table {
   TextColumn get notes => text().nullable()();
   TextColumn get source => text()();
   TextColumn get sourceDocumentId => text().nullable()();
+  TextColumn get legacyAttachmentPath => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
   DateTimeColumn get deletedAt => dateTime().nullable()();

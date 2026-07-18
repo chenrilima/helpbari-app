@@ -11,11 +11,7 @@ class BioimpedanceDocumentParser implements DocumentFieldParser {
 
   static const aliases = <String, List<String>>{
     'weightKg': ['peso', 'peso corporal', 'weight', 'body weight'],
-    'muscleMassKg': [
-      'massa muscular',
-      'massa muscular total',
-      'muscle mass',
-    ],
+    'muscleMassKg': ['massa muscular', 'massa muscular total', 'muscle mass'],
     'skeletalMuscleMassKg': [
       'massa muscular esquelética',
       'massa muscular esqueletica',

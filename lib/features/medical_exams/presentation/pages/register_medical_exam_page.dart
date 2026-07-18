@@ -163,6 +163,7 @@ class _RegisterMedicalExamPageState
       professionalName: _emptyToNull(_professionalController.text),
       notes: _emptyToNull(_notesController.text),
       sourceDocumentId: existing?.sourceDocumentId ?? _confirmedDocumentId,
+      legacyAttachmentPath: existing?.legacyAttachmentPath,
       source: _confirmedDocumentId != null
           ? MedicalExamSource.document
           : (existing?.source ?? MedicalExamSource.manual),

@@ -25,26 +25,28 @@ class MedicalExamDao extends DatabaseAccessor<AppDatabase>
   Future<List<MedicalExamResult>> getActiveResultsByExam(
     String userId,
     String examId,
-  ) => (select(medicalExamResults)
-        ..where(
-          (row) =>
-              row.userId.equals(userId) &
-              row.medicalExamId.equals(examId) &
-              row.deletedAt.isNull(),
-        )
-        ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
-      .get();
+  ) =>
+      (select(medicalExamResults)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.medicalExamId.equals(examId) &
+                  row.deletedAt.isNull(),
+            )
+            ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
+          .get();
 
   Future<List<MedicalExamResult>> getResultsByExamIncludingDeleted(
     String userId,
     String examId,
-  ) => (select(medicalExamResults)
-        ..where(
-          (row) =>
-              row.userId.equals(userId) & row.medicalExamId.equals(examId),
-        )
-        ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
-      .get();
+  ) =>
+      (select(medicalExamResults)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) & row.medicalExamId.equals(examId),
+            )
+            ..orderBy([(row) => OrderingTerm.asc(row.sortOrder)]))
+          .get();
 
   Future<List<MedicalExam>> getPendingExamsForSync(String userId) {
     if (userId == 'anonymous') return Future.value(const []);
@@ -80,8 +82,9 @@ class MedicalExamDao extends DatabaseAccessor<AppDatabase>
     List<MedicalExamResultsCompanion> next,
   ) => transaction(() async {
     await (delete(medicalExamResults)..where(
-      (row) => row.userId.equals(userId) & row.medicalExamId.equals(examId),
-    )).go();
+          (row) => row.userId.equals(userId) & row.medicalExamId.equals(examId),
+        ))
+        .go();
     if (next.isNotEmpty) {
       await batch((batch) => batch.insertAll(medicalExamResults, next));
     }

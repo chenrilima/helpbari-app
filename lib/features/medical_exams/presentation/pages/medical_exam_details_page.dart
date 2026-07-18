@@ -38,6 +38,8 @@ class MedicalExamDetailsPage extends ConsumerWidget {
                 HBText('Laboratório: ${exam.laboratoryName}'),
               if ((exam.professionalName?.trim().isNotEmpty ?? false))
                 HBText('Profissional: ${exam.professionalName}'),
+              if ((exam.legacyAttachmentPath?.trim().isNotEmpty ?? false))
+                HBText('Anexo legado: ${exam.legacyAttachmentPath}'),
               if ((exam.notes?.trim().isNotEmpty ?? false)) ...[
                 const HBGap.md(),
                 HBText(exam.notes!),

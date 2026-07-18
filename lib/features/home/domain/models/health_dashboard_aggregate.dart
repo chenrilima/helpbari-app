@@ -1,6 +1,6 @@
 import '../../../../core/health/health.dart';
 import '../../../appointments/domain/entities/entities.dart';
-import '../../../exams/domain/entities/entities.dart';
+import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
 
@@ -61,7 +61,7 @@ class HealthDashboardAggregate {
   final Profile? profile;
   final WeightRecord? latestWeight;
   final Appointment? nextAppointment;
-  final Exam? latestExam;
+  final MedicalExam? latestExam;
 
   DailyHealthAggregate get today => days.last;
   bool isAvailable(HealthDataSection section) =>

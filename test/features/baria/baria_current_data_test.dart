@@ -5,6 +5,9 @@ import 'package:helpbari/features/baria/application/baria_service.dart';
 import 'package:helpbari/features/baria/data/repositories/contextual_baria_repository.dart';
 import 'package:helpbari/features/baria/domain/models/models.dart';
 import 'package:helpbari/features/home/domain/models/models.dart';
+import 'package:helpbari/features/medical_exams/domain/entities/entities.dart';
+import 'package:helpbari/features/medical_reports/domain/entities/entities.dart';
+import 'package:helpbari/features/medical_reports/domain/models/models.dart';
 
 void main() {
   test('empty context never invents an answer', () async {
@@ -107,6 +110,59 @@ void main() {
     },
   );
 
+  test(
+    'exam response uses medical exams and structured markers without interpretation',
+    () async {
+      final exam = MedicalExam(
+        id: 'exam-1',
+        userId: 'user-a',
+        performedAt: DateTime.utc(2026, 7, 12),
+        title: 'Check-up anual',
+        laboratoryName: 'Lab A',
+        source: MedicalExamSource.imported,
+        results: [
+          MedicalExamResult(
+            id: 'result-1',
+            medicalExamId: 'exam-1',
+            canonicalCode: 'ferritin',
+            canonicalName: 'Ferritina',
+            displayName: 'Ferritina',
+            normalizedName: 'ferritina',
+            valueType: MedicalExamValueType.numeric,
+            numericValue: 45,
+            unit: 'ng/mL',
+            normalizedUnit: 'ng/mL',
+            source: MedicalExamResultSource.normalizedCatalog,
+            sortOrder: 0,
+            createdAt: DateTime.utc(2026, 7, 12),
+            updatedAt: DateTime.utc(2026, 7, 12),
+            syncStatus: SyncStatus.synced,
+          ),
+        ],
+        createdAt: DateTime.utc(2026, 7, 12),
+        updatedAt: DateTime.utc(2026, 7, 12),
+        syncStatus: SyncStatus.synced,
+      );
+      final repository = ContextualBariaRepository(
+        _ContextService(
+          _context(
+            userId: 'user-a',
+            today: _aggregate([_day(waterMl: 1000)], latestExam: exam),
+            report: _report(exams: [exam]),
+          ),
+        ),
+      );
+
+      final response = await repository.generateResponse('exames');
+
+      expect(response, contains('Check-up anual'));
+      expect(response, contains('1 exame(s) registrado(s)'));
+      expect(response, contains('1 resultado(s) estruturado(s)'));
+      expect(response, contains('Ferritina'));
+      expect(response, contains('não substitui avaliação clínica'));
+    },
+  );
+
   test('deterministic insights use only context values', () {
     final today = _aggregate([
       _day(waterMl: 2000, meals: null, pendingVitamins: 1),
@@ -155,6 +211,7 @@ BariaContext _context({
   HealthDashboardAggregate? today,
   HealthDashboardAggregate? week,
   HealthDashboardAggregate? month,
+  MedicalReportSnapshot? report,
   SyncState syncState = const SyncState(),
 }) => BariaContext(
   userId: userId,
@@ -162,17 +219,20 @@ BariaContext _context({
   today: today,
   week: week,
   month: month,
-  report: null,
+  report: report,
   syncState: syncState,
 );
 
-HealthDashboardAggregate _aggregate(List<DailyHealthAggregate> days) =>
-    HealthDashboardAggregate(
-      periodStart: days.first.date,
-      periodEnd: days.last.date,
-      days: days,
-      unavailableSections: const {},
-    );
+HealthDashboardAggregate _aggregate(
+  List<DailyHealthAggregate> days, {
+  MedicalExam? latestExam,
+}) => HealthDashboardAggregate(
+  periodStart: days.first.date,
+  periodEnd: days.last.date,
+  days: days,
+  unavailableSections: const {},
+  latestExam: latestExam,
+);
 
 DailyHealthAggregate _day({
   int? waterMl,
@@ -224,3 +284,35 @@ SyncState _sync({required int errors}) {
     ),
   );
 }
+
+MedicalReportSnapshot _report({required List<MedicalExam> exams}) =>
+    MedicalReportSnapshot(
+      generatedAt: DateTime.utc(2026, 7, 12),
+      template: ReportTemplate.complete(),
+      weightHistory: const [],
+      waterHistory: const [],
+      vitamins: const [],
+      vitaminLogs: const [],
+      medications: const [],
+      medicationLogs: const [],
+      meals: const [],
+      appointments: const [],
+      exams: exams,
+      dailySummary: DailySummaryCalculator.calculate(
+        waterConsumedMl: 0,
+        waterGoalMl: 2000,
+        pendingVitamins: 0,
+        pendingMedications: 0,
+        registeredMeals: 0,
+        totalProteinGrams: 0,
+        proteinGoalGrams: 0,
+      ),
+      reportVersion: '1.0',
+      periodStart: DateTime.utc(2026, 6, 12),
+      averageDailyWaterMl: 0,
+      mealsInPeriod: 0,
+      averageDailyProteinGrams: 0,
+      vitaminAdherencePercent: null,
+      medicationAdherencePercent: null,
+      automaticObservations: const [],
+    );

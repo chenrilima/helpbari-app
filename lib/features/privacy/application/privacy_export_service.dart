@@ -158,15 +158,54 @@ class PrivacyExportService {
             'status': appointment.status.name,
           },
       ],
-      'exams': [
+      'medicalExams': [
         for (final exam in snapshot.exams)
           {
             'id': exam.id,
-            'name': exam.name.value,
-            'date': exam.examDate.value.toIso8601String(),
-            'laboratory': exam.laboratory,
+            'title': exam.title,
+            'performedAt': exam.performedAt.toIso8601String(),
+            'collectedAt': exam.collectedAt?.toIso8601String(),
+            'receivedAt': exam.receivedAt?.toIso8601String(),
+            'laboratoryName': exam.laboratoryName,
+            'professionalName': exam.professionalName,
+            'requestProfessionalName': exam.requestProfessionalName,
+            'documentNumber': exam.documentNumber,
             'notes': exam.notes,
-            'attachmentPath': exam.attachmentPath,
+            'source': _enumName(exam.source),
+            'sourceDocumentId': exam.sourceDocumentId,
+            'legacyAttachmentPath': exam.legacyAttachmentPath,
+            'createdAt': exam.createdAt.toIso8601String(),
+            'updatedAt': exam.updatedAt.toIso8601String(),
+            'deletedAt': exam.deletedAt?.toIso8601String(),
+            'syncStatus': _enumName(exam.syncStatus),
+            'results': [
+              for (final result in exam.results.where(
+                (item) => item.deletedAt == null,
+              ))
+                {
+                  'id': result.id,
+                  'name': result.displayName,
+                  'canonicalCode': result.canonicalCode,
+                  'canonicalName': result.canonicalName,
+                  'valueType': _enumName(result.valueType),
+                  'numericValue': result.numericValue,
+                  'textValue': result.textValue,
+                  'booleanValue': result.booleanValue,
+                  'qualitativeValue': result.qualitativeValue,
+                  'unit': result.unit,
+                  'normalizedUnit': result.normalizedUnit,
+                  'referenceRangeText': result.referenceRangeText,
+                  'referenceMin': result.referenceMin,
+                  'referenceMax': result.referenceMax,
+                  'referenceContext': result.referenceContext,
+                  'notes': result.notes,
+                  'source': _enumName(result.source),
+                  'createdAt': result.createdAt.toIso8601String(),
+                  'updatedAt': result.updatedAt.toIso8601String(),
+                  'deletedAt': result.deletedAt?.toIso8601String(),
+                  'syncStatus': _enumName(result.syncStatus),
+                },
+            ],
           },
       ],
       'reports': [
@@ -199,7 +238,7 @@ class PrivacyExportService {
       'vitamins': snapshot.vitamins.length,
       'medications': snapshot.medications.length,
       'appointments': snapshot.appointments.length,
-      'exams': snapshot.exams.length,
+      'medicalExams': snapshot.exams.length,
       'reports': 1,
     };
     return PrivacyExportPackage(
@@ -210,4 +249,6 @@ class PrivacyExportService {
       categoryCounts: counts,
     );
   }
+
+  String _enumName(Object value) => value.toString().split('.').last;
 }

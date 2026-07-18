@@ -63,9 +63,6 @@ class ContextualBariaRepository implements BariaRepository {
     if (_contains(query, ['semana', 'semanal'])) {
       return _period(context.week, 'semana');
     }
-    if (_contains(query, ['mes', 'mensal', 'historico'])) {
-      return _period(context.month, 'mês');
-    }
     if (_contains(query, ['peso', 'perdi', 'emagreci', 'evolucao'])) {
       return _weight(context);
     }
@@ -75,14 +72,23 @@ class ContextualBariaRepository implements BariaRepository {
     if (_contains(query, ['medicamento', 'remedio'])) {
       return _medications(context);
     }
-    if (_contains(query, ['pendente', 'offline', 'sincronizacao', 'sync'])) {
+    if (_contains(query, [
+      'pendente',
+      'pendentes',
+      'offline',
+      'sincronizacao',
+      'sync',
+    ])) {
       return _pending(context);
     }
     if (_contains(query, ['consulta', 'medico'])) {
       return _appointment(context);
     }
-    if (_contains(query, ['exame'])) {
+    if (_contains(query, ['exame', 'exames'])) {
       return _exams(context);
+    }
+    if (_contains(query, ['mes', 'mensal', 'historico'])) {
+      return _period(context.month, 'mês');
     }
     if (_contains(query, ['refeicao', 'comida', 'proteina'])) {
       return _meals(context);
@@ -199,7 +205,29 @@ class ContextualBariaRepository implements BariaRepository {
   String _exams(BariaContext context) {
     final exam = context.today?.latestExam;
     if (exam == null) return _missing('exames');
-    return 'Seu exame mais recente registrado é ${exam.formattedName}, de ${exam.formattedDate}. $_notice';
+    final markers = context.examResults.length;
+    final withoutResults = context.examsWithoutStructuredResults;
+    final markerPreview = context.availableMarkers.take(3).join(', ');
+    final title = exam.title?.trim().isNotEmpty == true
+        ? exam.title!
+        : 'Exame laboratorial';
+    final parts = <String>[
+      'Seu exame mais recente registrado é $title, de ${AppDateFormatter.short(exam.performedAt)}.',
+      'Há ${context.exams.length} exame(s) registrado(s) e $markers resultado(s) estruturado(s).',
+    ];
+    if ((exam.laboratoryName?.trim().isNotEmpty ?? false)) {
+      parts.add('Laboratório informado: ${exam.laboratoryName}.');
+    }
+    if (withoutResults > 0) {
+      parts.add(
+        '$withoutResults exame(s) ainda não têm resultados estruturados.',
+      );
+    }
+    if (markerPreview.isNotEmpty) {
+      parts.add('Marcadores disponíveis: $markerPreview.');
+    }
+    parts.add(_notice);
+    return parts.join(' ');
   }
 
   String _meals(BariaContext context) {
@@ -225,7 +253,13 @@ class ContextualBariaRepository implements BariaRepository {
 
   String _missing(String subject) =>
       'Não há dados suficientes sobre $subject. $_notice';
-  bool _contains(String value, List<String> terms) => terms.any(value.contains);
+  bool _contains(String value, List<String> terms) => terms.any((term) {
+    final pattern = RegExp(
+      '(^|[^a-z])${RegExp.escape(term)}([^a-z]|\$)',
+      caseSensitive: false,
+    );
+    return pattern.hasMatch(value);
+  });
   String _normalize(String value) => value
       .toLowerCase()
       .replaceAll(RegExp('[áàãâ]'), 'a')

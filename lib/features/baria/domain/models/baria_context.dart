@@ -1,9 +1,9 @@
 import '../../../../core/sync/sync.dart';
 import '../../../home/domain/models/models.dart';
+import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../medical_reports/domain/models/models.dart';
 import '../../../academy/domain/entities/entities.dart';
 import '../../../appointments/domain/entities/entities.dart';
-import '../../../exams/domain/entities/entities.dart';
 import '../../../meals/domain/entities/entities.dart';
 import '../../../medications/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
@@ -53,6 +53,17 @@ class BariaContext {
       report?.medications ?? const <Medication>[];
   List<Appointment> get appointments =>
       report?.appointments ?? const <Appointment>[];
-  List<Exam> get exams => report?.exams ?? const <Exam>[];
+  List<MedicalExam> get exams => report?.exams ?? const <MedicalExam>[];
+  List<MedicalExamResult> get examResults => exams
+      .expand((exam) => exam.results)
+      .where((result) => result.deletedAt == null)
+      .toList(growable: false);
+  int get examsWithoutStructuredResults =>
+      exams.where((exam) => exam.activeResultsCount == 0).length;
+  List<String> get availableMarkers => examResults
+      .map((result) => result.displayName.trim())
+      .where((name) => name.isNotEmpty)
+      .toSet()
+      .toList(growable: false);
   MedicalReportSnapshot? get reports => report;
 }

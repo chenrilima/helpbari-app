@@ -2,9 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/services/service_providers.dart';
 import '../../../appointments/presentation/providers/appointment_use_cases_provider.dart';
-import '../../../exams/presentation/providers/exam_use_cases_provider.dart';
 import '../../../meals/presentation/providers/meal_use_cases_provider.dart';
 import '../../../medications/presentation/providers/medication_use_cases_provider.dart';
+import '../../../medical_exams/presentation/providers/medical_exam_use_cases_provider.dart';
 import '../../../profile/presentation/providers/profile_use_case_providers.dart';
 import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
 import '../../../vitamins/presentation/providers/vitamin_use_cases_provider.dart';
@@ -33,7 +33,7 @@ final medicalReportUseCasesProvider = Provider<MedicalReportUseCases>((ref) {
     medicationUseCases: ref.read(medicationUseCasesProvider),
     mealUseCases: ref.read(mealUseCasesProvider),
     appointmentUseCases: ref.read(appointmentUseCasesProvider),
-    examUseCases: ref.read(examUseCasesProvider),
+    examUseCases: ref.read(medicalExamUseCasesProvider),
     settingsUseCases: ref.read(settingsUseCasesProvider),
     clock: ref.read(clockServiceProvider),
     dashboardUseCases: ref.read(healthDashboardUseCasesProvider),

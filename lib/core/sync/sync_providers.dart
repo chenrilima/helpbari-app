@@ -168,6 +168,9 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
         }
       },
     ),
+    // Compatibilidade transitória:
+    // mantém o sync legado apenas para concluir pendências/tombstones já
+    // existentes em exam_records. A fonte funcional do app já é medical_exams.
     ExamSyncRepository(
       local: () async => DriftExamLocalDatasource(
         dao: (await ref.read(appDatabaseProvider.future)).examDao,

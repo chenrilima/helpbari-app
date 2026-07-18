@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/health/health.dart';
+import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../providers/home_view_model_provider.dart';
@@ -61,9 +62,13 @@ class HomeViewModel extends Notifier<HomeState> {
             ? null
             : DailySummaryItem(
                 id: aggregate.latestExam!.id,
-                title: aggregate.latestExam!.formattedName,
-                subtitle: aggregate.latestExam!.formattedDate,
-                date: aggregate.latestExam!.examDate.value,
+                title: aggregate.latestExam!.title?.trim().isNotEmpty == true
+                    ? aggregate.latestExam!.title!
+                    : 'Exame laboratorial',
+                subtitle: AppDateFormatter.short(
+                  aggregate.latestExam!.performedAt,
+                ),
+                date: aggregate.latestExam!.performedAt,
               ),
         weightProgress: weightProgress,
       );
