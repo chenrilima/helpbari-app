@@ -18,7 +18,7 @@ void main() {
   tearDown(() => database.close());
 
   test('schema includes document intelligence tables', () async {
-    expect(database.schemaVersion, 16);
+    expect(database.schemaVersion, 17);
 
     final tables = await database
         .customSelect(

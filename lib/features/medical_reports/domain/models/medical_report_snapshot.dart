@@ -1,5 +1,6 @@
 import '../../../../core/health/health.dart';
 import '../../../appointments/domain/entities/entities.dart';
+import '../../../medical_consultations/domain/entities/entities.dart';
 import '../../../meals/domain/entities/entities.dart';
 import '../../../medications/domain/entities/entities.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
@@ -21,6 +22,7 @@ class MedicalReportSnapshot {
     required this.medicationLogs,
     required this.meals,
     required this.appointments,
+    required this.consultations,
     required this.exams,
     required this.dailySummary,
     required this.reportVersion,
@@ -46,6 +48,7 @@ class MedicalReportSnapshot {
   final List<MedicationLog> medicationLogs;
   final List<Meal> meals;
   final List<Appointment> appointments;
+  final List<MedicalConsultation> consultations;
   final List<MedicalExam> exams;
   final DailySummary dailySummary;
   final String reportVersion;
@@ -76,6 +79,7 @@ class MedicalReportSnapshot {
       vitamins.isNotEmpty ||
       medications.isNotEmpty ||
       appointments.isNotEmpty ||
+      consultations.isNotEmpty ||
       exams.isNotEmpty;
 
   List<Appointment> get upcomingAppointments =>

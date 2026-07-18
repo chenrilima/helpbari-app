@@ -197,9 +197,27 @@ class ContextualBariaRepository implements BariaRepository {
   }
 
   String _appointment(BariaContext context) {
+    final latestConsultation = context.consultations.firstOrNull;
     final appointment = context.today?.nextAppointment;
-    if (appointment == null) return _missing('próxima consulta');
-    return 'Sua próxima consulta é ${appointment.title}, em ${appointment.formattedDate}. $_notice';
+    if (appointment == null && latestConsultation == null) {
+      return _missing('consultas');
+    }
+    final parts = <String>[];
+    if (appointment != null) {
+      parts.add(
+        'Sua próxima consulta agendada é ${appointment.title}, em ${appointment.formattedDate}.',
+      );
+    }
+    if (latestConsultation != null) {
+      final title = latestConsultation.title?.trim().isNotEmpty == true
+          ? latestConsultation.title!
+          : 'Consulta clínica';
+      parts.add(
+        'Seu último registro clínico é $title, em ${AppDateFormatter.short(latestConsultation.consultationAt)}.',
+      );
+    }
+    parts.add(_notice);
+    return parts.join(' ');
   }
 
   String _exams(BariaContext context) {

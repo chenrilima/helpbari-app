@@ -297,6 +297,7 @@ MedicalReportSnapshot _report({required List<MedicalExam> exams}) =>
       medicationLogs: const [],
       meals: const [],
       appointments: const [],
+      consultations: const [],
       exams: exams,
       dailySummary: DailySummaryCalculator.calculate(
         waterConsumedMl: 0,

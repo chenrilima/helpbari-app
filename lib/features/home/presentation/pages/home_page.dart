@@ -13,6 +13,7 @@ import '../../../baria/presentation/widgets/baria_home_card.dart';
 import '../../../baria/presentation/providers/baria_view_model_provider.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/appointment_overview_section.dart';
+import '../widgets/consultation_overview_section.dart';
 import '../widgets/exam_overview_section.dart';
 import '../widgets/health_score_overview_section.dart';
 import '../widgets/home_header.dart';
@@ -165,6 +166,12 @@ class _HomePageState extends ConsumerState<HomePage> {
           AppointmentOverviewSection(
             nextAppointment: state.nextAppointment,
             subtitle: state.appointmentMessage,
+            onRefresh: _loadHome,
+          ),
+          const HBGap.xl(),
+          ConsultationOverviewSection(
+            latestConsultation: state.latestConsultation,
+            subtitle: state.consultationMessage,
             onRefresh: _loadHome,
           ),
           const HBGap.xl(),

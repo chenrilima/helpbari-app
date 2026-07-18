@@ -104,6 +104,8 @@ class BariaService implements BariaContextService {
       if ((todayAggregate?.today.pendingMedications ?? 0) > 0)
         'Medicamentos pendentes',
       if (todayAggregate?.nextAppointment != null) 'Próxima consulta agendada',
+      if (todayAggregate?.latestConsultation != null)
+        'Consulta registrada recentemente',
     ];
     final context = BariaContext(
       userId: _userId,

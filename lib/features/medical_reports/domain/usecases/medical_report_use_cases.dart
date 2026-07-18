@@ -7,6 +7,7 @@ import '../../../medications/domain/usecases/use_cases.dart';
 import '../../../medications/domain/entities/medication_log.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../medical_exams/domain/usecases/medical_exam_use_cases.dart';
+import '../../../medical_consultations/domain/usecases/medical_consultation_use_cases.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../settings/domain/entities/entities.dart';
@@ -32,6 +33,7 @@ class MedicalReportUseCases {
     required MedicationUseCases medicationUseCases,
     required MealUseCases mealUseCases,
     required AppointmentUseCases appointmentUseCases,
+    required MedicalConsultationUseCases consultationUseCases,
     required MedicalExamUseCases examUseCases,
     required SettingsUseCases settingsUseCases,
     required ClockService clock,
@@ -44,6 +46,7 @@ class MedicalReportUseCases {
        _medicationUseCases = medicationUseCases,
        _mealUseCases = mealUseCases,
        _appointmentUseCases = appointmentUseCases,
+       _consultationUseCases = consultationUseCases,
        _examUseCases = examUseCases,
        _settingsUseCases = settingsUseCases,
        _clock = clock,
@@ -57,6 +60,7 @@ class MedicalReportUseCases {
   final MedicationUseCases _medicationUseCases;
   final MealUseCases _mealUseCases;
   final AppointmentUseCases _appointmentUseCases;
+  final MedicalConsultationUseCases _consultationUseCases;
   final MedicalExamUseCases _examUseCases;
   final SettingsUseCases _settingsUseCases;
   final ClockService _clock;
@@ -93,6 +97,7 @@ class MedicalReportUseCases {
       _medicationUseCases.getAll(),
       _mealUseCases.getAll(),
       _appointmentUseCases.getAll(),
+      _consultationUseCases.getHistory(),
       _examUseCases.getHistory(),
       _settingsUseCases.getSettings(),
       _vitaminUseCases.getLogs(periodStart, periodEnd),
@@ -107,11 +112,12 @@ class MedicalReportUseCases {
     final medications = results[4] as List;
     final meals = results[5] as List;
     final appointments = results[6] as List;
-    final exams = results[7] as List;
-    final settings = results[8] as AppSettings;
-    final vitaminLogs = results[9] as List<VitaminLog>;
-    final medicationLogs = results[10] as List<MedicationLog>;
-    final dashboard = results[11] as HealthDashboardAggregate?;
+    final consultations = results[7] as List;
+    final exams = results[8] as List;
+    final settings = results[9] as AppSettings;
+    final vitaminLogs = results[10] as List<VitaminLog>;
+    final medicationLogs = results[11] as List<MedicationLog>;
+    final dashboard = results[12] as HealthDashboardAggregate?;
     final currentWeight = weightHistory.isEmpty
         ? null
         : weightHistory.first.weight.value as double;
@@ -248,6 +254,7 @@ class MedicalReportUseCases {
       medicationLogs: List.unmodifiable(medicationLogs),
       meals: List.unmodifiable(meals),
       appointments: List.unmodifiable(appointments),
+      consultations: List.unmodifiable(consultations),
       exams: List.unmodifiable(typedExams),
       dailySummary: dailySummary,
       reportVersion: '1.0',

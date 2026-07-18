@@ -22,6 +22,11 @@ import '../../features/bioimpedance/presentation/pages/bioimpedance_page.dart';
 import '../../features/bioimpedance/presentation/pages/register_bioimpedance_page.dart';
 import '../../features/medical_exams/domain/entities/entities.dart'
     show MedicalExam;
+import '../../features/medical_consultations/domain/entities/entities.dart'
+    show MedicalConsultation;
+import '../../features/medical_consultations/presentation/pages/medical_consultation_details_page.dart';
+import '../../features/medical_consultations/presentation/pages/medical_consultations_page.dart';
+import '../../features/medical_consultations/presentation/pages/register_medical_consultation_page.dart';
 import '../../features/medical_exams/presentation/pages/medical_exam_details_page.dart';
 import '../../features/medical_exams/presentation/pages/medical_exams_page.dart';
 import '../../features/medical_exams/presentation/pages/register_medical_exam_page.dart';
@@ -183,6 +188,27 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.appointments,
         builder: (context, state) => const AppointmentsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.medicalConsultations,
+        builder: (context, state) => const MedicalConsultationsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.registerMedicalConsultation,
+        builder: (context, state) => RegisterMedicalConsultationPage(
+          consultation: state.extra is MedicalConsultation
+              ? state.extra! as MedicalConsultation
+              : null,
+          appointment: state.extra is Appointment
+              ? state.extra! as Appointment
+              : null,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.medicalConsultationDetails,
+        builder: (context, state) => MedicalConsultationDetailsPage(
+          consultation: state.extra! as MedicalConsultation,
+        ),
       ),
       GoRoute(
         path: AppRoutes.exams,

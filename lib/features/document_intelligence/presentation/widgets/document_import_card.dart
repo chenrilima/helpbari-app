@@ -268,6 +268,7 @@ class _DocumentImportCardState extends ConsumerState<DocumentImportCard> {
   String _typeLabel(DetectedDocumentType type) => switch (type) {
     DetectedDocumentType.labResult => 'resultado de exame',
     DetectedDocumentType.medicalExamReport => 'laudo de exame laboratorial',
+    DetectedDocumentType.medicalConsultation => 'registro de consulta',
     DetectedDocumentType.consultationNote => 'anotação de consulta',
     DetectedDocumentType.medicalReport => 'relatório',
     DetectedDocumentType.prescription => 'receita',

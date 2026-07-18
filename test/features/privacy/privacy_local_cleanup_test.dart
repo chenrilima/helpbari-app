@@ -29,6 +29,12 @@ void main() {
       "VALUES ('a','user-a','1','1',0,'d','UTC',0,0,'synced',0),"
       "('b','user-b','1','1',0,'d','UTC',0,0,'synced',0)",
     );
+    await database.customInsert(
+      "INSERT INTO medical_consultations "
+      "(id,user_id,consultation_at,consultation_type,source,created_at,updated_at,sync_status,sync_attempts) "
+      "VALUES ('c1','user-a',0,'unknown','manual',0,0,'synced',0),"
+      "('c2','user-b',0,'unknown','manual',0,0,'synced',0)",
+    );
   });
 
   tearDown(() => database.close());
@@ -41,6 +47,10 @@ void main() {
 
     final rows = await database.select(database.privacyConsentRecords).get();
     expect(rows.map((row) => row.userId), ['user-b']);
+    final consultations = await database
+        .select(database.medicalConsultations)
+        .get();
+    expect(consultations.map((row) => row.userId), ['user-b']);
     expect(
       preferences.containsKey('onboarding.user.v2.user-a.completed'),
       isFalse,

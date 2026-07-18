@@ -4,6 +4,8 @@ import 'package:helpbari/core/sync/sync.dart';
 import 'package:helpbari/features/appointments/domain/repositories/repositories.dart';
 import 'package:helpbari/features/appointments/domain/usecases/appointment_use_cases.dart';
 import 'package:helpbari/features/home/domain/usecases/health_dashboard_use_cases.dart';
+import 'package:helpbari/features/medical_consultations/domain/repositories/medical_consultation_repository.dart';
+import 'package:helpbari/features/medical_consultations/domain/usecases/medical_consultation_use_cases.dart';
 import 'package:helpbari/features/meals/domain/repositories/repositories.dart';
 import 'package:helpbari/features/meals/domain/usecases/use_cases.dart';
 import 'package:helpbari/features/medications/domain/repositories/repositories.dart';
@@ -62,6 +64,9 @@ void main() {
           _MedicationLogRepository(),
         ),
         appointments: AppointmentUseCases(_AppointmentRepository()),
+        consultations: MedicalConsultationUseCases(
+          _MedicalConsultationRepository(),
+        ),
         exams: MedicalExamUseCases(_MedicalExamRepository([latest])),
         settings: SettingsUseCases(_SettingsRepository()),
       );
@@ -141,6 +146,13 @@ class _MedicationLogRepository implements MedicationLogRepository {
 }
 
 class _AppointmentRepository implements AppointmentRepository {
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    return Future.value(const []);
+  }
+}
+
+class _MedicalConsultationRepository implements MedicalConsultationRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) {
     return Future.value(const []);

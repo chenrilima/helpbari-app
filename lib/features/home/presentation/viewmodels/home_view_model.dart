@@ -79,6 +79,7 @@ class HomeViewModel extends Notifier<HomeState> {
         totalWaterTodayInMl: today.waterMl ?? 0,
         pendingVitaminsCount: today.pendingVitamins ?? 0,
         nextAppointment: aggregate.nextAppointment,
+        latestConsultation: aggregate.latestConsultation,
         latestExam: aggregate.latestExam,
         pendingMedicationsCount: today.pendingMedications ?? 0,
         todayMealsCount: today.mealsCount ?? 0,

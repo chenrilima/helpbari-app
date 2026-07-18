@@ -20,6 +20,7 @@ void main() {
       medicationLogs: const [],
       meals: const [],
       appointments: const [],
+      consultations: const [],
       exams: const [],
       dailySummary: DailySummaryCalculator.calculate(
         waterConsumedMl: 0,
@@ -108,6 +109,7 @@ void main() {
         medicationLogs: const [],
         meals: const [],
         appointments: const [],
+        consultations: const [],
         exams: [exam, migratedWithoutResults],
         dailySummary: DailySummaryCalculator.calculate(
           waterConsumedMl: 0,

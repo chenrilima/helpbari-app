@@ -1,5 +1,6 @@
 import '../../../../core/health/health.dart';
 import '../../../appointments/domain/entities/entities.dart';
+import '../../../medical_consultations/domain/entities/entities.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
@@ -52,6 +53,7 @@ class HealthDashboardAggregate {
     this.profile,
     this.latestWeight,
     this.nextAppointment,
+    this.latestConsultation,
     this.latestExam,
   });
   final DateTime periodStart;
@@ -61,6 +63,7 @@ class HealthDashboardAggregate {
   final Profile? profile;
   final WeightRecord? latestWeight;
   final Appointment? nextAppointment;
+  final MedicalConsultation? latestConsultation;
   final MedicalExam? latestExam;
 
   DailyHealthAggregate get today => days.last;

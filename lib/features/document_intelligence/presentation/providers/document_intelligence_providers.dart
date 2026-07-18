@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/database/drift/drift_database_providers.dart';
 import '../../../../core/supabase/storage/supabase_storage_provider.dart';
 import '../../../bioimpedance/application/bioimpedance_document_parser.dart';
+import '../../../medical_consultations/application/medical_consultation_document_parser.dart';
 import '../../../medical_exams/application/medical_exam_document_parser.dart';
 import '../../application/deterministic_document_classifier.dart';
 import '../../application/document_processing_service.dart';
@@ -32,6 +33,7 @@ final documentProcessingServiceProvider = Provider<DocumentProcessingService>((
       ExamRequestParser(),
       BioimpedanceDocumentParser(),
       MedicalExamDocumentParser(),
+      MedicalConsultationDocumentParser(),
     ],
   );
 });

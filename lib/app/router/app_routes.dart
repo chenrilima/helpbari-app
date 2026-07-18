@@ -17,6 +17,9 @@ abstract final class AppRoutes {
   static const registerVitamin = '/register-vitamin';
   static const appointments = '/appointments';
   static const registerAppointment = '/register-appointment';
+  static const medicalConsultations = '/medical-consultations';
+  static const registerMedicalConsultation = '/register-medical-consultation';
+  static const medicalConsultationDetails = '/medical-consultation-details';
   static const exams = '/exams';
   static const registerExam = '/register-exam';
   static const examDetails = '/exam-details';

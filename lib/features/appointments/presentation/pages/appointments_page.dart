@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../core/services/service_providers.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../design_system/design_system.dart';
+import '../../../medical_consultations/presentation/providers/medical_consultation_use_cases_provider.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/value_objects/value_objects.dart';
 import '../providers/appointment_view_model_provider.dart';
@@ -36,6 +37,27 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
     final changed = await context.push<bool>(
       AppRoutes.registerAppointment,
       extra: value,
+    );
+    if (changed == true) await _load();
+  }
+
+  Future<void> _openConsultation(Appointment appointment) async {
+    final existing = await ref
+        .read(medicalConsultationUseCasesProvider)
+        .getByAppointmentId(appointment.id);
+    if (!mounted) return;
+    if (existing != null) {
+      HBSnackBar.success(
+        context,
+        message: 'Já existe uma consulta registrada para este agendamento.',
+      );
+      await context.push(AppRoutes.medicalConsultationDetails, extra: existing);
+      await _load();
+      return;
+    }
+    final changed = await context.push<bool>(
+      AppRoutes.registerMedicalConsultation,
+      extra: appointment,
     );
     if (changed == true) await _load();
   }
@@ -191,6 +213,7 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
 
                 return AppointmentTile(
                   appointment: appointment,
+                  onRegisterConsultation: () => _openConsultation(appointment),
                   onComplete: () => _mutate(
                     'Concluir consulta?',
                     'O lembrete será cancelado.',

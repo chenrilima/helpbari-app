@@ -1,5 +1,6 @@
 import '../../../../core/sync/sync.dart';
 import '../../../home/domain/models/models.dart';
+import '../../../medical_consultations/domain/entities/entities.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../medical_reports/domain/models/models.dart';
 import '../../../academy/domain/entities/entities.dart';
@@ -53,6 +54,8 @@ class BariaContext {
       report?.medications ?? const <Medication>[];
   List<Appointment> get appointments =>
       report?.appointments ?? const <Appointment>[];
+  List<MedicalConsultation> get consultations =>
+      report?.consultations ?? const <MedicalConsultation>[];
   List<MedicalExam> get exams => report?.exams ?? const <MedicalExam>[];
   List<MedicalExamResult> get examResults => exams
       .expand((exam) => exam.results)

@@ -25,6 +25,16 @@ class DeterministicDocumentClassifier implements DocumentClassifier {
       'hdl',
       'ldl',
     },
+    DetectedDocumentType.medicalConsultation: {
+      'consulta',
+      'retorno',
+      'evolução',
+      'evolucao',
+      'orientações',
+      'orientacoes',
+      'conduta',
+      'seguimento',
+    },
     DetectedDocumentType.consultationNote: {
       'consulta',
       'retorno',

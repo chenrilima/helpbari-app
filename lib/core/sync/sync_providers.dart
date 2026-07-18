@@ -71,6 +71,9 @@ import '../../features/document_intelligence/data/repositories/document_processi
 import '../../features/medical_exams/data/datasources/drift_medical_exam_local_datasource.dart';
 import '../../features/medical_exams/data/datasources/medical_exam_supabase_datasource.dart';
 import '../../features/medical_exams/data/repositories/medical_exam_sync_repository.dart';
+import '../../features/medical_consultations/data/datasources/drift_medical_consultation_local_datasource.dart';
+import '../../features/medical_consultations/data/datasources/medical_consultation_supabase_datasource.dart';
+import '../../features/medical_consultations/data/repositories/medical_consultation_sync_repository.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -187,6 +190,19 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
         userId: user.id,
       ),
       remote: MedicalExamSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+    ),
+    MedicalConsultationSyncRepository(
+      local: () async => DriftMedicalConsultationLocalDatasource(
+        dao: (await ref.read(
+          appDatabaseProvider.future,
+        )).medicalConsultationDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: MedicalConsultationSupabaseDatasource(
         ref.watch(supabaseDatabaseProvider),
       ),
       userId: user.id,

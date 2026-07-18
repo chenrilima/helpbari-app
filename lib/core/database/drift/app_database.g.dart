@@ -24071,6 +24071,2956 @@ class MedicalExamResultsCompanion extends UpdateCompanion<MedicalExamResult> {
   }
 }
 
+class $MedicalConsultationsTable extends MedicalConsultations
+    with TableInfo<$MedicalConsultationsTable, MedicalConsultation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicalConsultationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _consultationAtMeta = const VerificationMeta(
+    'consultationAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> consultationAt =
+      GeneratedColumn<DateTime>(
+        'consultation_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _specialtyMeta = const VerificationMeta(
+    'specialty',
+  );
+  @override
+  late final GeneratedColumn<String> specialty = GeneratedColumn<String>(
+    'specialty',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _consultationTypeMeta = const VerificationMeta(
+    'consultationType',
+  );
+  @override
+  late final GeneratedColumn<String> consultationType = GeneratedColumn<String>(
+    'consultation_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('unknown'),
+  );
+  static const VerificationMeta _professionalNameMeta = const VerificationMeta(
+    'professionalName',
+  );
+  @override
+  late final GeneratedColumn<String> professionalName = GeneratedColumn<String>(
+    'professional_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _professionalRegistrationMeta =
+      const VerificationMeta('professionalRegistration');
+  @override
+  late final GeneratedColumn<String> professionalRegistration =
+      GeneratedColumn<String>(
+        'professional_registration',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _clinicNameMeta = const VerificationMeta(
+    'clinicName',
+  );
+  @override
+  late final GeneratedColumn<String> clinicName = GeneratedColumn<String>(
+    'clinic_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _locationMeta = const VerificationMeta(
+    'location',
+  );
+  @override
+  late final GeneratedColumn<String> location = GeneratedColumn<String>(
+    'location',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _appointmentIdMeta = const VerificationMeta(
+    'appointmentId',
+  );
+  @override
+  late final GeneratedColumn<String> appointmentId = GeneratedColumn<String>(
+    'appointment_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceDocumentIdMeta = const VerificationMeta(
+    'sourceDocumentId',
+  );
+  @override
+  late final GeneratedColumn<String> sourceDocumentId = GeneratedColumn<String>(
+    'source_document_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+    'reason',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _symptomsMeta = const VerificationMeta(
+    'symptoms',
+  );
+  @override
+  late final GeneratedColumn<String> symptoms = GeneratedColumn<String>(
+    'symptoms',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _patientNotesMeta = const VerificationMeta(
+    'patientNotes',
+  );
+  @override
+  late final GeneratedColumn<String> patientNotes = GeneratedColumn<String>(
+    'patient_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _professionalGuidanceMeta =
+      const VerificationMeta('professionalGuidance');
+  @override
+  late final GeneratedColumn<String> professionalGuidance =
+      GeneratedColumn<String>(
+        'professional_guidance',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _dietaryGuidanceMeta = const VerificationMeta(
+    'dietaryGuidance',
+  );
+  @override
+  late final GeneratedColumn<String> dietaryGuidance = GeneratedColumn<String>(
+    'dietary_guidance',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _physicalActivityGuidanceMeta =
+      const VerificationMeta('physicalActivityGuidance');
+  @override
+  late final GeneratedColumn<String> physicalActivityGuidance =
+      GeneratedColumn<String>(
+        'physical_activity_guidance',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _supplementGuidanceMeta =
+      const VerificationMeta('supplementGuidance');
+  @override
+  late final GeneratedColumn<String> supplementGuidance =
+      GeneratedColumn<String>(
+        'supplement_guidance',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _medicationGuidanceMeta =
+      const VerificationMeta('medicationGuidance');
+  @override
+  late final GeneratedColumn<String> medicationGuidance =
+      GeneratedColumn<String>(
+        'medication_guidance',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _requestedExamsNotesMeta =
+      const VerificationMeta('requestedExamsNotes');
+  @override
+  late final GeneratedColumn<String> requestedExamsNotes =
+      GeneratedColumn<String>(
+        'requested_exams_notes',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _followUpNotesMeta = const VerificationMeta(
+    'followUpNotes',
+  );
+  @override
+  late final GeneratedColumn<String> followUpNotes = GeneratedColumn<String>(
+    'follow_up_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nextAppointmentAtMeta = const VerificationMeta(
+    'nextAppointmentAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> nextAppointmentAt =
+      GeneratedColumn<DateTime>(
+        'next_appointment_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _generalNotesMeta = const VerificationMeta(
+    'generalNotes',
+  );
+  @override
+  late final GeneratedColumn<String> generalNotes = GeneratedColumn<String>(
+    'general_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _weightKgMeta = const VerificationMeta(
+    'weightKg',
+  );
+  @override
+  late final GeneratedColumn<double> weightKg = GeneratedColumn<double>(
+    'weight_kg',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _heightCmMeta = const VerificationMeta(
+    'heightCm',
+  );
+  @override
+  late final GeneratedColumn<double> heightCm = GeneratedColumn<double>(
+    'height_cm',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bmiMeta = const VerificationMeta('bmi');
+  @override
+  late final GeneratedColumn<double> bmi = GeneratedColumn<double>(
+    'bmi',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bloodPressureSystolicMeta =
+      const VerificationMeta('bloodPressureSystolic');
+  @override
+  late final GeneratedColumn<int> bloodPressureSystolic = GeneratedColumn<int>(
+    'blood_pressure_systolic',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bloodPressureDiastolicMeta =
+      const VerificationMeta('bloodPressureDiastolic');
+  @override
+  late final GeneratedColumn<int> bloodPressureDiastolic = GeneratedColumn<int>(
+    'blood_pressure_diastolic',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _heartRateBpmMeta = const VerificationMeta(
+    'heartRateBpm',
+  );
+  @override
+  late final GeneratedColumn<int> heartRateBpm = GeneratedColumn<int>(
+    'heart_rate_bpm',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _waistCircumferenceCmMeta =
+      const VerificationMeta('waistCircumferenceCm');
+  @override
+  late final GeneratedColumn<double> waistCircumferenceCm =
+      GeneratedColumn<double>(
+        'waist_circumference_cm',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _additionalFieldsJsonMeta =
+      const VerificationMeta('additionalFieldsJson');
+  @override
+  late final GeneratedColumn<String> additionalFieldsJson =
+      GeneratedColumn<String>(
+        'additional_fields_json',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _metadataJsonMeta = const VerificationMeta(
+    'metadataJson',
+  );
+  @override
+  late final GeneratedColumn<String> metadataJson = GeneratedColumn<String>(
+    'metadata_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    consultationAt,
+    title,
+    specialty,
+    consultationType,
+    professionalName,
+    professionalRegistration,
+    clinicName,
+    location,
+    appointmentId,
+    source,
+    sourceDocumentId,
+    reason,
+    symptoms,
+    patientNotes,
+    professionalGuidance,
+    dietaryGuidance,
+    physicalActivityGuidance,
+    supplementGuidance,
+    medicationGuidance,
+    requestedExamsNotes,
+    followUpNotes,
+    nextAppointmentAt,
+    generalNotes,
+    weightKg,
+    heightCm,
+    bmi,
+    bloodPressureSystolic,
+    bloodPressureDiastolic,
+    heartRateBpm,
+    waistCircumferenceCm,
+    additionalFieldsJson,
+    metadataJson,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medical_consultations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MedicalConsultation> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('consultation_at')) {
+      context.handle(
+        _consultationAtMeta,
+        consultationAt.isAcceptableOrUnknown(
+          data['consultation_at']!,
+          _consultationAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_consultationAtMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    }
+    if (data.containsKey('specialty')) {
+      context.handle(
+        _specialtyMeta,
+        specialty.isAcceptableOrUnknown(data['specialty']!, _specialtyMeta),
+      );
+    }
+    if (data.containsKey('consultation_type')) {
+      context.handle(
+        _consultationTypeMeta,
+        consultationType.isAcceptableOrUnknown(
+          data['consultation_type']!,
+          _consultationTypeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('professional_name')) {
+      context.handle(
+        _professionalNameMeta,
+        professionalName.isAcceptableOrUnknown(
+          data['professional_name']!,
+          _professionalNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('professional_registration')) {
+      context.handle(
+        _professionalRegistrationMeta,
+        professionalRegistration.isAcceptableOrUnknown(
+          data['professional_registration']!,
+          _professionalRegistrationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('clinic_name')) {
+      context.handle(
+        _clinicNameMeta,
+        clinicName.isAcceptableOrUnknown(data['clinic_name']!, _clinicNameMeta),
+      );
+    }
+    if (data.containsKey('location')) {
+      context.handle(
+        _locationMeta,
+        location.isAcceptableOrUnknown(data['location']!, _locationMeta),
+      );
+    }
+    if (data.containsKey('appointment_id')) {
+      context.handle(
+        _appointmentIdMeta,
+        appointmentId.isAcceptableOrUnknown(
+          data['appointment_id']!,
+          _appointmentIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('source_document_id')) {
+      context.handle(
+        _sourceDocumentIdMeta,
+        sourceDocumentId.isAcceptableOrUnknown(
+          data['source_document_id']!,
+          _sourceDocumentIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reason')) {
+      context.handle(
+        _reasonMeta,
+        reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta),
+      );
+    }
+    if (data.containsKey('symptoms')) {
+      context.handle(
+        _symptomsMeta,
+        symptoms.isAcceptableOrUnknown(data['symptoms']!, _symptomsMeta),
+      );
+    }
+    if (data.containsKey('patient_notes')) {
+      context.handle(
+        _patientNotesMeta,
+        patientNotes.isAcceptableOrUnknown(
+          data['patient_notes']!,
+          _patientNotesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('professional_guidance')) {
+      context.handle(
+        _professionalGuidanceMeta,
+        professionalGuidance.isAcceptableOrUnknown(
+          data['professional_guidance']!,
+          _professionalGuidanceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('dietary_guidance')) {
+      context.handle(
+        _dietaryGuidanceMeta,
+        dietaryGuidance.isAcceptableOrUnknown(
+          data['dietary_guidance']!,
+          _dietaryGuidanceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('physical_activity_guidance')) {
+      context.handle(
+        _physicalActivityGuidanceMeta,
+        physicalActivityGuidance.isAcceptableOrUnknown(
+          data['physical_activity_guidance']!,
+          _physicalActivityGuidanceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('supplement_guidance')) {
+      context.handle(
+        _supplementGuidanceMeta,
+        supplementGuidance.isAcceptableOrUnknown(
+          data['supplement_guidance']!,
+          _supplementGuidanceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('medication_guidance')) {
+      context.handle(
+        _medicationGuidanceMeta,
+        medicationGuidance.isAcceptableOrUnknown(
+          data['medication_guidance']!,
+          _medicationGuidanceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('requested_exams_notes')) {
+      context.handle(
+        _requestedExamsNotesMeta,
+        requestedExamsNotes.isAcceptableOrUnknown(
+          data['requested_exams_notes']!,
+          _requestedExamsNotesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('follow_up_notes')) {
+      context.handle(
+        _followUpNotesMeta,
+        followUpNotes.isAcceptableOrUnknown(
+          data['follow_up_notes']!,
+          _followUpNotesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('next_appointment_at')) {
+      context.handle(
+        _nextAppointmentAtMeta,
+        nextAppointmentAt.isAcceptableOrUnknown(
+          data['next_appointment_at']!,
+          _nextAppointmentAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('general_notes')) {
+      context.handle(
+        _generalNotesMeta,
+        generalNotes.isAcceptableOrUnknown(
+          data['general_notes']!,
+          _generalNotesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('weight_kg')) {
+      context.handle(
+        _weightKgMeta,
+        weightKg.isAcceptableOrUnknown(data['weight_kg']!, _weightKgMeta),
+      );
+    }
+    if (data.containsKey('height_cm')) {
+      context.handle(
+        _heightCmMeta,
+        heightCm.isAcceptableOrUnknown(data['height_cm']!, _heightCmMeta),
+      );
+    }
+    if (data.containsKey('bmi')) {
+      context.handle(
+        _bmiMeta,
+        bmi.isAcceptableOrUnknown(data['bmi']!, _bmiMeta),
+      );
+    }
+    if (data.containsKey('blood_pressure_systolic')) {
+      context.handle(
+        _bloodPressureSystolicMeta,
+        bloodPressureSystolic.isAcceptableOrUnknown(
+          data['blood_pressure_systolic']!,
+          _bloodPressureSystolicMeta,
+        ),
+      );
+    }
+    if (data.containsKey('blood_pressure_diastolic')) {
+      context.handle(
+        _bloodPressureDiastolicMeta,
+        bloodPressureDiastolic.isAcceptableOrUnknown(
+          data['blood_pressure_diastolic']!,
+          _bloodPressureDiastolicMeta,
+        ),
+      );
+    }
+    if (data.containsKey('heart_rate_bpm')) {
+      context.handle(
+        _heartRateBpmMeta,
+        heartRateBpm.isAcceptableOrUnknown(
+          data['heart_rate_bpm']!,
+          _heartRateBpmMeta,
+        ),
+      );
+    }
+    if (data.containsKey('waist_circumference_cm')) {
+      context.handle(
+        _waistCircumferenceCmMeta,
+        waistCircumferenceCm.isAcceptableOrUnknown(
+          data['waist_circumference_cm']!,
+          _waistCircumferenceCmMeta,
+        ),
+      );
+    }
+    if (data.containsKey('additional_fields_json')) {
+      context.handle(
+        _additionalFieldsJsonMeta,
+        additionalFieldsJson.isAcceptableOrUnknown(
+          data['additional_fields_json']!,
+          _additionalFieldsJsonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('metadata_json')) {
+      context.handle(
+        _metadataJsonMeta,
+        metadataJson.isAcceptableOrUnknown(
+          data['metadata_json']!,
+          _metadataJsonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  MedicalConsultation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicalConsultation(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      consultationAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}consultation_at'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      ),
+      specialty: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}specialty'],
+      ),
+      consultationType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}consultation_type'],
+      )!,
+      professionalName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}professional_name'],
+      ),
+      professionalRegistration: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}professional_registration'],
+      ),
+      clinicName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}clinic_name'],
+      ),
+      location: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}location'],
+      ),
+      appointmentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}appointment_id'],
+      ),
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      sourceDocumentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_document_id'],
+      ),
+      reason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason'],
+      ),
+      symptoms: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}symptoms'],
+      ),
+      patientNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}patient_notes'],
+      ),
+      professionalGuidance: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}professional_guidance'],
+      ),
+      dietaryGuidance: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dietary_guidance'],
+      ),
+      physicalActivityGuidance: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}physical_activity_guidance'],
+      ),
+      supplementGuidance: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supplement_guidance'],
+      ),
+      medicationGuidance: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}medication_guidance'],
+      ),
+      requestedExamsNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}requested_exams_notes'],
+      ),
+      followUpNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}follow_up_notes'],
+      ),
+      nextAppointmentAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}next_appointment_at'],
+      ),
+      generalNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}general_notes'],
+      ),
+      weightKg: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}weight_kg'],
+      ),
+      heightCm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}height_cm'],
+      ),
+      bmi: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}bmi'],
+      ),
+      bloodPressureSystolic: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}blood_pressure_systolic'],
+      ),
+      bloodPressureDiastolic: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}blood_pressure_diastolic'],
+      ),
+      heartRateBpm: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}heart_rate_bpm'],
+      ),
+      waistCircumferenceCm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}waist_circumference_cm'],
+      ),
+      additionalFieldsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}additional_fields_json'],
+      ),
+      metadataJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}metadata_json'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $MedicalConsultationsTable createAlias(String alias) {
+    return $MedicalConsultationsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicalConsultation extends DataClass
+    implements Insertable<MedicalConsultation> {
+  final String id;
+  final String userId;
+  final DateTime consultationAt;
+  final String? title;
+  final String? specialty;
+  final String consultationType;
+  final String? professionalName;
+  final String? professionalRegistration;
+  final String? clinicName;
+  final String? location;
+  final String? appointmentId;
+  final String source;
+  final String? sourceDocumentId;
+  final String? reason;
+  final String? symptoms;
+  final String? patientNotes;
+  final String? professionalGuidance;
+  final String? dietaryGuidance;
+  final String? physicalActivityGuidance;
+  final String? supplementGuidance;
+  final String? medicationGuidance;
+  final String? requestedExamsNotes;
+  final String? followUpNotes;
+  final DateTime? nextAppointmentAt;
+  final String? generalNotes;
+  final double? weightKg;
+  final double? heightCm;
+  final double? bmi;
+  final int? bloodPressureSystolic;
+  final int? bloodPressureDiastolic;
+  final int? heartRateBpm;
+  final double? waistCircumferenceCm;
+  final String? additionalFieldsJson;
+  final String? metadataJson;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const MedicalConsultation({
+    required this.id,
+    required this.userId,
+    required this.consultationAt,
+    this.title,
+    this.specialty,
+    required this.consultationType,
+    this.professionalName,
+    this.professionalRegistration,
+    this.clinicName,
+    this.location,
+    this.appointmentId,
+    required this.source,
+    this.sourceDocumentId,
+    this.reason,
+    this.symptoms,
+    this.patientNotes,
+    this.professionalGuidance,
+    this.dietaryGuidance,
+    this.physicalActivityGuidance,
+    this.supplementGuidance,
+    this.medicationGuidance,
+    this.requestedExamsNotes,
+    this.followUpNotes,
+    this.nextAppointmentAt,
+    this.generalNotes,
+    this.weightKg,
+    this.heightCm,
+    this.bmi,
+    this.bloodPressureSystolic,
+    this.bloodPressureDiastolic,
+    this.heartRateBpm,
+    this.waistCircumferenceCm,
+    this.additionalFieldsJson,
+    this.metadataJson,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['consultation_at'] = Variable<DateTime>(consultationAt);
+    if (!nullToAbsent || title != null) {
+      map['title'] = Variable<String>(title);
+    }
+    if (!nullToAbsent || specialty != null) {
+      map['specialty'] = Variable<String>(specialty);
+    }
+    map['consultation_type'] = Variable<String>(consultationType);
+    if (!nullToAbsent || professionalName != null) {
+      map['professional_name'] = Variable<String>(professionalName);
+    }
+    if (!nullToAbsent || professionalRegistration != null) {
+      map['professional_registration'] = Variable<String>(
+        professionalRegistration,
+      );
+    }
+    if (!nullToAbsent || clinicName != null) {
+      map['clinic_name'] = Variable<String>(clinicName);
+    }
+    if (!nullToAbsent || location != null) {
+      map['location'] = Variable<String>(location);
+    }
+    if (!nullToAbsent || appointmentId != null) {
+      map['appointment_id'] = Variable<String>(appointmentId);
+    }
+    map['source'] = Variable<String>(source);
+    if (!nullToAbsent || sourceDocumentId != null) {
+      map['source_document_id'] = Variable<String>(sourceDocumentId);
+    }
+    if (!nullToAbsent || reason != null) {
+      map['reason'] = Variable<String>(reason);
+    }
+    if (!nullToAbsent || symptoms != null) {
+      map['symptoms'] = Variable<String>(symptoms);
+    }
+    if (!nullToAbsent || patientNotes != null) {
+      map['patient_notes'] = Variable<String>(patientNotes);
+    }
+    if (!nullToAbsent || professionalGuidance != null) {
+      map['professional_guidance'] = Variable<String>(professionalGuidance);
+    }
+    if (!nullToAbsent || dietaryGuidance != null) {
+      map['dietary_guidance'] = Variable<String>(dietaryGuidance);
+    }
+    if (!nullToAbsent || physicalActivityGuidance != null) {
+      map['physical_activity_guidance'] = Variable<String>(
+        physicalActivityGuidance,
+      );
+    }
+    if (!nullToAbsent || supplementGuidance != null) {
+      map['supplement_guidance'] = Variable<String>(supplementGuidance);
+    }
+    if (!nullToAbsent || medicationGuidance != null) {
+      map['medication_guidance'] = Variable<String>(medicationGuidance);
+    }
+    if (!nullToAbsent || requestedExamsNotes != null) {
+      map['requested_exams_notes'] = Variable<String>(requestedExamsNotes);
+    }
+    if (!nullToAbsent || followUpNotes != null) {
+      map['follow_up_notes'] = Variable<String>(followUpNotes);
+    }
+    if (!nullToAbsent || nextAppointmentAt != null) {
+      map['next_appointment_at'] = Variable<DateTime>(nextAppointmentAt);
+    }
+    if (!nullToAbsent || generalNotes != null) {
+      map['general_notes'] = Variable<String>(generalNotes);
+    }
+    if (!nullToAbsent || weightKg != null) {
+      map['weight_kg'] = Variable<double>(weightKg);
+    }
+    if (!nullToAbsent || heightCm != null) {
+      map['height_cm'] = Variable<double>(heightCm);
+    }
+    if (!nullToAbsent || bmi != null) {
+      map['bmi'] = Variable<double>(bmi);
+    }
+    if (!nullToAbsent || bloodPressureSystolic != null) {
+      map['blood_pressure_systolic'] = Variable<int>(bloodPressureSystolic);
+    }
+    if (!nullToAbsent || bloodPressureDiastolic != null) {
+      map['blood_pressure_diastolic'] = Variable<int>(bloodPressureDiastolic);
+    }
+    if (!nullToAbsent || heartRateBpm != null) {
+      map['heart_rate_bpm'] = Variable<int>(heartRateBpm);
+    }
+    if (!nullToAbsent || waistCircumferenceCm != null) {
+      map['waist_circumference_cm'] = Variable<double>(waistCircumferenceCm);
+    }
+    if (!nullToAbsent || additionalFieldsJson != null) {
+      map['additional_fields_json'] = Variable<String>(additionalFieldsJson);
+    }
+    if (!nullToAbsent || metadataJson != null) {
+      map['metadata_json'] = Variable<String>(metadataJson);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  MedicalConsultationsCompanion toCompanion(bool nullToAbsent) {
+    return MedicalConsultationsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      consultationAt: Value(consultationAt),
+      title: title == null && nullToAbsent
+          ? const Value.absent()
+          : Value(title),
+      specialty: specialty == null && nullToAbsent
+          ? const Value.absent()
+          : Value(specialty),
+      consultationType: Value(consultationType),
+      professionalName: professionalName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(professionalName),
+      professionalRegistration: professionalRegistration == null && nullToAbsent
+          ? const Value.absent()
+          : Value(professionalRegistration),
+      clinicName: clinicName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clinicName),
+      location: location == null && nullToAbsent
+          ? const Value.absent()
+          : Value(location),
+      appointmentId: appointmentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(appointmentId),
+      source: Value(source),
+      sourceDocumentId: sourceDocumentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceDocumentId),
+      reason: reason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reason),
+      symptoms: symptoms == null && nullToAbsent
+          ? const Value.absent()
+          : Value(symptoms),
+      patientNotes: patientNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(patientNotes),
+      professionalGuidance: professionalGuidance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(professionalGuidance),
+      dietaryGuidance: dietaryGuidance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dietaryGuidance),
+      physicalActivityGuidance: physicalActivityGuidance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(physicalActivityGuidance),
+      supplementGuidance: supplementGuidance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supplementGuidance),
+      medicationGuidance: medicationGuidance == null && nullToAbsent
+          ? const Value.absent()
+          : Value(medicationGuidance),
+      requestedExamsNotes: requestedExamsNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requestedExamsNotes),
+      followUpNotes: followUpNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followUpNotes),
+      nextAppointmentAt: nextAppointmentAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextAppointmentAt),
+      generalNotes: generalNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(generalNotes),
+      weightKg: weightKg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(weightKg),
+      heightCm: heightCm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(heightCm),
+      bmi: bmi == null && nullToAbsent ? const Value.absent() : Value(bmi),
+      bloodPressureSystolic: bloodPressureSystolic == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bloodPressureSystolic),
+      bloodPressureDiastolic: bloodPressureDiastolic == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bloodPressureDiastolic),
+      heartRateBpm: heartRateBpm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(heartRateBpm),
+      waistCircumferenceCm: waistCircumferenceCm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(waistCircumferenceCm),
+      additionalFieldsJson: additionalFieldsJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(additionalFieldsJson),
+      metadataJson: metadataJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(metadataJson),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory MedicalConsultation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicalConsultation(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      consultationAt: serializer.fromJson<DateTime>(json['consultationAt']),
+      title: serializer.fromJson<String?>(json['title']),
+      specialty: serializer.fromJson<String?>(json['specialty']),
+      consultationType: serializer.fromJson<String>(json['consultationType']),
+      professionalName: serializer.fromJson<String?>(json['professionalName']),
+      professionalRegistration: serializer.fromJson<String?>(
+        json['professionalRegistration'],
+      ),
+      clinicName: serializer.fromJson<String?>(json['clinicName']),
+      location: serializer.fromJson<String?>(json['location']),
+      appointmentId: serializer.fromJson<String?>(json['appointmentId']),
+      source: serializer.fromJson<String>(json['source']),
+      sourceDocumentId: serializer.fromJson<String?>(json['sourceDocumentId']),
+      reason: serializer.fromJson<String?>(json['reason']),
+      symptoms: serializer.fromJson<String?>(json['symptoms']),
+      patientNotes: serializer.fromJson<String?>(json['patientNotes']),
+      professionalGuidance: serializer.fromJson<String?>(
+        json['professionalGuidance'],
+      ),
+      dietaryGuidance: serializer.fromJson<String?>(json['dietaryGuidance']),
+      physicalActivityGuidance: serializer.fromJson<String?>(
+        json['physicalActivityGuidance'],
+      ),
+      supplementGuidance: serializer.fromJson<String?>(
+        json['supplementGuidance'],
+      ),
+      medicationGuidance: serializer.fromJson<String?>(
+        json['medicationGuidance'],
+      ),
+      requestedExamsNotes: serializer.fromJson<String?>(
+        json['requestedExamsNotes'],
+      ),
+      followUpNotes: serializer.fromJson<String?>(json['followUpNotes']),
+      nextAppointmentAt: serializer.fromJson<DateTime?>(
+        json['nextAppointmentAt'],
+      ),
+      generalNotes: serializer.fromJson<String?>(json['generalNotes']),
+      weightKg: serializer.fromJson<double?>(json['weightKg']),
+      heightCm: serializer.fromJson<double?>(json['heightCm']),
+      bmi: serializer.fromJson<double?>(json['bmi']),
+      bloodPressureSystolic: serializer.fromJson<int?>(
+        json['bloodPressureSystolic'],
+      ),
+      bloodPressureDiastolic: serializer.fromJson<int?>(
+        json['bloodPressureDiastolic'],
+      ),
+      heartRateBpm: serializer.fromJson<int?>(json['heartRateBpm']),
+      waistCircumferenceCm: serializer.fromJson<double?>(
+        json['waistCircumferenceCm'],
+      ),
+      additionalFieldsJson: serializer.fromJson<String?>(
+        json['additionalFieldsJson'],
+      ),
+      metadataJson: serializer.fromJson<String?>(json['metadataJson']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'consultationAt': serializer.toJson<DateTime>(consultationAt),
+      'title': serializer.toJson<String?>(title),
+      'specialty': serializer.toJson<String?>(specialty),
+      'consultationType': serializer.toJson<String>(consultationType),
+      'professionalName': serializer.toJson<String?>(professionalName),
+      'professionalRegistration': serializer.toJson<String?>(
+        professionalRegistration,
+      ),
+      'clinicName': serializer.toJson<String?>(clinicName),
+      'location': serializer.toJson<String?>(location),
+      'appointmentId': serializer.toJson<String?>(appointmentId),
+      'source': serializer.toJson<String>(source),
+      'sourceDocumentId': serializer.toJson<String?>(sourceDocumentId),
+      'reason': serializer.toJson<String?>(reason),
+      'symptoms': serializer.toJson<String?>(symptoms),
+      'patientNotes': serializer.toJson<String?>(patientNotes),
+      'professionalGuidance': serializer.toJson<String?>(professionalGuidance),
+      'dietaryGuidance': serializer.toJson<String?>(dietaryGuidance),
+      'physicalActivityGuidance': serializer.toJson<String?>(
+        physicalActivityGuidance,
+      ),
+      'supplementGuidance': serializer.toJson<String?>(supplementGuidance),
+      'medicationGuidance': serializer.toJson<String?>(medicationGuidance),
+      'requestedExamsNotes': serializer.toJson<String?>(requestedExamsNotes),
+      'followUpNotes': serializer.toJson<String?>(followUpNotes),
+      'nextAppointmentAt': serializer.toJson<DateTime?>(nextAppointmentAt),
+      'generalNotes': serializer.toJson<String?>(generalNotes),
+      'weightKg': serializer.toJson<double?>(weightKg),
+      'heightCm': serializer.toJson<double?>(heightCm),
+      'bmi': serializer.toJson<double?>(bmi),
+      'bloodPressureSystolic': serializer.toJson<int?>(bloodPressureSystolic),
+      'bloodPressureDiastolic': serializer.toJson<int?>(bloodPressureDiastolic),
+      'heartRateBpm': serializer.toJson<int?>(heartRateBpm),
+      'waistCircumferenceCm': serializer.toJson<double?>(waistCircumferenceCm),
+      'additionalFieldsJson': serializer.toJson<String?>(additionalFieldsJson),
+      'metadataJson': serializer.toJson<String?>(metadataJson),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  MedicalConsultation copyWith({
+    String? id,
+    String? userId,
+    DateTime? consultationAt,
+    Value<String?> title = const Value.absent(),
+    Value<String?> specialty = const Value.absent(),
+    String? consultationType,
+    Value<String?> professionalName = const Value.absent(),
+    Value<String?> professionalRegistration = const Value.absent(),
+    Value<String?> clinicName = const Value.absent(),
+    Value<String?> location = const Value.absent(),
+    Value<String?> appointmentId = const Value.absent(),
+    String? source,
+    Value<String?> sourceDocumentId = const Value.absent(),
+    Value<String?> reason = const Value.absent(),
+    Value<String?> symptoms = const Value.absent(),
+    Value<String?> patientNotes = const Value.absent(),
+    Value<String?> professionalGuidance = const Value.absent(),
+    Value<String?> dietaryGuidance = const Value.absent(),
+    Value<String?> physicalActivityGuidance = const Value.absent(),
+    Value<String?> supplementGuidance = const Value.absent(),
+    Value<String?> medicationGuidance = const Value.absent(),
+    Value<String?> requestedExamsNotes = const Value.absent(),
+    Value<String?> followUpNotes = const Value.absent(),
+    Value<DateTime?> nextAppointmentAt = const Value.absent(),
+    Value<String?> generalNotes = const Value.absent(),
+    Value<double?> weightKg = const Value.absent(),
+    Value<double?> heightCm = const Value.absent(),
+    Value<double?> bmi = const Value.absent(),
+    Value<int?> bloodPressureSystolic = const Value.absent(),
+    Value<int?> bloodPressureDiastolic = const Value.absent(),
+    Value<int?> heartRateBpm = const Value.absent(),
+    Value<double?> waistCircumferenceCm = const Value.absent(),
+    Value<String?> additionalFieldsJson = const Value.absent(),
+    Value<String?> metadataJson = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => MedicalConsultation(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    consultationAt: consultationAt ?? this.consultationAt,
+    title: title.present ? title.value : this.title,
+    specialty: specialty.present ? specialty.value : this.specialty,
+    consultationType: consultationType ?? this.consultationType,
+    professionalName: professionalName.present
+        ? professionalName.value
+        : this.professionalName,
+    professionalRegistration: professionalRegistration.present
+        ? professionalRegistration.value
+        : this.professionalRegistration,
+    clinicName: clinicName.present ? clinicName.value : this.clinicName,
+    location: location.present ? location.value : this.location,
+    appointmentId: appointmentId.present
+        ? appointmentId.value
+        : this.appointmentId,
+    source: source ?? this.source,
+    sourceDocumentId: sourceDocumentId.present
+        ? sourceDocumentId.value
+        : this.sourceDocumentId,
+    reason: reason.present ? reason.value : this.reason,
+    symptoms: symptoms.present ? symptoms.value : this.symptoms,
+    patientNotes: patientNotes.present ? patientNotes.value : this.patientNotes,
+    professionalGuidance: professionalGuidance.present
+        ? professionalGuidance.value
+        : this.professionalGuidance,
+    dietaryGuidance: dietaryGuidance.present
+        ? dietaryGuidance.value
+        : this.dietaryGuidance,
+    physicalActivityGuidance: physicalActivityGuidance.present
+        ? physicalActivityGuidance.value
+        : this.physicalActivityGuidance,
+    supplementGuidance: supplementGuidance.present
+        ? supplementGuidance.value
+        : this.supplementGuidance,
+    medicationGuidance: medicationGuidance.present
+        ? medicationGuidance.value
+        : this.medicationGuidance,
+    requestedExamsNotes: requestedExamsNotes.present
+        ? requestedExamsNotes.value
+        : this.requestedExamsNotes,
+    followUpNotes: followUpNotes.present
+        ? followUpNotes.value
+        : this.followUpNotes,
+    nextAppointmentAt: nextAppointmentAt.present
+        ? nextAppointmentAt.value
+        : this.nextAppointmentAt,
+    generalNotes: generalNotes.present ? generalNotes.value : this.generalNotes,
+    weightKg: weightKg.present ? weightKg.value : this.weightKg,
+    heightCm: heightCm.present ? heightCm.value : this.heightCm,
+    bmi: bmi.present ? bmi.value : this.bmi,
+    bloodPressureSystolic: bloodPressureSystolic.present
+        ? bloodPressureSystolic.value
+        : this.bloodPressureSystolic,
+    bloodPressureDiastolic: bloodPressureDiastolic.present
+        ? bloodPressureDiastolic.value
+        : this.bloodPressureDiastolic,
+    heartRateBpm: heartRateBpm.present ? heartRateBpm.value : this.heartRateBpm,
+    waistCircumferenceCm: waistCircumferenceCm.present
+        ? waistCircumferenceCm.value
+        : this.waistCircumferenceCm,
+    additionalFieldsJson: additionalFieldsJson.present
+        ? additionalFieldsJson.value
+        : this.additionalFieldsJson,
+    metadataJson: metadataJson.present ? metadataJson.value : this.metadataJson,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  MedicalConsultation copyWithCompanion(MedicalConsultationsCompanion data) {
+    return MedicalConsultation(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      consultationAt: data.consultationAt.present
+          ? data.consultationAt.value
+          : this.consultationAt,
+      title: data.title.present ? data.title.value : this.title,
+      specialty: data.specialty.present ? data.specialty.value : this.specialty,
+      consultationType: data.consultationType.present
+          ? data.consultationType.value
+          : this.consultationType,
+      professionalName: data.professionalName.present
+          ? data.professionalName.value
+          : this.professionalName,
+      professionalRegistration: data.professionalRegistration.present
+          ? data.professionalRegistration.value
+          : this.professionalRegistration,
+      clinicName: data.clinicName.present
+          ? data.clinicName.value
+          : this.clinicName,
+      location: data.location.present ? data.location.value : this.location,
+      appointmentId: data.appointmentId.present
+          ? data.appointmentId.value
+          : this.appointmentId,
+      source: data.source.present ? data.source.value : this.source,
+      sourceDocumentId: data.sourceDocumentId.present
+          ? data.sourceDocumentId.value
+          : this.sourceDocumentId,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      symptoms: data.symptoms.present ? data.symptoms.value : this.symptoms,
+      patientNotes: data.patientNotes.present
+          ? data.patientNotes.value
+          : this.patientNotes,
+      professionalGuidance: data.professionalGuidance.present
+          ? data.professionalGuidance.value
+          : this.professionalGuidance,
+      dietaryGuidance: data.dietaryGuidance.present
+          ? data.dietaryGuidance.value
+          : this.dietaryGuidance,
+      physicalActivityGuidance: data.physicalActivityGuidance.present
+          ? data.physicalActivityGuidance.value
+          : this.physicalActivityGuidance,
+      supplementGuidance: data.supplementGuidance.present
+          ? data.supplementGuidance.value
+          : this.supplementGuidance,
+      medicationGuidance: data.medicationGuidance.present
+          ? data.medicationGuidance.value
+          : this.medicationGuidance,
+      requestedExamsNotes: data.requestedExamsNotes.present
+          ? data.requestedExamsNotes.value
+          : this.requestedExamsNotes,
+      followUpNotes: data.followUpNotes.present
+          ? data.followUpNotes.value
+          : this.followUpNotes,
+      nextAppointmentAt: data.nextAppointmentAt.present
+          ? data.nextAppointmentAt.value
+          : this.nextAppointmentAt,
+      generalNotes: data.generalNotes.present
+          ? data.generalNotes.value
+          : this.generalNotes,
+      weightKg: data.weightKg.present ? data.weightKg.value : this.weightKg,
+      heightCm: data.heightCm.present ? data.heightCm.value : this.heightCm,
+      bmi: data.bmi.present ? data.bmi.value : this.bmi,
+      bloodPressureSystolic: data.bloodPressureSystolic.present
+          ? data.bloodPressureSystolic.value
+          : this.bloodPressureSystolic,
+      bloodPressureDiastolic: data.bloodPressureDiastolic.present
+          ? data.bloodPressureDiastolic.value
+          : this.bloodPressureDiastolic,
+      heartRateBpm: data.heartRateBpm.present
+          ? data.heartRateBpm.value
+          : this.heartRateBpm,
+      waistCircumferenceCm: data.waistCircumferenceCm.present
+          ? data.waistCircumferenceCm.value
+          : this.waistCircumferenceCm,
+      additionalFieldsJson: data.additionalFieldsJson.present
+          ? data.additionalFieldsJson.value
+          : this.additionalFieldsJson,
+      metadataJson: data.metadataJson.present
+          ? data.metadataJson.value
+          : this.metadataJson,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalConsultation(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('consultationAt: $consultationAt, ')
+          ..write('title: $title, ')
+          ..write('specialty: $specialty, ')
+          ..write('consultationType: $consultationType, ')
+          ..write('professionalName: $professionalName, ')
+          ..write('professionalRegistration: $professionalRegistration, ')
+          ..write('clinicName: $clinicName, ')
+          ..write('location: $location, ')
+          ..write('appointmentId: $appointmentId, ')
+          ..write('source: $source, ')
+          ..write('sourceDocumentId: $sourceDocumentId, ')
+          ..write('reason: $reason, ')
+          ..write('symptoms: $symptoms, ')
+          ..write('patientNotes: $patientNotes, ')
+          ..write('professionalGuidance: $professionalGuidance, ')
+          ..write('dietaryGuidance: $dietaryGuidance, ')
+          ..write('physicalActivityGuidance: $physicalActivityGuidance, ')
+          ..write('supplementGuidance: $supplementGuidance, ')
+          ..write('medicationGuidance: $medicationGuidance, ')
+          ..write('requestedExamsNotes: $requestedExamsNotes, ')
+          ..write('followUpNotes: $followUpNotes, ')
+          ..write('nextAppointmentAt: $nextAppointmentAt, ')
+          ..write('generalNotes: $generalNotes, ')
+          ..write('weightKg: $weightKg, ')
+          ..write('heightCm: $heightCm, ')
+          ..write('bmi: $bmi, ')
+          ..write('bloodPressureSystolic: $bloodPressureSystolic, ')
+          ..write('bloodPressureDiastolic: $bloodPressureDiastolic, ')
+          ..write('heartRateBpm: $heartRateBpm, ')
+          ..write('waistCircumferenceCm: $waistCircumferenceCm, ')
+          ..write('additionalFieldsJson: $additionalFieldsJson, ')
+          ..write('metadataJson: $metadataJson, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    userId,
+    consultationAt,
+    title,
+    specialty,
+    consultationType,
+    professionalName,
+    professionalRegistration,
+    clinicName,
+    location,
+    appointmentId,
+    source,
+    sourceDocumentId,
+    reason,
+    symptoms,
+    patientNotes,
+    professionalGuidance,
+    dietaryGuidance,
+    physicalActivityGuidance,
+    supplementGuidance,
+    medicationGuidance,
+    requestedExamsNotes,
+    followUpNotes,
+    nextAppointmentAt,
+    generalNotes,
+    weightKg,
+    heightCm,
+    bmi,
+    bloodPressureSystolic,
+    bloodPressureDiastolic,
+    heartRateBpm,
+    waistCircumferenceCm,
+    additionalFieldsJson,
+    metadataJson,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicalConsultation &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.consultationAt == this.consultationAt &&
+          other.title == this.title &&
+          other.specialty == this.specialty &&
+          other.consultationType == this.consultationType &&
+          other.professionalName == this.professionalName &&
+          other.professionalRegistration == this.professionalRegistration &&
+          other.clinicName == this.clinicName &&
+          other.location == this.location &&
+          other.appointmentId == this.appointmentId &&
+          other.source == this.source &&
+          other.sourceDocumentId == this.sourceDocumentId &&
+          other.reason == this.reason &&
+          other.symptoms == this.symptoms &&
+          other.patientNotes == this.patientNotes &&
+          other.professionalGuidance == this.professionalGuidance &&
+          other.dietaryGuidance == this.dietaryGuidance &&
+          other.physicalActivityGuidance == this.physicalActivityGuidance &&
+          other.supplementGuidance == this.supplementGuidance &&
+          other.medicationGuidance == this.medicationGuidance &&
+          other.requestedExamsNotes == this.requestedExamsNotes &&
+          other.followUpNotes == this.followUpNotes &&
+          other.nextAppointmentAt == this.nextAppointmentAt &&
+          other.generalNotes == this.generalNotes &&
+          other.weightKg == this.weightKg &&
+          other.heightCm == this.heightCm &&
+          other.bmi == this.bmi &&
+          other.bloodPressureSystolic == this.bloodPressureSystolic &&
+          other.bloodPressureDiastolic == this.bloodPressureDiastolic &&
+          other.heartRateBpm == this.heartRateBpm &&
+          other.waistCircumferenceCm == this.waistCircumferenceCm &&
+          other.additionalFieldsJson == this.additionalFieldsJson &&
+          other.metadataJson == this.metadataJson &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class MedicalConsultationsCompanion
+    extends UpdateCompanion<MedicalConsultation> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> consultationAt;
+  final Value<String?> title;
+  final Value<String?> specialty;
+  final Value<String> consultationType;
+  final Value<String?> professionalName;
+  final Value<String?> professionalRegistration;
+  final Value<String?> clinicName;
+  final Value<String?> location;
+  final Value<String?> appointmentId;
+  final Value<String> source;
+  final Value<String?> sourceDocumentId;
+  final Value<String?> reason;
+  final Value<String?> symptoms;
+  final Value<String?> patientNotes;
+  final Value<String?> professionalGuidance;
+  final Value<String?> dietaryGuidance;
+  final Value<String?> physicalActivityGuidance;
+  final Value<String?> supplementGuidance;
+  final Value<String?> medicationGuidance;
+  final Value<String?> requestedExamsNotes;
+  final Value<String?> followUpNotes;
+  final Value<DateTime?> nextAppointmentAt;
+  final Value<String?> generalNotes;
+  final Value<double?> weightKg;
+  final Value<double?> heightCm;
+  final Value<double?> bmi;
+  final Value<int?> bloodPressureSystolic;
+  final Value<int?> bloodPressureDiastolic;
+  final Value<int?> heartRateBpm;
+  final Value<double?> waistCircumferenceCm;
+  final Value<String?> additionalFieldsJson;
+  final Value<String?> metadataJson;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const MedicalConsultationsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.consultationAt = const Value.absent(),
+    this.title = const Value.absent(),
+    this.specialty = const Value.absent(),
+    this.consultationType = const Value.absent(),
+    this.professionalName = const Value.absent(),
+    this.professionalRegistration = const Value.absent(),
+    this.clinicName = const Value.absent(),
+    this.location = const Value.absent(),
+    this.appointmentId = const Value.absent(),
+    this.source = const Value.absent(),
+    this.sourceDocumentId = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.symptoms = const Value.absent(),
+    this.patientNotes = const Value.absent(),
+    this.professionalGuidance = const Value.absent(),
+    this.dietaryGuidance = const Value.absent(),
+    this.physicalActivityGuidance = const Value.absent(),
+    this.supplementGuidance = const Value.absent(),
+    this.medicationGuidance = const Value.absent(),
+    this.requestedExamsNotes = const Value.absent(),
+    this.followUpNotes = const Value.absent(),
+    this.nextAppointmentAt = const Value.absent(),
+    this.generalNotes = const Value.absent(),
+    this.weightKg = const Value.absent(),
+    this.heightCm = const Value.absent(),
+    this.bmi = const Value.absent(),
+    this.bloodPressureSystolic = const Value.absent(),
+    this.bloodPressureDiastolic = const Value.absent(),
+    this.heartRateBpm = const Value.absent(),
+    this.waistCircumferenceCm = const Value.absent(),
+    this.additionalFieldsJson = const Value.absent(),
+    this.metadataJson = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MedicalConsultationsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime consultationAt,
+    this.title = const Value.absent(),
+    this.specialty = const Value.absent(),
+    this.consultationType = const Value.absent(),
+    this.professionalName = const Value.absent(),
+    this.professionalRegistration = const Value.absent(),
+    this.clinicName = const Value.absent(),
+    this.location = const Value.absent(),
+    this.appointmentId = const Value.absent(),
+    required String source,
+    this.sourceDocumentId = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.symptoms = const Value.absent(),
+    this.patientNotes = const Value.absent(),
+    this.professionalGuidance = const Value.absent(),
+    this.dietaryGuidance = const Value.absent(),
+    this.physicalActivityGuidance = const Value.absent(),
+    this.supplementGuidance = const Value.absent(),
+    this.medicationGuidance = const Value.absent(),
+    this.requestedExamsNotes = const Value.absent(),
+    this.followUpNotes = const Value.absent(),
+    this.nextAppointmentAt = const Value.absent(),
+    this.generalNotes = const Value.absent(),
+    this.weightKg = const Value.absent(),
+    this.heightCm = const Value.absent(),
+    this.bmi = const Value.absent(),
+    this.bloodPressureSystolic = const Value.absent(),
+    this.bloodPressureDiastolic = const Value.absent(),
+    this.heartRateBpm = const Value.absent(),
+    this.waistCircumferenceCm = const Value.absent(),
+    this.additionalFieldsJson = const Value.absent(),
+    this.metadataJson = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       consultationAt = Value(consultationAt),
+       source = Value(source),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<MedicalConsultation> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? consultationAt,
+    Expression<String>? title,
+    Expression<String>? specialty,
+    Expression<String>? consultationType,
+    Expression<String>? professionalName,
+    Expression<String>? professionalRegistration,
+    Expression<String>? clinicName,
+    Expression<String>? location,
+    Expression<String>? appointmentId,
+    Expression<String>? source,
+    Expression<String>? sourceDocumentId,
+    Expression<String>? reason,
+    Expression<String>? symptoms,
+    Expression<String>? patientNotes,
+    Expression<String>? professionalGuidance,
+    Expression<String>? dietaryGuidance,
+    Expression<String>? physicalActivityGuidance,
+    Expression<String>? supplementGuidance,
+    Expression<String>? medicationGuidance,
+    Expression<String>? requestedExamsNotes,
+    Expression<String>? followUpNotes,
+    Expression<DateTime>? nextAppointmentAt,
+    Expression<String>? generalNotes,
+    Expression<double>? weightKg,
+    Expression<double>? heightCm,
+    Expression<double>? bmi,
+    Expression<int>? bloodPressureSystolic,
+    Expression<int>? bloodPressureDiastolic,
+    Expression<int>? heartRateBpm,
+    Expression<double>? waistCircumferenceCm,
+    Expression<String>? additionalFieldsJson,
+    Expression<String>? metadataJson,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (consultationAt != null) 'consultation_at': consultationAt,
+      if (title != null) 'title': title,
+      if (specialty != null) 'specialty': specialty,
+      if (consultationType != null) 'consultation_type': consultationType,
+      if (professionalName != null) 'professional_name': professionalName,
+      if (professionalRegistration != null)
+        'professional_registration': professionalRegistration,
+      if (clinicName != null) 'clinic_name': clinicName,
+      if (location != null) 'location': location,
+      if (appointmentId != null) 'appointment_id': appointmentId,
+      if (source != null) 'source': source,
+      if (sourceDocumentId != null) 'source_document_id': sourceDocumentId,
+      if (reason != null) 'reason': reason,
+      if (symptoms != null) 'symptoms': symptoms,
+      if (patientNotes != null) 'patient_notes': patientNotes,
+      if (professionalGuidance != null)
+        'professional_guidance': professionalGuidance,
+      if (dietaryGuidance != null) 'dietary_guidance': dietaryGuidance,
+      if (physicalActivityGuidance != null)
+        'physical_activity_guidance': physicalActivityGuidance,
+      if (supplementGuidance != null) 'supplement_guidance': supplementGuidance,
+      if (medicationGuidance != null) 'medication_guidance': medicationGuidance,
+      if (requestedExamsNotes != null)
+        'requested_exams_notes': requestedExamsNotes,
+      if (followUpNotes != null) 'follow_up_notes': followUpNotes,
+      if (nextAppointmentAt != null) 'next_appointment_at': nextAppointmentAt,
+      if (generalNotes != null) 'general_notes': generalNotes,
+      if (weightKg != null) 'weight_kg': weightKg,
+      if (heightCm != null) 'height_cm': heightCm,
+      if (bmi != null) 'bmi': bmi,
+      if (bloodPressureSystolic != null)
+        'blood_pressure_systolic': bloodPressureSystolic,
+      if (bloodPressureDiastolic != null)
+        'blood_pressure_diastolic': bloodPressureDiastolic,
+      if (heartRateBpm != null) 'heart_rate_bpm': heartRateBpm,
+      if (waistCircumferenceCm != null)
+        'waist_circumference_cm': waistCircumferenceCm,
+      if (additionalFieldsJson != null)
+        'additional_fields_json': additionalFieldsJson,
+      if (metadataJson != null) 'metadata_json': metadataJson,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MedicalConsultationsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? consultationAt,
+    Value<String?>? title,
+    Value<String?>? specialty,
+    Value<String>? consultationType,
+    Value<String?>? professionalName,
+    Value<String?>? professionalRegistration,
+    Value<String?>? clinicName,
+    Value<String?>? location,
+    Value<String?>? appointmentId,
+    Value<String>? source,
+    Value<String?>? sourceDocumentId,
+    Value<String?>? reason,
+    Value<String?>? symptoms,
+    Value<String?>? patientNotes,
+    Value<String?>? professionalGuidance,
+    Value<String?>? dietaryGuidance,
+    Value<String?>? physicalActivityGuidance,
+    Value<String?>? supplementGuidance,
+    Value<String?>? medicationGuidance,
+    Value<String?>? requestedExamsNotes,
+    Value<String?>? followUpNotes,
+    Value<DateTime?>? nextAppointmentAt,
+    Value<String?>? generalNotes,
+    Value<double?>? weightKg,
+    Value<double?>? heightCm,
+    Value<double?>? bmi,
+    Value<int?>? bloodPressureSystolic,
+    Value<int?>? bloodPressureDiastolic,
+    Value<int?>? heartRateBpm,
+    Value<double?>? waistCircumferenceCm,
+    Value<String?>? additionalFieldsJson,
+    Value<String?>? metadataJson,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return MedicalConsultationsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      consultationAt: consultationAt ?? this.consultationAt,
+      title: title ?? this.title,
+      specialty: specialty ?? this.specialty,
+      consultationType: consultationType ?? this.consultationType,
+      professionalName: professionalName ?? this.professionalName,
+      professionalRegistration:
+          professionalRegistration ?? this.professionalRegistration,
+      clinicName: clinicName ?? this.clinicName,
+      location: location ?? this.location,
+      appointmentId: appointmentId ?? this.appointmentId,
+      source: source ?? this.source,
+      sourceDocumentId: sourceDocumentId ?? this.sourceDocumentId,
+      reason: reason ?? this.reason,
+      symptoms: symptoms ?? this.symptoms,
+      patientNotes: patientNotes ?? this.patientNotes,
+      professionalGuidance: professionalGuidance ?? this.professionalGuidance,
+      dietaryGuidance: dietaryGuidance ?? this.dietaryGuidance,
+      physicalActivityGuidance:
+          physicalActivityGuidance ?? this.physicalActivityGuidance,
+      supplementGuidance: supplementGuidance ?? this.supplementGuidance,
+      medicationGuidance: medicationGuidance ?? this.medicationGuidance,
+      requestedExamsNotes: requestedExamsNotes ?? this.requestedExamsNotes,
+      followUpNotes: followUpNotes ?? this.followUpNotes,
+      nextAppointmentAt: nextAppointmentAt ?? this.nextAppointmentAt,
+      generalNotes: generalNotes ?? this.generalNotes,
+      weightKg: weightKg ?? this.weightKg,
+      heightCm: heightCm ?? this.heightCm,
+      bmi: bmi ?? this.bmi,
+      bloodPressureSystolic:
+          bloodPressureSystolic ?? this.bloodPressureSystolic,
+      bloodPressureDiastolic:
+          bloodPressureDiastolic ?? this.bloodPressureDiastolic,
+      heartRateBpm: heartRateBpm ?? this.heartRateBpm,
+      waistCircumferenceCm: waistCircumferenceCm ?? this.waistCircumferenceCm,
+      additionalFieldsJson: additionalFieldsJson ?? this.additionalFieldsJson,
+      metadataJson: metadataJson ?? this.metadataJson,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (consultationAt.present) {
+      map['consultation_at'] = Variable<DateTime>(consultationAt.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (specialty.present) {
+      map['specialty'] = Variable<String>(specialty.value);
+    }
+    if (consultationType.present) {
+      map['consultation_type'] = Variable<String>(consultationType.value);
+    }
+    if (professionalName.present) {
+      map['professional_name'] = Variable<String>(professionalName.value);
+    }
+    if (professionalRegistration.present) {
+      map['professional_registration'] = Variable<String>(
+        professionalRegistration.value,
+      );
+    }
+    if (clinicName.present) {
+      map['clinic_name'] = Variable<String>(clinicName.value);
+    }
+    if (location.present) {
+      map['location'] = Variable<String>(location.value);
+    }
+    if (appointmentId.present) {
+      map['appointment_id'] = Variable<String>(appointmentId.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (sourceDocumentId.present) {
+      map['source_document_id'] = Variable<String>(sourceDocumentId.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (symptoms.present) {
+      map['symptoms'] = Variable<String>(symptoms.value);
+    }
+    if (patientNotes.present) {
+      map['patient_notes'] = Variable<String>(patientNotes.value);
+    }
+    if (professionalGuidance.present) {
+      map['professional_guidance'] = Variable<String>(
+        professionalGuidance.value,
+      );
+    }
+    if (dietaryGuidance.present) {
+      map['dietary_guidance'] = Variable<String>(dietaryGuidance.value);
+    }
+    if (physicalActivityGuidance.present) {
+      map['physical_activity_guidance'] = Variable<String>(
+        physicalActivityGuidance.value,
+      );
+    }
+    if (supplementGuidance.present) {
+      map['supplement_guidance'] = Variable<String>(supplementGuidance.value);
+    }
+    if (medicationGuidance.present) {
+      map['medication_guidance'] = Variable<String>(medicationGuidance.value);
+    }
+    if (requestedExamsNotes.present) {
+      map['requested_exams_notes'] = Variable<String>(
+        requestedExamsNotes.value,
+      );
+    }
+    if (followUpNotes.present) {
+      map['follow_up_notes'] = Variable<String>(followUpNotes.value);
+    }
+    if (nextAppointmentAt.present) {
+      map['next_appointment_at'] = Variable<DateTime>(nextAppointmentAt.value);
+    }
+    if (generalNotes.present) {
+      map['general_notes'] = Variable<String>(generalNotes.value);
+    }
+    if (weightKg.present) {
+      map['weight_kg'] = Variable<double>(weightKg.value);
+    }
+    if (heightCm.present) {
+      map['height_cm'] = Variable<double>(heightCm.value);
+    }
+    if (bmi.present) {
+      map['bmi'] = Variable<double>(bmi.value);
+    }
+    if (bloodPressureSystolic.present) {
+      map['blood_pressure_systolic'] = Variable<int>(
+        bloodPressureSystolic.value,
+      );
+    }
+    if (bloodPressureDiastolic.present) {
+      map['blood_pressure_diastolic'] = Variable<int>(
+        bloodPressureDiastolic.value,
+      );
+    }
+    if (heartRateBpm.present) {
+      map['heart_rate_bpm'] = Variable<int>(heartRateBpm.value);
+    }
+    if (waistCircumferenceCm.present) {
+      map['waist_circumference_cm'] = Variable<double>(
+        waistCircumferenceCm.value,
+      );
+    }
+    if (additionalFieldsJson.present) {
+      map['additional_fields_json'] = Variable<String>(
+        additionalFieldsJson.value,
+      );
+    }
+    if (metadataJson.present) {
+      map['metadata_json'] = Variable<String>(metadataJson.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalConsultationsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('consultationAt: $consultationAt, ')
+          ..write('title: $title, ')
+          ..write('specialty: $specialty, ')
+          ..write('consultationType: $consultationType, ')
+          ..write('professionalName: $professionalName, ')
+          ..write('professionalRegistration: $professionalRegistration, ')
+          ..write('clinicName: $clinicName, ')
+          ..write('location: $location, ')
+          ..write('appointmentId: $appointmentId, ')
+          ..write('source: $source, ')
+          ..write('sourceDocumentId: $sourceDocumentId, ')
+          ..write('reason: $reason, ')
+          ..write('symptoms: $symptoms, ')
+          ..write('patientNotes: $patientNotes, ')
+          ..write('professionalGuidance: $professionalGuidance, ')
+          ..write('dietaryGuidance: $dietaryGuidance, ')
+          ..write('physicalActivityGuidance: $physicalActivityGuidance, ')
+          ..write('supplementGuidance: $supplementGuidance, ')
+          ..write('medicationGuidance: $medicationGuidance, ')
+          ..write('requestedExamsNotes: $requestedExamsNotes, ')
+          ..write('followUpNotes: $followUpNotes, ')
+          ..write('nextAppointmentAt: $nextAppointmentAt, ')
+          ..write('generalNotes: $generalNotes, ')
+          ..write('weightKg: $weightKg, ')
+          ..write('heightCm: $heightCm, ')
+          ..write('bmi: $bmi, ')
+          ..write('bloodPressureSystolic: $bloodPressureSystolic, ')
+          ..write('bloodPressureDiastolic: $bloodPressureDiastolic, ')
+          ..write('heartRateBpm: $heartRateBpm, ')
+          ..write('waistCircumferenceCm: $waistCircumferenceCm, ')
+          ..write('additionalFieldsJson: $additionalFieldsJson, ')
+          ..write('metadataJson: $metadataJson, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicalConsultationExamsTable extends MedicalConsultationExams
+    with TableInfo<$MedicalConsultationExamsTable, MedicalConsultationExam> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicalConsultationExamsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _medicalConsultationIdMeta =
+      const VerificationMeta('medicalConsultationId');
+  @override
+  late final GeneratedColumn<String> medicalConsultationId =
+      GeneratedColumn<String>(
+        'medical_consultation_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _medicalExamIdMeta = const VerificationMeta(
+    'medicalExamId',
+  );
+  @override
+  late final GeneratedColumn<String> medicalExamId = GeneratedColumn<String>(
+    'medical_exam_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    userId,
+    medicalConsultationId,
+    medicalExamId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medical_consultation_exams';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MedicalConsultationExam> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('medical_consultation_id')) {
+      context.handle(
+        _medicalConsultationIdMeta,
+        medicalConsultationId.isAcceptableOrUnknown(
+          data['medical_consultation_id']!,
+          _medicalConsultationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_medicalConsultationIdMeta);
+    }
+    if (data.containsKey('medical_exam_id')) {
+      context.handle(
+        _medicalExamIdMeta,
+        medicalExamId.isAcceptableOrUnknown(
+          data['medical_exam_id']!,
+          _medicalExamIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_medicalExamIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {
+    userId,
+    medicalConsultationId,
+    medicalExamId,
+  };
+  @override
+  MedicalConsultationExam map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicalConsultationExam(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      medicalConsultationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}medical_consultation_id'],
+      )!,
+      medicalExamId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}medical_exam_id'],
+      )!,
+    );
+  }
+
+  @override
+  $MedicalConsultationExamsTable createAlias(String alias) {
+    return $MedicalConsultationExamsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicalConsultationExam extends DataClass
+    implements Insertable<MedicalConsultationExam> {
+  final String userId;
+  final String medicalConsultationId;
+  final String medicalExamId;
+  const MedicalConsultationExam({
+    required this.userId,
+    required this.medicalConsultationId,
+    required this.medicalExamId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['medical_consultation_id'] = Variable<String>(medicalConsultationId);
+    map['medical_exam_id'] = Variable<String>(medicalExamId);
+    return map;
+  }
+
+  MedicalConsultationExamsCompanion toCompanion(bool nullToAbsent) {
+    return MedicalConsultationExamsCompanion(
+      userId: Value(userId),
+      medicalConsultationId: Value(medicalConsultationId),
+      medicalExamId: Value(medicalExamId),
+    );
+  }
+
+  factory MedicalConsultationExam.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicalConsultationExam(
+      userId: serializer.fromJson<String>(json['userId']),
+      medicalConsultationId: serializer.fromJson<String>(
+        json['medicalConsultationId'],
+      ),
+      medicalExamId: serializer.fromJson<String>(json['medicalExamId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'medicalConsultationId': serializer.toJson<String>(medicalConsultationId),
+      'medicalExamId': serializer.toJson<String>(medicalExamId),
+    };
+  }
+
+  MedicalConsultationExam copyWith({
+    String? userId,
+    String? medicalConsultationId,
+    String? medicalExamId,
+  }) => MedicalConsultationExam(
+    userId: userId ?? this.userId,
+    medicalConsultationId: medicalConsultationId ?? this.medicalConsultationId,
+    medicalExamId: medicalExamId ?? this.medicalExamId,
+  );
+  MedicalConsultationExam copyWithCompanion(
+    MedicalConsultationExamsCompanion data,
+  ) {
+    return MedicalConsultationExam(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      medicalConsultationId: data.medicalConsultationId.present
+          ? data.medicalConsultationId.value
+          : this.medicalConsultationId,
+      medicalExamId: data.medicalExamId.present
+          ? data.medicalExamId.value
+          : this.medicalExamId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalConsultationExam(')
+          ..write('userId: $userId, ')
+          ..write('medicalConsultationId: $medicalConsultationId, ')
+          ..write('medicalExamId: $medicalExamId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(userId, medicalConsultationId, medicalExamId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicalConsultationExam &&
+          other.userId == this.userId &&
+          other.medicalConsultationId == this.medicalConsultationId &&
+          other.medicalExamId == this.medicalExamId);
+}
+
+class MedicalConsultationExamsCompanion
+    extends UpdateCompanion<MedicalConsultationExam> {
+  final Value<String> userId;
+  final Value<String> medicalConsultationId;
+  final Value<String> medicalExamId;
+  final Value<int> rowid;
+  const MedicalConsultationExamsCompanion({
+    this.userId = const Value.absent(),
+    this.medicalConsultationId = const Value.absent(),
+    this.medicalExamId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MedicalConsultationExamsCompanion.insert({
+    required String userId,
+    required String medicalConsultationId,
+    required String medicalExamId,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       medicalConsultationId = Value(medicalConsultationId),
+       medicalExamId = Value(medicalExamId);
+  static Insertable<MedicalConsultationExam> custom({
+    Expression<String>? userId,
+    Expression<String>? medicalConsultationId,
+    Expression<String>? medicalExamId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (medicalConsultationId != null)
+        'medical_consultation_id': medicalConsultationId,
+      if (medicalExamId != null) 'medical_exam_id': medicalExamId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MedicalConsultationExamsCompanion copyWith({
+    Value<String>? userId,
+    Value<String>? medicalConsultationId,
+    Value<String>? medicalExamId,
+    Value<int>? rowid,
+  }) {
+    return MedicalConsultationExamsCompanion(
+      userId: userId ?? this.userId,
+      medicalConsultationId:
+          medicalConsultationId ?? this.medicalConsultationId,
+      medicalExamId: medicalExamId ?? this.medicalExamId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (medicalConsultationId.present) {
+      map['medical_consultation_id'] = Variable<String>(
+        medicalConsultationId.value,
+      );
+    }
+    if (medicalExamId.present) {
+      map['medical_exam_id'] = Variable<String>(medicalExamId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalConsultationExamsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('medicalConsultationId: $medicalConsultationId, ')
+          ..write('medicalExamId: $medicalExamId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicalConsultationBodyCompositionsTable
+    extends MedicalConsultationBodyCompositions
+    with
+        TableInfo<
+          $MedicalConsultationBodyCompositionsTable,
+          MedicalConsultationBodyComposition
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicalConsultationBodyCompositionsTable(
+    this.attachedDatabase, [
+    this._alias,
+  ]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _medicalConsultationIdMeta =
+      const VerificationMeta('medicalConsultationId');
+  @override
+  late final GeneratedColumn<String> medicalConsultationId =
+      GeneratedColumn<String>(
+        'medical_consultation_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _bioimpedanceRecordIdMeta =
+      const VerificationMeta('bioimpedanceRecordId');
+  @override
+  late final GeneratedColumn<String> bioimpedanceRecordId =
+      GeneratedColumn<String>(
+        'bioimpedance_record_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    userId,
+    medicalConsultationId,
+    bioimpedanceRecordId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medical_consultation_body_compositions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MedicalConsultationBodyComposition> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('medical_consultation_id')) {
+      context.handle(
+        _medicalConsultationIdMeta,
+        medicalConsultationId.isAcceptableOrUnknown(
+          data['medical_consultation_id']!,
+          _medicalConsultationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_medicalConsultationIdMeta);
+    }
+    if (data.containsKey('bioimpedance_record_id')) {
+      context.handle(
+        _bioimpedanceRecordIdMeta,
+        bioimpedanceRecordId.isAcceptableOrUnknown(
+          data['bioimpedance_record_id']!,
+          _bioimpedanceRecordIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_bioimpedanceRecordIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {
+    userId,
+    medicalConsultationId,
+    bioimpedanceRecordId,
+  };
+  @override
+  MedicalConsultationBodyComposition map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicalConsultationBodyComposition(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      medicalConsultationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}medical_consultation_id'],
+      )!,
+      bioimpedanceRecordId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}bioimpedance_record_id'],
+      )!,
+    );
+  }
+
+  @override
+  $MedicalConsultationBodyCompositionsTable createAlias(String alias) {
+    return $MedicalConsultationBodyCompositionsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicalConsultationBodyComposition extends DataClass
+    implements Insertable<MedicalConsultationBodyComposition> {
+  final String userId;
+  final String medicalConsultationId;
+  final String bioimpedanceRecordId;
+  const MedicalConsultationBodyComposition({
+    required this.userId,
+    required this.medicalConsultationId,
+    required this.bioimpedanceRecordId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['medical_consultation_id'] = Variable<String>(medicalConsultationId);
+    map['bioimpedance_record_id'] = Variable<String>(bioimpedanceRecordId);
+    return map;
+  }
+
+  MedicalConsultationBodyCompositionsCompanion toCompanion(bool nullToAbsent) {
+    return MedicalConsultationBodyCompositionsCompanion(
+      userId: Value(userId),
+      medicalConsultationId: Value(medicalConsultationId),
+      bioimpedanceRecordId: Value(bioimpedanceRecordId),
+    );
+  }
+
+  factory MedicalConsultationBodyComposition.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicalConsultationBodyComposition(
+      userId: serializer.fromJson<String>(json['userId']),
+      medicalConsultationId: serializer.fromJson<String>(
+        json['medicalConsultationId'],
+      ),
+      bioimpedanceRecordId: serializer.fromJson<String>(
+        json['bioimpedanceRecordId'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'medicalConsultationId': serializer.toJson<String>(medicalConsultationId),
+      'bioimpedanceRecordId': serializer.toJson<String>(bioimpedanceRecordId),
+    };
+  }
+
+  MedicalConsultationBodyComposition copyWith({
+    String? userId,
+    String? medicalConsultationId,
+    String? bioimpedanceRecordId,
+  }) => MedicalConsultationBodyComposition(
+    userId: userId ?? this.userId,
+    medicalConsultationId: medicalConsultationId ?? this.medicalConsultationId,
+    bioimpedanceRecordId: bioimpedanceRecordId ?? this.bioimpedanceRecordId,
+  );
+  MedicalConsultationBodyComposition copyWithCompanion(
+    MedicalConsultationBodyCompositionsCompanion data,
+  ) {
+    return MedicalConsultationBodyComposition(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      medicalConsultationId: data.medicalConsultationId.present
+          ? data.medicalConsultationId.value
+          : this.medicalConsultationId,
+      bioimpedanceRecordId: data.bioimpedanceRecordId.present
+          ? data.bioimpedanceRecordId.value
+          : this.bioimpedanceRecordId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalConsultationBodyComposition(')
+          ..write('userId: $userId, ')
+          ..write('medicalConsultationId: $medicalConsultationId, ')
+          ..write('bioimpedanceRecordId: $bioimpedanceRecordId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(userId, medicalConsultationId, bioimpedanceRecordId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicalConsultationBodyComposition &&
+          other.userId == this.userId &&
+          other.medicalConsultationId == this.medicalConsultationId &&
+          other.bioimpedanceRecordId == this.bioimpedanceRecordId);
+}
+
+class MedicalConsultationBodyCompositionsCompanion
+    extends UpdateCompanion<MedicalConsultationBodyComposition> {
+  final Value<String> userId;
+  final Value<String> medicalConsultationId;
+  final Value<String> bioimpedanceRecordId;
+  final Value<int> rowid;
+  const MedicalConsultationBodyCompositionsCompanion({
+    this.userId = const Value.absent(),
+    this.medicalConsultationId = const Value.absent(),
+    this.bioimpedanceRecordId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MedicalConsultationBodyCompositionsCompanion.insert({
+    required String userId,
+    required String medicalConsultationId,
+    required String bioimpedanceRecordId,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       medicalConsultationId = Value(medicalConsultationId),
+       bioimpedanceRecordId = Value(bioimpedanceRecordId);
+  static Insertable<MedicalConsultationBodyComposition> custom({
+    Expression<String>? userId,
+    Expression<String>? medicalConsultationId,
+    Expression<String>? bioimpedanceRecordId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (medicalConsultationId != null)
+        'medical_consultation_id': medicalConsultationId,
+      if (bioimpedanceRecordId != null)
+        'bioimpedance_record_id': bioimpedanceRecordId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MedicalConsultationBodyCompositionsCompanion copyWith({
+    Value<String>? userId,
+    Value<String>? medicalConsultationId,
+    Value<String>? bioimpedanceRecordId,
+    Value<int>? rowid,
+  }) {
+    return MedicalConsultationBodyCompositionsCompanion(
+      userId: userId ?? this.userId,
+      medicalConsultationId:
+          medicalConsultationId ?? this.medicalConsultationId,
+      bioimpedanceRecordId: bioimpedanceRecordId ?? this.bioimpedanceRecordId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (medicalConsultationId.present) {
+      map['medical_consultation_id'] = Variable<String>(
+        medicalConsultationId.value,
+      );
+    }
+    if (bioimpedanceRecordId.present) {
+      map['bioimpedance_record_id'] = Variable<String>(
+        bioimpedanceRecordId.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicalConsultationBodyCompositionsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('medicalConsultationId: $medicalConsultationId, ')
+          ..write('bioimpedanceRecordId: $bioimpedanceRecordId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -24126,6 +27076,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $MedicalExamsTable medicalExams = $MedicalExamsTable(this);
   late final $MedicalExamResultsTable medicalExamResults =
       $MedicalExamResultsTable(this);
+  late final $MedicalConsultationsTable medicalConsultations =
+      $MedicalConsultationsTable(this);
+  late final $MedicalConsultationExamsTable medicalConsultationExams =
+      $MedicalConsultationExamsTable(this);
+  late final $MedicalConsultationBodyCompositionsTable
+  medicalConsultationBodyCompositions =
+      $MedicalConsultationBodyCompositionsTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -24286,6 +27243,30 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'medical_exam_results_user_normalized_name_idx',
     'CREATE INDEX medical_exam_results_user_normalized_name_idx ON medical_exam_results (user_id, normalized_name)',
   );
+  late final Index medicalConsultationsUserDeletedAtIdx = Index(
+    'medical_consultations_user_deleted_at_idx',
+    'CREATE INDEX medical_consultations_user_deleted_at_idx ON medical_consultations (user_id, deleted_at, consultation_at)',
+  );
+  late final Index medicalConsultationsUserSyncUpdatedIdx = Index(
+    'medical_consultations_user_sync_updated_idx',
+    'CREATE INDEX medical_consultations_user_sync_updated_idx ON medical_consultations (user_id, sync_status, updated_at)',
+  );
+  late final Index medicalConsultationsUserAppointmentIdx = Index(
+    'medical_consultations_user_appointment_idx',
+    'CREATE INDEX medical_consultations_user_appointment_idx ON medical_consultations (user_id, appointment_id)',
+  );
+  late final Index medicalConsultationsUserSourceDocumentIdx = Index(
+    'medical_consultations_user_source_document_idx',
+    'CREATE INDEX medical_consultations_user_source_document_idx ON medical_consultations (user_id, source_document_id)',
+  );
+  late final Index medicalConsultationExamsLookupIdx = Index(
+    'medical_consultation_exams_lookup_idx',
+    'CREATE INDEX medical_consultation_exams_lookup_idx ON medical_consultation_exams (user_id, medical_consultation_id, medical_exam_id)',
+  );
+  late final Index medicalConsultationBodyLookupIdx = Index(
+    'medical_consultation_body_lookup_idx',
+    'CREATE INDEX medical_consultation_body_lookup_idx ON medical_consultation_body_compositions (user_id, medical_consultation_id, bioimpedance_record_id)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -24312,6 +27293,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final MedicalExamDao medicalExamDao = MedicalExamDao(
     this as AppDatabase,
   );
+  late final MedicalConsultationDao medicalConsultationDao =
+      MedicalConsultationDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -24347,6 +27330,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     bioimpedanceRecords,
     medicalExams,
     medicalExamResults,
+    medicalConsultations,
+    medicalConsultationExams,
+    medicalConsultationBodyCompositions,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -24387,6 +27373,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     medicalExamResultsUserDeletedUpdatedIdx,
     medicalExamResultsUserCanonicalCodeIdx,
     medicalExamResultsUserNormalizedNameIdx,
+    medicalConsultationsUserDeletedAtIdx,
+    medicalConsultationsUserSyncUpdatedIdx,
+    medicalConsultationsUserAppointmentIdx,
+    medicalConsultationsUserSourceDocumentIdx,
+    medicalConsultationExamsLookupIdx,
+    medicalConsultationBodyLookupIdx,
   ];
 }
 
@@ -35632,6 +38624,1330 @@ typedef $$MedicalExamResultsTableProcessedTableManager =
       MedicalExamResult,
       PrefetchHooks Function()
     >;
+typedef $$MedicalConsultationsTableCreateCompanionBuilder =
+    MedicalConsultationsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime consultationAt,
+      Value<String?> title,
+      Value<String?> specialty,
+      Value<String> consultationType,
+      Value<String?> professionalName,
+      Value<String?> professionalRegistration,
+      Value<String?> clinicName,
+      Value<String?> location,
+      Value<String?> appointmentId,
+      required String source,
+      Value<String?> sourceDocumentId,
+      Value<String?> reason,
+      Value<String?> symptoms,
+      Value<String?> patientNotes,
+      Value<String?> professionalGuidance,
+      Value<String?> dietaryGuidance,
+      Value<String?> physicalActivityGuidance,
+      Value<String?> supplementGuidance,
+      Value<String?> medicationGuidance,
+      Value<String?> requestedExamsNotes,
+      Value<String?> followUpNotes,
+      Value<DateTime?> nextAppointmentAt,
+      Value<String?> generalNotes,
+      Value<double?> weightKg,
+      Value<double?> heightCm,
+      Value<double?> bmi,
+      Value<int?> bloodPressureSystolic,
+      Value<int?> bloodPressureDiastolic,
+      Value<int?> heartRateBpm,
+      Value<double?> waistCircumferenceCm,
+      Value<String?> additionalFieldsJson,
+      Value<String?> metadataJson,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$MedicalConsultationsTableUpdateCompanionBuilder =
+    MedicalConsultationsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> consultationAt,
+      Value<String?> title,
+      Value<String?> specialty,
+      Value<String> consultationType,
+      Value<String?> professionalName,
+      Value<String?> professionalRegistration,
+      Value<String?> clinicName,
+      Value<String?> location,
+      Value<String?> appointmentId,
+      Value<String> source,
+      Value<String?> sourceDocumentId,
+      Value<String?> reason,
+      Value<String?> symptoms,
+      Value<String?> patientNotes,
+      Value<String?> professionalGuidance,
+      Value<String?> dietaryGuidance,
+      Value<String?> physicalActivityGuidance,
+      Value<String?> supplementGuidance,
+      Value<String?> medicationGuidance,
+      Value<String?> requestedExamsNotes,
+      Value<String?> followUpNotes,
+      Value<DateTime?> nextAppointmentAt,
+      Value<String?> generalNotes,
+      Value<double?> weightKg,
+      Value<double?> heightCm,
+      Value<double?> bmi,
+      Value<int?> bloodPressureSystolic,
+      Value<int?> bloodPressureDiastolic,
+      Value<int?> heartRateBpm,
+      Value<double?> waistCircumferenceCm,
+      Value<String?> additionalFieldsJson,
+      Value<String?> metadataJson,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$MedicalConsultationsTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationsTable> {
+  $$MedicalConsultationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get consultationAt => $composableBuilder(
+    column: $table.consultationAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get specialty => $composableBuilder(
+    column: $table.specialty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get consultationType => $composableBuilder(
+    column: $table.consultationType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get professionalRegistration => $composableBuilder(
+    column: $table.professionalRegistration,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get clinicName => $composableBuilder(
+    column: $table.clinicName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get appointmentId => $composableBuilder(
+    column: $table.appointmentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get symptoms => $composableBuilder(
+    column: $table.symptoms,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get patientNotes => $composableBuilder(
+    column: $table.patientNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get professionalGuidance => $composableBuilder(
+    column: $table.professionalGuidance,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dietaryGuidance => $composableBuilder(
+    column: $table.dietaryGuidance,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get physicalActivityGuidance => $composableBuilder(
+    column: $table.physicalActivityGuidance,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get supplementGuidance => $composableBuilder(
+    column: $table.supplementGuidance,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get medicationGuidance => $composableBuilder(
+    column: $table.medicationGuidance,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requestedExamsNotes => $composableBuilder(
+    column: $table.requestedExamsNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get followUpNotes => $composableBuilder(
+    column: $table.followUpNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get nextAppointmentAt => $composableBuilder(
+    column: $table.nextAppointmentAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get generalNotes => $composableBuilder(
+    column: $table.generalNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get weightKg => $composableBuilder(
+    column: $table.weightKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get heightCm => $composableBuilder(
+    column: $table.heightCm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get bmi => $composableBuilder(
+    column: $table.bmi,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get bloodPressureSystolic => $composableBuilder(
+    column: $table.bloodPressureSystolic,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get bloodPressureDiastolic => $composableBuilder(
+    column: $table.bloodPressureDiastolic,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get heartRateBpm => $composableBuilder(
+    column: $table.heartRateBpm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get waistCircumferenceCm => $composableBuilder(
+    column: $table.waistCircumferenceCm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get additionalFieldsJson => $composableBuilder(
+    column: $table.additionalFieldsJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get metadataJson => $composableBuilder(
+    column: $table.metadataJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MedicalConsultationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationsTable> {
+  $$MedicalConsultationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get consultationAt => $composableBuilder(
+    column: $table.consultationAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get specialty => $composableBuilder(
+    column: $table.specialty,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get consultationType => $composableBuilder(
+    column: $table.consultationType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get professionalRegistration => $composableBuilder(
+    column: $table.professionalRegistration,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get clinicName => $composableBuilder(
+    column: $table.clinicName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get appointmentId => $composableBuilder(
+    column: $table.appointmentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get symptoms => $composableBuilder(
+    column: $table.symptoms,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get patientNotes => $composableBuilder(
+    column: $table.patientNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get professionalGuidance => $composableBuilder(
+    column: $table.professionalGuidance,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dietaryGuidance => $composableBuilder(
+    column: $table.dietaryGuidance,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get physicalActivityGuidance => $composableBuilder(
+    column: $table.physicalActivityGuidance,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get supplementGuidance => $composableBuilder(
+    column: $table.supplementGuidance,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get medicationGuidance => $composableBuilder(
+    column: $table.medicationGuidance,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requestedExamsNotes => $composableBuilder(
+    column: $table.requestedExamsNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get followUpNotes => $composableBuilder(
+    column: $table.followUpNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get nextAppointmentAt => $composableBuilder(
+    column: $table.nextAppointmentAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get generalNotes => $composableBuilder(
+    column: $table.generalNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get weightKg => $composableBuilder(
+    column: $table.weightKg,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get heightCm => $composableBuilder(
+    column: $table.heightCm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get bmi => $composableBuilder(
+    column: $table.bmi,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get bloodPressureSystolic => $composableBuilder(
+    column: $table.bloodPressureSystolic,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get bloodPressureDiastolic => $composableBuilder(
+    column: $table.bloodPressureDiastolic,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get heartRateBpm => $composableBuilder(
+    column: $table.heartRateBpm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get waistCircumferenceCm => $composableBuilder(
+    column: $table.waistCircumferenceCm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get additionalFieldsJson => $composableBuilder(
+    column: $table.additionalFieldsJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get metadataJson => $composableBuilder(
+    column: $table.metadataJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MedicalConsultationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationsTable> {
+  $$MedicalConsultationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get consultationAt => $composableBuilder(
+    column: $table.consultationAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get specialty =>
+      $composableBuilder(column: $table.specialty, builder: (column) => column);
+
+  GeneratedColumn<String> get consultationType => $composableBuilder(
+    column: $table.consultationType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get professionalName => $composableBuilder(
+    column: $table.professionalName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get professionalRegistration => $composableBuilder(
+    column: $table.professionalRegistration,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get clinicName => $composableBuilder(
+    column: $table.clinicName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get location =>
+      $composableBuilder(column: $table.location, builder: (column) => column);
+
+  GeneratedColumn<String> get appointmentId => $composableBuilder(
+    column: $table.appointmentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceDocumentId => $composableBuilder(
+    column: $table.sourceDocumentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => column);
+
+  GeneratedColumn<String> get symptoms =>
+      $composableBuilder(column: $table.symptoms, builder: (column) => column);
+
+  GeneratedColumn<String> get patientNotes => $composableBuilder(
+    column: $table.patientNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get professionalGuidance => $composableBuilder(
+    column: $table.professionalGuidance,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get dietaryGuidance => $composableBuilder(
+    column: $table.dietaryGuidance,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get physicalActivityGuidance => $composableBuilder(
+    column: $table.physicalActivityGuidance,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get supplementGuidance => $composableBuilder(
+    column: $table.supplementGuidance,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get medicationGuidance => $composableBuilder(
+    column: $table.medicationGuidance,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requestedExamsNotes => $composableBuilder(
+    column: $table.requestedExamsNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get followUpNotes => $composableBuilder(
+    column: $table.followUpNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get nextAppointmentAt => $composableBuilder(
+    column: $table.nextAppointmentAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get generalNotes => $composableBuilder(
+    column: $table.generalNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get weightKg =>
+      $composableBuilder(column: $table.weightKg, builder: (column) => column);
+
+  GeneratedColumn<double> get heightCm =>
+      $composableBuilder(column: $table.heightCm, builder: (column) => column);
+
+  GeneratedColumn<double> get bmi =>
+      $composableBuilder(column: $table.bmi, builder: (column) => column);
+
+  GeneratedColumn<int> get bloodPressureSystolic => $composableBuilder(
+    column: $table.bloodPressureSystolic,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get bloodPressureDiastolic => $composableBuilder(
+    column: $table.bloodPressureDiastolic,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get heartRateBpm => $composableBuilder(
+    column: $table.heartRateBpm,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get waistCircumferenceCm => $composableBuilder(
+    column: $table.waistCircumferenceCm,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get additionalFieldsJson => $composableBuilder(
+    column: $table.additionalFieldsJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get metadataJson => $composableBuilder(
+    column: $table.metadataJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$MedicalConsultationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MedicalConsultationsTable,
+          MedicalConsultation,
+          $$MedicalConsultationsTableFilterComposer,
+          $$MedicalConsultationsTableOrderingComposer,
+          $$MedicalConsultationsTableAnnotationComposer,
+          $$MedicalConsultationsTableCreateCompanionBuilder,
+          $$MedicalConsultationsTableUpdateCompanionBuilder,
+          (
+            MedicalConsultation,
+            BaseReferences<
+              _$AppDatabase,
+              $MedicalConsultationsTable,
+              MedicalConsultation
+            >,
+          ),
+          MedicalConsultation,
+          PrefetchHooks Function()
+        > {
+  $$MedicalConsultationsTableTableManager(
+    _$AppDatabase db,
+    $MedicalConsultationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicalConsultationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MedicalConsultationsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$MedicalConsultationsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> consultationAt = const Value.absent(),
+                Value<String?> title = const Value.absent(),
+                Value<String?> specialty = const Value.absent(),
+                Value<String> consultationType = const Value.absent(),
+                Value<String?> professionalName = const Value.absent(),
+                Value<String?> professionalRegistration = const Value.absent(),
+                Value<String?> clinicName = const Value.absent(),
+                Value<String?> location = const Value.absent(),
+                Value<String?> appointmentId = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String?> sourceDocumentId = const Value.absent(),
+                Value<String?> reason = const Value.absent(),
+                Value<String?> symptoms = const Value.absent(),
+                Value<String?> patientNotes = const Value.absent(),
+                Value<String?> professionalGuidance = const Value.absent(),
+                Value<String?> dietaryGuidance = const Value.absent(),
+                Value<String?> physicalActivityGuidance = const Value.absent(),
+                Value<String?> supplementGuidance = const Value.absent(),
+                Value<String?> medicationGuidance = const Value.absent(),
+                Value<String?> requestedExamsNotes = const Value.absent(),
+                Value<String?> followUpNotes = const Value.absent(),
+                Value<DateTime?> nextAppointmentAt = const Value.absent(),
+                Value<String?> generalNotes = const Value.absent(),
+                Value<double?> weightKg = const Value.absent(),
+                Value<double?> heightCm = const Value.absent(),
+                Value<double?> bmi = const Value.absent(),
+                Value<int?> bloodPressureSystolic = const Value.absent(),
+                Value<int?> bloodPressureDiastolic = const Value.absent(),
+                Value<int?> heartRateBpm = const Value.absent(),
+                Value<double?> waistCircumferenceCm = const Value.absent(),
+                Value<String?> additionalFieldsJson = const Value.absent(),
+                Value<String?> metadataJson = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalConsultationsCompanion(
+                id: id,
+                userId: userId,
+                consultationAt: consultationAt,
+                title: title,
+                specialty: specialty,
+                consultationType: consultationType,
+                professionalName: professionalName,
+                professionalRegistration: professionalRegistration,
+                clinicName: clinicName,
+                location: location,
+                appointmentId: appointmentId,
+                source: source,
+                sourceDocumentId: sourceDocumentId,
+                reason: reason,
+                symptoms: symptoms,
+                patientNotes: patientNotes,
+                professionalGuidance: professionalGuidance,
+                dietaryGuidance: dietaryGuidance,
+                physicalActivityGuidance: physicalActivityGuidance,
+                supplementGuidance: supplementGuidance,
+                medicationGuidance: medicationGuidance,
+                requestedExamsNotes: requestedExamsNotes,
+                followUpNotes: followUpNotes,
+                nextAppointmentAt: nextAppointmentAt,
+                generalNotes: generalNotes,
+                weightKg: weightKg,
+                heightCm: heightCm,
+                bmi: bmi,
+                bloodPressureSystolic: bloodPressureSystolic,
+                bloodPressureDiastolic: bloodPressureDiastolic,
+                heartRateBpm: heartRateBpm,
+                waistCircumferenceCm: waistCircumferenceCm,
+                additionalFieldsJson: additionalFieldsJson,
+                metadataJson: metadataJson,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime consultationAt,
+                Value<String?> title = const Value.absent(),
+                Value<String?> specialty = const Value.absent(),
+                Value<String> consultationType = const Value.absent(),
+                Value<String?> professionalName = const Value.absent(),
+                Value<String?> professionalRegistration = const Value.absent(),
+                Value<String?> clinicName = const Value.absent(),
+                Value<String?> location = const Value.absent(),
+                Value<String?> appointmentId = const Value.absent(),
+                required String source,
+                Value<String?> sourceDocumentId = const Value.absent(),
+                Value<String?> reason = const Value.absent(),
+                Value<String?> symptoms = const Value.absent(),
+                Value<String?> patientNotes = const Value.absent(),
+                Value<String?> professionalGuidance = const Value.absent(),
+                Value<String?> dietaryGuidance = const Value.absent(),
+                Value<String?> physicalActivityGuidance = const Value.absent(),
+                Value<String?> supplementGuidance = const Value.absent(),
+                Value<String?> medicationGuidance = const Value.absent(),
+                Value<String?> requestedExamsNotes = const Value.absent(),
+                Value<String?> followUpNotes = const Value.absent(),
+                Value<DateTime?> nextAppointmentAt = const Value.absent(),
+                Value<String?> generalNotes = const Value.absent(),
+                Value<double?> weightKg = const Value.absent(),
+                Value<double?> heightCm = const Value.absent(),
+                Value<double?> bmi = const Value.absent(),
+                Value<int?> bloodPressureSystolic = const Value.absent(),
+                Value<int?> bloodPressureDiastolic = const Value.absent(),
+                Value<int?> heartRateBpm = const Value.absent(),
+                Value<double?> waistCircumferenceCm = const Value.absent(),
+                Value<String?> additionalFieldsJson = const Value.absent(),
+                Value<String?> metadataJson = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalConsultationsCompanion.insert(
+                id: id,
+                userId: userId,
+                consultationAt: consultationAt,
+                title: title,
+                specialty: specialty,
+                consultationType: consultationType,
+                professionalName: professionalName,
+                professionalRegistration: professionalRegistration,
+                clinicName: clinicName,
+                location: location,
+                appointmentId: appointmentId,
+                source: source,
+                sourceDocumentId: sourceDocumentId,
+                reason: reason,
+                symptoms: symptoms,
+                patientNotes: patientNotes,
+                professionalGuidance: professionalGuidance,
+                dietaryGuidance: dietaryGuidance,
+                physicalActivityGuidance: physicalActivityGuidance,
+                supplementGuidance: supplementGuidance,
+                medicationGuidance: medicationGuidance,
+                requestedExamsNotes: requestedExamsNotes,
+                followUpNotes: followUpNotes,
+                nextAppointmentAt: nextAppointmentAt,
+                generalNotes: generalNotes,
+                weightKg: weightKg,
+                heightCm: heightCm,
+                bmi: bmi,
+                bloodPressureSystolic: bloodPressureSystolic,
+                bloodPressureDiastolic: bloodPressureDiastolic,
+                heartRateBpm: heartRateBpm,
+                waistCircumferenceCm: waistCircumferenceCm,
+                additionalFieldsJson: additionalFieldsJson,
+                metadataJson: metadataJson,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MedicalConsultationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MedicalConsultationsTable,
+      MedicalConsultation,
+      $$MedicalConsultationsTableFilterComposer,
+      $$MedicalConsultationsTableOrderingComposer,
+      $$MedicalConsultationsTableAnnotationComposer,
+      $$MedicalConsultationsTableCreateCompanionBuilder,
+      $$MedicalConsultationsTableUpdateCompanionBuilder,
+      (
+        MedicalConsultation,
+        BaseReferences<
+          _$AppDatabase,
+          $MedicalConsultationsTable,
+          MedicalConsultation
+        >,
+      ),
+      MedicalConsultation,
+      PrefetchHooks Function()
+    >;
+typedef $$MedicalConsultationExamsTableCreateCompanionBuilder =
+    MedicalConsultationExamsCompanion Function({
+      required String userId,
+      required String medicalConsultationId,
+      required String medicalExamId,
+      Value<int> rowid,
+    });
+typedef $$MedicalConsultationExamsTableUpdateCompanionBuilder =
+    MedicalConsultationExamsCompanion Function({
+      Value<String> userId,
+      Value<String> medicalConsultationId,
+      Value<String> medicalExamId,
+      Value<int> rowid,
+    });
+
+class $$MedicalConsultationExamsTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationExamsTable> {
+  $$MedicalConsultationExamsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get medicalConsultationId => $composableBuilder(
+    column: $table.medicalConsultationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get medicalExamId => $composableBuilder(
+    column: $table.medicalExamId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MedicalConsultationExamsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationExamsTable> {
+  $$MedicalConsultationExamsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get medicalConsultationId => $composableBuilder(
+    column: $table.medicalConsultationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get medicalExamId => $composableBuilder(
+    column: $table.medicalExamId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MedicalConsultationExamsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationExamsTable> {
+  $$MedicalConsultationExamsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get medicalConsultationId => $composableBuilder(
+    column: $table.medicalConsultationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get medicalExamId => $composableBuilder(
+    column: $table.medicalExamId,
+    builder: (column) => column,
+  );
+}
+
+class $$MedicalConsultationExamsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MedicalConsultationExamsTable,
+          MedicalConsultationExam,
+          $$MedicalConsultationExamsTableFilterComposer,
+          $$MedicalConsultationExamsTableOrderingComposer,
+          $$MedicalConsultationExamsTableAnnotationComposer,
+          $$MedicalConsultationExamsTableCreateCompanionBuilder,
+          $$MedicalConsultationExamsTableUpdateCompanionBuilder,
+          (
+            MedicalConsultationExam,
+            BaseReferences<
+              _$AppDatabase,
+              $MedicalConsultationExamsTable,
+              MedicalConsultationExam
+            >,
+          ),
+          MedicalConsultationExam,
+          PrefetchHooks Function()
+        > {
+  $$MedicalConsultationExamsTableTableManager(
+    _$AppDatabase db,
+    $MedicalConsultationExamsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicalConsultationExamsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$MedicalConsultationExamsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$MedicalConsultationExamsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<String> medicalConsultationId = const Value.absent(),
+                Value<String> medicalExamId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalConsultationExamsCompanion(
+                userId: userId,
+                medicalConsultationId: medicalConsultationId,
+                medicalExamId: medicalExamId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required String medicalConsultationId,
+                required String medicalExamId,
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalConsultationExamsCompanion.insert(
+                userId: userId,
+                medicalConsultationId: medicalConsultationId,
+                medicalExamId: medicalExamId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MedicalConsultationExamsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MedicalConsultationExamsTable,
+      MedicalConsultationExam,
+      $$MedicalConsultationExamsTableFilterComposer,
+      $$MedicalConsultationExamsTableOrderingComposer,
+      $$MedicalConsultationExamsTableAnnotationComposer,
+      $$MedicalConsultationExamsTableCreateCompanionBuilder,
+      $$MedicalConsultationExamsTableUpdateCompanionBuilder,
+      (
+        MedicalConsultationExam,
+        BaseReferences<
+          _$AppDatabase,
+          $MedicalConsultationExamsTable,
+          MedicalConsultationExam
+        >,
+      ),
+      MedicalConsultationExam,
+      PrefetchHooks Function()
+    >;
+typedef $$MedicalConsultationBodyCompositionsTableCreateCompanionBuilder =
+    MedicalConsultationBodyCompositionsCompanion Function({
+      required String userId,
+      required String medicalConsultationId,
+      required String bioimpedanceRecordId,
+      Value<int> rowid,
+    });
+typedef $$MedicalConsultationBodyCompositionsTableUpdateCompanionBuilder =
+    MedicalConsultationBodyCompositionsCompanion Function({
+      Value<String> userId,
+      Value<String> medicalConsultationId,
+      Value<String> bioimpedanceRecordId,
+      Value<int> rowid,
+    });
+
+class $$MedicalConsultationBodyCompositionsTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationBodyCompositionsTable> {
+  $$MedicalConsultationBodyCompositionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get medicalConsultationId => $composableBuilder(
+    column: $table.medicalConsultationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get bioimpedanceRecordId => $composableBuilder(
+    column: $table.bioimpedanceRecordId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MedicalConsultationBodyCompositionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationBodyCompositionsTable> {
+  $$MedicalConsultationBodyCompositionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get medicalConsultationId => $composableBuilder(
+    column: $table.medicalConsultationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get bioimpedanceRecordId => $composableBuilder(
+    column: $table.bioimpedanceRecordId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MedicalConsultationBodyCompositionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicalConsultationBodyCompositionsTable> {
+  $$MedicalConsultationBodyCompositionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get medicalConsultationId => $composableBuilder(
+    column: $table.medicalConsultationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get bioimpedanceRecordId => $composableBuilder(
+    column: $table.bioimpedanceRecordId,
+    builder: (column) => column,
+  );
+}
+
+class $$MedicalConsultationBodyCompositionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MedicalConsultationBodyCompositionsTable,
+          MedicalConsultationBodyComposition,
+          $$MedicalConsultationBodyCompositionsTableFilterComposer,
+          $$MedicalConsultationBodyCompositionsTableOrderingComposer,
+          $$MedicalConsultationBodyCompositionsTableAnnotationComposer,
+          $$MedicalConsultationBodyCompositionsTableCreateCompanionBuilder,
+          $$MedicalConsultationBodyCompositionsTableUpdateCompanionBuilder,
+          (
+            MedicalConsultationBodyComposition,
+            BaseReferences<
+              _$AppDatabase,
+              $MedicalConsultationBodyCompositionsTable,
+              MedicalConsultationBodyComposition
+            >,
+          ),
+          MedicalConsultationBodyComposition,
+          PrefetchHooks Function()
+        > {
+  $$MedicalConsultationBodyCompositionsTableTableManager(
+    _$AppDatabase db,
+    $MedicalConsultationBodyCompositionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicalConsultationBodyCompositionsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$MedicalConsultationBodyCompositionsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$MedicalConsultationBodyCompositionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<String> medicalConsultationId = const Value.absent(),
+                Value<String> bioimpedanceRecordId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalConsultationBodyCompositionsCompanion(
+                userId: userId,
+                medicalConsultationId: medicalConsultationId,
+                bioimpedanceRecordId: bioimpedanceRecordId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required String medicalConsultationId,
+                required String bioimpedanceRecordId,
+                Value<int> rowid = const Value.absent(),
+              }) => MedicalConsultationBodyCompositionsCompanion.insert(
+                userId: userId,
+                medicalConsultationId: medicalConsultationId,
+                bioimpedanceRecordId: bioimpedanceRecordId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MedicalConsultationBodyCompositionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MedicalConsultationBodyCompositionsTable,
+      MedicalConsultationBodyComposition,
+      $$MedicalConsultationBodyCompositionsTableFilterComposer,
+      $$MedicalConsultationBodyCompositionsTableOrderingComposer,
+      $$MedicalConsultationBodyCompositionsTableAnnotationComposer,
+      $$MedicalConsultationBodyCompositionsTableCreateCompanionBuilder,
+      $$MedicalConsultationBodyCompositionsTableUpdateCompanionBuilder,
+      (
+        MedicalConsultationBodyComposition,
+        BaseReferences<
+          _$AppDatabase,
+          $MedicalConsultationBodyCompositionsTable,
+          MedicalConsultationBodyComposition
+        >,
+      ),
+      MedicalConsultationBodyComposition,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -35699,4 +40015,17 @@ class $AppDatabaseManager {
       $$MedicalExamsTableTableManager(_db, _db.medicalExams);
   $$MedicalExamResultsTableTableManager get medicalExamResults =>
       $$MedicalExamResultsTableTableManager(_db, _db.medicalExamResults);
+  $$MedicalConsultationsTableTableManager get medicalConsultations =>
+      $$MedicalConsultationsTableTableManager(_db, _db.medicalConsultations);
+  $$MedicalConsultationExamsTableTableManager get medicalConsultationExams =>
+      $$MedicalConsultationExamsTableTableManager(
+        _db,
+        _db.medicalConsultationExams,
+      );
+  $$MedicalConsultationBodyCompositionsTableTableManager
+  get medicalConsultationBodyCompositions =>
+      $$MedicalConsultationBodyCompositionsTableTableManager(
+        _db,
+        _db.medicalConsultationBodyCompositions,
+      );
 }

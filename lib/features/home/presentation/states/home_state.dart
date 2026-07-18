@@ -2,6 +2,7 @@ import '../../../../core/formatters/app_water_formatter.dart';
 import '../../../../core/formatters/app_weight_formatter.dart';
 import '../../../../core/health/health.dart';
 import '../../../appointments/domain/entities/entities.dart';
+import '../../../medical_consultations/domain/entities/entities.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
@@ -12,6 +13,7 @@ class HomeState {
     this.profile,
     this.latestWeightRecord,
     this.nextAppointment,
+    this.latestConsultation,
     this.latestExam,
     this.hasWeightRecords = false,
     this.totalWaterTodayInMl = 0,
@@ -29,6 +31,7 @@ class HomeState {
   final Profile? profile;
   final WeightRecord? latestWeightRecord;
   final Appointment? nextAppointment;
+  final MedicalConsultation? latestConsultation;
   final MedicalExam? latestExam;
   final bool hasWeightRecords;
   final int totalWaterTodayInMl;
@@ -197,10 +200,19 @@ class HomeState {
     return 'Seu último exame está registrado.';
   }
 
+  String get consultationMessage {
+    if (latestConsultation == null) {
+      return 'Nenhuma consulta clínica registrada.';
+    }
+
+    return 'Seu último registro clínico está salvo.';
+  }
+
   HomeState copyWith({
     Profile? profile,
     WeightRecord? latestWeightRecord,
     Appointment? nextAppointment,
+    MedicalConsultation? latestConsultation,
     MedicalExam? latestExam,
     bool? hasWeightRecords,
     int? totalWaterTodayInMl,
@@ -219,6 +231,7 @@ class HomeState {
       profile: profile ?? this.profile,
       latestWeightRecord: latestWeightRecord ?? this.latestWeightRecord,
       nextAppointment: nextAppointment ?? this.nextAppointment,
+      latestConsultation: latestConsultation ?? this.latestConsultation,
       latestExam: latestExam ?? this.latestExam,
       hasWeightRecords: hasWeightRecords ?? this.hasWeightRecords,
       totalWaterTodayInMl: totalWaterTodayInMl ?? this.totalWaterTodayInMl,

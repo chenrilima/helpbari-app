@@ -72,6 +72,7 @@ MedicalReportSnapshot _snapshot() => MedicalReportSnapshot(
   medicationLogs: const [],
   meals: const [],
   appointments: const [],
+  consultations: const [],
   exams: [
     MedicalExam(
       id: 'exam-1',

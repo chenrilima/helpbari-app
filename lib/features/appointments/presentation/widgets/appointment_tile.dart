@@ -8,6 +8,7 @@ class AppointmentTile extends StatelessWidget {
     required this.appointment,
     required this.onComplete,
     required this.onCancel,
+    required this.onRegisterConsultation,
     required this.onEdit,
     required this.onDelete,
     super.key,
@@ -16,6 +17,7 @@ class AppointmentTile extends StatelessWidget {
   final Appointment appointment;
   final VoidCallback onComplete;
   final VoidCallback onCancel;
+  final VoidCallback onRegisterConsultation;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
@@ -58,6 +60,11 @@ class AppointmentTile extends StatelessWidget {
           ),
 
           if (appointment.isScheduled) ...[
+            IconButton(
+              tooltip: 'Registrar consulta',
+              onPressed: onRegisterConsultation,
+              icon: const Icon(Icons.note_add_outlined),
+            ),
             IconButton(
               tooltip: 'Cancelar consulta',
               onPressed: onCancel,

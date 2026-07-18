@@ -185,7 +185,7 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
               _pill('Health Score ${snapshot.dailySummary.healthScore.score}'),
               _pill('${snapshot.weightHistory.length} registros de peso'),
               _pill('${snapshot.exams.length} exames'),
-              _pill('${snapshot.appointments.length} consultas'),
+              _pill('${snapshot.consultations.length} consultas'),
             ],
           ),
         ],
@@ -426,19 +426,33 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
   }
 
   pw.Widget _appointments(MedicalReportSnapshot snapshot) {
-    return _table(
-      headers: ['Consulta', 'Data', 'Profissional', 'Local'],
-      rows: snapshot.upcomingAppointments
+    final rows = <List<String>>[
+      ...snapshot.consultations
           .take(20)
           .map(
+            (consultation) => [
+              consultation.title?.trim().isNotEmpty == true
+                  ? consultation.title!
+                  : 'Consulta clínica',
+              AppDateFormatter.shortWithTime(consultation.consultationAt),
+              consultation.professionalName ?? '-',
+              consultation.location ?? consultation.clinicName ?? '-',
+            ],
+          ),
+      ...snapshot.upcomingAppointments
+          .take(10)
+          .map(
             (appointment) => [
-              appointment.title,
+              '[Agendada] ${appointment.title}',
               appointment.formattedDate,
               appointment.doctorName ?? '-',
               appointment.location ?? '-',
             ],
-          )
-          .toList(),
+          ),
+    ];
+    return _table(
+      headers: ['Consulta', 'Data', 'Profissional', 'Local'],
+      rows: rows,
       emptyText: 'Nenhuma consulta cadastrada.',
     );
   }
