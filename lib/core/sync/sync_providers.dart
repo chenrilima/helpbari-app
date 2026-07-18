@@ -68,6 +68,9 @@ import '../../features/bioimpedance/presentation/providers/bioimpedance_use_case
 import '../../features/bioimpedance/presentation/providers/bioimpedance_view_model_provider.dart';
 import '../../features/document_intelligence/data/datasources/document_processing_supabase_datasource.dart';
 import '../../features/document_intelligence/data/repositories/document_processing_sync_repository.dart';
+import '../../features/medical_exams/data/datasources/drift_medical_exam_local_datasource.dart';
+import '../../features/medical_exams/data/datasources/medical_exam_supabase_datasource.dart';
+import '../../features/medical_exams/data/repositories/medical_exam_sync_repository.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -165,6 +168,9 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
         }
       },
     ),
+    // Compatibilidade transitória:
+    // mantém o sync legado apenas para concluir pendências/tombstones já
+    // existentes em exam_records. A fonte funcional do app já é medical_exams.
     ExamSyncRepository(
       local: () async => DriftExamLocalDatasource(
         dao: (await ref.read(appDatabaseProvider.future)).examDao,
@@ -172,6 +178,17 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
         userId: user.id,
       ),
       remote: ExamSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
+      userId: user.id,
+    ),
+    MedicalExamSyncRepository(
+      local: () async => DriftMedicalExamLocalDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).medicalExamDao,
+        clock: ref.read(clockServiceProvider),
+        userId: user.id,
+      ),
+      remote: MedicalExamSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
       userId: user.id,
     ),
     VitaminSyncRepository(

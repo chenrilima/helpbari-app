@@ -1,10 +1,12 @@
 import '../../../../core/health/health.dart';
+import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../core/services/services.dart';
 import '../../../appointments/domain/usecases/use_cases.dart';
-import '../../../exams/domain/usecases/use_cases.dart';
 import '../../../meals/domain/usecases/use_cases.dart';
 import '../../../medications/domain/usecases/use_cases.dart';
 import '../../../medications/domain/entities/medication_log.dart';
+import '../../../medical_exams/domain/entities/entities.dart';
+import '../../../medical_exams/domain/usecases/medical_exam_use_cases.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../settings/domain/entities/entities.dart';
@@ -30,7 +32,7 @@ class MedicalReportUseCases {
     required MedicationUseCases medicationUseCases,
     required MealUseCases mealUseCases,
     required AppointmentUseCases appointmentUseCases,
-    required ExamUseCases examUseCases,
+    required MedicalExamUseCases examUseCases,
     required SettingsUseCases settingsUseCases,
     required ClockService clock,
     HealthDashboardUseCases? dashboardUseCases,
@@ -55,7 +57,7 @@ class MedicalReportUseCases {
   final MedicationUseCases _medicationUseCases;
   final MealUseCases _mealUseCases;
   final AppointmentUseCases _appointmentUseCases;
-  final ExamUseCases _examUseCases;
+  final MedicalExamUseCases _examUseCases;
   final SettingsUseCases _settingsUseCases;
   final ClockService _clock;
   final HealthDashboardUseCases? _dashboardUseCases;
@@ -91,7 +93,7 @@ class MedicalReportUseCases {
       _medicationUseCases.getAll(),
       _mealUseCases.getAll(),
       _appointmentUseCases.getAll(),
-      _examUseCases.getAll(),
+      _examUseCases.getHistory(),
       _settingsUseCases.getSettings(),
       _vitaminUseCases.getLogs(periodStart, periodEnd),
       _medicationUseCases.getLogs(periodStart, periodEnd),
@@ -157,7 +159,8 @@ class MedicalReportUseCases {
             currentWeightKg: currentWeight,
             targetWeightKg: targetWeight,
           );
-    final latestExam = exams.isEmpty ? null : exams.first;
+    final typedExams = exams.cast<MedicalExam>();
+    final latestExam = typedExams.isEmpty ? null : typedExams.first;
     final nextAppointment = upcomingAppointments.isEmpty
         ? null
         : upcomingAppointments.first;
@@ -193,9 +196,11 @@ class MedicalReportUseCases {
           ? null
           : DailySummaryItem(
               id: latestExam.id,
-              title: latestExam.formattedName,
-              subtitle: latestExam.formattedDate,
-              date: latestExam.examDate.value,
+              title: latestExam.title?.trim().isNotEmpty == true
+                  ? latestExam.title!
+                  : 'Exame laboratorial',
+              subtitle: AppDateFormatter.short(latestExam.performedAt),
+              date: latestExam.performedAt,
             ),
       weightProgress: weightProgress,
     );
@@ -226,8 +231,8 @@ class MedicalReportUseCases {
       vitaminAdherence: vitaminAdherence,
       medicationAdherence: medicationAdherence,
       upcomingAppointments: upcomingAppointments.length,
-      hasRecentExams: exams.any(
-        (exam) => !exam.examDate.value.isBefore(periodStart),
+      hasRecentExams: typedExams.any(
+        (exam) => !exam.performedAt.isBefore(periodStart),
       ),
     );
 
@@ -243,7 +248,7 @@ class MedicalReportUseCases {
       medicationLogs: List.unmodifiable(medicationLogs),
       meals: List.unmodifiable(meals),
       appointments: List.unmodifiable(appointments),
-      exams: List.unmodifiable(exams),
+      exams: List.unmodifiable(typedExams),
       dailySummary: dailySummary,
       reportVersion: '1.0',
       periodStart: periodStart,

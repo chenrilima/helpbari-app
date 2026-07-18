@@ -1,12 +1,12 @@
 import '../../../../core/health/health.dart';
 import '../../../appointments/domain/entities/entities.dart';
 import '../../../appointments/domain/usecases/use_cases.dart';
-import '../../../exams/domain/entities/entities.dart';
-import '../../../exams/domain/usecases/use_cases.dart';
 import '../../../meals/domain/entities/entities.dart';
 import '../../../meals/domain/usecases/use_cases.dart';
 import '../../../medications/domain/entities/entities.dart';
 import '../../../medications/domain/usecases/use_cases.dart';
+import '../../../medical_exams/domain/entities/entities.dart';
+import '../../../medical_exams/domain/usecases/medical_exam_use_cases.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../settings/domain/entities/entities.dart';
@@ -28,7 +28,7 @@ class HealthDashboardUseCases {
     required VitaminUseCases vitamins,
     required MedicationUseCases medications,
     required AppointmentUseCases appointments,
-    required ExamUseCases exams,
+    required MedicalExamUseCases exams,
     required SettingsUseCases settings,
   }) : _profile = profile,
        _weight = weight,
@@ -47,7 +47,7 @@ class HealthDashboardUseCases {
   final VitaminUseCases _vitamins;
   final MedicationUseCases _medications;
   final AppointmentUseCases _appointments;
-  final ExamUseCases _exams;
+  final MedicalExamUseCases _exams;
   final SettingsUseCases _settings;
 
   Future<HealthDashboardAggregate> load({
@@ -87,7 +87,7 @@ class HealthDashboardUseCases {
         HealthDataSection.appointments,
         unavailable,
       ),
-      _read(() => _exams.getAll(), HealthDataSection.exams, unavailable),
+      _read(() => _exams.getHistory(), HealthDataSection.exams, unavailable),
       _read(
         () => _settings.getSettings(),
         HealthDataSection.settings,
@@ -103,7 +103,7 @@ class HealthDashboardUseCases {
     final medications = (results[6] as List<Medication>?) ?? const [];
     final medicationLogs = (results[7] as List<MedicationLog>?) ?? const [];
     final appointments = (results[8] as List<Appointment>?) ?? const [];
-    final exams = (results[9] as List<Exam>?) ?? const [];
+    final exams = (results[9] as List<MedicalExam>?) ?? const [];
     final settings = results[10] as AppSettings?;
 
     final days = <DailyHealthAggregate>[];

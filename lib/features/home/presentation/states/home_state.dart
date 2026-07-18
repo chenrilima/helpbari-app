@@ -2,7 +2,7 @@ import '../../../../core/formatters/app_water_formatter.dart';
 import '../../../../core/formatters/app_weight_formatter.dart';
 import '../../../../core/health/health.dart';
 import '../../../appointments/domain/entities/entities.dart';
-import '../../../exams/domain/entities/entities.dart';
+import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
 import '../../domain/models/models.dart';
@@ -29,7 +29,7 @@ class HomeState {
   final Profile? profile;
   final WeightRecord? latestWeightRecord;
   final Appointment? nextAppointment;
-  final Exam? latestExam;
+  final MedicalExam? latestExam;
   final bool hasWeightRecords;
   final int totalWaterTodayInMl;
   final int pendingVitaminsCount;
@@ -201,7 +201,7 @@ class HomeState {
     Profile? profile,
     WeightRecord? latestWeightRecord,
     Appointment? nextAppointment,
-    Exam? latestExam,
+    MedicalExam? latestExam,
     bool? hasWeightRecords,
     int? totalWaterTodayInMl,
     int? pendingVitaminsCount,

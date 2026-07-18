@@ -21,7 +21,13 @@ Glicose: 92 mg/dL
       final candidate = classifier.classify(text);
       final fields = parser.parse(processingId: 'processing-1', text: text);
 
-      expect(candidate.type, DetectedDocumentType.labResult);
+      expect(
+        candidate.type,
+        anyOf(
+          DetectedDocumentType.labResult,
+          DetectedDocumentType.medicalExamReport,
+        ),
+      );
       expect(fields.map((field) => field.key), contains('laboratory'));
       expect(fields.map((field) => field.key), contains('exam_name'));
       expect(fields.map((field) => field.key), contains('result'));

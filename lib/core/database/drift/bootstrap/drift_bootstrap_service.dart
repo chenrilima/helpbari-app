@@ -11,6 +11,7 @@ import '../migrations/weight_legacy_service.dart';
 import '../migrations/meal_legacy_service.dart';
 import '../migrations/appointment_legacy_service.dart';
 import '../migrations/exam_legacy_service.dart';
+import '../migrations/exam_to_medical_exam_migration_service.dart';
 import '../migrations/vitamin_legacy_service.dart';
 import '../migrations/medication_legacy_service.dart';
 
@@ -56,6 +57,10 @@ class DriftBootstrapService {
         storage: _storage,
       ).migrate();
       await ExamLegacyService(database: database, storage: _storage).migrate();
+      await ExamToMedicalExamMigrationService(
+        database: database,
+        logger: _logger,
+      ).migrate();
       await VitaminLegacyService(
         database: database,
         storage: _storage,

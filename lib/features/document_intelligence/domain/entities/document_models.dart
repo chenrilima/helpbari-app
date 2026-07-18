@@ -11,6 +11,7 @@ enum ProcessingStatus {
 
 enum DetectedDocumentType {
   labResult,
+  medicalExamReport,
   consultationNote,
   medicalReport,
   prescription,

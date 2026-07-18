@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
+import '../../../../core/formatters/app_date_formatter.dart';
 import '../../../../design_system/design_system.dart';
-import '../../../exams/domain/entities/entities.dart';
-import '../../../exams/presentation/widgets/exam_summary_card.dart';
+import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../home/presentation/widgets/home_section.dart';
 
 class ExamOverviewSection extends StatelessWidget {
@@ -15,7 +15,7 @@ class ExamOverviewSection extends StatelessWidget {
     super.key,
   });
 
-  final Exam? latestExam;
+  final MedicalExam? latestExam;
   final String subtitle;
   final Future<void> Function()? onRefresh;
 
@@ -35,7 +35,19 @@ class ExamOverviewSection extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(AppRadius.lg),
                 onTap: () => _openExams(context),
-                child: ExamSummaryCard(exam: latestExam!),
+                child: HBMetricCard(
+                  title: 'Último exame',
+                  value: latestExam!.title?.trim().isNotEmpty == true
+                      ? latestExam!.title!
+                      : 'Exame laboratorial',
+                  description: [
+                    AppDateFormatter.short(latestExam!.performedAt),
+                    if ((latestExam!.laboratoryName?.trim().isNotEmpty ??
+                        false))
+                      latestExam!.laboratoryName!,
+                  ].join(' • '),
+                  icon: AppIcons.health,
+                ),
               ),
             )
           : HBEmptyState(

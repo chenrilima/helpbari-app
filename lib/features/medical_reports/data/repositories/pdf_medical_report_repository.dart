@@ -4,6 +4,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import '../../../../core/formatters/formatters.dart';
+import '../../../medical_exams/domain/entities/entities.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
@@ -443,19 +444,15 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
   }
 
   pw.Widget _exams(MedicalReportSnapshot snapshot) {
-    return _table(
-      headers: ['Exame', 'Data', 'Laboratório', 'Anexo'],
-      rows: snapshot.latestExams
-          .map(
-            (exam) => [
-              exam.formattedName,
-              exam.formattedDate,
-              exam.laboratory ?? '-',
-              exam.attachmentPath ?? 'Não',
-            ],
-          )
-          .toList(),
-      emptyText: 'Nenhum exame cadastrado.',
+    if (snapshot.latestExams.isEmpty) {
+      return _empty('Nenhum exame cadastrado.');
+    }
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: snapshot.latestExams
+          .map((exam) => _examCard(exam))
+          .toList(growable: false),
     );
   }
 
@@ -476,8 +473,16 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
 
   pw.Widget _attachments(MedicalReportSnapshot snapshot) {
     final examReferences = snapshot.exams
-        .where((exam) => exam.hasAttachment)
-        .map((exam) => [exam.formattedName, 'EXAME', exam.attachmentPath!]);
+        .where((exam) => exam.hasLegacyAttachment)
+        .map(
+          (exam) => [
+            exam.title?.trim().isNotEmpty == true
+                ? exam.title!
+                : 'Exame laboratorial',
+            'EXAME LEGADO',
+            exam.legacyAttachmentPath!,
+          ],
+        );
     final rows = [
       ...snapshot.attachments.map(
         (attachment) => [
@@ -504,6 +509,119 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
       ],
     );
   }
+
+  pw.Widget _examCard(MedicalExam exam) {
+    final results =
+        exam.results.where((item) => item.deletedAt == null).toList()
+          ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+    return pw.Container(
+      margin: const pw.EdgeInsets.only(bottom: 12),
+      padding: const pw.EdgeInsets.all(12),
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: _border),
+        borderRadius: pw.BorderRadius.circular(8),
+        color: _surface,
+      ),
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(
+            exam.title?.trim().isNotEmpty == true
+                ? exam.title!
+                : 'Exame laboratorial',
+            style: pw.TextStyle(
+              fontSize: 12,
+              fontWeight: pw.FontWeight.bold,
+              color: _ink,
+            ),
+          ),
+          pw.SizedBox(height: 6),
+          ..._examMetadata(exam),
+          if ((exam.notes?.trim().isNotEmpty ?? false)) ...[
+            pw.SizedBox(height: 6),
+            pw.Text(
+              'Observações: ${exam.notes}',
+              style: const pw.TextStyle(fontSize: 10, color: _ink),
+            ),
+          ],
+          pw.SizedBox(height: 8),
+          if (results.isEmpty)
+            pw.Text(
+              'Sem resultados estruturados vinculados.',
+              style: const pw.TextStyle(fontSize: 10, color: _muted),
+            )
+          else
+            _table(
+              headers: ['Marcador', 'Valor', 'Referência', 'Origem'],
+              rows: results
+                  .map<List<String>>(
+                    (result) => [
+                      result.displayName,
+                      _resultValue(result),
+                      _nonEmpty(result.referenceRangeText),
+                      result.source.name,
+                    ],
+                  )
+                  .toList(growable: false),
+              emptyText: '',
+            ),
+        ],
+      ),
+    );
+  }
+
+  List<pw.Widget> _examMetadata(MedicalExam exam) {
+    final items = <String>[
+      'Data: ${AppDateFormatter.short(exam.performedAt)}',
+      if (exam.collectedAt != null)
+        'Coleta: ${AppDateFormatter.short(exam.collectedAt!)}',
+      if ((exam.laboratoryName?.trim().isNotEmpty ?? false))
+        'Laboratório: ${exam.laboratoryName}',
+      if ((exam.professionalName?.trim().isNotEmpty ?? false))
+        'Profissional: ${exam.professionalName}',
+      if ((exam.sourceDocumentId?.trim().isNotEmpty ?? false))
+        'Documento relacionado: ${exam.sourceDocumentId}',
+      if ((exam.legacyAttachmentPath?.trim().isNotEmpty ?? false))
+        'Anexo legado: ${exam.legacyAttachmentPath}',
+      'Origem: ${exam.source.name}',
+    ];
+    return items
+        .map(
+          (item) => pw.Padding(
+            padding: const pw.EdgeInsets.only(bottom: 2),
+            child: pw.Text(
+              item,
+              style: const pw.TextStyle(fontSize: 10, color: _ink),
+            ),
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  String _resultValue(MedicalExamResult result) {
+    if (result.numericValue != null) {
+      final unit = result.normalizedUnit?.trim().isNotEmpty == true
+          ? ' ${result.normalizedUnit}'
+          : result.unit?.trim().isNotEmpty == true
+          ? ' ${result.unit}'
+          : '';
+      return '${result.numericValue}$unit';
+    }
+    if ((result.textValue?.trim().isNotEmpty ?? false)) {
+      return result.textValue!;
+    }
+    if ((result.qualitativeValue?.trim().isNotEmpty ?? false)) {
+      return result.qualitativeValue!;
+    }
+    if (result.booleanValue != null) {
+      return result.booleanValue == true ? 'Sim' : 'Não';
+    }
+    return '-';
+  }
+
+  String _nonEmpty(String? value) =>
+      value?.trim().isNotEmpty == true ? value! : '-';
 
   pw.Widget _observations(MedicalReportSnapshot snapshot) {
     if (snapshot.automaticObservations.isEmpty) return pw.SizedBox();
