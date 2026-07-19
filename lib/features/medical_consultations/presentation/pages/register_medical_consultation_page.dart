@@ -306,8 +306,10 @@ class _RegisterMedicalConsultationPageState
       message: 'Salvando consulta...',
       child: HBPage(
         appBar: HBAppBar(
-          title: _isEditing ? 'Editar consulta' : 'Registrar consulta',
-          subtitle: 'Registro manual ou via documento',
+          title: _isEditing
+              ? 'Editar consulta realizada'
+              : 'Registrar consulta',
+          subtitle: 'Histórico clínico manual ou via documento',
         ),
         children: [
           DocumentImportCard(

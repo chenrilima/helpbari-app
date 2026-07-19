@@ -49,7 +49,8 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
     if (existing != null) {
       HBSnackBar.success(
         context,
-        message: 'Já existe uma consulta registrada para este agendamento.',
+        message:
+            'Já existe uma consulta realizada vinculada a este agendamento.',
       );
       await context.push(AppRoutes.medicalConsultationDetails, extra: existing);
       await _load();
@@ -79,13 +80,16 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
     final success = await action();
     if (!mounted) return;
     if (success) {
-      HBSnackBar.success(context, message: 'Consulta atualizada com sucesso.');
+      HBSnackBar.success(
+        context,
+        message: 'Agendamento atualizado com sucesso.',
+      );
     } else {
       HBSnackBar.error(
         context,
         message:
             ref.read(appointmentViewModelProvider).errorMessage ??
-            'Não foi possível atualizar a consulta.',
+            'Não foi possível atualizar o agendamento.',
       );
     }
   }
@@ -110,12 +114,15 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
 
     return HBLoadingOverlay(
       isLoading: state.isLoading,
-      message: 'Atualizando consultas...',
+      message: 'Atualizando agendamentos...',
       child: HBPage(
-        appBar: const HBAppBar(title: 'Consultas'),
+        appBar: const HBAppBar(
+          title: 'Meus agendamentos',
+          subtitle: 'Acompanhe seus atendimentos futuros',
+        ),
         children: [
           HBText(
-            'Acompanhe suas consultas médicas.',
+            'Acompanhe seus agendamentos e registre as consultas realizadas.',
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
@@ -127,8 +134,8 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
             AppointmentSummaryCard(appointment: state.nextAppointment!)
           else
             const HBEmptyState(
-              title: 'Nenhuma consulta agendada',
-              description: 'Agende sua primeira consulta.',
+              title: 'Nenhum agendamento futuro',
+              description: 'Cadastre seu primeiro agendamento.',
               icon: AppIcons.calendar,
             ),
 
@@ -184,7 +191,7 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
 
           if (state.errorMessage != null)
             HBEmptyState(
-              title: 'Não foi possível carregar as consultas',
+              title: 'Não foi possível carregar os agendamentos',
               description: state.errorMessage!,
               icon: Icons.error_outline,
               actionLabel: 'Tentar novamente',
@@ -192,13 +199,13 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
             )
           else if (!state.hasAppointments)
             const HBEmptyState(
-              title: 'Nenhuma consulta encontrada',
-              description: 'Agende sua primeira consulta.',
+              title: 'Nenhum agendamento encontrado',
+              description: 'Cadastre seu primeiro agendamento.',
               icon: AppIcons.calendar,
             )
           else if (appointments.isEmpty)
             const HBEmptyState(
-              title: 'Nenhuma consulta nos filtros',
+              title: 'Nenhum agendamento nos filtros',
               description: 'Ajuste a data ou o status selecionado.',
               icon: Icons.filter_alt_off_outlined,
             )
@@ -215,23 +222,23 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
                   appointment: appointment,
                   onRegisterConsultation: () => _openConsultation(appointment),
                   onComplete: () => _mutate(
-                    'Concluir consulta?',
-                    'O lembrete será cancelado.',
+                    'Concluir agendamento?',
+                    'O lembrete do agendamento será cancelado.',
                     () => ref
                         .read(appointmentViewModelProvider.notifier)
                         .complete(appointment),
                   ),
                   onCancel: () => _mutate(
-                    'Cancelar consulta?',
-                    'O lembrete será cancelado.',
+                    'Cancelar agendamento?',
+                    'O lembrete do agendamento será cancelado.',
                     () => ref
                         .read(appointmentViewModelProvider.notifier)
                         .cancel(appointment),
                   ),
                   onEdit: () => _edit(appointment),
                   onDelete: () => _mutate(
-                    'Excluir consulta?',
-                    'A consulta será removida e sincronizada.',
+                    'Excluir agendamento?',
+                    'O agendamento será removido e sincronizado.',
                     () => ref
                         .read(appointmentViewModelProvider.notifier)
                         .delete(appointment),
@@ -243,7 +250,7 @@ class _AppointmentsPageState extends ConsumerState<AppointmentsPage> {
           const HBGap.xl(),
 
           HBButton(
-            label: 'Agendar consulta',
+            label: 'Novo agendamento',
             onPressed: () {
               context.pushAndRefresh(
                 AppRoutes.registerAppointment,

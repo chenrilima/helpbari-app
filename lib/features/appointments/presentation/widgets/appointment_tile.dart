@@ -61,28 +61,28 @@ class AppointmentTile extends StatelessWidget {
 
           if (appointment.isScheduled) ...[
             IconButton(
-              tooltip: 'Registrar consulta',
+              tooltip: 'Registrar consulta realizada',
               onPressed: onRegisterConsultation,
               icon: const Icon(Icons.note_add_outlined),
             ),
             IconButton(
-              tooltip: 'Cancelar consulta',
+              tooltip: 'Cancelar agendamento',
               onPressed: onCancel,
               icon: const Icon(Icons.close),
             ),
             IconButton(
-              tooltip: 'Concluir consulta',
+              tooltip: 'Concluir agendamento',
               onPressed: onComplete,
               icon: const Icon(Icons.check),
             ),
           ],
           IconButton(
-            tooltip: 'Editar consulta',
+            tooltip: 'Editar agendamento',
             onPressed: onEdit,
             icon: const Icon(Icons.edit_outlined),
           ),
           IconButton(
-            tooltip: 'Excluir consulta',
+            tooltip: 'Excluir agendamento',
             onPressed: onDelete,
             icon: const Icon(Icons.delete_outline, color: AppColors.danger),
           ),

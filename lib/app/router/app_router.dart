@@ -33,6 +33,8 @@ import '../../features/medical_exams/presentation/pages/register_medical_exam_pa
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/meals/presentation/pages/register_meal_page.dart';
 import '../../features/medical_reports/presentation/pages/medical_reports_page.dart';
+import '../../features/document_center/presentation/pages/document_center_details_page.dart';
+import '../../features/document_center/presentation/pages/document_center_page.dart';
 import '../../features/medications/presentation/pages/medications_page.dart';
 import '../../features/medications/presentation/pages/register_medication_page.dart';
 import '../../features/medications/domain/entities/medication.dart';
@@ -254,6 +256,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.medicalReports,
         builder: (context, state) => const MedicalReportsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.documentCenter,
+        builder: (context, state) => const DocumentCenterPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.documentCenterDetails,
+        builder: (context, state) => DocumentCenterDetailsPage(
+          documentId: state.pathParameters['documentId']!,
+        ),
       ),
       GoRoute(
         path: AppRoutes.bioimpedance,

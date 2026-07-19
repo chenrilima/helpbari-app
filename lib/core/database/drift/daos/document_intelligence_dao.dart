@@ -5,6 +5,18 @@ import '../tables/document_intelligence_records.dart';
 
 part 'document_intelligence_dao.g.dart';
 
+class DocumentLinkedEntityRow {
+  const DocumentLinkedEntityRow({
+    required this.id,
+    required this.title,
+    this.subtitle,
+  });
+
+  final String id;
+  final String title;
+  final String? subtitle;
+}
+
 @DriftAccessor(
   tables: [
     DocumentInputRecords,
@@ -58,6 +70,138 @@ class DocumentIntelligenceDao extends DatabaseAccessor<AppDatabase>
       await batch((batch) => batch.insertAll(extractedFieldRecords, values));
     }
   });
+
+  Future<List<DocumentInputRecord>> listDocuments(
+    String userId, {
+    bool includeDeleted = false,
+  }) {
+    final query = select(documentInputRecords)
+      ..where((row) => row.userId.equals(userId));
+    if (!includeDeleted) {
+      query.where((row) => row.deletedAt.isNull());
+    }
+    query.orderBy([
+      (row) => OrderingTerm.desc(row.capturedAt),
+      (row) => OrderingTerm.desc(row.updatedAt),
+    ]);
+    return query.get();
+  }
+
+  Stream<void> watchDocumentCenter(String userId) {
+    return attachedDatabase
+        .customSelect(
+          'SELECT id FROM document_input_records WHERE user_id = ? LIMIT 1',
+          variables: [Variable<String>(userId)],
+          readsFrom: {
+            documentInputRecords,
+            documentProcessingRecords,
+            extractedFieldRecords,
+            attachedDatabase.medicalExams,
+            attachedDatabase.medicalConsultations,
+            attachedDatabase.bioimpedanceRecords,
+          },
+        )
+        .watch()
+        .map((_) {});
+  }
+
+  Future<DocumentInputRecord?> getAnyDocument(String userId, String id) =>
+      (select(documentInputRecords)
+            ..where((row) => row.userId.equals(userId) & row.id.equals(id)))
+          .getSingleOrNull();
+
+  Future<DocumentProcessingRecord?> getLatestProcessingForDocument(
+    String userId,
+    String documentId,
+  ) =>
+      (select(documentProcessingRecords)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.documentId.equals(documentId) &
+                  row.deletedAt.isNull(),
+            )
+            ..orderBy([(row) => OrderingTerm.desc(row.updatedAt)]))
+          .getSingleOrNull();
+
+  Future<List<DocumentLinkedEntityRow>> getLinkedMedicalExams(
+    String userId,
+    String documentId,
+  ) async {
+    final rows =
+        await (attachedDatabase.select(attachedDatabase.medicalExams)
+              ..where(
+                (row) =>
+                    row.userId.equals(userId) &
+                    row.sourceDocumentId.equals(documentId) &
+                    row.deletedAt.isNull(),
+              )
+              ..orderBy([(row) => OrderingTerm.desc(row.performedAt)]))
+            .get();
+    return rows
+        .map(
+          (row) => DocumentLinkedEntityRow(
+            id: row.id,
+            title: row.title?.trim().isNotEmpty == true
+                ? row.title!
+                : 'Exame laboratorial',
+            subtitle: row.laboratoryName,
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  Future<List<DocumentLinkedEntityRow>> getLinkedMedicalConsultations(
+    String userId,
+    String documentId,
+  ) async {
+    final rows =
+        await (attachedDatabase.select(attachedDatabase.medicalConsultations)
+              ..where(
+                (row) =>
+                    row.userId.equals(userId) &
+                    row.sourceDocumentId.equals(documentId) &
+                    row.deletedAt.isNull(),
+              )
+              ..orderBy([(row) => OrderingTerm.desc(row.consultationAt)]))
+            .get();
+    return rows
+        .map(
+          (row) => DocumentLinkedEntityRow(
+            id: row.id,
+            title: row.title?.trim().isNotEmpty == true
+                ? row.title!
+                : 'Consulta clínica',
+            subtitle: row.professionalName ?? row.specialty,
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  Future<List<DocumentLinkedEntityRow>> getLinkedBioimpedanceRecords(
+    String userId,
+    String documentId,
+  ) async {
+    final rows =
+        await (attachedDatabase.select(attachedDatabase.bioimpedanceRecords)
+              ..where(
+                (row) =>
+                    row.userId.equals(userId) &
+                    row.sourceDocumentId.equals(documentId) &
+                    row.deletedAt.isNull(),
+              )
+              ..orderBy([(row) => OrderingTerm.desc(row.measuredAt)]))
+            .get();
+    return rows
+        .map(
+          (row) => DocumentLinkedEntityRow(
+            id: row.id,
+            title: 'Avaliação de bioimpedância',
+            subtitle: row.deviceName ?? row.clinicName,
+          ),
+        )
+        .toList(growable: false);
+  }
 
   Future<DocumentInputRecord?> getDocument(String userId, String id) =>
       (select(documentInputRecords)..where(

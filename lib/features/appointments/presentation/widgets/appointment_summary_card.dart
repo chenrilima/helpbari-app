@@ -11,7 +11,7 @@ class AppointmentSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HBMetricCard(
-      title: 'Próxima consulta',
+      title: 'Próximo agendamento',
       value: appointment.title,
       description: appointment.formattedDate,
       icon: AppIcons.calendar,

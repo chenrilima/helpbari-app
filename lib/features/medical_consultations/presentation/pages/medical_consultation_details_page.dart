@@ -13,7 +13,7 @@ class MedicalConsultationDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return HBPage(
       appBar: const HBAppBar(
-        title: 'Detalhes da consulta',
+        title: 'Detalhes da consulta realizada',
         subtitle: 'Revise orientações e próximos passos',
       ),
       children: [
@@ -24,7 +24,7 @@ class MedicalConsultationDetailsPage extends StatelessWidget {
               HBText(
                 consultation.title?.trim().isNotEmpty == true
                     ? consultation.title!
-                    : 'Consulta clínica',
+                    : 'Consulta realizada',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const HBGap.sm(),

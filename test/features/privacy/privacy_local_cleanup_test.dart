@@ -35,6 +35,24 @@ void main() {
       "VALUES ('c1','user-a',0,'unknown','manual',0,0,'synced',0),"
       "('c2','user-b',0,'unknown','manual',0,0,'synced',0)",
     );
+    await database.customInsert(
+      "INSERT INTO document_input_records "
+      "(id,user_id,source_type,mime_type,file_name,file_size,captured_at,created_at,updated_at,sync_status,sync_attempts) "
+      "VALUES ('d1','user-a','file','application/pdf','a.pdf',1024,0,0,0,'synced',0),"
+      "('d2','user-b','file','application/pdf','b.pdf',2048,0,0,0,'synced',0)",
+    );
+    await database.customInsert(
+      "INSERT INTO document_processing_records "
+      "(id,user_id,document_id,status,detected_type,engine,general_confidence,created_at,updated_at,sync_status) "
+      "VALUES ('p1','user-a','d1','confirmed','medicalExamReport','test',0.9,0,0,'synced'),"
+      "('p2','user-b','d2','confirmed','medicalExamReport','test',0.9,0,0,'synced')",
+    );
+    await database.customInsert(
+      "INSERT INTO extracted_field_records "
+      "(id,user_id,processing_id,key,label,raw_value,confidence,status,source,created_at,updated_at,sync_status) "
+      "VALUES ('f1','user-a','p1','name','Nome','Vitamina D',0.8,'confirmed','ocr',0,0,'synced'),"
+      "('f2','user-b','p2','name','Nome','Ferritina',0.8,'confirmed','ocr',0,0,'synced')",
+    );
   });
 
   tearDown(() => database.close());
@@ -51,6 +69,16 @@ void main() {
         .select(database.medicalConsultations)
         .get();
     expect(consultations.map((row) => row.userId), ['user-b']);
+    final documents = await database
+        .select(database.documentInputRecords)
+        .get();
+    expect(documents.map((row) => row.userId), ['user-b']);
+    final processings = await database
+        .select(database.documentProcessingRecords)
+        .get();
+    expect(processings.map((row) => row.userId), ['user-b']);
+    final fields = await database.select(database.extractedFieldRecords).get();
+    expect(fields.map((row) => row.userId), ['user-b']);
     expect(
       preferences.containsKey('onboarding.user.v2.user-a.completed'),
       isFalse,

@@ -129,15 +129,15 @@ class _RegisterAppointmentPageState
         context,
         message:
             ref.read(appointmentViewModelProvider).errorMessage ??
-            'Não foi possível salvar a consulta.',
+            'Não foi possível salvar o agendamento.',
       );
       return;
     }
     HBSnackBar.success(
       context,
       message: _isEditing
-          ? 'Consulta atualizada com sucesso.'
-          : 'Consulta cadastrada com sucesso.',
+          ? 'Agendamento atualizado com sucesso.'
+          : 'Agendamento cadastrado com sucesso.',
     );
 
     context.pop(true);
@@ -147,11 +147,11 @@ class _RegisterAppointmentPageState
   Widget build(BuildContext context) {
     return HBLoadingOverlay(
       isLoading: _isSubmitting,
-      message: 'Salvando consulta...',
+      message: 'Salvando agendamento...',
       child: HBPage(
         appBar: HBAppBar(
-          title: _isEditing ? 'Editar consulta' : 'Cadastrar consulta',
-          subtitle: 'Acompanhe suas consultas médicas',
+          title: _isEditing ? 'Editar agendamento' : 'Novo agendamento',
+          subtitle: 'Cadastre seus atendimentos futuros',
         ),
         children: [
           DocumentImportCard(onConfirmed: _applyDocumentFields),
@@ -214,7 +214,9 @@ class _RegisterAppointmentPageState
                   ),
                   const HBGap.xl(),
                   HBButton(
-                    label: _isEditing ? 'Salvar alterações' : 'Salvar consulta',
+                    label: _isEditing
+                        ? 'Salvar alterações'
+                        : 'Salvar agendamento',
                     onPressed: _isSubmitting ? null : _save,
                   ),
                 ],

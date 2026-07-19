@@ -83,11 +83,17 @@ class SyncManager extends Notifier<SyncState> {
       );
     } else {
       for (final error in result.errors) {
-        AppLogger.error(
-          'Sync ${error.repositoryKey}/${error.operation}: ${error.message}',
-          error: error.cause,
-          stackTrace: error.stackTrace,
-        );
+        if (!error.retryable) {
+          AppLogger.info(
+            'Sync ${error.repositoryKey}/${error.operation}: ${error.message}',
+          );
+        } else {
+          AppLogger.error(
+            'Sync ${error.repositoryKey}/${error.operation}: ${error.message}',
+            error: error.cause,
+            stackTrace: error.stackTrace,
+          );
+        }
       }
     }
 

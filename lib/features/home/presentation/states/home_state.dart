@@ -89,7 +89,7 @@ class HomeState {
     }
 
     if (summary.hasNextAppointment) {
-      return 'Consulta agendada';
+      return 'Próximo agendamento';
     }
 
     return 'Continue assim! 💜';
@@ -124,7 +124,7 @@ class HomeState {
     }
 
     if (summary.hasNextAppointment) {
-      return 'Sua próxima consulta está agendada.';
+      return 'Seu próximo agendamento já está confirmado.';
     }
 
     return 'Cada registro ajuda você a acompanhar sua evolução e manter o foco.';
@@ -184,10 +184,10 @@ class HomeState {
     final summary = dailySummary;
 
     if (summary == null || !summary.hasNextAppointment) {
-      return 'Nenhuma consulta agendada.';
+      return 'Nenhum agendamento futuro.';
     }
 
-    return 'Sua próxima consulta está agendada.';
+    return 'Seu próximo agendamento já está confirmado.';
   }
 
   String get examMessage {
@@ -202,10 +202,10 @@ class HomeState {
 
   String get consultationMessage {
     if (latestConsultation == null) {
-      return 'Nenhuma consulta clínica registrada.';
+      return 'Nenhuma consulta realizada registrada.';
     }
 
-    return 'Seu último registro clínico está salvo.';
+    return 'Sua última consulta realizada está salva.';
   }
 
   HomeState copyWith({

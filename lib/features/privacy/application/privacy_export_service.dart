@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:archive/archive.dart';
 
 import '../../../core/services/services.dart';
+import '../../document_intelligence/domain/entities/document_models.dart';
 import '../../medical_reports/domain/models/models.dart';
 import '../../settings/domain/entities/entities.dart';
 import '../domain/models/models.dart';
@@ -16,12 +17,14 @@ class PrivacyExportService {
     loadVitaminLogs,
     required Future<List<dynamic>> Function(DateTime start, DateTime end)
     loadMedicationLogs,
+    required Future<List<ManagedDocumentRecord>> Function() loadDocuments,
     required ClockService clock,
     required String userId,
   }) : _loadReport = loadReport,
        _loadSettings = loadSettings,
        _loadVitaminLogs = loadVitaminLogs,
        _loadMedicationLogs = loadMedicationLogs,
+       _loadDocuments = loadDocuments,
        _clock = clock,
        _userId = userId;
 
@@ -31,6 +34,7 @@ class PrivacyExportService {
   _loadVitaminLogs;
   final Future<List<dynamic>> Function(DateTime start, DateTime end)
   _loadMedicationLogs;
+  final Future<List<ManagedDocumentRecord>> Function() _loadDocuments;
   final ClockService _clock;
   final String _userId;
 
@@ -44,11 +48,13 @@ class PrivacyExportService {
       _loadSettings(),
       _loadVitaminLogs(DateTime(2000), now),
       _loadMedicationLogs(DateTime(2000), now),
+      _loadDocuments(),
     ]);
     final snapshot = results[0];
     final settings = results[1];
     final vitaminLogs = results[2] as List;
     final medicationLogs = results[3] as List;
+    final documents = results[4] as List<ManagedDocumentRecord>;
     final profile = snapshot.profile;
     final data = <String, Object?>{
       'metadata': {
@@ -251,6 +257,77 @@ class PrivacyExportService {
             ],
           },
       ],
+      'documents': [
+        for (final item in documents)
+          {
+            'document': {
+              'id': item.document.id,
+              'sourceType': _enumName(item.document.sourceType),
+              'localPath': item.document.localPath,
+              'remotePath': item.document.remotePath,
+              'mimeType': item.document.mimeType,
+              'fileName': item.document.fileName,
+              'fileSize': item.document.fileSize,
+              'checksum': item.document.checksum,
+              'capturedAt': item.document.capturedAt.toIso8601String(),
+              'createdAt': item.document.createdAt.toIso8601String(),
+            },
+            'latestProcessing': item.latestProcessing == null
+                ? null
+                : {
+                    'id': item.latestProcessing!.id,
+                    'documentId': item.latestProcessing!.documentId,
+                    'status': _enumName(item.latestProcessing!.status),
+                    'detectedType': _enumName(
+                      item.latestProcessing!.detectedType,
+                    ),
+                    'rawText': item.latestProcessing!.rawText,
+                    'engine': item.latestProcessing!.engine,
+                    'engineVersion': item.latestProcessing!.engineVersion,
+                    'generalConfidence':
+                        item.latestProcessing!.generalConfidence,
+                    'errorCode': item.latestProcessing!.errorCode,
+                    'errorMessage': item.latestProcessing!.errorMessage,
+                    'startedAt': item.latestProcessing!.startedAt
+                        ?.toIso8601String(),
+                    'completedAt': item.latestProcessing!.completedAt
+                        ?.toIso8601String(),
+                    'createdAt': item.latestProcessing!.createdAt
+                        .toIso8601String(),
+                    'updatedAt': item.latestProcessing!.updatedAt
+                        .toIso8601String(),
+                  },
+            'fields': [
+              for (final field in item.latestFields)
+                {
+                  'id': field.id,
+                  'processingId': field.processingId,
+                  'key': field.key,
+                  'label': field.label,
+                  'rawValue': field.rawValue,
+                  'normalizedValue': field.normalizedValue,
+                  'confirmedValue': field.confirmedValue,
+                  'unit': field.unit,
+                  'confidence': field.confidence,
+                  'status': _enumName(field.status),
+                  'source': _enumName(field.source),
+                  'originalBoundingBox': field.originalBoundingBox,
+                  'createdAt': field.createdAt.toIso8601String(),
+                  'updatedAt': field.updatedAt.toIso8601String(),
+                },
+            ],
+            'links': [
+              for (final link in item.links)
+                {
+                  'type': _enumName(link.type),
+                  'entityId': link.entityId,
+                  'title': link.title,
+                  'subtitle': link.subtitle,
+                },
+            ],
+            'isOrphan': item.isOrphan,
+          },
+      ],
       'reports': [
         {
           'version': snapshot.reportVersion,
@@ -283,6 +360,7 @@ class PrivacyExportService {
       'appointments': snapshot.appointments.length,
       'medicalConsultations': snapshot.consultations.length,
       'medicalExams': snapshot.exams.length,
+      'documents': documents.length,
       'reports': 1,
     };
     return PrivacyExportPackage(

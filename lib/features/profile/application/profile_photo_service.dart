@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../../../core/media/media.dart';
 
 class ProfilePhotoService {
@@ -65,12 +67,18 @@ class ProfilePhotoService {
     );
   }
 
-  Future<ProfilePhotoView> load({
+  Future<ProfilePhotoView?> load({
     required String userId,
     required String path,
   }) async {
     _assertOwnedPath(path, userId);
-    final bytes = await _storage.download(path: path, bucketId: bucket);
+    Uint8List bytes;
+    try {
+      bytes = await _storage.download(path: path, bucketId: bucket);
+    } catch (error) {
+      if (_isMissingRemoteAsset(error)) return null;
+      rethrow;
+    }
     final extension = path.split('.').last.toLowerCase();
     final file = await _cacheService.cache(
       MediaFile(
@@ -118,6 +126,16 @@ class ProfilePhotoService {
       .fold<int>(17, (value, unit) => 37 * value + unit)
       .abs()
       .toString();
+
+  bool _isMissingRemoteAsset(Object error) {
+    if (error is! StorageException) return false;
+    final message = error.message.toLowerCase();
+    return error.statusCode == '404' ||
+        message.contains('not found') ||
+        message.contains('object not found') ||
+        message.contains('bucket not found');
+  }
+
   String _mime(String extension) => switch (extension) {
     'png' => 'image/png',
     'webp' => 'image/webp',

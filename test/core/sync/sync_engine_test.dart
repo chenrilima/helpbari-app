@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/services/clock_service.dart';
 import 'package:helpbari/core/sync/sync.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
   group('SyncEngine', () {
@@ -222,6 +223,78 @@ void main() {
       expect(result.errors.single.operation, 'pull');
     });
 
+    test(
+      'defers repository when remote schema is unavailable during pull',
+      () async {
+        final repository = _FakeSyncableRepository(
+          pending: [
+            _operation(
+              recordId: 'local-1',
+              updatedAt: DateTime(2026, 7, 9, 10),
+            ),
+          ],
+          pullError: PostgrestException(
+            message:
+                "Could not find the table 'public.medical_exams' in the schema cache",
+            code: 'PGRST205',
+          ),
+        );
+        final engine = SyncEngine(
+          stateRepository: _FakeSyncStateRepository(),
+          clock: const _FixedClock(),
+        );
+
+        final result = await engine.sync(
+          repositories: [repository],
+          appVersion: '1.0.0',
+          userId: 'user-1',
+        );
+
+        expect(result.isSuccess, isFalse);
+        expect(result.errors.single.retryable, isFalse);
+        expect(result.errors.single.operation, 'pull');
+        expect(repository.pushed, isEmpty);
+        expect(repository.failedIds, isEmpty);
+      },
+    );
+
+    test(
+      'does not mark pending records as failed when remote schema is unavailable during push',
+      () async {
+        final repository = _FakeSyncableRepository(
+          pending: [
+            _operation(
+              recordId: 'pending-1',
+              updatedAt: DateTime(2026, 7, 9, 10),
+            ),
+          ],
+          pushError: PostgrestException(
+            message:
+                "Could not find the table 'public.medical_consultations' in the schema cache",
+            code: 'PGRST205',
+          ),
+        );
+        final engine = SyncEngine(
+          stateRepository: _FakeSyncStateRepository(),
+          clock: const _FixedClock(),
+          maxRetries: 2,
+        );
+
+        final result = await engine.sync(
+          repositories: [repository],
+          appVersion: '1.0.0',
+          userId: 'user-1',
+        );
+
+        expect(result.isSuccess, isFalse);
+        expect(result.errors.single.retryable, isFalse);
+        expect(result.errors.single.operation, 'push');
+        expect(repository.failedIds, isEmpty);
+        expect(repository.syncedIds, isEmpty);
+        expect(repository.pushAttempts, 1);
+      },
+    );
+
     test('resolves conflicts with latest updatedAt winning', () async {
       final local = _operation(
         recordId: 'conflict-1',
@@ -314,6 +387,8 @@ class _FakeSyncableRepository implements SyncableRepository {
     Map<String, SyncOperation> localById = const {},
     this.pushFailuresBeforeSuccess = 0,
     this.throwOnPull = false,
+    this.pullError,
+    this.pushError,
     this.pullGate,
   }) : _pending = List.of(pending),
        _remote = List.of(remote),
@@ -324,6 +399,8 @@ class _FakeSyncableRepository implements SyncableRepository {
   final Map<String, SyncOperation> _localById;
   final int pushFailuresBeforeSuccess;
   final bool throwOnPull;
+  final Object? pullError;
+  final Object? pushError;
   final Completer<void>? pullGate;
 
   final pushed = <SyncOperation>[];
@@ -350,6 +427,7 @@ class _FakeSyncableRepository implements SyncableRepository {
   @override
   Future<void> push(SyncOperation operation) async {
     pushAttempts++;
+    if (pushError != null) throw pushError!;
     if (pushAttempts <= pushFailuresBeforeSuccess) {
       throw StateError('temporary failure');
     }
@@ -361,6 +439,7 @@ class _FakeSyncableRepository implements SyncableRepository {
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async {
     pullCalls++;
     await pullGate?.future;
+    if (pullError != null) throw pullError!;
     if (throwOnPull) throw StateError('pull failed');
     lastPullUpdatedAfter = updatedAfter;
     if (updatedAfter == null) return List.of(_remote);

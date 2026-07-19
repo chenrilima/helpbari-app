@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/health/health.dart';
 import 'package:helpbari/core/services/services.dart';
 import 'package:helpbari/core/sync/sync.dart';
+import 'package:helpbari/features/document_intelligence/domain/entities/document_models.dart';
 import 'package:helpbari/features/medical_exams/domain/entities/entities.dart';
 import 'package:helpbari/features/medical_reports/domain/entities/entities.dart';
 import 'package:helpbari/features/medical_reports/domain/models/models.dart';
@@ -20,6 +21,7 @@ void main() {
         loadSettings: () async => const AppSettings(id: 'user-a'),
         loadVitaminLogs: (_, _) async => [],
         loadMedicationLogs: (_, _) async => [],
+        loadDocuments: () async => [_document()],
         clock: const _Clock(),
         userId: 'user-a',
       );
@@ -42,6 +44,9 @@ void main() {
         data['medicalExams'][0]['results'][0]['canonicalCode'],
         'vitaminD',
       );
+      expect((data['documents'] as List), hasLength(1));
+      expect(data['documents'][0]['document']['fileName'], 'laudo.pdf');
+      expect(data['documents'][0]['links'][0]['type'], 'medicalExam');
       expect(content, isNot(contains('access_token')));
       expect(content, isNot(contains('refresh_token')));
       expect(content, isNot(contains('internal_logs')));
@@ -54,6 +59,7 @@ void main() {
       loadSettings: () async => const AppSettings(id: 'anonymous'),
       loadVitaminLogs: (_, _) async => [],
       loadMedicationLogs: (_, _) async => [],
+      loadDocuments: () async => const [],
       clock: const _Clock(),
       userId: 'anonymous',
     );
@@ -124,6 +130,55 @@ MedicalReportSnapshot _snapshot() => MedicalReportSnapshot(
   vitaminAdherencePercent: null,
   medicationAdherencePercent: null,
   automaticObservations: const [],
+);
+
+ManagedDocumentRecord _document() => ManagedDocumentRecord(
+  document: DocumentInput(
+    id: 'doc-1',
+    userId: 'user-a',
+    sourceType: DocumentSourceType.file,
+    localPath: '/tmp/laudo.pdf',
+    remotePath: 'documents/user-a/laudo.pdf',
+    mimeType: 'application/pdf',
+    fileName: 'laudo.pdf',
+    fileSize: 4096,
+    checksum: 'abc123',
+    capturedAt: DateTime.utc(2026, 7, 15, 10),
+    createdAt: DateTime.utc(2026, 7, 15, 10),
+  ),
+  latestProcessing: DocumentProcessing(
+    id: 'proc-1',
+    documentId: 'doc-1',
+    status: ProcessingStatus.confirmed,
+    detectedType: DetectedDocumentType.medicalExamReport,
+    engine: 'test',
+    generalConfidence: 0.92,
+    createdAt: DateTime.utc(2026, 7, 15, 10),
+    updatedAt: DateTime.utc(2026, 7, 15, 10, 5),
+  ),
+  latestFields: [
+    ExtractedField(
+      id: 'field-1',
+      processingId: 'proc-1',
+      key: 'exam_name',
+      label: 'Exame',
+      rawValue: 'Vitamina D',
+      confidence: 0.88,
+      status: FieldStatus.confirmed,
+      source: FieldSource.ocr,
+      createdAt: DateTime.utc(2026, 7, 15, 10),
+      updatedAt: DateTime.utc(2026, 7, 15, 10, 5),
+    ),
+  ],
+  links: const [
+    DocumentClinicalLink(
+      type: DocumentClinicalLinkType.medicalExam,
+      entityId: 'exam-1',
+      title: 'Check-up anual',
+      subtitle: '15/07/2026',
+    ),
+  ],
+  extractedFieldCount: 1,
 );
 
 class _Clock implements ClockService {

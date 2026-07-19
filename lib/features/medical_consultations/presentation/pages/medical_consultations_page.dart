@@ -76,16 +76,16 @@ class _MedicalConsultationsPageState
     final state = ref.watch(medicalConsultationViewModelProvider);
     return HBLoadingOverlay(
       isLoading: state.isLoading,
-      message: 'Carregando consultas...',
+      message: 'Carregando consultas realizadas...',
       child: HBPage(
         appBar: const HBAppBar(
-          title: 'Consultas',
-          subtitle: 'Registre atendimentos e orientações clínicas',
+          title: 'Consultas realizadas',
+          subtitle: 'Histórico de atendimentos e orientações clínicas',
         ),
         children: [
           if (state.errorMessage != null)
             HBEmptyState(
-              title: 'Não foi possível carregar as consultas',
+              title: 'Não foi possível carregar o histórico de consultas',
               description: state.errorMessage!,
               icon: Icons.error_outline,
               actionLabel: 'Tentar novamente',
@@ -95,7 +95,7 @@ class _MedicalConsultationsPageState
             )
           else if (!state.hasItems)
             HBEmptyState(
-              title: 'Nenhuma consulta registrada',
+              title: 'Nenhuma consulta realizada',
               description:
                   'Cadastre manualmente ou importe um documento de atendimento.',
               icon: AppIcons.health,
@@ -117,7 +117,7 @@ class _MedicalConsultationsPageState
                       HBText(
                         consultation.title?.trim().isNotEmpty == true
                             ? consultation.title!
-                            : 'Consulta clínica',
+                            : 'Consulta realizada',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const HBGap.sm(),
@@ -158,7 +158,10 @@ class _MedicalConsultationsPageState
               },
             ),
           const HBGap.xl(),
-          HBButton(label: 'Nova consulta', onPressed: () => _openRegister()),
+          HBButton(
+            label: 'Registrar consulta',
+            onPressed: () => _openRegister(),
+          ),
         ],
       ),
     );

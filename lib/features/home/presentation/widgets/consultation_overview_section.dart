@@ -27,7 +27,7 @@ class ConsultationOverviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HomeSection(
-      title: 'Consultas registradas',
+      title: 'Consultas realizadas',
       subtitle: subtitle,
       action: TextButton(
         onPressed: () => _open(context),
@@ -35,9 +35,9 @@ class ConsultationOverviewSection extends StatelessWidget {
       ),
       child: latestConsultation == null
           ? const HBEmptyState(
-              title: 'Nenhuma consulta registrada',
+              title: 'Nenhuma consulta realizada',
               description:
-                  'Salve seu último atendimento para acompanhar orientações e evolução.',
+                  'Registre um atendimento para acompanhar orientações e evolução.',
               icon: AppIcons.health,
             )
           : HBCard(
@@ -47,7 +47,7 @@ class ConsultationOverviewSection extends StatelessWidget {
                   HBText(
                     latestConsultation!.title?.trim().isNotEmpty == true
                         ? latestConsultation!.title!
-                        : 'Consulta clínica',
+                        : 'Consulta realizada',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const HBGap.sm(),

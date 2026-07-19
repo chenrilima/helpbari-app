@@ -29,6 +29,8 @@ abstract final class AppRoutes {
   static const meals = '/meals';
   static const registerMeal = '/mealsRegister';
   static const medicalReports = '/medical-reports';
+  static const documentCenter = '/document-center';
+  static const documentCenterDetails = '/document-center/:documentId';
   static const bioimpedance = '/bioimpedance';
   static const registerBioimpedance = '/register-bioimpedance';
   static const bioimpedanceDetails = '/bioimpedance-details';
@@ -42,5 +44,9 @@ abstract final class AppRoutes {
 
   static String academyArticlePath(String articleId) {
     return '/academy/article/${Uri.encodeComponent(articleId)}';
+  }
+
+  static String documentCenterDetailsPath(String documentId) {
+    return '/document-center/${Uri.encodeComponent(documentId)}';
   }
 }

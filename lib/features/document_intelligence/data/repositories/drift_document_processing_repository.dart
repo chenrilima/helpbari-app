@@ -11,6 +11,69 @@ class DriftDocumentProcessingRepository
   final DocumentIntelligenceDao _dao;
 
   @override
+  Stream<List<ManagedDocumentRecord>> watchDocuments(String userId) {
+    return _dao
+        .watchDocumentCenter(userId)
+        .asyncMap((_) => getDocuments(userId));
+  }
+
+  @override
+  Future<List<ManagedDocumentRecord>> getDocuments(String userId) async {
+    final documents = await _dao.listDocuments(userId);
+    final result = <ManagedDocumentRecord>[];
+    for (final row in documents) {
+      result.add(await _buildManagedDocument(userId, row));
+    }
+    return result;
+  }
+
+  @override
+  Future<ManagedDocumentRecord?> getDocumentById(
+    String userId,
+    String documentId,
+  ) async {
+    final row = await _dao.getAnyDocument(userId, documentId);
+    if (row == null) return null;
+    return _buildManagedDocument(userId, row);
+  }
+
+  @override
+  Future<List<ManagedDocumentRecord>> searchDocuments(
+    String userId, {
+    required String query,
+  }) async {
+    final normalized = query.trim().toLowerCase();
+    if (normalized.isEmpty) return getDocuments(userId);
+    final documents = await getDocuments(userId);
+    return documents
+        .where((document) {
+          final processing = document.latestProcessing;
+          final values = <String>[
+            document.document.fileName,
+            document.document.mimeType,
+            processing?.detectedType.name ?? '',
+            processing?.status.name ?? '',
+            for (final link in document.links) ...[
+              link.title,
+              link.subtitle ?? '',
+              link.type.name,
+            ],
+          ];
+          return values.join(' ').toLowerCase().contains(normalized);
+        })
+        .toList(growable: false);
+  }
+
+  @override
+  Stream<List<ManagedDocumentRecord>> watchOrphanDocuments(String userId) {
+    return watchDocuments(userId).map(
+      (documents) => documents
+          .where((document) => document.isOrphan)
+          .toList(growable: false),
+    );
+  }
+
+  @override
   Future<void> saveDocument(DocumentInput document) => _dao.upsertDocument(
     DocumentInputRecordsCompanion.insert(
       id: document.id,
@@ -150,4 +213,87 @@ class DriftDocumentProcessingRepository
   @override
   Future<void> deleteDocument(String userId, String documentId, DateTime at) =>
       _dao.tombstoneDocument(userId, documentId, at);
+
+  Future<ManagedDocumentRecord> _buildManagedDocument(
+    String userId,
+    DocumentInputRecord row,
+  ) async {
+    final processing = await _dao.getLatestProcessingForDocument(
+      userId,
+      row.id,
+    );
+    final fields = processing == null
+        ? const <ExtractedField>[]
+        : await getFields(userId, processing.id);
+    final examLinks = await _dao.getLinkedMedicalExams(userId, row.id);
+    final consultationLinks = await _dao.getLinkedMedicalConsultations(
+      userId,
+      row.id,
+    );
+    final bioLinks = await _dao.getLinkedBioimpedanceRecords(userId, row.id);
+
+    return ManagedDocumentRecord(
+      document: DocumentInput(
+        id: row.id,
+        userId: row.userId,
+        sourceType: DocumentSourceType.values.byName(row.sourceType),
+        localPath: row.localPath,
+        remotePath: row.remotePath,
+        mimeType: row.mimeType,
+        fileName: row.fileName,
+        fileSize: row.fileSize,
+        checksum: row.checksum,
+        capturedAt: row.capturedAt,
+        createdAt: row.createdAt,
+      ),
+      latestProcessing: processing == null
+          ? null
+          : DocumentProcessing(
+              id: processing.id,
+              documentId: processing.documentId,
+              status: ProcessingStatus.values.byName(processing.status),
+              detectedType: DetectedDocumentType.values.byName(
+                processing.detectedType,
+              ),
+              rawText: processing.rawText,
+              engine: processing.engine,
+              engineVersion: processing.engineVersion,
+              generalConfidence: processing.generalConfidence,
+              errorCode: processing.errorCode,
+              errorMessage: processing.errorMessage,
+              startedAt: processing.startedAt,
+              completedAt: processing.completedAt,
+              createdAt: processing.createdAt,
+              updatedAt: processing.updatedAt,
+            ),
+      latestFields: fields,
+      extractedFieldCount: fields.length,
+      links: [
+        ...examLinks.map(
+          (link) => DocumentClinicalLink(
+            type: DocumentClinicalLinkType.medicalExam,
+            entityId: link.id,
+            title: link.title,
+            subtitle: link.subtitle,
+          ),
+        ),
+        ...consultationLinks.map(
+          (link) => DocumentClinicalLink(
+            type: DocumentClinicalLinkType.medicalConsultation,
+            entityId: link.id,
+            title: link.title,
+            subtitle: link.subtitle,
+          ),
+        ),
+        ...bioLinks.map(
+          (link) => DocumentClinicalLink(
+            type: DocumentClinicalLinkType.bioimpedance,
+            entityId: link.id,
+            title: link.title,
+            subtitle: link.subtitle,
+          ),
+        ),
+      ],
+    );
+  }
 }

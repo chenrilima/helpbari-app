@@ -6,6 +6,7 @@ import '../supabase/database/supabase_database_provider.dart';
 import '../supabase/supabase_client_provider.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/charts/presentation/providers/chart_series_providers.dart';
+import '../../features/document_center/presentation/providers/document_center_providers.dart';
 import '../../features/home/presentation/providers/home_view_model_provider.dart';
 import '../../features/settings/data/datasources/drift_settings_local_datasource.dart';
 import '../../features/settings/data/datasources/settings_supabase_datasource.dart';
@@ -22,6 +23,10 @@ import '../../features/privacy/data/repositories/privacy_consent_sync_repository
 import '../../features/privacy/presentation/providers/privacy_providers.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
 import '../../features/medical_reports/presentation/providers/medical_report_providers.dart';
+import '../../features/medical_consultations/presentation/providers/medical_consultation_use_cases_provider.dart';
+import '../../features/medical_consultations/presentation/providers/medical_consultation_view_model_provider.dart';
+import '../../features/medical_exams/presentation/providers/medical_exam_use_cases_provider.dart';
+import '../../features/medical_exams/presentation/providers/medical_exam_view_model_provider.dart';
 import '../../features/water/data/datasources/drift_water_local_datasource.dart';
 import '../../features/water/data/datasources/water_supabase_datasource.dart';
 import '../../features/water/data/repositories/water_sync_repository.dart';
@@ -358,6 +363,10 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(appointmentViewModelProvider);
     ref.invalidate(examUseCasesProvider);
     ref.invalidate(examViewModelProvider);
+    ref.invalidate(medicalExamUseCasesProvider);
+    ref.invalidate(medicalExamViewModelProvider);
+    ref.invalidate(medicalConsultationUseCasesProvider);
+    ref.invalidate(medicalConsultationViewModelProvider);
     ref.invalidate(vitaminUseCasesProvider);
     ref.invalidate(vitaminViewModelProvider);
     ref.invalidate(vitaminAdherenceChartSeriesProvider);
@@ -372,6 +381,8 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);
+    ref.invalidate(documentCenterServiceProvider);
+    ref.invalidate(documentCenterViewModelProvider);
     ref.invalidate(bariaViewModelProvider);
     ref.invalidate(profileViewModelProvider);
     ref.invalidate(privacyRepositoryProvider);
@@ -386,6 +397,8 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(mealViewModelProvider.notifier).loadMeals(),
       ref.read(appointmentViewModelProvider.notifier).loadAppointments(),
       ref.read(examViewModelProvider.notifier).loadItems(),
+      ref.read(medicalExamViewModelProvider.notifier).loadHistory(),
+      ref.read(medicalConsultationViewModelProvider.notifier).loadHistory(),
       ref.read(vitaminViewModelProvider.notifier).loadVitamins(),
       ref.read(medicationViewModelProvider.notifier).loadMedications(),
       ref.read(bioimpedanceViewModelProvider.notifier).loadHistory(),

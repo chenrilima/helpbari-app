@@ -1,3 +1,5 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../services/clock_service.dart';
 import 'sync_conflict.dart';
 import 'sync_error.dart';
@@ -81,6 +83,18 @@ class SyncEngine {
         conflicts.addAll(pullResult.conflicts);
         errors.addAll(pullResult.errors);
       } catch (error, stackTrace) {
+        if (_isMissingRemoteSchema(error)) {
+          errors.add(
+            SyncError(
+              repositoryKey: repository.syncKey,
+              message:
+                  'Schema remoto indisponível para ${repository.syncKey}; sincronização adiada até aplicar as migrations no Supabase.',
+              operation: 'pull',
+              retryable: false,
+            ),
+          );
+          continue;
+        }
         errors.add(
           SyncError(
             repositoryKey: repository.syncKey,
@@ -161,6 +175,9 @@ class SyncEngine {
         await repository.markSynced(operation.recordId, syncedAt: _clock.now());
         pushed++;
         if (operation.isDelete) deleted++;
+      } else if (!error.retryable) {
+        errors.add(error);
+        break;
       } else {
         await repository.markFailed(operation.recordId, error);
         errors.add(error);
@@ -250,6 +267,16 @@ class SyncEngine {
         await callback();
         return null;
       } catch (error, stackTrace) {
+        if (_isMissingRemoteSchema(error)) {
+          return SyncError(
+            repositoryKey: repository.syncKey,
+            recordId: operation.recordId,
+            message:
+                'Schema remoto indisponível para ${repository.syncKey}; sincronização adiada até aplicar as migrations no Supabase.',
+            operation: action,
+            retryable: false,
+          );
+        }
         if (attempt == _maxRetries) {
           return SyncError(
             repositoryKey: repository.syncKey,
@@ -264,6 +291,10 @@ class SyncEngine {
     }
 
     return null;
+  }
+
+  bool _isMissingRemoteSchema(Object error) {
+    return error is PostgrestException && error.code == 'PGRST205';
   }
 }
 

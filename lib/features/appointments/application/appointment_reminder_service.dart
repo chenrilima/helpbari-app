@@ -56,7 +56,7 @@ class AppointmentReminderService {
       source: NotificationSource.appointment,
       userId: _userId,
       entityId: appointment.id,
-      title: 'Consulta agendada',
+      title: 'Agendamento confirmado',
       body: appointment.location == null
           ? appointment.title
           : '${appointment.title} em ${appointment.location}',

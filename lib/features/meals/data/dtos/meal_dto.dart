@@ -112,20 +112,31 @@ class MealDto {
       (value) => value.name == row['type'],
       orElse: () => MealType.snack,
     ),
-    mealDate: DateTime.parse(row['meal_date'] as String),
+    mealDate: DateTime.parse(row['meal_date'].toString()),
     notes: row['notes'] as String?,
-    proteinGrams: row['protein_grams'] as int?,
+    proteinGrams: _toInt(row['protein_grams']),
     syncMetadata: SyncMetadata(
       id: row['id'] as String,
       userId: row['user_id'] as String,
-      createdAt: DateTime.parse(row['created_at'] as String),
-      updatedAt: DateTime.parse(row['updated_at'] as String),
+      createdAt: DateTime.parse(row['created_at'].toString()),
+      updatedAt: DateTime.parse(row['updated_at'].toString()),
       deletedAt: row['deleted_at'] == null
           ? null
-          : DateTime.parse(row['deleted_at'] as String),
+          : DateTime.parse(row['deleted_at'].toString()),
       syncStatus: SyncStatus.synced,
     ),
   );
+
+  static int? _toInt(Object? value) {
+    return switch (value) {
+      null => null,
+      final int v => v,
+      final num v => v.toInt(),
+      final String v when v.trim().isEmpty => null,
+      final String v => int.tryParse(v) ?? double.tryParse(v)?.toInt(),
+      _ => null,
+    };
+  }
 
   static SyncStatus _nextSyncStatus(SyncStatus? currentStatus) {
     return switch (currentStatus) {

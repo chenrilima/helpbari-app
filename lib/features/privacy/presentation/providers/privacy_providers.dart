@@ -9,6 +9,7 @@ import '../../../../core/supabase/interceptors/supabase_interceptors_provider.da
 import '../../../../core/supabase/supabase_client_provider.dart';
 import '../../../../core/sync/sync.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../document_intelligence/presentation/providers/document_intelligence_providers.dart';
 import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
 import '../../../medical_reports/domain/entities/report_template.dart';
 import '../../../medications/presentation/providers/medication_use_cases_provider.dart';
@@ -75,6 +76,9 @@ final privacyExportServiceProvider = Provider<PrivacyExportService>((ref) {
     loadSettings: () => ref.read(settingsUseCasesProvider).getSettings(),
     loadVitaminLogs: ref.read(vitaminUseCasesProvider).getLogs,
     loadMedicationLogs: ref.read(medicationUseCasesProvider).getLogs,
+    loadDocuments: () async => (await ref.read(
+      documentProcessingRepositoryProvider.future,
+    )).getDocuments(userId),
     clock: ref.read(clockServiceProvider),
     userId: userId,
   );

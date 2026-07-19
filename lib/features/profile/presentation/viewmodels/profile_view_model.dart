@@ -221,6 +221,16 @@ class ProfileViewModel extends Notifier<ProfileState> {
       final view = await ref
           .read(profilePhotoServiceProvider)
           .load(userId: user.id, path: path);
+      if (view == null) {
+        state = state.copyWith(
+          photoStatus: state.cachedPhoto == null
+              ? ProfilePhotoStatus.none
+              : ProfilePhotoStatus.synced,
+          clearSignedUrl: true,
+          clearPhotoError: true,
+        );
+        return;
+      }
       state = state.copyWith(
         photoStatus: ProfilePhotoStatus.synced,
         cachedPhoto: view.file,

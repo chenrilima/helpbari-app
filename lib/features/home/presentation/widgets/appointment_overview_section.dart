@@ -10,7 +10,7 @@ import 'home_section.dart';
 class AppointmentOverviewSection extends StatelessWidget {
   const AppointmentOverviewSection({
     required this.nextAppointment,
-    this.subtitle = 'Sua próxima consulta médica.',
+    this.subtitle = 'Seu próximo agendamento.',
     this.onRefresh,
     super.key,
   });
@@ -26,13 +26,13 @@ class AppointmentOverviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HomeSection(
-      title: 'Consultas',
+      title: 'Meus agendamentos',
       subtitle: subtitle,
       child: nextAppointment != null
           ? AppointmentSummaryCard(appointment: nextAppointment!)
           : HBEmptyState(
-              title: 'Nenhuma consulta agendada',
-              description: 'Agende sua próxima consulta.',
+              title: 'Nenhum agendamento futuro',
+              description: 'Cadastre seu próximo agendamento.',
               icon: AppIcons.calendar,
               onTap: () => _openAppointments(context),
             ),

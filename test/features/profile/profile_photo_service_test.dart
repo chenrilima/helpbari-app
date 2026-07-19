@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/media/media.dart';
 import 'package:helpbari/features/profile/application/profile_photo_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
   late _Storage storage;
@@ -81,12 +82,27 @@ void main() {
         userId: 'user-a',
         path: 'user-a/profile/photo.jpg',
       );
-      expect(view.file.bytes, [4, 5, 6]);
+      expect(view, isNotNull);
+      expect(view!.file.bytes, [4, 5, 6]);
       expect(view.file.path, startsWith('cache/'));
       expect(storage.lastSignedExpiry, 300);
       expect(view.signedUrlExpiresAt.isAfter(DateTime.now()), isTrue);
     },
   );
+
+  test('returns null when the remote profile photo is missing', () async {
+    storage.downloadError = StorageException(
+      'Object not found',
+      statusCode: '404',
+    );
+
+    final view = await service.load(
+      userId: 'user-a',
+      path: 'user-a/profile/photo.jpg',
+    );
+
+    expect(view, isNull);
+  });
 }
 
 MediaFile _file(String id) => MediaFile(
@@ -112,6 +128,7 @@ class _Storage implements ProfilePhotoStorage {
   int failUploads = 0;
   int? lastSignedExpiry;
   Uint8List downloaded = Uint8List(0);
+  Object? downloadError;
 
   @override
   Future<UploadedMediaFile> upload(MediaUploadRequest request) async {
@@ -133,8 +150,10 @@ class _Storage implements ProfilePhotoStorage {
   }
 
   @override
-  Future<Uint8List> download({required String path, String? bucketId}) async =>
-      downloaded;
+  Future<Uint8List> download({required String path, String? bucketId}) async {
+    if (downloadError != null) throw downloadError!;
+    return downloaded;
+  }
 
   @override
   Future<void> remove({required List<String> paths, String? bucketId}) async {

@@ -33,6 +33,17 @@ abstract interface class DocumentStorageGateway {
 }
 
 abstract interface class DocumentProcessingRepository {
+  Stream<List<ManagedDocumentRecord>> watchDocuments(String userId);
+  Future<List<ManagedDocumentRecord>> getDocuments(String userId);
+  Future<ManagedDocumentRecord?> getDocumentById(
+    String userId,
+    String documentId,
+  );
+  Future<List<ManagedDocumentRecord>> searchDocuments(
+    String userId, {
+    required String query,
+  });
+  Stream<List<ManagedDocumentRecord>> watchOrphanDocuments(String userId);
   Future<void> saveDocument(DocumentInput document);
   Future<void> updateDocumentRemotePath({
     required String userId,

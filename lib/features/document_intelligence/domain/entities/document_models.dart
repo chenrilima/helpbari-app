@@ -33,6 +33,8 @@ enum FieldSource {
 
 enum ConfidenceLevel { low, medium, high }
 
+enum DocumentClinicalLinkType { medicalExam, medicalConsultation, bioimpedance }
+
 extension ConfidenceValue on double {
   double get normalizedConfidence => clamp(0, 1).toDouble();
   ConfidenceLevel get confidenceLevel => switch (normalizedConfidence) {
@@ -171,4 +173,40 @@ class DocumentCandidateResult {
   final DetectedDocumentType type;
   final double confidence;
   final List<ExtractedField> fields;
+}
+
+class DocumentClinicalLink {
+  const DocumentClinicalLink({
+    required this.type,
+    required this.entityId,
+    required this.title,
+    this.subtitle,
+  });
+
+  final DocumentClinicalLinkType type;
+  final String entityId;
+  final String title;
+  final String? subtitle;
+}
+
+class ManagedDocumentRecord {
+  const ManagedDocumentRecord({
+    required this.document,
+    this.latestProcessing,
+    this.latestFields = const [],
+    this.links = const [],
+    this.extractedFieldCount = 0,
+  });
+
+  final DocumentInput document;
+  final DocumentProcessing? latestProcessing;
+  final List<ExtractedField> latestFields;
+  final List<DocumentClinicalLink> links;
+  final int extractedFieldCount;
+
+  bool get isOrphan => links.isEmpty;
+
+  bool get hasOriginalFile =>
+      (document.localPath?.trim().isNotEmpty ?? false) ||
+      (document.remotePath?.trim().isNotEmpty ?? false);
 }
