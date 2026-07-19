@@ -208,6 +208,52 @@ class PrivacyExportService {
             ],
           },
       ],
+      'medicalPrescriptions': [
+        for (final prescription in snapshot.prescriptions.where(
+          (value) => value.deletedAt == null,
+        ))
+          {
+            'id': prescription.id,
+            'professionalName': prescription.professionalName,
+            'professionalSpecialty': prescription.professionalSpecialty,
+            'professionalRegistration': prescription.professionalRegistration,
+            'prescribedAt': prescription.prescribedAt.toIso8601String(),
+            'validUntil': prescription.validUntil?.toIso8601String(),
+            'notes': prescription.notes,
+            'sourceDocumentId': prescription.sourceDocumentId,
+            'status': prescription.status.name,
+            'createdAt': prescription.createdAt.toIso8601String(),
+            'updatedAt': prescription.updatedAt.toIso8601String(),
+            'items': [
+              for (final item in prescription.activeItems)
+                {
+                  'id': item.id,
+                  'itemType': item.itemType.name,
+                  'name': item.name,
+                  'dosageValue': item.dosageValue,
+                  'dosageUnit': item.dosageUnit,
+                  'route': item.route,
+                  'frequencyType': item.frequencyType?.name,
+                  'frequencyValue': item.frequencyValue,
+                  'frequencyUnit': item.frequencyUnit,
+                  'scheduleTimes': item.scheduleTimes,
+                  'daysOfWeek': item.daysOfWeek,
+                  'intervalDays': item.intervalDays,
+                  'startDate': item.startDate?.toIso8601String(),
+                  'endDate': item.endDate?.toIso8601String(),
+                  'durationValue': item.durationValue,
+                  'durationUnit': item.durationUnit,
+                  'instructions': item.instructions,
+                  'asNeeded': item.asNeeded,
+                  'notes': item.notes,
+                  'provenance': item.provenance,
+                  'reviewStatus': item.reviewStatus.name,
+                  'linkedMedicationId': item.linkedMedicationId,
+                  'linkedVitaminId': item.linkedVitaminId,
+                },
+            ],
+          },
+      ],
       'reports': [
         {
           'version': snapshot.reportVersion,
@@ -239,6 +285,7 @@ class PrivacyExportService {
       'medications': snapshot.medications.length,
       'appointments': snapshot.appointments.length,
       'medicalExams': snapshot.exams.length,
+      'medicalPrescriptions': snapshot.prescriptions.length,
       'reports': 1,
     };
     return PrivacyExportPackage(

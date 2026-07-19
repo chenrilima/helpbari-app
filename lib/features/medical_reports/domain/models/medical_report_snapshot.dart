@@ -3,6 +3,7 @@ import '../../../appointments/domain/entities/entities.dart';
 import '../../../meals/domain/entities/entities.dart';
 import '../../../medications/domain/entities/entities.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
+import '../../../medical_prescriptions/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../vitamins/domain/entities/entities.dart';
 import '../../../water/domain/entities/entities.dart';
@@ -33,6 +34,7 @@ class MedicalReportSnapshot {
     required this.automaticObservations,
     this.profile,
     this.attachments = const [],
+    this.prescriptions = const [],
   });
 
   final DateTime generatedAt;
@@ -47,6 +49,7 @@ class MedicalReportSnapshot {
   final List<Meal> meals;
   final List<Appointment> appointments;
   final List<MedicalExam> exams;
+  final List<MedicalPrescription> prescriptions;
   final DailySummary dailySummary;
   final String reportVersion;
   final DateTime periodStart;
@@ -76,7 +79,8 @@ class MedicalReportSnapshot {
       vitamins.isNotEmpty ||
       medications.isNotEmpty ||
       appointments.isNotEmpty ||
-      exams.isNotEmpty;
+      exams.isNotEmpty ||
+      prescriptions.isNotEmpty;
 
   List<Appointment> get upcomingAppointments =>
       appointments.where((appointment) => appointment.isUpcoming).toList();

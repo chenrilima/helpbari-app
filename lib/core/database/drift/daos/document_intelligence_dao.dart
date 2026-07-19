@@ -68,6 +68,27 @@ class DocumentIntelligenceDao extends DatabaseAccessor<AppDatabase>
           ))
           .getSingleOrNull();
 
+  Future<List<DocumentInputRecord>> getDocuments(String userId) =>
+      (select(documentInputRecords)
+            ..where((row) => row.userId.equals(userId) & row.deletedAt.isNull())
+            ..orderBy([(row) => OrderingTerm.desc(row.createdAt)]))
+          .get();
+
+  Future<DocumentProcessingRecord?> getLatestProcessingForDocument(
+    String userId,
+    String documentId,
+  ) =>
+      (select(documentProcessingRecords)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.documentId.equals(documentId) &
+                  row.deletedAt.isNull(),
+            )
+            ..orderBy([(row) => OrderingTerm.desc(row.updatedAt)])
+            ..limit(1))
+          .getSingleOrNull();
+
   Future<DocumentProcessingRecord?> getProcessing(String userId, String id) =>
       (select(documentProcessingRecords)..where(
             (row) =>

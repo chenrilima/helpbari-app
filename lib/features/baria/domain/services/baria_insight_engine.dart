@@ -65,6 +65,39 @@ class BariaInsightEngine {
       );
     }
     final appointment = context.today?.nextAppointment;
+    final reviewCount = context.prescriptionsAwaitingReview;
+    if (reviewCount > 0) {
+      result.add(
+        _insight(
+          id: 'prescriptions-review:${_date(createdAt)}',
+          title: 'Prescrição aguardando revisão',
+          description: reviewCount == 1
+              ? 'Você possui uma prescrição aguardando revisão.'
+              : 'Você possui $reviewCount prescrições aguardando revisão.',
+          priority: BariaInsightPriority.medium,
+          category: BariaInsightCategory.prescriptions,
+          route: AppRoutes.prescriptions,
+          source: 'Prescrições',
+          date: createdAt,
+        ),
+      );
+    } else if (context.unlinkedPrescriptionItems > 0) {
+      final count = context.unlinkedPrescriptionItems;
+      result.add(
+        _insight(
+          id: 'prescriptions-routine:${_date(createdAt)}',
+          title: 'Itens fora da rotina',
+          description: count == 1
+              ? 'Um item de prescrição ainda não foi adicionado à sua rotina.'
+              : '$count itens de prescrições ainda não foram adicionados à sua rotina.',
+          priority: BariaInsightPriority.low,
+          category: BariaInsightCategory.prescriptions,
+          route: AppRoutes.prescriptions,
+          source: 'Prescrições',
+          date: createdAt,
+        ),
+      );
+    }
     if (appointment != null) {
       final days =
           DateTime(

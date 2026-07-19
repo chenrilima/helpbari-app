@@ -42,6 +42,8 @@ class MedicationViewModel extends Notifier<MedicationState> {
   }
 
   Future<bool> createMedication({
+    String? id,
+    bool scheduleReminder = true,
     required String name,
     required int hour,
     required int minute,
@@ -52,7 +54,7 @@ class MedicationViewModel extends Notifier<MedicationState> {
     final time = MedicationScheduleTime.create(hour: hour, minute: minute);
     if (n == null || time == null) return false;
     final m = Medication(
-      id: _uuid.generate(),
+      id: id ?? _uuid.generate(),
       name: n,
       scheduleTime: time,
       dosage: dosage,
@@ -60,7 +62,9 @@ class MedicationViewModel extends Notifier<MedicationState> {
     );
     return _persist(() async {
       await _useCases.save(m);
-      await _notification(() => _reminders.scheduleIfEnabled(m));
+      if (scheduleReminder) {
+        await _notification(() => _reminders.scheduleIfEnabled(m));
+      }
     });
   }
 

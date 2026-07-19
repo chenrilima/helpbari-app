@@ -28,6 +28,13 @@ import '../../features/medical_exams/presentation/pages/register_medical_exam_pa
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/meals/presentation/pages/register_meal_page.dart';
 import '../../features/medical_reports/presentation/pages/medical_reports_page.dart';
+import '../../features/medical_prescriptions/domain/entities/entities.dart';
+import '../../features/medical_prescriptions/presentation/pages/add_prescription_to_routine_page.dart';
+import '../../features/medical_prescriptions/presentation/pages/medical_prescription_details_page.dart';
+import '../../features/medical_prescriptions/presentation/pages/medical_prescriptions_page.dart';
+import '../../features/medical_prescriptions/presentation/pages/medical_prescription_route_page.dart';
+import '../../features/medical_prescriptions/presentation/pages/register_medical_prescription_page.dart';
+import '../../features/document_intelligence/presentation/pages/document_center_page.dart';
 import '../../features/medications/presentation/pages/medications_page.dart';
 import '../../features/medications/presentation/pages/register_medication_page.dart';
 import '../../features/medications/domain/entities/medication.dart';
@@ -228,6 +235,68 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.medicalReports,
         builder: (context, state) => const MedicalReportsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.prescriptions,
+        builder: (_, _) => const MedicalPrescriptionsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.documentCenter,
+        builder: (_, _) => const DocumentCenterPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.newPrescription,
+        builder: (_, _) => const RegisterMedicalPrescriptionPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.importPrescription,
+        builder: (_, _) =>
+            const RegisterMedicalPrescriptionPage(importDocument: true),
+      ),
+      GoRoute(
+        path: AppRoutes.prescriptionDetails,
+        builder: (_, state) => state.extra is MedicalPrescription
+            ? MedicalPrescriptionDetailsPage(
+                prescription: state.extra! as MedicalPrescription,
+              )
+            : MedicalPrescriptionRoutePage(
+                id: state.pathParameters['id']!,
+                mode: MedicalPrescriptionRouteMode.details,
+              ),
+      ),
+      GoRoute(
+        path: AppRoutes.editPrescription,
+        builder: (_, state) => state.extra is MedicalPrescription
+            ? RegisterMedicalPrescriptionPage(
+                prescription: state.extra! as MedicalPrescription,
+              )
+            : MedicalPrescriptionRoutePage(
+                id: state.pathParameters['id']!,
+                mode: MedicalPrescriptionRouteMode.edit,
+              ),
+      ),
+      GoRoute(
+        path: AppRoutes.reviewPrescription,
+        builder: (_, state) => state.extra is MedicalPrescription
+            ? RegisterMedicalPrescriptionPage(
+                prescription: state.extra! as MedicalPrescription,
+                importDocument: true,
+              )
+            : MedicalPrescriptionRoutePage(
+                id: state.pathParameters['id']!,
+                mode: MedicalPrescriptionRouteMode.review,
+              ),
+      ),
+      GoRoute(
+        path: AppRoutes.addPrescriptionToRoutine,
+        builder: (_, state) => state.extra is MedicalPrescription
+            ? AddPrescriptionToRoutinePage(
+                prescription: state.extra! as MedicalPrescription,
+              )
+            : MedicalPrescriptionRoutePage(
+                id: state.pathParameters['id']!,
+                mode: MedicalPrescriptionRouteMode.addToRoutine,
+              ),
       ),
       GoRoute(
         path: AppRoutes.bioimpedance,
