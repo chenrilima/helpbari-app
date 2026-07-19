@@ -71,6 +71,10 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
             _sectionTitle('Medicamentos'),
             _medications(snapshot),
           ],
+          if (template.includes(ReportSection.prescriptions)) ...[
+            _sectionTitle('Prescrições'),
+            _prescriptions(snapshot),
+          ],
           if (template.includes(ReportSection.meals)) ...[
             _sectionTitle('Alimentação'),
             _meals(snapshot),
@@ -393,6 +397,29 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
       ],
     );
   }
+
+  pw.Widget _prescriptions(MedicalReportSnapshot snapshot) => _table(
+    headers: ['Data', 'Profissional', 'Item', 'Dose/Frequência', 'Status'],
+    rows: snapshot.prescriptions
+        .where((prescription) => prescription.deletedAt == null)
+        .expand(
+          (prescription) => prescription.activeItems.map(
+            (item) => [
+              AppDateFormatter.short(prescription.prescribedAt),
+              prescription.professionalName ?? '-',
+              item.name,
+              [
+                if (item.dosageValue != null)
+                  '${item.dosageValue} ${item.dosageUnit ?? ''}'.trim(),
+                if (item.instructions != null) item.instructions!,
+              ].join(' · '),
+              item.isLinked ? 'Na rotina' : prescription.status.name,
+            ],
+          ),
+        )
+        .toList(growable: false),
+    emptyText: 'Nenhuma prescrição cadastrada.',
+  );
 
   pw.Widget _meals(MedicalReportSnapshot snapshot) {
     return pw.Column(

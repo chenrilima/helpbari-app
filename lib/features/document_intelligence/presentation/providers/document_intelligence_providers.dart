@@ -4,6 +4,7 @@ import '../../../../core/database/drift/drift_database_providers.dart';
 import '../../../../core/supabase/storage/supabase_storage_provider.dart';
 import '../../../bioimpedance/application/bioimpedance_document_parser.dart';
 import '../../../medical_exams/application/medical_exam_document_parser.dart';
+import '../../../medical_prescriptions/application/medical_prescription_document_parser.dart';
 import '../../application/deterministic_document_classifier.dart';
 import '../../application/document_processing_service.dart';
 import '../../application/parsers/deterministic_parsers.dart';
@@ -28,7 +29,7 @@ final documentProcessingServiceProvider = Provider<DocumentProcessingService>((
       LabResultParser(),
       ConsultationNoteParser(),
       MedicalReportParser(),
-      PrescriptionParser(),
+      MedicalPrescriptionDocumentParser(),
       ExamRequestParser(),
       BioimpedanceDocumentParser(),
       MedicalExamDocumentParser(),

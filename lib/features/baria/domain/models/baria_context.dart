@@ -1,6 +1,7 @@
 import '../../../../core/sync/sync.dart';
 import '../../../home/domain/models/models.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
+import '../../../medical_prescriptions/domain/entities/entities.dart';
 import '../../../medical_reports/domain/models/models.dart';
 import '../../../academy/domain/entities/entities.dart';
 import '../../../appointments/domain/entities/entities.dart';
@@ -54,6 +55,14 @@ class BariaContext {
   List<Appointment> get appointments =>
       report?.appointments ?? const <Appointment>[];
   List<MedicalExam> get exams => report?.exams ?? const <MedicalExam>[];
+  List<MedicalPrescription> get prescriptions =>
+      report?.prescriptions ?? const <MedicalPrescription>[];
+  int get prescriptionsAwaitingReview =>
+      prescriptions.where((value) => value.requiresReview).length;
+  int get unlinkedPrescriptionItems => prescriptions
+      .expand((value) => value.activeItems)
+      .where((value) => !value.isLinked)
+      .length;
   List<MedicalExamResult> get examResults => exams
       .expand((exam) => exam.results)
       .where((result) => result.deletedAt == null)

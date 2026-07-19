@@ -7,6 +7,8 @@ import '../../../medications/domain/usecases/use_cases.dart';
 import '../../../medications/domain/entities/medication_log.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../medical_exams/domain/usecases/medical_exam_use_cases.dart';
+import '../../../medical_prescriptions/domain/entities/entities.dart';
+import '../../../medical_prescriptions/domain/usecases/use_cases.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../settings/domain/entities/entities.dart';
@@ -36,6 +38,7 @@ class MedicalReportUseCases {
     required SettingsUseCases settingsUseCases,
     required ClockService clock,
     HealthDashboardUseCases? dashboardUseCases,
+    MedicalPrescriptionUseCases? prescriptionUseCases,
   }) : _repository = repository,
        _profileUseCases = profileUseCases,
        _weightUseCases = weightUseCases,
@@ -47,7 +50,8 @@ class MedicalReportUseCases {
        _examUseCases = examUseCases,
        _settingsUseCases = settingsUseCases,
        _clock = clock,
-       _dashboardUseCases = dashboardUseCases;
+       _dashboardUseCases = dashboardUseCases,
+       _prescriptionUseCases = prescriptionUseCases;
 
   final MedicalReportRepository _repository;
   final ProfileUseCases _profileUseCases;
@@ -61,6 +65,7 @@ class MedicalReportUseCases {
   final SettingsUseCases _settingsUseCases;
   final ClockService _clock;
   final HealthDashboardUseCases? _dashboardUseCases;
+  final MedicalPrescriptionUseCases? _prescriptionUseCases;
 
   Future<GeneratedMedicalReport> generateCompleteReport({
     ReportTemplate? template,
@@ -98,6 +103,8 @@ class MedicalReportUseCases {
       _vitaminUseCases.getLogs(periodStart, periodEnd),
       _medicationUseCases.getLogs(periodStart, periodEnd),
       dashboardFuture,
+      _prescriptionUseCases?.getAll() ??
+          Future<List<MedicalPrescription>>.value(const []),
     ]);
 
     final profile = results[0] as Profile?;
@@ -112,6 +119,7 @@ class MedicalReportUseCases {
     final vitaminLogs = results[9] as List<VitaminLog>;
     final medicationLogs = results[10] as List<MedicationLog>;
     final dashboard = results[11] as HealthDashboardAggregate?;
+    final prescriptions = results[12] as List<MedicalPrescription>;
     final currentWeight = weightHistory.isEmpty
         ? null
         : weightHistory.first.weight.value as double;
@@ -249,6 +257,7 @@ class MedicalReportUseCases {
       meals: List.unmodifiable(meals),
       appointments: List.unmodifiable(appointments),
       exams: List.unmodifiable(typedExams),
+      prescriptions: List.unmodifiable(prescriptions),
       dailySummary: dailySummary,
       reportVersion: '1.0',
       periodStart: periodStart,

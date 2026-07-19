@@ -5,6 +5,7 @@ import '../../../appointments/presentation/providers/appointment_use_cases_provi
 import '../../../meals/presentation/providers/meal_use_cases_provider.dart';
 import '../../../medications/presentation/providers/medication_use_cases_provider.dart';
 import '../../../medical_exams/presentation/providers/medical_exam_use_cases_provider.dart';
+import '../../../medical_prescriptions/presentation/providers/medical_prescription_providers.dart';
 import '../../../profile/presentation/providers/profile_use_case_providers.dart';
 import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
 import '../../../vitamins/presentation/providers/vitamin_use_cases_provider.dart';
@@ -37,6 +38,7 @@ final medicalReportUseCasesProvider = Provider<MedicalReportUseCases>((ref) {
     settingsUseCases: ref.read(settingsUseCasesProvider),
     clock: ref.read(clockServiceProvider),
     dashboardUseCases: ref.read(healthDashboardUseCasesProvider),
+    prescriptionUseCases: ref.read(medicalPrescriptionUseCasesProvider),
   );
 });
 

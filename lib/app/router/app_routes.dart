@@ -26,6 +26,14 @@ abstract final class AppRoutes {
   static const meals = '/meals';
   static const registerMeal = '/mealsRegister';
   static const medicalReports = '/medical-reports';
+  static const prescriptions = '/prescriptions';
+  static const documentCenter = '/documents';
+  static const newPrescription = '/prescriptions/new';
+  static const importPrescription = '/prescriptions/import';
+  static const prescriptionDetails = '/prescriptions/:id';
+  static const editPrescription = '/prescriptions/:id/edit';
+  static const reviewPrescription = '/prescriptions/:id/review';
+  static const addPrescriptionToRoutine = '/prescriptions/:id/add-to-routine';
   static const bioimpedance = '/bioimpedance';
   static const registerBioimpedance = '/register-bioimpedance';
   static const bioimpedanceDetails = '/bioimpedance-details';
@@ -40,4 +48,13 @@ abstract final class AppRoutes {
   static String academyArticlePath(String articleId) {
     return '/academy/article/${Uri.encodeComponent(articleId)}';
   }
+
+  static String prescriptionDetailsPath(String id) =>
+      '/prescriptions/${Uri.encodeComponent(id)}';
+  static String editPrescriptionPath(String id) =>
+      '/prescriptions/${Uri.encodeComponent(id)}/edit';
+  static String reviewPrescriptionPath(String id) =>
+      '/prescriptions/${Uri.encodeComponent(id)}/review';
+  static String addPrescriptionToRoutinePath(String id) =>
+      '/prescriptions/${Uri.encodeComponent(id)}/add-to-routine';
 }

@@ -7,6 +7,7 @@ enum BariaInsightCategory {
   nutrition,
   vitamins,
   medications,
+  prescriptions,
   appointments,
   academy,
   reports,

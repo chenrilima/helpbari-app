@@ -44,6 +44,8 @@ class VitaminViewModel extends Notifier<VitaminState> {
   }
 
   Future<bool> createVitamin({
+    String? id,
+    bool scheduleReminder = true,
     required String name,
     required int hour,
     required int minute,
@@ -51,10 +53,12 @@ class VitaminViewModel extends Notifier<VitaminState> {
     final n = VitaminName.create(name);
     final time = VitaminScheduleTime.create(hour: hour, minute: minute);
     if (n == null || time == null) return false;
-    final v = Vitamin(id: _uuid.generate(), name: n, scheduleTime: time);
+    final v = Vitamin(id: id ?? _uuid.generate(), name: n, scheduleTime: time);
     return _persist(() async {
       await _useCases.save(v);
-      await _notification(() => _reminders.scheduleIfEnabled(v));
+      if (scheduleReminder) {
+        await _notification(() => _reminders.scheduleIfEnabled(v));
+      }
     });
   }
 

@@ -158,6 +158,7 @@ class _InsightCard extends StatelessWidget {
     BariaInsightCategory.weight => Icons.monitor_weight_outlined,
     BariaInsightCategory.vitamins ||
     BariaInsightCategory.medications => Icons.medication_outlined,
+    BariaInsightCategory.prescriptions => Icons.receipt_long_outlined,
     BariaInsightCategory.appointments => Icons.event_outlined,
     BariaInsightCategory.academy => Icons.school_outlined,
     _ => Icons.auto_awesome_outlined,
