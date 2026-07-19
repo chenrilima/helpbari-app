@@ -62,13 +62,17 @@ class _RegisterAppointmentPageState
   }
 
   Future<void> _pickDate() async {
-    final now = ref.read(clockServiceProvider).now();
+    final firstDate = DateUtils.dateOnly(ref.read(clockServiceProvider).now());
+    final selectedDate = DateUtils.dateOnly(_selectedDate);
+    final initialDate = selectedDate.isBefore(firstDate)
+        ? firstDate
+        : selectedDate;
 
     final date = await showDatePicker(
       context: context,
-      firstDate: now,
+      firstDate: firstDate,
       lastDate: DateTime(2100),
-      initialDate: _selectedDate,
+      initialDate: initialDate,
     );
 
     if (date == null) return;
