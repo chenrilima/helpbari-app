@@ -13,7 +13,7 @@ class VitaminUseCases {
   final VitaminRepository _repository;
   final VitaminLogRepository? _logs;
   final Future<int> Function(DateTime date)? _pendingCount;
-  final Future<double> Function(DateTime start, DateTime end)? _adherence;
+  final Future<double?> Function(DateTime start, DateTime end)? _adherence;
 
   Future<List<Vitamin>> getAll() {
     return _repository.getAll();
@@ -72,13 +72,13 @@ class VitaminUseCases {
           status: status,
         );
 
-  Future<double> adherence(DateTime start, DateTime end) async {
+  Future<double?> adherence(DateTime start, DateTime end) async {
     if (_adherence != null) return _adherence(_day(start), _day(end));
     final logs = await getLogs(_day(start), _day(end));
     final resolved = logs
         .where((log) => log.status != VitaminStatus.pending)
         .toList();
-    if (resolved.isEmpty) return 0;
+    if (resolved.isEmpty) return null;
     return resolved.where((log) => log.status == VitaminStatus.taken).length /
         resolved.length *
         100;

@@ -120,6 +120,18 @@ class MedicalReportUseCases {
     final medicationLogs = results[10] as List<MedicationLog>;
     final dashboard = results[11] as HealthDashboardAggregate?;
     final prescriptions = results[12] as List<MedicalPrescription>;
+    final fallbackPendingVitamins = dashboard == null
+        ? await _vitaminUseCases.getPendingCount(date: now)
+        : null;
+    final fallbackPendingMedications = dashboard == null
+        ? await _medicationUseCases.getPendingCount(date: now)
+        : null;
+    final fallbackVitaminAdherence = dashboard == null
+        ? await _vitaminUseCases.adherence(periodStart, periodEnd)
+        : null;
+    final fallbackMedicationAdherence = dashboard == null
+        ? await _medicationUseCases.adherence(periodStart, periodEnd)
+        : null;
     final currentWeight = weightHistory.isEmpty
         ? null
         : weightHistory.first.weight.value as double;
@@ -175,20 +187,8 @@ class MedicalReportUseCases {
     final calculatedSummary = DailySummaryCalculator.calculate(
       waterConsumedMl: totalWaterToday,
       waterGoalMl: settings.dailyWaterGoalMl,
-      pendingVitamins:
-          vitamins.length -
-          vitaminLogs
-              .where((log) => log.status.name != 'pending')
-              .map((log) => log.vitaminId)
-              .toSet()
-              .length,
-      pendingMedications:
-          medications.length -
-          medicationLogs
-              .where((log) => log.status.name != 'pending')
-              .map((log) => log.medicationId)
-              .toSet()
-              .length,
+      pendingVitamins: fallbackPendingVitamins ?? 0,
+      pendingMedications: fallbackPendingMedications ?? 0,
       registeredMeals: todayMeals.length,
       totalProteinGrams: totalProteinToday,
       proteinGoalGrams: proteinGoal,
@@ -226,10 +226,10 @@ class MedicalReportUseCases {
             weightProgress: calculatedSummary.weightProgress,
           );
     final vitaminAdherence = dashboard == null
-        ? _adherence(vitaminLogs.map((log) => log.status.name))
+        ? fallbackVitaminAdherence
         : _average(dashboard.days.map((day) => day.vitaminAdherence));
     final medicationAdherence = dashboard == null
-        ? _adherence(medicationLogs.map((log) => log.status.name))
+        ? fallbackMedicationAdherence
         : _average(dashboard.days.map((day) => day.medicationAdherence));
     final observations = _automaticObservations(
       settings: settings,
@@ -275,14 +275,6 @@ class MedicalReportUseCases {
     final available = values.whereType<double>().toList();
     if (available.isEmpty) return null;
     return available.reduce((a, b) => a + b) / available.length * 100;
-  }
-
-  double? _adherence(Iterable<String> statuses) {
-    final resolved = statuses.where((status) => status != 'pending').toList();
-    if (resolved.isEmpty) return null;
-    return resolved.where((status) => status == 'taken').length /
-        resolved.length *
-        100;
   }
 
   List<String> _automaticObservations({

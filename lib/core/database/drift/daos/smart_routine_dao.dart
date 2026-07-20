@@ -61,7 +61,29 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
     if (routine == null || plan == null || plan.routineId != routine.id) {
       throw StateError('routine_schedule_parent_mismatch');
     }
-    await into(routineScheduleRecords).insertOnConflictUpdate(row);
+    final current = await getSchedule(row.userId.value, row.id.value);
+    if (current == null) {
+      await into(routineScheduleRecords).insert(row);
+      return;
+    }
+    if (!_sameScheduleClinicalPayload(current, row)) {
+      throw StateError('routine_schedule_payload_conflict');
+    }
+    await (update(routineScheduleRecords)..where(
+          (value) =>
+              value.userId.equals(row.userId.value) &
+              value.id.equals(row.id.value),
+        ))
+        .write(
+          RoutineScheduleRecordsCompanion(
+            updatedAt: row.updatedAt,
+            deletedAt: row.deletedAt,
+            syncStatus: row.syncStatus,
+            previousSyncStatus: row.previousSyncStatus,
+            syncAttempts: row.syncAttempts,
+            lastSyncError: row.lastSyncError,
+          ),
+        );
   }
 
   Future<void> upsertPause(RoutinePauseRecordsCompanion row) async {
@@ -336,6 +358,22 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
       current.provenanceProfessionalReference ==
           row.provenanceProfessionalReference.value &&
       current.temporalPrecision == row.temporalPrecision.value;
+
+  bool _sameScheduleClinicalPayload(
+    RoutineScheduleRecord current,
+    RoutineScheduleRecordsCompanion row,
+  ) =>
+      current.routineId == row.routineId.value &&
+      current.planId == row.planId.value &&
+      current.ruleJson == row.ruleJson.value &&
+      current.timeZone == row.timeZone.value &&
+      current.reminderPreference == row.reminderPreference.value &&
+      current.earlyToleranceSeconds == row.earlyToleranceSeconds.value &&
+      current.onTimeToleranceSeconds == row.onTimeToleranceSeconds.value &&
+      current.lateToleranceSeconds == row.lateToleranceSeconds.value &&
+      current.isEnabled == row.isEnabled.value &&
+      current.displayOrder == row.displayOrder.value &&
+      current.createdAt == row.createdAt.value;
 
   Future<void> updateSyncStatus({
     required String table,

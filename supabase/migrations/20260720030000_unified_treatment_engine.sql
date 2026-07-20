@@ -70,6 +70,37 @@ CREATE TRIGGER routine_plans_preserve_revision
 BEFORE UPDATE ON public.routine_plans FOR EACH ROW
 EXECUTE FUNCTION public.unified_treatment_preserve_plan_revision();
 
+CREATE OR REPLACE FUNCTION public.unified_treatment_preserve_schedule_revision()
+RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  IF ROW(NEW.user_id,NEW.id,NEW.routine_id,NEW.plan_id,NEW.rule,
+         NEW.time_zone,NEW.reminder_preference,NEW.early_tolerance_seconds,
+         NEW.on_time_tolerance_seconds,NEW.late_tolerance_seconds,
+         NEW.is_enabled,NEW.display_order,NEW.created_at)
+     IS DISTINCT FROM
+     ROW(OLD.user_id,OLD.id,OLD.routine_id,OLD.plan_id,OLD.rule,
+         OLD.time_zone,OLD.reminder_preference,OLD.early_tolerance_seconds,
+         OLD.on_time_tolerance_seconds,OLD.late_tolerance_seconds,
+         OLD.is_enabled,OLD.display_order,OLD.created_at)
+  THEN RAISE EXCEPTION 'immutable routine schedule revision'; END IF;
+  RETURN NEW;
+END; $$;
+
+DROP TRIGGER IF EXISTS routine_schedules_preserve_revision
+  ON public.routine_schedules;
+CREATE TRIGGER routine_schedules_preserve_revision
+BEFORE UPDATE ON public.routine_schedules FOR EACH ROW
+EXECUTE FUNCTION public.unified_treatment_preserve_schedule_revision();
+
+CREATE OR REPLACE FUNCTION public.smart_routine_reject_clinical_mutation()
+RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  IF TG_OP = 'DELETE' AND
+     current_setting('helpbari.lgpd_deletion', true) = 'on'
+  THEN RETURN OLD; END IF;
+  RAISE EXCEPTION 'append-only clinical record';
+END; $$;
+
 DROP TRIGGER IF EXISTS routine_adherence_events_no_update
   ON public.routine_adherence_events;
 DROP TRIGGER IF EXISTS routine_adherence_events_no_delete
@@ -163,6 +194,7 @@ RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
 DECLARE current_user_id uuid := auth.uid();
 BEGIN
   IF current_user_id IS NULL THEN RAISE EXCEPTION 'authentication required'; END IF;
+  PERFORM set_config('helpbari.lgpd_deletion','on',true);
   DELETE FROM public.unified_treatment_legacy_log_mappings WHERE user_id=current_user_id;
   DELETE FROM public.unified_treatment_legacy_mappings WHERE user_id=current_user_id;
   DELETE FROM public.unified_treatment_cutover_states WHERE user_id=current_user_id;

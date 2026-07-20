@@ -13,7 +13,7 @@ class MedicationUseCases {
   final MedicationRepository _repository;
   final MedicationLogRepository? _logs;
   final Future<int> Function(DateTime date)? _pendingCount;
-  final Future<double> Function(DateTime start, DateTime end)? _adherence;
+  final Future<double?> Function(DateTime start, DateTime end)? _adherence;
   Future<List<Medication>> getAll() => _repository.getAll();
   Future<void> save(Medication v) => _repository.save(v);
   Future<void> update(Medication v) => _repository.update(v);
@@ -65,13 +65,13 @@ class MedicationUseCases {
     await setDailyStatus(id, MedicationStatus.pending);
   }
 
-  Future<double> adherence(DateTime start, DateTime end) async {
+  Future<double?> adherence(DateTime start, DateTime end) async {
     if (_adherence != null) return _adherence(_day(start), _day(end));
     final logs = await getLogs(_day(start), _day(end));
     final resolved = logs
         .where((l) => l.status != MedicationStatus.pending)
         .toList();
-    if (resolved.isEmpty) return 0;
+    if (resolved.isEmpty) return null;
     return resolved.where((l) => l.status == MedicationStatus.taken).length /
         resolved.length *
         100;

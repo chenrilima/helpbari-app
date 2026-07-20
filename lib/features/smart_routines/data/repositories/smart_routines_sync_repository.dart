@@ -70,7 +70,7 @@ final class SmartRoutinesSyncRepository
                 !_occurrenceIsUnmodified(remote))) {
           throw StateError('${key.table}_payload_conflict');
         }
-        if (key.table == 'routine_plans') {
+        if (key.table == 'routine_plans' || key.table == 'routine_schedules') {
           throw StateError('${key.table}_payload_conflict');
         }
         final localUpdatedAt = _date(current.row['updated_at']);

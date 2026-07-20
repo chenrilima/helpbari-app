@@ -31,6 +31,46 @@ final class UnifiedTreatmentCutoverService {
   final AppDatabase database;
   final UnifiedTreatmentRolloutRepository rollout;
 
+  Future<bool> prepareMigration({
+    required String userId,
+    required DateTime evaluatedAtUtc,
+  }) async {
+    if (userId.isEmpty || !evaluatedAtUtc.isUtc) {
+      throw ArgumentError('Authenticated user and UTC clock are required.');
+    }
+    if (!await rollout.isEnabled(
+      UnifiedTreatmentFlag.migrationEnabled,
+      evaluatedAtUtc,
+    )) {
+      return false;
+    }
+    final state = await rollout.stateFor(userId);
+    if (state == UnifiedTreatmentCutoverPhase.readNew ||
+        state == UnifiedTreatmentCutoverPhase.writeNew) {
+      return true;
+    }
+    if (state == UnifiedTreatmentCutoverPhase.legacyRead) {
+      await _persistState(
+        userId,
+        UnifiedTreatmentCutoverPhase.detected,
+        evaluatedAtUtc,
+      );
+    } else if (state != UnifiedTreatmentCutoverPhase.detected &&
+        state != UnifiedTreatmentCutoverPhase.migrating &&
+        state != UnifiedTreatmentCutoverPhase.validationRequired) {
+      return false;
+    }
+    if (state != UnifiedTreatmentCutoverPhase.migrating &&
+        state != UnifiedTreatmentCutoverPhase.validationRequired) {
+      await _persistState(
+        userId,
+        UnifiedTreatmentCutoverPhase.migrating,
+        evaluatedAtUtc,
+      );
+    }
+    return true;
+  }
+
   Future<UnifiedTreatmentValidationResult> validate(String userId) async {
     final medications = await (database.select(
       database.medicationRecords,
@@ -124,6 +164,15 @@ final class UnifiedTreatmentCutoverService {
         )) {
       return false;
     }
+    final state = await rollout.stateFor(userId);
+    if (state == UnifiedTreatmentCutoverPhase.readNew ||
+        state == UnifiedTreatmentCutoverPhase.writeNew) {
+      return true;
+    }
+    if (state != UnifiedTreatmentCutoverPhase.migrating &&
+        state != UnifiedTreatmentCutoverPhase.validationRequired) {
+      return false;
+    }
     final validation = await validate(userId);
     if (!validation.isValid) {
       await _persistState(
@@ -134,6 +183,12 @@ final class UnifiedTreatmentCutoverService {
       );
       return false;
     }
+    await _persistState(
+      userId,
+      UnifiedTreatmentCutoverPhase.validated,
+      evaluatedAtUtc,
+      validatedAt: evaluatedAtUtc,
+    );
     await _persistState(
       userId,
       UnifiedTreatmentCutoverPhase.readNew,
@@ -148,7 +203,8 @@ final class UnifiedTreatmentCutoverService {
     required String userId,
     required DateTime evaluatedAtUtc,
   }) async {
-    if (await rollout.stateFor(userId) !=
+    if (!evaluatedAtUtc.isUtc ||
+        await rollout.stateFor(userId) !=
             UnifiedTreatmentCutoverPhase.readNew ||
         !await rollout.isEnabled(
           UnifiedTreatmentFlag.writeNewEnabled,

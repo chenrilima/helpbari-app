@@ -69,34 +69,48 @@ final class UnifiedTreatmentStore {
                   row.status.isNotValue('archived'),
             ))
             .get();
+    if (routines.isEmpty) return const [];
+    final plans =
+        await (database.select(database.routinePlanRecords)
+              ..where(
+                (row) =>
+                    row.userId.equals(userId) &
+                    row.routineId.isIn(routines.map((value) => value.id)) &
+                    row.category.equals(kind.name) &
+                    row.deletedAt.isNull(),
+              )
+              ..orderBy([(row) => OrderingTerm.desc(row.revision)]))
+            .get();
+    final latestPlanByRoutine = <String, RoutinePlanRecord>{};
+    for (final plan in plans) {
+      latestPlanByRoutine.putIfAbsent(plan.routineId, () => plan);
+    }
+    final planIds = latestPlanByRoutine.values
+        .map((value) => value.id)
+        .toList();
+    if (planIds.isEmpty) return const [];
+    final schedules =
+        await (database.select(database.routineScheduleRecords)
+              ..where(
+                (row) =>
+                    row.userId.equals(userId) &
+                    row.planId.isIn(planIds) &
+                    row.isEnabled.equals(true) &
+                    row.deletedAt.isNull(),
+              )
+              ..orderBy([(row) => OrderingTerm.asc(row.displayOrder)]))
+            .get();
+    final firstScheduleByPlan = <String, RoutineScheduleRecord>{};
+    for (final schedule in schedules) {
+      firstScheduleByPlan.putIfAbsent(schedule.planId, () => schedule);
+    }
     final result = <TreatmentProjection>[];
     for (final routine in routines) {
-      final plans =
-          await (database.select(database.routinePlanRecords)
-                ..where(
-                  (row) =>
-                      row.userId.equals(userId) &
-                      row.routineId.equals(routine.id) &
-                      row.category.equals(kind.name) &
-                      row.deletedAt.isNull(),
-                )
-                ..orderBy([(row) => OrderingTerm.desc(row.revision)]))
-              .get();
-      if (plans.isEmpty) continue;
-      final plan = plans.first;
-      final schedules =
-          await (database.select(database.routineScheduleRecords)
-                ..where(
-                  (row) =>
-                      row.userId.equals(userId) &
-                      row.planId.equals(plan.id) &
-                      row.isEnabled.equals(true) &
-                      row.deletedAt.isNull(),
-                )
-                ..orderBy([(row) => OrderingTerm.asc(row.displayOrder)]))
-              .get();
-      if (schedules.isEmpty) continue;
-      final time = _firstDailyTime(schedules.first.ruleJson);
+      final plan = latestPlanByRoutine[routine.id];
+      if (plan == null) continue;
+      final schedule = firstScheduleByPlan[plan.id];
+      if (schedule == null) continue;
+      final time = _firstDailyTime(schedule.ruleJson);
       if (time == null) continue;
       result.add(
         TreatmentProjection(
@@ -155,39 +169,51 @@ final class UnifiedTreatmentStore {
     DateTime end,
   ) async {
     await _prepare(requireWrite: false);
-    final startUtc = DateTime.utc(start.year, start.month, start.day);
-    final endUtc = DateTime.utc(end.year, end.month, end.day + 1);
+    final startDate = _date(start);
+    final endDate = _date(end);
     final occurrences =
         await (database.select(database.routineOccurrenceRecords)..where(
               (row) =>
                   row.userId.equals(userId) &
-                  row.originalScheduledFor.isBiggerOrEqualValue(startUtc) &
-                  row.originalScheduledFor.isSmallerThanValue(endUtc),
+                  row.originalClinicalDate.isBiggerOrEqualValue(startDate) &
+                  row.originalClinicalDate.isSmallerOrEqualValue(endDate),
             ))
             .get();
-    final result = <TreatmentLogProjection>[];
-    for (final occurrence in occurrences) {
-      final plan =
-          await (database.select(database.routinePlanRecords)..where(
+    if (occurrences.isEmpty) return const [];
+    final plans =
+        await (database.select(database.routinePlanRecords)..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.id.isIn(occurrences.map((value) => value.planId)) &
+                  row.category.equals(kind.name),
+            ))
+            .get();
+    final plansById = {for (final plan in plans) plan.id: plan};
+    final relevantOccurrences = occurrences
+        .where((occurrence) => plansById.containsKey(occurrence.planId))
+        .toList();
+    if (relevantOccurrences.isEmpty) return const [];
+    final events =
+        await (database.select(database.routineAdherenceEventRecords)
+              ..where(
                 (row) =>
                     row.userId.equals(userId) &
-                    row.id.equals(occurrence.planId),
-              ))
-              .getSingleOrNull();
-      if (plan?.category != kind.name) continue;
-      final events =
-          await (database.select(database.routineAdherenceEventRecords)
-                ..where(
-                  (row) =>
-                      row.userId.equals(userId) &
-                      row.occurrenceId.equals(occurrence.id),
-                )
-                ..orderBy([
-                  (row) => OrderingTerm.asc(row.recordedAtUtc),
-                  (row) => OrderingTerm.asc(row.id),
-                ]))
-              .get();
-      final state = _project(events);
+                    row.occurrenceId.isIn(
+                      relevantOccurrences.map((value) => value.id),
+                    ),
+              )
+              ..orderBy([
+                (row) => OrderingTerm.asc(row.recordedAtUtc),
+                (row) => OrderingTerm.asc(row.id),
+              ]))
+            .get();
+    final eventsByOccurrence = <String, List<RoutineAdherenceEventRecord>>{};
+    for (final event in events) {
+      eventsByOccurrence.putIfAbsent(event.occurrenceId, () => []).add(event);
+    }
+    final result = <TreatmentLogProjection>[];
+    for (final occurrence in relevantOccurrences) {
+      final state = _project(eventsByOccurrence[occurrence.id] ?? const []);
       result.add(
         TreatmentLogProjection(
           id: occurrence.id,
@@ -211,37 +237,54 @@ final class UnifiedTreatmentStore {
         .where((value) => value.state != TreatmentDailyState.pending)
         .map((value) => value.treatmentId)
         .toSet();
+    final treatmentIds = treatments.map((value) => value.id).toList();
+    if (treatmentIds.isEmpty) return 0;
+    final plans =
+        await (database.select(database.routinePlanRecords)
+              ..where(
+                (row) =>
+                    row.userId.equals(userId) &
+                    row.routineId.isIn(treatmentIds) &
+                    row.category.equals(kind.name) &
+                    row.replacedAt.isNull(),
+              )
+              ..orderBy([(row) => OrderingTerm.desc(row.revision)]))
+            .get();
+    final planByRoutine = <String, RoutinePlanRecord>{};
+    for (final plan in plans) {
+      planByRoutine.putIfAbsent(plan.routineId, () => plan);
+    }
+    final schedules = planByRoutine.isEmpty
+        ? const <RoutineScheduleRecord>[]
+        : await (database.select(database.routineScheduleRecords)..where(
+                (row) =>
+                    row.userId.equals(userId) &
+                    row.planId.isIn(
+                      planByRoutine.values.map((value) => value.id),
+                    ) &
+                    row.isEnabled.equals(true) &
+                    row.deletedAt.isNull(),
+              ))
+              .get();
+    final schedulesByPlan = <String, List<RoutineScheduleRecord>>{};
+    for (final schedule in schedules) {
+      schedulesByPlan.putIfAbsent(schedule.planId, () => []).add(schedule);
+    }
     var count = 0;
     for (final treatment in treatments) {
       if (resolved.contains(treatment.id)) continue;
-      final plans =
-          await (database.select(database.routinePlanRecords)
-                ..where(
-                  (row) =>
-                      row.userId.equals(userId) &
-                      row.routineId.equals(treatment.id) &
-                      row.category.equals(kind.name) &
-                      row.replacedAt.isNull(),
-                )
-                ..orderBy([(row) => OrderingTerm.desc(row.revision)]))
-              .get();
-      if (plans.isEmpty || !_effectiveOn(plans.first, evaluatedDate)) continue;
-      final schedule =
-          await (database.select(database.routineScheduleRecords)..where(
-                (row) =>
-                    row.userId.equals(userId) &
-                    row.planId.equals(plans.first.id) &
-                    row.isEnabled.equals(true),
-              ))
-              .get();
-      if (schedule.any((value) => _firstDailyTime(value.ruleJson) != null)) {
+      final plan = planByRoutine[treatment.id];
+      if (plan == null || !_effectiveOn(plan, evaluatedDate)) continue;
+      if ((schedulesByPlan[plan.id] ?? const []).any(
+        (value) => _firstDailyTime(value.ruleJson) != null,
+      )) {
         count++;
       }
     }
     return count;
   }
 
-  Future<double> adherence(
+  Future<double?> adherence(
     TreatmentSpecialization kind,
     DateTime start,
     DateTime end,
@@ -250,7 +293,7 @@ final class UnifiedTreatmentStore {
     final resolved = values
         .where((value) => value.state != TreatmentDailyState.pending)
         .toList();
-    if (resolved.isEmpty) return 0;
+    if (resolved.isEmpty) return null;
     return resolved
             .where((value) => value.state == TreatmentDailyState.taken)
             .length /
@@ -307,7 +350,11 @@ final class UnifiedTreatmentStore {
       );
     } else {
       final type = state.name;
-      final id = _uuid.v5(_namespace, 'terminal|${occurrence.id}|$type');
+      final previousEventId = events.isEmpty ? 'origin' : events.last.id;
+      final id = _uuid.v5(
+        _namespace,
+        'terminal|${occurrence.id}|$type|after:$previousEventId',
+      );
       await _appendEvent(
         occurrence,
         id: id,
@@ -507,6 +554,17 @@ final class UnifiedTreatmentStore {
     String treatmentId,
     DateTime date,
   ) async {
+    final routine =
+        await (database.select(database.smartRoutineRecords)..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.id.equals(treatmentId) &
+                  row.deletedAt.isNull(),
+            ))
+            .getSingleOrNull();
+    if (routine == null || routine.status != 'active') {
+      throw StateError('routine_not_active');
+    }
     final plans =
         await (database.select(database.routinePlanRecords)
               ..where(
@@ -519,8 +577,8 @@ final class UnifiedTreatmentStore {
             .get();
     if (plans.isEmpty) throw StateError('routine_plan_missing');
     final plan = plans.firstWhere(
-      (value) => value.replacedAt == null,
-      orElse: () => plans.first,
+      (value) => value.replacedAt == null && _effectiveOn(value, date),
+      orElse: () => throw StateError('routine_plan_not_effective'),
     );
     final schedules =
         await (database.select(database.routineScheduleRecords)..where(
@@ -553,6 +611,21 @@ final class UnifiedTreatmentStore {
       time.$1,
       time.$2,
     ).toUtc();
+    final pauses =
+        await (database.select(database.routinePauseRecords)..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.routineId.equals(treatmentId) &
+                  row.deletedAt.isNull() &
+                  row.startsAt.isSmallerOrEqualValue(target) &
+                  (row.endsAt.isNull() | row.endsAt.isBiggerThanValue(target)),
+            ))
+            .get();
+    if (pauses.any(
+      (pause) => pause.planId == null || pause.planId == plan.id,
+    )) {
+      throw StateError('routine_paused_at_occurrence');
+    }
     final now = clock.now().toUtc();
     final companion = RoutineOccurrenceRecordsCompanion.insert(
       id: id,
@@ -689,15 +762,22 @@ final class UnifiedTreatmentStore {
   Future<void> _prepare({required bool requireWrite}) async {
     final now = clock.now().toUtc();
     final rollout = UnifiedTreatmentRolloutRepository(database);
-    if (await rollout.isEnabled(UnifiedTreatmentFlag.migrationEnabled, now)) {
-      await UnifiedTreatmentMigrator(
-        database: database,
-      ).migrate(userId: userId, startedAtUtc: now);
-    }
     final cutover = UnifiedTreatmentCutoverService(
       database: database,
       rollout: rollout,
     );
+    if (await rollout.isEnabled(UnifiedTreatmentFlag.migrationEnabled, now)) {
+      final canMigrate = await cutover.prepareMigration(
+        userId: userId,
+        evaluatedAtUtc: now,
+      );
+      if (!canMigrate) {
+        throw StateError('unified_treatment_migration_transition_blocked');
+      }
+      await UnifiedTreatmentMigrator(
+        database: database,
+      ).migrate(userId: userId, startedAtUtc: now);
+    }
     await cutover.attempt(userId: userId, evaluatedAtUtc: now);
     if (requireWrite) {
       await cutover.enableNewWrites(userId: userId, evaluatedAtUtc: now);

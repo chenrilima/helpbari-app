@@ -149,7 +149,98 @@ void main() {
       );
       expect(
         await UnifiedTreatmentRolloutRepository(database).stateFor('user-a'),
+        UnifiedTreatmentCutoverPhase.legacyRead,
+      );
+      expect(
+        await cutover.prepareMigration(userId: 'user-a', evaluatedAtUtc: now),
+        isTrue,
+      );
+      expect(
+        await cutover.attempt(userId: 'user-a', evaluatedAtUtc: now),
+        isFalse,
+      );
+      expect(
+        await UnifiedTreatmentRolloutRepository(database).stateFor('user-a'),
         UnifiedTreatmentCutoverPhase.validationRequired,
+      );
+    },
+  );
+
+  test(
+    'cutover cannot skip migration and rollback stops after new writes',
+    () async {
+      final now = DateTime.utc(2026, 7, 20, 12);
+      await _consent(database, now);
+      await database
+          .into(database.vitaminRecords)
+          .insert(
+            VitaminRecordsCompanion.insert(
+              id: '71111111-1111-4111-8111-111111111111',
+              userId: 'user-a',
+              name: 'Vitamin B',
+              scheduleHour: 9,
+              scheduleMinute: 0,
+              createdAt: now,
+              updatedAt: now,
+              syncStatus: 'synced',
+            ),
+          );
+      final rollout = UnifiedTreatmentRolloutRepository(database);
+      final cutover = UnifiedTreatmentCutoverService(
+        database: database,
+        rollout: rollout,
+      );
+
+      expect(
+        await cutover.attempt(userId: 'user-a', evaluatedAtUtc: now),
+        isFalse,
+      );
+      expect(
+        await cutover.prepareMigration(userId: 'user-a', evaluatedAtUtc: now),
+        isTrue,
+      );
+      await UnifiedTreatmentMigrator(
+        database: database,
+      ).migrate(userId: 'user-a', startedAtUtc: now);
+      expect(
+        await cutover.attempt(userId: 'user-a', evaluatedAtUtc: now),
+        isTrue,
+      );
+      expect(
+        await rollout.stateFor('user-a'),
+        UnifiedTreatmentCutoverPhase.readNew,
+      );
+      expect(
+        await cutover.rollbackReadBeforeNewWrites(
+          userId: 'user-a',
+          evaluatedAtUtc: now,
+        ),
+        isTrue,
+      );
+      expect(
+        await rollout.stateFor('user-a'),
+        UnifiedTreatmentCutoverPhase.legacyRead,
+      );
+
+      await cutover.prepareMigration(userId: 'user-a', evaluatedAtUtc: now);
+      expect(
+        await cutover.attempt(userId: 'user-a', evaluatedAtUtc: now),
+        isTrue,
+      );
+      expect(
+        await cutover.enableNewWrites(userId: 'user-a', evaluatedAtUtc: now),
+        isTrue,
+      );
+      expect(
+        await cutover.rollbackReadBeforeNewWrites(
+          userId: 'user-a',
+          evaluatedAtUtc: now,
+        ),
+        isFalse,
+      );
+      expect(
+        await rollout.stateFor('user-a'),
+        UnifiedTreatmentCutoverPhase.writeNew,
       );
     },
   );

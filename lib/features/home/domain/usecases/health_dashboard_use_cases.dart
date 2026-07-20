@@ -117,13 +117,20 @@ class HealthDashboardUseCases {
           : ProteinCalculator.goalForWeightKg(
               weightKg ?? profile.initialWeight.value,
             );
-      final vitaminAdherence = unavailable.contains(HealthDataSection.vitamins)
+      final vitaminAdherencePercent =
+          unavailable.contains(HealthDataSection.vitamins)
           ? null
-          : await _vitamins.adherence(date, date) / 100;
-      final medicationAdherence =
+          : await _vitamins.adherence(date, date);
+      final medicationAdherencePercent =
           unavailable.contains(HealthDataSection.medications)
           ? null
-          : await _medications.adherence(date, date) / 100;
+          : await _medications.adherence(date, date);
+      final vitaminAdherence = vitaminAdherencePercent == null
+          ? null
+          : vitaminAdherencePercent / 100;
+      final medicationAdherence = medicationAdherencePercent == null
+          ? null
+          : medicationAdherencePercent / 100;
       final pendingVitamins = unavailable.contains(HealthDataSection.vitamins)
           ? null
           : await _vitamins.getPendingCount(date: date);
