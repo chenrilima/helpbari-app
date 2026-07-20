@@ -329,6 +329,64 @@ confiança/cobertura em vez de inventar missed.
 - Dose real e tomada parcial ficam modeladas, mas desabilitadas no V1; quando
   habilitadas não podem transformar automaticamente parcial em aderente.
 
+### 4.9.1 Adherence Engine V1
+
+Eventos de adesão são fatos imutáveis e append-only. Os tipos persistíveis são
+`taken`, `skipped`, `rescheduled`, `canceled` e `correction`; `pending`,
+`missed`, `takenEarly`, `takenOnTime` e `takenLate` são sempre projeções. Cada
+evento preserva IDs de occurrence/routine/plan/schedule, actor e instantes UTC
+de ocorrência e registro. IDs e timestamps são fornecidos externamente.
+
+Correção é um novo evento que referencia outro evento e declara nominalmente
+`invalidate` ou `replace`. Uma substituição carrega o novo tipo e, quando
+necessário, novo `occurredAtUtc` ou janela. O fato original nunca é editado ou
+apagado. Referência ausente, ciclo, correções concorrentes e terminais
+incompatíveis tornam a projeção `inconsistent`; nenhum vencedor é escolhido
+silenciosamente.
+
+O projetor ordena cópias por `effectiveAtUtc`, `recordedAtUtc` e `eventId`.
+Reagendamentos válidos são mantidos na timeline e o último define a janela
+efetiva; `occurrenceId`, `originalWindow` e `originalScheduledFor` permanecem
+imutáveis. Reagendamento posterior a taken/skipped é inconsistente.
+
+Estados V1:
+
+- `pending`: obrigação sem taken/skipped antes de `windowEndsAt`;
+- `missed`: mesma obrigação em ou após o fim exclusivo, sem criar evento;
+- `takenEarly`: tomada anterior a `windowStartsAt`, explicitamente distinguida;
+- `takenOnTime`: tomada em `[windowStartsAt, onTimeEndsAt]`;
+- `takenLate`: tomada posterior a `onTimeEndsAt`, mesmo que após o fim da janela;
+- `skipped`: decisão explícita;
+- `notApplicable`: PRN sem uso, cancelamento ou exclusão justificada;
+- `inconsistent`: dados conflitantes ou insuficientes para um vencedor seguro.
+
+`takenEarly` conta como aderente no V1, mas permanece separado para análise.
+PRN não cria pending/missed nem denominador; tomadas PRN alimentam apenas
+`prnTakenCount` e dias de uso. Pausas normalmente evitam a ocorrência. Quando
+uma ocorrência já existe, pausa aplicável sem fato terminal a exclui; eventos
+históricos não são apagados e uma pausa retroativa é diagnosticada.
+
+As fórmulas oficiais V1 passam a nomear explicitamente pontualidade estrita e
+realização. Esta seção especializa a fórmula genérica anterior:
+
+```text
+denominator = takenEarly + takenOnTime + takenLate + skipped + missed
+adherenceRate = (takenEarly + takenOnTime) / denominator
+completionRate = (takenEarly + takenOnTime + takenLate) / denominator
+coverageRate = evaluableExpectedOccurrences / expectedOccurrences
+```
+
+Pending/futuro, PRN, excluded e unavailable não entram no denominador fechado.
+Sem denominador, adherence e completion são `unavailable` com taxa nula, nunca
+zero. Coverage é independente: pending conhecido pode ser coberto, enquanto
+inconsistência/unavailable reduz cobertura sem virar missed.
+
+Agregações usam `[startInclusiveUtc, endExclusiveUtc)`, recebem
+`evaluatedAtUtc` obrigatório e produzem visão global e grupos imutáveis por
+routine, categoria, plano, schedule e data clínica original. Períodos futuros
+preservam pending e não penalizam métricas fechadas. Home, Reports, Health Score
+e BarIA deverão futuramente consumir estes agregados, sem recalcular fórmulas.
+
 ### 4.10 Skipped
 
 Skipped exige ação explícita, pode ter motivo opcional e conta como ocorrência
@@ -384,16 +442,18 @@ Histórico encerrado e eventos permanecem até exclusão LGPD.
 
 ### 4.15 Adesão e cobertura
 
-Ocorrências elegíveis encerradas incluem taken on time, taken late, skipped e
-missed. Excluem futuras, janela aberta, canceled, paused, notApplicable e PRN.
+Ocorrências elegíveis encerradas incluem taken early, taken on time, taken
+late, skipped e missed. Excluem futuras, janela aberta, canceled, paused,
+notApplicable e PRN.
 
 ```text
-adherence = (takenOnTime + takenLate) / eligibleClosedOccurrences
-onTimeAdherence = takenOnTime / eligibleClosedOccurrences
+adherence = (takenEarly + takenOnTime) / eligibleClosedOccurrences
+completion = (takenEarly + takenOnTime + takenLate) / eligibleClosedOccurrences
 ```
 
-Skipped e missed permanecem no denominador; taken late conta apenas na adesão
-geral. Resultado sem denominador é `unavailable`, nunca 0%. Período anterior à
+Skipped e missed permanecem no denominador; taken late conta em completion,
+mas não em adherence estrita. Resultado sem denominador é `unavailable`, nunca
+0%. Período anterior à
 vigência não entra. Plano com início desconhecido só participa no intervalo de
 cobertura comprovada. Logs legados só contribuem onde uma expectativa migrada
 foi materializada; não se inventam obrigações anteriores.

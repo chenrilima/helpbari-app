@@ -489,24 +489,28 @@ void main() {
 
     test('corrections reference an event and ordinary events cannot', () {
       final event = _event(now);
-      final correction = event.createCorrection(
-        correctionId: RoutineAdherenceEventId(_newEventUuid),
-        occurredAt: now,
-        recordedAt: now,
-        createdAt: now,
+      final correction = const RoutineAdherenceEventFactory().correction(
+        occurrence: _occurrence(_window(now)),
+        eventId: RoutineAdherenceEventId(_newEventUuid),
+        referencedEvent: event,
+        action: AdherenceCorrectionAction.invalidate,
+        occurredAtUtc: now,
+        recordedAtUtc: now,
         actor: AdherenceEventActor.user,
       );
-      expect(correction.correctedEventId, event.eventId);
+      expect(correction.referencedEventId, event.eventId);
       expect(
         () => RoutineAdherenceEvent(
           eventId: RoutineAdherenceEventId(_newEventUuid),
           occurrenceId: RoutineOccurrenceId(_occurrenceUuid),
+          routineId: RoutineId(_routineUuid),
+          planId: RoutinePlanId(_planUuid),
+          scheduleId: RoutineScheduleId(_scheduleUuid),
           type: AdherenceEventType.taken,
-          occurredAt: now,
-          recordedAt: now,
-          createdAt: now,
+          occurredAtUtc: now,
+          recordedAtUtc: now,
           actor: AdherenceEventActor.user,
-          correctedEventId: event.eventId,
+          referencedEventId: event.eventId,
         ),
         throwsA(isA<SmartRoutineValidationException>()),
       );
@@ -514,10 +518,12 @@ void main() {
         () => RoutineAdherenceEvent(
           eventId: RoutineAdherenceEventId(_newEventUuid),
           occurrenceId: RoutineOccurrenceId(_occurrenceUuid),
+          routineId: RoutineId(_routineUuid),
+          planId: RoutinePlanId(_planUuid),
+          scheduleId: RoutineScheduleId(_scheduleUuid),
           type: AdherenceEventType.correction,
-          occurredAt: now,
-          recordedAt: now,
-          createdAt: now,
+          occurredAtUtc: now,
+          recordedAtUtc: now,
           actor: AdherenceEventActor.user,
         ),
         throwsA(isA<SmartRoutineValidationException>()),
@@ -631,10 +637,12 @@ RoutineOccurrence _occurrence(OccurrenceWindow window) => RoutineOccurrence(
 RoutineAdherenceEvent _event(DateTime now) => RoutineAdherenceEvent(
   eventId: RoutineAdherenceEventId(_eventUuid),
   occurrenceId: RoutineOccurrenceId(_occurrenceUuid),
+  routineId: RoutineId(_routineUuid),
+  planId: RoutinePlanId(_planUuid),
+  scheduleId: RoutineScheduleId(_scheduleUuid),
   type: AdherenceEventType.taken,
-  occurredAt: now,
-  recordedAt: now,
-  createdAt: now,
+  occurredAtUtc: now,
+  recordedAtUtc: now,
   actor: AdherenceEventActor.user,
 );
 

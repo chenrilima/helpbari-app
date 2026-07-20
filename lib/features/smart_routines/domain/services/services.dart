@@ -1,4 +1,5 @@
 export 'active_plan_selector.dart';
+export 'adherence_calculator.dart';
 export 'eligibility_results.dart';
 export 'every_n_hours_occurrence_generator.dart';
 export 'occurrence_blueprint_generation_result.dart';
@@ -9,6 +10,9 @@ export 'pause_eligibility_policy.dart';
 export 'plan_schedule_selector.dart';
 export 'plan_validity_policy.dart';
 export 'routine_eligibility_policy.dart';
+export 'routine_adherence_aggregator.dart';
+export 'routine_adherence_event_factory.dart';
+export 'routine_adherence_projector.dart';
 export 'routine_occurrence_generator.dart';
 export 'routine_occurrence_identity_generator.dart';
 export 'routine_occurrence_materializer.dart';

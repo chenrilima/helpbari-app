@@ -16,6 +16,39 @@ enum ScheduleFrequencyType {
 
 enum AdherenceEventType { taken, skipped, rescheduled, canceled, correction }
 
+enum AdherenceCorrectionAction { invalidate, replace }
+
+enum OccurrenceAdherenceState {
+  pending,
+  takenEarly,
+  takenOnTime,
+  takenLate,
+  skipped,
+  missed,
+  notApplicable,
+  inconsistent,
+}
+
+enum AdherenceProjectionDiagnostic {
+  duplicateEvent,
+  foreignEvent,
+  missingCorrectionReference,
+  correctionCycle,
+  concurrentCorrections,
+  incompatibleCorrection,
+  conflictingTerminalEvents,
+  rescheduleAfterTerminal,
+  inconsistentReschedule,
+  retroactivePause,
+  insufficientData,
+  duplicateOccurrence,
+  missingCategory,
+}
+
+enum AdherenceMetricState { available, unavailable, inconsistent }
+
+enum AdherenceCoverageState { complete, partial, unknown, notApplicable }
+
 enum RoutineSource {
   manual,
   prescription,

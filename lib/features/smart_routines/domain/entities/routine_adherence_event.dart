@@ -4,47 +4,95 @@ import '../errors/smart_routine_validation_exception.dart';
 import '../value_objects/routine_values.dart';
 import '../value_objects/typed_ids.dart';
 
+/// Immutable append-only fact. Corrections are new events and never mutate the
+/// referenced event.
 final class RoutineAdherenceEvent extends Entity {
   factory RoutineAdherenceEvent({
     required RoutineAdherenceEventId eventId,
     required RoutineOccurrenceId occurrenceId,
+    required RoutineId routineId,
+    required RoutinePlanId planId,
     required AdherenceEventType type,
-    required DateTime occurredAt,
-    required DateTime recordedAt,
-    required DateTime createdAt,
+    required DateTime occurredAtUtc,
+    required DateTime recordedAtUtc,
     required AdherenceEventActor actor,
-    RoutineAdherenceEventId? correctedEventId,
-    String? reason,
+    RoutineScheduleId? scheduleId,
+    RoutineAdherenceEventId? referencedEventId,
+    AdherenceCorrectionAction? correctionAction,
+    AdherenceEventType? replacementType,
+    DateTime? replacementOccurredAtUtc,
+    OccurrenceWindow? rescheduledWindow,
+    String? note,
     DoseValue? actualDose,
   }) {
-    if (recordedAt.isBefore(createdAt)) {
+    _requireUtc(occurredAtUtc, 'occurredAtUtc');
+    _requireUtc(recordedAtUtc, 'recordedAtUtc');
+    if (replacementOccurredAtUtc != null) {
+      _requireUtc(replacementOccurredAtUtc, 'replacementOccurredAtUtc');
+    }
+    final isCorrection = type == AdherenceEventType.correction;
+    if (isCorrection != (referencedEventId != null)) {
       throw const SmartRoutineValidationException(
-        'invalid_event_timestamps',
-        'Event recordedAt cannot precede createdAt.',
+        'invalid_correction_reference',
+        'Correction events require one referenced event and other events cannot reference one.',
       );
     }
-    if (type == AdherenceEventType.correction && correctedEventId == null) {
+    if (isCorrection != (correctionAction != null)) {
       throw const SmartRoutineValidationException(
-        'corrected_event_required',
-        'Correction event requires correctedEventId.',
+        'invalid_correction_action',
+        'Correction events require an explicit correction action.',
       );
     }
-    if (type != AdherenceEventType.correction && correctedEventId != null) {
+    if (referencedEventId == eventId) {
       throw const SmartRoutineValidationException(
-        'unexpected_corrected_event',
-        'Only correction events can reference a corrected event.',
+        'self_referencing_correction',
+        'An event cannot correct itself.',
+      );
+    }
+    if (correctionAction == AdherenceCorrectionAction.replace &&
+        replacementType == null) {
+      throw const SmartRoutineValidationException(
+        'correction_replacement_required',
+        'Replacement correction requires a replacement type.',
+      );
+    }
+    if (correctionAction != AdherenceCorrectionAction.replace &&
+        (replacementType != null || replacementOccurredAtUtc != null)) {
+      throw const SmartRoutineValidationException(
+        'unexpected_correction_replacement',
+        'Only replacement corrections may carry replacement values.',
+      );
+    }
+    if (replacementType == AdherenceEventType.correction) {
+      throw const SmartRoutineValidationException(
+        'nested_correction_type',
+        'A correction cannot replace an event with another correction type.',
+      );
+    }
+    final effectiveType = replacementType ?? type;
+    if ((effectiveType == AdherenceEventType.rescheduled) !=
+        (rescheduledWindow != null)) {
+      throw const SmartRoutineValidationException(
+        'invalid_reschedule_window',
+        'A rescheduled event requires exactly one replacement window.',
       );
     }
     return RoutineAdherenceEvent._(
       eventId: eventId,
       occurrenceId: occurrenceId,
+      routineId: routineId,
+      planId: planId,
+      scheduleId: scheduleId,
       type: type,
-      occurredAt: occurredAt,
-      recordedAt: recordedAt,
-      createdAt: createdAt,
+      occurredAtUtc: occurredAtUtc,
+      recordedAtUtc: recordedAtUtc,
       actor: actor,
-      correctedEventId: correctedEventId,
-      reason: _optional(reason),
+      referencedEventId: referencedEventId,
+      correctionAction: correctionAction,
+      replacementType: replacementType,
+      replacementOccurredAtUtc: replacementOccurredAtUtc,
+      rescheduledWindow: rescheduledWindow,
+      note: _optional(note),
       actualDose: actualDose,
     );
   }
@@ -52,13 +100,19 @@ final class RoutineAdherenceEvent extends Entity {
   const RoutineAdherenceEvent._({
     required this.eventId,
     required this.occurrenceId,
+    required this.routineId,
+    required this.planId,
     required this.type,
-    required this.occurredAt,
-    required this.recordedAt,
-    required this.createdAt,
+    required this.occurredAtUtc,
+    required this.recordedAtUtc,
     required this.actor,
-    this.correctedEventId,
-    this.reason,
+    this.scheduleId,
+    this.referencedEventId,
+    this.correctionAction,
+    this.replacementType,
+    this.replacementOccurredAtUtc,
+    this.rescheduledWindow,
+    this.note,
     this.actualDose,
   });
 
@@ -66,35 +120,22 @@ final class RoutineAdherenceEvent extends Entity {
   @override
   String get id => eventId.value;
   final RoutineOccurrenceId occurrenceId;
+  final RoutineId routineId;
+  final RoutinePlanId planId;
+  final RoutineScheduleId? scheduleId;
   final AdherenceEventType type;
-  final DateTime occurredAt;
-  final DateTime recordedAt;
-  final DateTime createdAt;
+  final DateTime occurredAtUtc;
+  final DateTime recordedAtUtc;
   final AdherenceEventActor actor;
-  final RoutineAdherenceEventId? correctedEventId;
-  final String? reason;
+  final RoutineAdherenceEventId? referencedEventId;
+  final AdherenceCorrectionAction? correctionAction;
+  final AdherenceEventType? replacementType;
+  final DateTime? replacementOccurredAtUtc;
+  final OccurrenceWindow? rescheduledWindow;
+  final String? note;
   final DoseValue? actualDose;
 
-  RoutineAdherenceEvent createCorrection({
-    required RoutineAdherenceEventId correctionId,
-    required DateTime occurredAt,
-    required DateTime recordedAt,
-    required DateTime createdAt,
-    required AdherenceEventActor actor,
-    String? reason,
-    DoseValue? actualDose,
-  }) => RoutineAdherenceEvent(
-    eventId: correctionId,
-    occurrenceId: occurrenceId,
-    type: AdherenceEventType.correction,
-    occurredAt: occurredAt,
-    recordedAt: recordedAt,
-    createdAt: createdAt,
-    actor: actor,
-    correctedEventId: eventId,
-    reason: reason,
-    actualDose: actualDose,
-  );
+  DateTime get effectiveAtUtc => replacementOccurredAtUtc ?? occurredAtUtc;
 
   @override
   bool operator ==(Object other) =>
@@ -102,28 +143,49 @@ final class RoutineAdherenceEvent extends Entity {
       other is RoutineAdherenceEvent &&
           eventId == other.eventId &&
           occurrenceId == other.occurrenceId &&
+          routineId == other.routineId &&
+          planId == other.planId &&
+          scheduleId == other.scheduleId &&
           type == other.type &&
-          occurredAt == other.occurredAt &&
-          recordedAt == other.recordedAt &&
-          createdAt == other.createdAt &&
+          occurredAtUtc == other.occurredAtUtc &&
+          recordedAtUtc == other.recordedAtUtc &&
           actor == other.actor &&
-          correctedEventId == other.correctedEventId &&
-          reason == other.reason &&
+          referencedEventId == other.referencedEventId &&
+          correctionAction == other.correctionAction &&
+          replacementType == other.replacementType &&
+          replacementOccurredAtUtc == other.replacementOccurredAtUtc &&
+          rescheduledWindow == other.rescheduledWindow &&
+          note == other.note &&
           actualDose == other.actualDose;
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     eventId,
     occurrenceId,
+    routineId,
+    planId,
+    scheduleId,
     type,
-    occurredAt,
-    recordedAt,
-    createdAt,
+    occurredAtUtc,
+    recordedAtUtc,
     actor,
-    correctedEventId,
-    reason,
+    referencedEventId,
+    correctionAction,
+    replacementType,
+    replacementOccurredAtUtc,
+    rescheduledWindow,
+    note,
     actualDose,
-  );
+  ]);
+}
+
+void _requireUtc(DateTime value, String field) {
+  if (!value.isUtc) {
+    throw SmartRoutineValidationException(
+      'adherence_event_requires_utc',
+      '$field must be UTC.',
+    );
+  }
 }
 
 String? _optional(String? value) {
