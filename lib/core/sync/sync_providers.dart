@@ -45,20 +45,8 @@ import '../../features/exams/data/datasources/exam_supabase_datasource.dart';
 import '../../features/exams/data/repositories/exam_sync_repository.dart';
 import '../../features/exams/presentation/providers/exam_use_cases_provider.dart';
 import '../../features/exams/presentation/providers/exam_view_model_provider.dart';
-import '../../features/vitamins/data/datasources/drift_vitamin_local_datasource.dart';
-import '../../features/vitamins/data/datasources/drift_vitamin_log_local_datasource.dart';
-import '../../features/vitamins/data/datasources/vitamin_supabase_datasource.dart';
-import '../../features/vitamins/data/datasources/vitamin_log_supabase_datasource.dart';
-import '../../features/vitamins/data/repositories/vitamin_sync_repository.dart';
-import '../../features/vitamins/data/repositories/vitamin_log_sync_repository.dart';
 import '../../features/vitamins/presentation/providers/vitamin_use_cases_provider.dart';
 import '../../features/vitamins/presentation/providers/vitamin_view_model_provider.dart';
-import '../../features/medications/data/datasources/drift_medication_local_datasource.dart';
-import '../../features/medications/data/datasources/drift_medication_log_local_datasource.dart';
-import '../../features/medications/data/datasources/medication_supabase_datasource.dart';
-import '../../features/medications/data/datasources/medication_log_supabase_datasource.dart';
-import '../../features/medications/data/repositories/medication_sync_repository.dart';
-import '../../features/medications/data/repositories/medication_log_sync_repository.dart';
 import '../../features/medications/presentation/providers/medication_use_cases_provider.dart';
 import '../../features/medications/presentation/providers/medication_view_model_provider.dart';
 import '../../features/bioimpedance/data/datasources/bioimpedance_supabase_datasource.dart';
@@ -77,6 +65,7 @@ import '../../features/medical_prescriptions/data/repositories/medical_prescript
 import '../../features/smart_routines/data/datasources/drift_smart_routine_datasource.dart';
 import '../../features/smart_routines/data/datasources/smart_routine_supabase_datasource.dart';
 import '../../features/smart_routines/data/repositories/smart_routines_sync_repository.dart';
+import '../../features/smart_routines/presentation/providers/unified_treatment_providers.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -210,78 +199,6 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       ),
       userId: user.id,
     ),
-    VitaminSyncRepository(
-      local: () async => DriftVitaminLocalDatasource(
-        dao: (await ref.read(appDatabaseProvider.future)).vitaminDao,
-        clock: ref.read(clockServiceProvider),
-        userId: user.id,
-      ),
-      remote: VitaminSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
-      userId: user.id,
-      afterRemoteCommit: (dto) async {
-        try {
-          final reminders = ref.read(vitaminReminderServiceProvider);
-          if (dto.syncMetadata.isDeleted) {
-            await reminders.cancel(dto.id);
-          } else {
-            await reminders.rescheduleIfEnabled(dto.toEntity());
-          }
-        } catch (error) {
-          ref
-              .read(loggerServiceProvider)
-              .warning(
-                'Vitamin notification reconciliation failed (${error.runtimeType}).',
-              );
-        }
-      },
-    ),
-    VitaminLogSyncRepository(
-      local: () async => DriftVitaminLogLocalDatasource(
-        dao: (await ref.read(appDatabaseProvider.future)).vitaminLogDao,
-        clock: ref.read(clockServiceProvider),
-        uuid: ref.read(uuidServiceProvider),
-        userId: user.id,
-      ),
-      remote: VitaminLogSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
-      userId: user.id,
-    ),
-    MedicationSyncRepository(
-      local: () async => DriftMedicationLocalDatasource(
-        dao: (await ref.read(appDatabaseProvider.future)).medicationDao,
-        clock: ref.read(clockServiceProvider),
-        userId: user.id,
-      ),
-      remote: MedicationSupabaseDatasource(ref.watch(supabaseDatabaseProvider)),
-      userId: user.id,
-      afterRemoteCommit: (dto) async {
-        try {
-          final reminders = ref.read(medicationReminderServiceProvider);
-          if (dto.syncMetadata.isDeleted) {
-            await reminders.cancel(dto.id);
-          } else {
-            await reminders.rescheduleIfEnabled(dto.toEntity());
-          }
-        } catch (error) {
-          ref
-              .read(loggerServiceProvider)
-              .warning(
-                'Medication notification reconciliation failed (${error.runtimeType}).',
-              );
-        }
-      },
-    ),
-    MedicationLogSyncRepository(
-      local: () async => DriftMedicationLogLocalDatasource(
-        dao: (await ref.read(appDatabaseProvider.future)).medicationLogDao,
-        clock: ref.read(clockServiceProvider),
-        uuid: ref.read(uuidServiceProvider),
-        userId: user.id,
-      ),
-      remote: MedicationLogSupabaseDatasource(
-        ref.watch(supabaseDatabaseProvider),
-      ),
-      userId: user.id,
-    ),
     BioimpedanceSyncRepository(
       local: () async => DriftBioimpedanceLocalDatasource(
         dao: (await ref.read(appDatabaseProvider.future)).bioimpedanceDao,
@@ -301,16 +218,17 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       ),
       userId: user.id,
     ),
-    SmartRoutinesSyncRepository(
-      local: () async => DriftSmartRoutineDatasource(
-        dao: (await ref.read(appDatabaseProvider.future)).smartRoutineDao,
+    if (ref.watch(unifiedTreatmentRemoteSyncEnabledProvider).value ?? false)
+      SmartRoutinesSyncRepository(
+        local: () async => DriftSmartRoutineDatasource(
+          dao: (await ref.read(appDatabaseProvider.future)).smartRoutineDao,
+          userId: user.id,
+        ),
+        remote: SmartRoutineSupabaseDatasource(
+          ref.watch(supabaseDatabaseProvider),
+        ),
         userId: user.id,
       ),
-      remote: SmartRoutineSupabaseDatasource(
-        ref.watch(supabaseDatabaseProvider),
-      ),
-      userId: user.id,
-    ),
     SettingsSyncRepository(
       local: () async {
         if (!ref.read(driftAvailableProvider)) {

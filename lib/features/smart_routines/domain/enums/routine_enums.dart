@@ -58,7 +58,18 @@ enum RoutineSource {
   unknown,
 }
 
-enum PlanDurationType { fixed, continuous, unknown }
+enum PlanDurationType { bounded, continuous, unknown, singleDose }
+
+enum RoutineTemporalPrecision {
+  exact,
+  inferredFromProfile,
+  estimatedFromLegacyDate,
+  unknown,
+}
+
+enum RoutinePlanOrigin { manual, migratedLegacy, prescriptionImport }
+
+enum RoutineValidationStatus { confirmed, estimated, validationRequired }
 
 enum RoutinePlanMode { scheduled, asNeeded }
 

@@ -267,6 +267,19 @@ class PrivacyExportService {
         'originalFilesIncluded': false,
       },
       'bioimpedance': clinicalData['bioimpedance'] ?? const <Object?>[],
+      'smartRoutines': {
+        'routines': clinicalData['smartRoutines'] ?? const <Object?>[],
+        'plans': clinicalData['routinePlans'] ?? const <Object?>[],
+        'schedules': clinicalData['routineSchedules'] ?? const <Object?>[],
+        'pauses': clinicalData['routinePauses'] ?? const <Object?>[],
+        'occurrences': clinicalData['routineOccurrences'] ?? const <Object?>[],
+        'adherenceEvents':
+            clinicalData['routineAdherenceEvents'] ?? const <Object?>[],
+        'legacyMappings':
+            clinicalData['unifiedTreatmentMappings'] ?? const <Object?>[],
+        'legacyLogMappings':
+            clinicalData['unifiedTreatmentLogMappings'] ?? const <Object?>[],
+      },
       'reports': [
         {
           'version': snapshot.reportVersion,
@@ -305,6 +318,11 @@ class PrivacyExportService {
         clinicalData['extractedDocumentFields'],
       ),
       'bioimpedance': _length(clinicalData['bioimpedance']),
+      'smartRoutines': _length(clinicalData['smartRoutines']),
+      'routinePlans': _length(clinicalData['routinePlans']),
+      'routineSchedules': _length(clinicalData['routineSchedules']),
+      'routineOccurrences': _length(clinicalData['routineOccurrences']),
+      'routineAdherenceEvents': _length(clinicalData['routineAdherenceEvents']),
       'reports': 1,
     };
     return PrivacyExportPackage(

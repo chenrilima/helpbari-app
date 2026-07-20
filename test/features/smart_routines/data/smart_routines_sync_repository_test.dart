@@ -74,6 +74,44 @@ void main() {
     expect(remote.upserted, isEmpty);
   });
 
+  test('push never overwrites a divergent remote schedule revision', () async {
+    final timestamp = DateTime.utc(2026, 7, 20, 12);
+    final local = _FakeLocal([
+      SmartRoutineLocalRecord('routine_schedules', {
+        ..._remoteRow('s1', userId, timestamp, routineId: 'r1'),
+        'plan_id': 'p1',
+        'rule': const {'schemaVersion': 1, 'type': 'dailyAtTimes'},
+        'sync_status': 'pendingUpdate',
+      }),
+    ]);
+    final remote = _FakeRemote()
+      ..pages['routine_schedules'] = [
+        {
+          ..._remoteRow(
+            's1',
+            userId,
+            timestamp.subtract(const Duration(hours: 1)),
+            routineId: 'r1',
+          ),
+          'plan_id': 'p1',
+          'rule': const {'schemaVersion': 1, 'type': 'asNeeded'},
+        },
+      ];
+    final repository = _repository(local, remote, userId);
+
+    await expectLater(
+      repository.push((await repository.pendingOperations()).single),
+      throwsA(
+        isA<StateError>().having(
+          (error) => error.message,
+          'message',
+          'routine_schedules_payload_conflict',
+        ),
+      ),
+    );
+    expect(remote.upserted, isEmpty);
+  });
+
   test(
     'pull paginates equal timestamps and applies one ordered batch',
     () async {

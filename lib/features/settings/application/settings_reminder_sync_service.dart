@@ -17,19 +17,11 @@ class SettingsReminderSyncService {
     required AppointmentReminderService appointmentReminders,
     required NotificationScheduler scheduler,
     required String userId,
-  }) : _vitaminUseCases = vitaminUseCases,
-       _vitaminReminders = vitaminReminders,
-       _medicationUseCases = medicationUseCases,
-       _medicationReminders = medicationReminders,
-       _appointmentUseCases = appointmentUseCases,
+  }) : _appointmentUseCases = appointmentUseCases,
        _appointmentReminders = appointmentReminders,
        _scheduler = scheduler,
        _userId = userId;
 
-  final VitaminUseCases _vitaminUseCases;
-  final VitaminReminderService _vitaminReminders;
-  final MedicationUseCases _medicationUseCases;
-  final MedicationReminderService _medicationReminders;
   final AppointmentUseCases _appointmentUseCases;
   final AppointmentReminderService _appointmentReminders;
   final NotificationScheduler _scheduler;
@@ -42,18 +34,6 @@ class SettingsReminderSyncService {
 
   Future<void> restore(AppSettings settings) async {
     final schedules = <LocalNotificationSchedule>[];
-    if (settings.vitaminRemindersEnabled) {
-      schedules.addAll(
-        (await _vitaminUseCases.getAll()).map(_vitaminReminders.scheduleFor),
-      );
-    }
-    if (settings.medicationRemindersEnabled) {
-      schedules.addAll(
-        (await _medicationUseCases.getAll()).map(
-          _medicationReminders.scheduleFor,
-        ),
-      );
-    }
     if (settings.appointmentRemindersEnabled) {
       schedules.addAll(
         (await _appointmentUseCases.getAll())

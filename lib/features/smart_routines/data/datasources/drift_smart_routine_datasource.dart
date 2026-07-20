@@ -197,6 +197,7 @@ final class DriftSmartRoutineDatasource implements SmartRoutineLocalStore {
       userId: userId,
       routineId: r['routine_id'] as String,
       revision: r['revision'] as int,
+      category: Value(r['category'] as String),
       mode: r['mode'] as String,
       durationType: r['duration_type'] as String,
       effectiveFrom: r['effective_from'] as String,
@@ -209,6 +210,19 @@ final class DriftSmartRoutineDatasource implements SmartRoutineLocalStore {
       activatedAt: Value(_nullableDate(r['activated_at'])),
       replacedAt: Value(_nullableDate(r['replaced_at'])),
       previousPlanId: Value(r['previous_plan_id'] as String?),
+      provenanceOrigin: Value(r['provenance_origin'] as String),
+      validationStatus: Value(r['validation_status'] as String),
+      provenancePrescriptionId: Value(
+        r['provenance_prescription_id'] as String?,
+      ),
+      provenancePrescriptionItemId: Value(
+        r['provenance_prescription_item_id'] as String?,
+      ),
+      provenanceDocumentId: Value(r['provenance_document_id'] as String?),
+      provenanceProfessionalReference: Value(
+        r['provenance_professional_reference'] as String?,
+      ),
+      temporalPrecision: Value(r['temporal_precision'] as String),
       createdAt: _date(r['created_at']),
       updatedAt: _date(r['updated_at']),
       deletedAt: Value(_nullableDate(r['deleted_at'])),

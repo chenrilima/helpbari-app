@@ -3,7 +3,6 @@ import '../../../appointments/domain/entities/entities.dart';
 import '../../../appointments/domain/usecases/use_cases.dart';
 import '../../../meals/domain/entities/entities.dart';
 import '../../../meals/domain/usecases/use_cases.dart';
-import '../../../medications/domain/entities/entities.dart';
 import '../../../medications/domain/usecases/use_cases.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../medical_exams/domain/usecases/medical_exam_use_cases.dart';
@@ -11,7 +10,6 @@ import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../settings/domain/entities/entities.dart';
 import '../../../settings/domain/usecases/use_cases.dart';
-import '../../../vitamins/domain/entities/entities.dart';
 import '../../../vitamins/domain/usecases/vitamin_use_cases.dart';
 import '../../../water/domain/entities/entities.dart';
 import '../../../water/domain/usecases/use_cases.dart';
@@ -68,17 +66,7 @@ class HealthDashboardUseCases {
       _read(() => _meals.getAll(), HealthDataSection.meals, unavailable),
       _read(() => _vitamins.getAll(), HealthDataSection.vitamins, unavailable),
       _read(
-        () => _vitamins.getLogs(from, to),
-        HealthDataSection.vitamins,
-        unavailable,
-      ),
-      _read(
         () => _medications.getAll(),
-        HealthDataSection.medications,
-        unavailable,
-      ),
-      _read(
-        () => _medications.getLogs(from, to),
         HealthDataSection.medications,
         unavailable,
       ),
@@ -98,13 +86,9 @@ class HealthDashboardUseCases {
     final weights = (results[1] as List<WeightRecord>?) ?? const [];
     final water = (results[2] as List<WaterRecord>?) ?? const [];
     final meals = (results[3] as List<Meal>?) ?? const [];
-    final vitamins = (results[4] as List<Vitamin>?) ?? const [];
-    final vitaminLogs = (results[5] as List<VitaminLog>?) ?? const [];
-    final medications = (results[6] as List<Medication>?) ?? const [];
-    final medicationLogs = (results[7] as List<MedicationLog>?) ?? const [];
-    final appointments = (results[8] as List<Appointment>?) ?? const [];
-    final exams = (results[9] as List<MedicalExam>?) ?? const [];
-    final settings = results[10] as AppSettings?;
+    final appointments = (results[6] as List<Appointment>?) ?? const [];
+    final exams = (results[7] as List<MedicalExam>?) ?? const [];
+    final settings = results[8] as AppSettings?;
 
     final days = <DailyHealthAggregate>[];
     for (
@@ -115,12 +99,6 @@ class HealthDashboardUseCases {
       final dayWater = water.where((r) => _day(r.recordedAt) == date).toList();
       final dayMeals = meals
           .where((m) => _day(m.mealDate.value) == date)
-          .toList();
-      final dayVitaminLogs = vitaminLogs
-          .where((l) => _day(l.date) == date)
-          .toList();
-      final dayMedicationLogs = medicationLogs
-          .where((l) => _day(l.date) == date)
           .toList();
       final dayWeights = weights
           .where((w) => _day(w.recordedAt.value) == date)
@@ -139,20 +117,27 @@ class HealthDashboardUseCases {
           : ProteinCalculator.goalForWeightKg(
               weightKg ?? profile.initialWeight.value,
             );
-      final vitaminAdherence = _adherence(
-        dayVitaminLogs.map((l) => l.status.name),
-      );
-      final medicationAdherence = _adherence(
-        dayMedicationLogs.map((l) => l.status.name),
-      );
-      final resolvedVitaminIds = dayVitaminLogs
-          .where((log) => log.status.name != 'pending')
-          .map((log) => log.vitaminId)
-          .toSet();
-      final resolvedMedicationIds = dayMedicationLogs
-          .where((log) => log.status.name != 'pending')
-          .map((log) => log.medicationId)
-          .toSet();
+      final vitaminAdherencePercent =
+          unavailable.contains(HealthDataSection.vitamins)
+          ? null
+          : await _vitamins.adherence(date, date);
+      final medicationAdherencePercent =
+          unavailable.contains(HealthDataSection.medications)
+          ? null
+          : await _medications.adherence(date, date);
+      final vitaminAdherence = vitaminAdherencePercent == null
+          ? null
+          : vitaminAdherencePercent / 100;
+      final medicationAdherence = medicationAdherencePercent == null
+          ? null
+          : medicationAdherencePercent / 100;
+      final pendingVitamins = unavailable.contains(HealthDataSection.vitamins)
+          ? null
+          : await _vitamins.getPendingCount(date: date);
+      final pendingMedications =
+          unavailable.contains(HealthDataSection.medications)
+          ? null
+          : await _medications.getPendingCount(date: date);
       final score = HealthScoreCalculator.calculateV2(
         HealthScoreInput(
           hydration:
@@ -181,17 +166,8 @@ class HealthDashboardUseCases {
           medicationAdherence: medicationAdherence,
           weightKg: weightKg,
           healthScore: score,
-          pendingVitamins: unavailable.contains(HealthDataSection.vitamins)
-              ? null
-              : vitamins
-                    .where((item) => !resolvedVitaminIds.contains(item.id))
-                    .length,
-          pendingMedications:
-              unavailable.contains(HealthDataSection.medications)
-              ? null
-              : medications
-                    .where((item) => !resolvedMedicationIds.contains(item.id))
-                    .length,
+          pendingVitamins: pendingVitamins,
+          pendingMedications: pendingMedications,
         ),
       );
     }
@@ -220,12 +196,6 @@ class HealthDashboardUseCases {
       unavailable.add(section);
       return null;
     }
-  }
-
-  double? _adherence(Iterable<String> statuses) {
-    final values = statuses.toList();
-    if (values.isEmpty) return null;
-    return values.where((s) => s == 'taken').length / values.length;
   }
 
   double? _weightProgress(Profile? profile, double? weight) {

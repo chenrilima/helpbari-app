@@ -172,6 +172,7 @@ final class RoutinePlanDto {
     ..._metadataRow(metadata),
     'routine_id': entity.routineId.value,
     'revision': entity.revision,
+    'category': entity.category.name,
     'mode': entity.mode.name,
     'duration_type': entity.durationType.name,
     'effective_from': entity.effectiveFrom.toString(),
@@ -184,6 +185,14 @@ final class RoutinePlanDto {
     'activated_at': _utcOrNull(entity.activatedAt),
     'replaced_at': _utcOrNull(entity.replacedAt),
     'previous_plan_id': entity.previousPlanId?.value,
+    'provenance_origin': entity.provenance.origin.name,
+    'validation_status': entity.provenance.validationStatus.name,
+    'provenance_prescription_id': entity.provenance.prescriptionId,
+    'provenance_prescription_item_id': entity.provenance.prescriptionItemId,
+    'provenance_document_id': entity.provenance.documentId,
+    'provenance_professional_reference':
+        entity.provenance.professionalReference,
+    'temporal_precision': entity.provenance.temporalPrecision.name,
   };
   factory RoutinePlanDto.fromRow(Map<String, dynamic> row) {
     final metadata = _metadata(row);
@@ -199,6 +208,11 @@ final class RoutinePlanDto {
         planId: RoutinePlanId(row['id'] as String),
         routineId: RoutineId(row['routine_id'] as String),
         revision: row['revision'] as int,
+        category: _enum(
+          RoutineCategory.values,
+          row['category'] ?? 'other',
+          'category',
+        ),
         mode: _enum(RoutinePlanMode.values, row['mode'], 'mode'),
         durationType: _enum(
           PlanDurationType.values,
@@ -218,6 +232,28 @@ final class RoutinePlanDto {
         previousPlanId: row['previous_plan_id'] == null
             ? null
             : RoutinePlanId(row['previous_plan_id'] as String),
+        provenance: RoutinePlanProvenance(
+          origin: _enum(
+            RoutinePlanOrigin.values,
+            row['provenance_origin'] ?? 'manual',
+            'provenance_origin',
+          ),
+          validationStatus: _enum(
+            RoutineValidationStatus.values,
+            row['validation_status'] ?? 'confirmed',
+            'validation_status',
+          ),
+          prescriptionId: row['provenance_prescription_id'] as String?,
+          prescriptionItemId: row['provenance_prescription_item_id'] as String?,
+          documentId: row['provenance_document_id'] as String?,
+          professionalReference:
+              row['provenance_professional_reference'] as String?,
+          temporalPrecision: _enum(
+            RoutineTemporalPrecision.values,
+            row['temporal_precision'] ?? 'exact',
+            'temporal_precision',
+          ),
+        ),
       ),
       metadata,
     );

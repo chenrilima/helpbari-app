@@ -16,6 +16,15 @@ mixin _$SmartRoutineDaoMixin on DatabaseAccessor<AppDatabase> {
       attachedDatabase.routineOccurrenceRecords;
   $RoutineAdherenceEventRecordsTable get routineAdherenceEventRecords =>
       attachedDatabase.routineAdherenceEventRecords;
+  $UnifiedTreatmentLegacyMappingsTable get unifiedTreatmentLegacyMappings =>
+      attachedDatabase.unifiedTreatmentLegacyMappings;
+  $UnifiedTreatmentLegacyLogMappingsTable
+  get unifiedTreatmentLegacyLogMappings =>
+      attachedDatabase.unifiedTreatmentLegacyLogMappings;
+  $UnifiedTreatmentRolloutFlagsTable get unifiedTreatmentRolloutFlags =>
+      attachedDatabase.unifiedTreatmentRolloutFlags;
+  $UnifiedTreatmentCutoverStatesTable get unifiedTreatmentCutoverStates =>
+      attachedDatabase.unifiedTreatmentCutoverStates;
   SmartRoutineDaoManager get managers => SmartRoutineDaoManager(this);
 }
 
@@ -52,5 +61,29 @@ class SmartRoutineDaoManager {
       $$RoutineAdherenceEventRecordsTableTableManager(
         _db.attachedDatabase,
         _db.routineAdherenceEventRecords,
+      );
+  $$UnifiedTreatmentLegacyMappingsTableTableManager
+  get unifiedTreatmentLegacyMappings =>
+      $$UnifiedTreatmentLegacyMappingsTableTableManager(
+        _db.attachedDatabase,
+        _db.unifiedTreatmentLegacyMappings,
+      );
+  $$UnifiedTreatmentLegacyLogMappingsTableTableManager
+  get unifiedTreatmentLegacyLogMappings =>
+      $$UnifiedTreatmentLegacyLogMappingsTableTableManager(
+        _db.attachedDatabase,
+        _db.unifiedTreatmentLegacyLogMappings,
+      );
+  $$UnifiedTreatmentRolloutFlagsTableTableManager
+  get unifiedTreatmentRolloutFlags =>
+      $$UnifiedTreatmentRolloutFlagsTableTableManager(
+        _db.attachedDatabase,
+        _db.unifiedTreatmentRolloutFlags,
+      );
+  $$UnifiedTreatmentCutoverStatesTableTableManager
+  get unifiedTreatmentCutoverStates =>
+      $$UnifiedTreatmentCutoverStatesTableTableManager(
+        _db.attachedDatabase,
+        _db.unifiedTreatmentCutoverStates,
       );
 }

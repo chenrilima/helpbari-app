@@ -257,13 +257,13 @@ void main() {
         throwsA(isA<SmartRoutineValidationException>()),
       );
       expect(
-        () => _plan(now, durationType: PlanDurationType.fixed),
+        () => _plan(now, durationType: PlanDurationType.bounded),
         throwsA(isA<SmartRoutineValidationException>()),
       );
       expect(
         () => _plan(
           now,
-          durationType: PlanDurationType.fixed,
+          durationType: PlanDurationType.bounded,
           effectiveUntil: LocalDate(year: 2026, month: 7, day: 19),
         ),
         throwsA(isA<SmartRoutineValidationException>()),

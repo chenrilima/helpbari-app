@@ -7,7 +7,6 @@ import '../../../baria/presentation/providers/baria_view_model_provider.dart';
 import '../../../charts/presentation/providers/chart_series_providers.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
-import '../../application/medication_reminder_service.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -16,9 +15,6 @@ import '../states/medication_state.dart';
 
 class MedicationViewModel extends Notifier<MedicationState> {
   UuidService get _uuid => ref.read(uuidServiceProvider);
-  LoggerService get _logger => ref.read(loggerServiceProvider);
-  MedicationReminderService get _reminders =>
-      ref.read(medicationReminderServiceProvider);
   MedicationUseCases get _useCases => ref.read(medicationUseCasesProvider);
   @override
   MedicationState build() => const MedicationState();
@@ -62,9 +58,6 @@ class MedicationViewModel extends Notifier<MedicationState> {
     );
     return _persist(() async {
       await _useCases.save(m);
-      if (scheduleReminder) {
-        await _notification(() => _reminders.scheduleIfEnabled(m));
-      }
     });
   }
 
@@ -87,14 +80,12 @@ class MedicationViewModel extends Notifier<MedicationState> {
     );
     return _persist(() async {
       await _useCases.update(m);
-      await _notification(() => _reminders.rescheduleIfEnabled(m));
     });
   }
 
   Future<bool> deleteMedication(String id) => _persist(() async {
     await _useCases.delete(id);
     await ref.read(medicationLogRepositoryProvider).deleteForMedication(id);
-    await _notification(() => _reminders.cancel(id));
   });
   Future<void> markAsTaken(String id) => _status(id, MedicationStatus.taken);
   Future<void> markAsSkipped(String id) =>
@@ -121,16 +112,6 @@ class MedicationViewModel extends Notifier<MedicationState> {
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return false;
-    }
-  }
-
-  Future<void> _notification(Future<void> Function() operation) async {
-    try {
-      await operation();
-    } catch (e) {
-      _logger.warning(
-        'Medication notification reconciliation failed (${e.runtimeType}).',
-      );
     }
   }
 

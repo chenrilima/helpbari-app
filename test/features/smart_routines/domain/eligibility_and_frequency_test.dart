@@ -14,7 +14,7 @@ void main() {
       final endDate = LocalDate(year: 2026, month: 7, day: 30);
       final plan = _plan(
         activatedAt: start,
-        durationType: PlanDurationType.fixed,
+        durationType: PlanDurationType.bounded,
         effectiveUntil: endDate,
       );
 

@@ -107,6 +107,15 @@ class PrivacyLocalCleanupService {
 
   static const _onboardingDraftKey = 'onboarding.profileDraft.v1';
   static const _userTables = <String>[
+    'unified_treatment_legacy_log_mappings',
+    'unified_treatment_legacy_mappings',
+    'unified_treatment_cutover_states',
+    'routine_adherence_event_records',
+    'routine_occurrence_records',
+    'routine_pause_records',
+    'routine_schedule_records',
+    'routine_plan_records',
+    'smart_routine_records',
     'medical_prescription_item_records',
     'medical_exam_results',
     'medical_prescription_records',

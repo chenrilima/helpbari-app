@@ -133,13 +133,16 @@ operacional são projeções locais e descartáveis de cada dispositivo.
 
 Atualmente, as fontes da verdade são:
 
-- `Medication`, `Vitamin` e `Appointment`, para horário, data e estado;
+- `SmartRoutine`, `RoutinePlan` e `RoutineSchedule`, para as regras de
+  tratamento expostas pelas fachadas Medication/Vitamin;
+- `Appointment`, para data, horário e estado de consultas;
 - `Settings`, para habilitar ou desabilitar cada categoria de lembrete;
 - Drift, como fonte local offline-first dessas entidades;
 - Supabase e o Sync Engine, para sincronizar entidades e preferências.
 
-O `NotificationScheduler` recebe projeções produzidas pelos serviços de cada
-feature. Ele não é repositório de domínio e não participa do Sync Engine. A
+O `NotificationScheduler` recebe atualmente apenas a projeção de Appointment.
+As projeções de tratamento serão retomadas por Notifications V2 a partir de
+ocorrências canônicas. Ele não é repositório de domínio e não participa do Sync Engine. A
 chave local combina `userId`, tipo da entidade e `entityId`; o ID inteiro usado
 pelo plugin é derivado dessa chave e nunca é sincronizado.
 
@@ -191,3 +194,15 @@ Notifications V2 deverá projetar localmente uma janela móvel de ocorrências a
 partir desses schedules. Ocorrências, IDs do plugin, permissões e estado do
 sistema operacional continuarão locais. A transição deve substituir os
 projetores por feature gradualmente, sem reativar `notification_reminders`.
+
+## Unified Treatment Engine
+
+Medication e Vitamin são fachadas de apresentação sobre Smart Routines. Novas
+escritas criam ou revisam `SmartRoutine + RoutinePlan + RoutineSchedule`; ações
+diárias materializam a occurrence necessária e acrescentam um adherence event.
+As tabelas legadas são preservadas somente para migração auditável e rollback
+lógico anterior a novas escritas.
+
+O rollout usa flags persistidas e cutover por usuário. Sync remoto de Smart
+Routines permanece independente do cutover local e começa desabilitado até a
+migration remota ser confirmada. Consulte `docs/UNIFIED_TREATMENT_ENGINE.md`.
