@@ -1,5 +1,8 @@
 export 'active_plan_selector.dart';
 export 'eligibility_results.dart';
+export 'occurrence_blueprint_generation_result.dart';
+export 'occurrence_blueprint_generator.dart';
+export 'occurrence_blueprint_range_generator.dart';
 export 'pause_eligibility_policy.dart';
 export 'plan_schedule_selector.dart';
 export 'plan_validity_policy.dart';

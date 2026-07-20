@@ -31,6 +31,11 @@ final class LocalDate implements Comparable<LocalDate> {
     day,
   ).difference(DateTime.utc(anchor.year, anchor.month, anchor.day)).inDays;
 
+  LocalDate addDays(int days) {
+    final value = DateTime.utc(year, month, day).add(Duration(days: days));
+    return LocalDate(year: value.year, month: value.month, day: value.day);
+  }
+
   @override
   int compareTo(LocalDate other) => DateTime.utc(
     year,

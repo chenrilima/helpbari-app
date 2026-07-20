@@ -44,3 +44,12 @@ enum RoutineOccurrenceOrigin { generated, adHocAsNeeded, migrated }
 enum AdherenceEventActor { user, caregiver, system, imported }
 
 enum RoutinePauseScope { routine, plan }
+
+enum ExpectationKind {
+  recurringExpectation,
+  singleExpectation,
+  asNeeded,
+  unstructured,
+  unsupported,
+  none,
+}

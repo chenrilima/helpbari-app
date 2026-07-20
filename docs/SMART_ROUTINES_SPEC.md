@@ -107,6 +107,7 @@ Smart Routines deverá entrar nesses mesmos contratos antes de qualquer cutover.
 | **SmartRoutine** | Identidade duradoura e intenção acompanhada ao longo de revisões. Possui proprietário e ciclo de vida. | Dose, frequência ou ocorrência específica. | Persistida. | “Vitamina B12” ao longo de mudanças de dose. |
 | **RoutinePlan** | Snapshot imutável e versionado da expectativa: categoria, dose, via, instruções, vigência e schedules. | Estado atual do plugin ou edição mutável do passado. | Persistido. | Revisão 2: 1000 mcg a partir de 10/08. |
 | **RoutineSchedule** | Regra temporal pertencente a uma revisão do plano, incluindo timezone, janela e preferências de lembrete. | Notificação concreta ou fato de tomada. | Persistido. | Diariamente às 08:00 em America/Sao_Paulo. |
+| **OccurrenceBlueprint** | Intenção local intermediária produzida por rotina, plano e schedule elegíveis. Preserva LocalDate, horário e timezone IANA. | Ocorrência persistida, instante UTC ou ID. | Derivado e não persistido. | Intenção de 20/07 às 08:00 em America/Sao_Paulo. |
 | **RoutineOccurrence** | Expectativa individual produzida por plan + schedule para um slot nominal. | Prova de tomada ou notificação. | Derivada por padrão; materializada quando possui evento, exceção ou snapshot. | Dose esperada em 20/07 às 08:00. |
 | **RoutineAdherenceEvent** | Fato append-only ou correção referente a uma ocorrência. | Estado sobrescrito do dia ou recomendação clínica. | Persistido. | Taken às 08:12, registrado às 09:00. |
 | **RoutinePause** | Intervalo explícito que suspende expectativas de uma rotina/plano. | Cancelamento, exclusão ou simples falta de uso. | Persistido. | Pausa de 20/07 a 25/07. |
@@ -212,6 +213,20 @@ antecipa para o último dia nem posterga para o mês seguinte.
 Uma ocorrência existe logicamente quando um schedule ativo produz um slot
 dentro da vigência, fora de pausa e respeitando status/revisão. Por padrão ela
 é derivada sob demanda.
+
+Antes da resolução de timezone e identidade, o domínio produz um
+`OccurrenceBlueprint` não persistido. Ele contém `routineId`, `planId`,
+`scheduleId`, data clínica, horário local, timezone IANA, tipo da regra e uma
+`sequence` baseada em zero, atribuída após ordenar e deduplicar os horários do
+schedule na data. Não contém UUID, `RoutineOccurrenceId`, instante UTC, janela,
+status de adesão ou metadados de sync.
+
+Blueprints são ordenados por data clínica, horário local, `displayOrder`,
+`scheduleId` e `sequence`. A deduplicação usa a identidade lógica do mesmo
+schedule/data/horário/sequence; schedules distintos no mesmo horário continuam
+produzindo expectativas distintas. `everyHours` não participa da geração por
+data até existir resolução temporal por instante. Intervalos clínicos usam
+`[startDateInclusive, endDateExclusive)` e limite máximo explícito do chamador.
 
 ID determinístico: UUIDv5 de namespace versionado e chave canônica
 `userId|planId|planRevision|scheduleId|localDate|slotKey`. O algoritmo e sua

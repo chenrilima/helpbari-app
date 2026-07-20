@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import '../entities/entities.dart';
+import '../enums/routine_enums.dart';
 import '../value_objects/routine_values.dart';
 
 enum PlanValidityReason {
@@ -91,15 +92,6 @@ final class PauseEvaluationResult {
       _listEquals(applicablePauses, other.applicablePauses);
   @override
   int get hashCode => Object.hash(hasOverlap, Object.hashAll(applicablePauses));
-}
-
-enum ExpectationKind {
-  recurringExpectation,
-  singleExpectation,
-  asNeeded,
-  unstructured,
-  unsupported,
-  none,
 }
 
 enum ScheduleDateEligibilityReason {

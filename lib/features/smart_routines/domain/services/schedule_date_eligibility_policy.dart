@@ -1,3 +1,4 @@
+import '../enums/routine_enums.dart';
 import '../value_objects/local_date.dart';
 import '../value_objects/schedule_rule.dart';
 import 'eligibility_results.dart';
