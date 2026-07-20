@@ -46,6 +46,18 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
             )
             ..orderBy([(row) => OrderingTerm.asc(row.revision)]))
           .get();
+  Future<RoutinePlanRecord?> getPlan(String userId, String id) =>
+      (select(routinePlanRecords)
+            ..where((row) => row.userId.equals(userId) & row.id.equals(id)))
+          .getSingleOrNull();
+  Future<RoutineScheduleRecord?> getSchedule(String userId, String id) =>
+      (select(routineScheduleRecords)
+            ..where((row) => row.userId.equals(userId) & row.id.equals(id)))
+          .getSingleOrNull();
+  Future<RoutinePauseRecord?> getPause(String userId, String id) =>
+      (select(routinePauseRecords)
+            ..where((row) => row.userId.equals(userId) & row.id.equals(id)))
+          .getSingleOrNull();
   Future<List<RoutineScheduleRecord>> getSchedules(
     String userId,
     String planId,
@@ -258,6 +270,27 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
+  Future<DateTime?> getSyncCursor(String userId, String key) async =>
+      (await (attachedDatabase.select(attachedDatabase.syncCursors)..where(
+                (row) =>
+                    row.userId.equals(userId) & row.repositoryKey.equals(key),
+              ))
+              .getSingleOrNull())
+          ?.lastPullAt;
+
+  Future<void> saveSyncCursor(String userId, String key, DateTime value) =>
+      attachedDatabase
+          .into(attachedDatabase.syncCursors)
+          .insertOnConflictUpdate(
+            SyncCursorsCompanion.insert(
+              userId: userId,
+              repositoryKey: key,
+              lastPullAt: Value(value),
+              lastSyncAt: Value(value),
+              status: const Value('success'),
+            ),
+          );
+
   bool _sameOccurrence(
     RoutineOccurrenceRecord current,
     RoutineOccurrenceRecordsCompanion row,
@@ -265,10 +298,13 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
       current.routineId == row.routineId.value &&
       current.planId == row.planId.value &&
       current.scheduleId == row.scheduleId.value &&
+      current.origin == row.origin.value &&
+      current.status == row.status.value &&
       current.originalClinicalDate == row.originalClinicalDate.value &&
       current.originalLocalHour == row.originalLocalHour.value &&
       current.originalLocalMinute == row.originalLocalMinute.value &&
       current.originalTimeZone == row.originalTimeZone.value &&
+      current.expectationKind == row.expectationKind.value &&
       current.sequence == row.sequence.value &&
       current.originalScheduledFor == row.originalScheduledFor.value &&
       current.originalWindowStartsAt == row.originalWindowStartsAt.value &&
@@ -296,5 +332,14 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
       current.replacementType == row.replacementType.value &&
       current.replacementOccurredAtUtc == row.replacementOccurredAtUtc.value &&
       current.rescheduledForUtc == row.rescheduledForUtc.value &&
-      current.note == row.note.value;
+      current.rescheduledWindowStartsAtUtc ==
+          row.rescheduledWindowStartsAtUtc.value &&
+      current.rescheduledOnTimeEndsAtUtc ==
+          row.rescheduledOnTimeEndsAtUtc.value &&
+      current.rescheduledWindowEndsAtUtc ==
+          row.rescheduledWindowEndsAtUtc.value &&
+      current.note == row.note.value &&
+      current.actualDoseValue == row.actualDoseValue.value &&
+      current.actualDoseUnit == row.actualDoseUnit.value &&
+      current.actualDoseOriginalText == row.actualDoseOriginalText.value;
 }

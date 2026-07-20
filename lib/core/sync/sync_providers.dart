@@ -74,6 +74,9 @@ import '../../features/medical_exams/data/repositories/medical_exam_sync_reposit
 import '../../features/medical_prescriptions/data/datasources/drift_medical_prescription_local_datasource.dart';
 import '../../features/medical_prescriptions/data/datasources/medical_prescription_supabase_datasource.dart';
 import '../../features/medical_prescriptions/data/repositories/medical_prescription_sync_repository.dart';
+import '../../features/smart_routines/data/datasources/drift_smart_routine_datasource.dart';
+import '../../features/smart_routines/data/datasources/smart_routine_supabase_datasource.dart';
+import '../../features/smart_routines/data/repositories/smart_routines_sync_repository.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
@@ -294,6 +297,16 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       local: () async =>
           (await ref.read(appDatabaseProvider.future)).documentIntelligenceDao,
       remote: DocumentProcessingSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+    ),
+    SmartRoutinesSyncRepository(
+      local: () async => DriftSmartRoutineDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).smartRoutineDao,
+        userId: user.id,
+      ),
+      remote: SmartRoutineSupabaseDatasource(
         ref.watch(supabaseDatabaseProvider),
       ),
       userId: user.id,

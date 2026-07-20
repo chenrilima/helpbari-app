@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../../core/supabase/database/supabase_database.dart';
 
 final class SmartRoutineRemoteRecord {
@@ -12,9 +14,39 @@ final class SmartRoutineEventCursor {
   final String id;
 }
 
+final class SmartRoutineRemoteCursor {
+  const SmartRoutineRemoteCursor(this.timestampUtc, this.id);
+  final DateTime timestampUtc;
+  final String id;
+}
+
+abstract interface class SmartRoutineRemoteStore {
+  Future<Map<String, dynamic>> upsertMutable(
+    String table,
+    Map<String, dynamic> input, {
+    required String userId,
+  });
+  Future<Map<String, dynamic>> appendEvent(
+    Map<String, dynamic> input, {
+    required String userId,
+  });
+  Future<List<Map<String, dynamic>>> pullPage({
+    required String table,
+    required String userId,
+    required DateTime? inclusiveAfter,
+    required SmartRoutineRemoteCursor? after,
+    required int limit,
+  });
+  Future<Map<String, dynamic>?> findById(
+    String table,
+    String id, {
+    required String userId,
+  });
+}
+
 /// Thin remote boundary. Clinical validation stays in DTO/domain mappers and
 /// ownership is enforced both here and by composite foreign keys/RLS.
-final class SmartRoutineSupabaseDatasource {
+final class SmartRoutineSupabaseDatasource implements SmartRoutineRemoteStore {
   const SmartRoutineSupabaseDatasource(this._database);
   final SupabaseDatabase _database;
 
@@ -27,6 +59,7 @@ final class SmartRoutineSupabaseDatasource {
     'routine_adherence_events',
   ];
 
+  @override
   Future<Map<String, dynamic>> upsertMutable(
     String table,
     Map<String, dynamic> input, {
@@ -44,11 +77,14 @@ final class SmartRoutineSupabaseDatasource {
     );
   }
 
+  @override
   Future<Map<String, dynamic>> appendEvent(
     Map<String, dynamic> input, {
     required String userId,
   }) async {
-    final row = _remoteRow(input, userId);
+    final row = _remoteRow(input, userId)
+      ..remove('updated_at')
+      ..remove('deleted_at');
     final id = row['id'] as String;
     final existing = await _database.run(
       operation: 'select',
@@ -123,6 +159,56 @@ final class SmartRoutineSupabaseDatasource {
     },
   );
 
+  @override
+  Future<List<Map<String, dynamic>>> pullPage({
+    required String table,
+    required String userId,
+    required DateTime? inclusiveAfter,
+    required SmartRoutineRemoteCursor? after,
+    required int limit,
+  }) => _database.run(
+    operation: 'select',
+    table: table,
+    request: (query) async {
+      final timestampColumn = table == 'routine_adherence_events'
+          ? 'created_at'
+          : 'updated_at';
+      var request = query.select().eq('user_id', userId);
+      if (after != null) {
+        final timestamp = after.timestampUtc.toUtc().toIso8601String();
+        request = request.or(
+          '$timestampColumn.gt.$timestamp,and($timestampColumn.eq.$timestamp,id.gt.${after.id})',
+        );
+      } else if (inclusiveAfter != null) {
+        request = request.gte(
+          timestampColumn,
+          inclusiveAfter.toUtc().toIso8601String(),
+        );
+      }
+      return (await request.order(timestampColumn).order('id').limit(limit))
+          .map((row) => Map<String, dynamic>.from(row))
+          .toList(growable: false);
+    },
+  );
+
+  @override
+  Future<Map<String, dynamic>?> findById(
+    String table,
+    String id, {
+    required String userId,
+  }) => _database.run(
+    operation: 'select',
+    table: table,
+    request: (query) async {
+      final row = await query
+          .select()
+          .eq('user_id', userId)
+          .eq('id', id)
+          .maybeSingle();
+      return row == null ? null : Map<String, dynamic>.from(row);
+    },
+  );
+
   Map<String, dynamic> _remoteRow(Map<String, dynamic> input, String userId) {
     if (input['user_id'] != userId) {
       throw StateError('smart_routine_user_mismatch');
@@ -147,6 +233,29 @@ final class SmartRoutineSupabaseDatasource {
       ..removeWhere((key, _) => ignored.contains(key));
     final rightClinical = Map<String, dynamic>.from(right)
       ..removeWhere((key, _) => ignored.contains(key));
-    return leftClinical.toString() == rightClinical.toString();
+    return jsonEncode(_canonical(leftClinical)) ==
+        jsonEncode(_canonical(rightClinical));
+  }
+
+  Map<String, dynamic> _canonical(Map<String, dynamic> value) {
+    final keys = value.keys.toList()..sort();
+    return {for (final key in keys) key: _canonicalValue(key, value[key])};
+  }
+
+  Object? _canonicalValue(String key, Object? value) {
+    if (value is Map) return _canonical(Map<String, dynamic>.from(value));
+    if (value is List) {
+      return value
+          .map((item) => _canonicalValue('', item))
+          .toList(growable: false);
+    }
+    if (value is String &&
+        (key.endsWith('_at') ||
+            key.endsWith('_for') ||
+            key.endsWith('_at_utc') ||
+            key.endsWith('_for_utc'))) {
+      return DateTime.parse(value).toUtc().toIso8601String();
+    }
+    return value;
   }
 }

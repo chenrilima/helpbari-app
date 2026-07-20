@@ -6,7 +6,24 @@ import '../../../../core/database/drift/app_database.dart';
 import '../../../../core/database/drift/daos/smart_routine_dao.dart';
 import '../dtos/smart_routine_dtos.dart';
 
-final class DriftSmartRoutineDatasource {
+abstract interface class SmartRoutineLocalStore {
+  Future<List<SmartRoutineLocalRecord>> pendingSync();
+  Future<SmartRoutineLocalRecord?> byKey(String table, String id);
+  Future<bool> dependenciesSynced(SmartRoutineLocalRecord record);
+  Future<Map<String, DateTime?>> cursors(Iterable<String> tables);
+  Future<void> applyRemoteBatch(
+    List<SmartRoutineLocalRecord> records,
+    Map<String, DateTime> cursors,
+  );
+  Future<void> markSync(
+    String table,
+    String id,
+    String status, {
+    String? error,
+  });
+}
+
+final class DriftSmartRoutineDatasource implements SmartRoutineLocalStore {
   const DriftSmartRoutineDatasource({required this.dao, required this.userId});
   final SmartRoutineDao dao;
   final String userId;
@@ -22,6 +39,7 @@ final class DriftSmartRoutineDatasource {
   Future<bool> appendEvent(RoutineAdherenceEventDto dto) =>
       dao.insertEventIdempotent(_event(dto));
 
+  @override
   Future<List<SmartRoutineLocalRecord>> pendingSync() async {
     final records = <SmartRoutineLocalRecord>[];
     Future<void> add(String type, Future<List<dynamic>> query) async {
@@ -44,6 +62,81 @@ final class DriftSmartRoutineDatasource {
     return records;
   }
 
+  @override
+  Future<SmartRoutineLocalRecord?> byKey(String table, String id) async {
+    final dynamic record = switch (table) {
+      'smart_routines' => await dao.getRoutine(userId, id),
+      'routine_plans' => await dao.getPlan(userId, id),
+      'routine_schedules' => await dao.getSchedule(userId, id),
+      'routine_pauses' => await dao.getPause(userId, id),
+      'routine_occurrences' => await dao.getOccurrence(userId, id),
+      'routine_adherence_events' => await dao.getEvent(userId, id),
+      _ => throw ArgumentError.value(table, 'table'),
+    };
+    if (record == null) return null;
+    return SmartRoutineLocalRecord(
+      table,
+      _remoteMap(record.toJson() as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<bool> dependenciesSynced(SmartRoutineLocalRecord record) async {
+    final row = record.row;
+    Future<bool> synced(String table, String id) async {
+      final parent = await byKey(table, id);
+      return parent != null && parent.row['sync_status'] == 'synced';
+    }
+
+    return switch (record.table) {
+      'smart_routines' => true,
+      'routine_plans' => synced('smart_routines', row['routine_id'] as String),
+      'routine_schedules' =>
+        await synced('smart_routines', row['routine_id'] as String) &&
+            await synced('routine_plans', row['plan_id'] as String),
+      'routine_pauses' =>
+        await synced('smart_routines', row['routine_id'] as String) &&
+            (row['plan_id'] == null ||
+                await synced('routine_plans', row['plan_id'] as String)),
+      'routine_occurrences' =>
+        await synced('smart_routines', row['routine_id'] as String) &&
+            await synced('routine_plans', row['plan_id'] as String) &&
+            (row['schedule_id'] == null ||
+                await synced(
+                  'routine_schedules',
+                  row['schedule_id'] as String,
+                )),
+      'routine_adherence_events' => await synced(
+        'routine_occurrences',
+        row['occurrence_id'] as String,
+      ),
+      _ => throw ArgumentError.value(record.table, 'table'),
+    };
+  }
+
+  @override
+  Future<Map<String, DateTime?>> cursors(Iterable<String> tables) async {
+    final values = <String, DateTime?>{};
+    for (final table in tables) {
+      values[table] = await dao.getSyncCursor(userId, _cursorKey(table));
+    }
+    return values;
+  }
+
+  @override
+  Future<void> applyRemoteBatch(
+    List<SmartRoutineLocalRecord> records,
+    Map<String, DateTime> cursors,
+  ) => dao.inTransaction(() async {
+    for (final record in records) {
+      await _applyRemote(record);
+    }
+    for (final entry in cursors.entries) {
+      await dao.saveSyncCursor(userId, _cursorKey(entry.key), entry.value);
+    }
+  });
+
+  @override
   Future<void> markSync(
     String table,
     String id,
@@ -255,11 +348,68 @@ final class DriftSmartRoutineDatasource {
         RegExp(r'[A-Z]'),
         (match) => '_${match.group(0)!.toLowerCase()}',
       );
+
+      final value = entry.value;
       result[key == 'rule_json' ? 'rule' : key] = key == 'rule_json'
-          ? jsonDecode(entry.value as String)
-          : entry.value;
+          ? jsonDecode(value as String)
+          : _isInstantKey(key) && value != null
+          ? _date(value).toUtc().toIso8601String()
+          : value;
     }
     return result;
+  }
+
+  Future<void> _applyRemote(SmartRoutineLocalRecord record) async {
+    final row = Map<String, dynamic>.from(record.row)
+      ..['sync_status'] = 'synced';
+    if (record.table == 'routine_adherence_events') {
+      row['updated_at'] ??= row['created_at'];
+    }
+    _owned(row);
+    switch (record.table) {
+      case 'smart_routines':
+        await saveRoutine(SmartRoutineDto.fromRow(row));
+        return;
+      case 'routine_plans':
+        final incoming = RoutinePlanDto.fromRow(row);
+        final current = await dao.getPlan(userId, incoming.entity.planId.value);
+        if (current != null &&
+            RoutinePlanDto.fromRow(_remoteMap(current.toJson())).entity !=
+                incoming.entity) {
+          throw StateError('routine_plan_payload_conflict');
+        }
+        await savePlan(incoming);
+        return;
+      case 'routine_schedules':
+        final plan = await dao.getPlan(userId, row['plan_id'] as String);
+        if (plan == null) {
+          throw StateError('routine_schedule_parent_missing');
+        }
+        final planDto = RoutinePlanDto.fromRow(_remoteMap(plan.toJson()));
+        await saveSchedule(RoutineScheduleDto.fromRow(row, planDto.entity));
+        return;
+      case 'routine_pauses':
+        await savePause(RoutinePauseDto.fromRow(row));
+        return;
+      case 'routine_occurrences':
+        final incoming = RoutineOccurrenceDto.fromRow(row);
+        final current = await dao.getOccurrence(userId, incoming.entity.id);
+        if (current == null) {
+          await materializeOccurrence(incoming);
+        } else {
+          final currentRow = _remoteMap(current.toJson());
+          if (!_sameOccurrenceIdentity(currentRow, row)) {
+            throw StateError('routine_occurrence_identity_conflict');
+          }
+          await dao.updateOccurrenceCurrentWindow(_occurrence(incoming));
+        }
+        return;
+      case 'routine_adherence_events':
+        await appendEvent(RoutineAdherenceEventDto.fromRow(row));
+        return;
+      default:
+        throw ArgumentError.value(record.table, 'table');
+    }
   }
 
   String _localTable(String remote) => switch (remote) {
@@ -271,6 +421,41 @@ final class DriftSmartRoutineDatasource {
     'routine_adherence_events' => 'routine_adherence_event_records',
     _ => throw ArgumentError.value(remote, 'remote'),
   };
+
+  String _cursorKey(String table) => 'smart_routines:$table';
+
+  bool _isInstantKey(String key) =>
+      key.endsWith('_at') ||
+      key.endsWith('_for') ||
+      key.endsWith('_at_utc') ||
+      key.endsWith('_for_utc');
+
+  bool _sameOccurrenceIdentity(
+    Map<String, dynamic> current,
+    Map<String, dynamic> incoming,
+  ) {
+    const fields = <String>{
+      'id',
+      'user_id',
+      'routine_id',
+      'plan_id',
+      'schedule_id',
+      'origin',
+      'original_clinical_date',
+      'original_local_hour',
+      'original_local_minute',
+      'original_time_zone',
+      'expectation_kind',
+      'sequence',
+      'original_scheduled_for',
+      'original_window_starts_at',
+      'original_on_time_ends_at',
+      'original_window_ends_at',
+    };
+    return fields.every(
+      (field) => current[field].toString() == incoming[field].toString(),
+    );
+  }
 }
 
 final class SmartRoutineLocalRecord {
