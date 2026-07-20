@@ -118,9 +118,20 @@ void main() {
         () => EveryNHoursRule(0),
         throwsA(isA<SmartRoutineValidationException>()),
       );
-      expect(EveryNDaysRule(intervalDays: 2, times: [morning]).intervalDays, 2);
       expect(
-        () => EveryNDaysRule(intervalDays: 0, times: [morning]),
+        EveryNDaysRule(
+          intervalDays: 2,
+          anchorDate: LocalDate(year: 2026, month: 7, day: 20),
+          times: [morning],
+        ).intervalDays,
+        2,
+      );
+      expect(
+        () => EveryNDaysRule(
+          intervalDays: 0,
+          anchorDate: LocalDate(year: 2026, month: 7, day: 20),
+          times: [morning],
+        ),
         throwsA(isA<SmartRoutineValidationException>()),
       );
     });
@@ -251,7 +262,7 @@ void main() {
         () => _plan(
           now,
           durationType: PlanDurationType.fixed,
-          effectiveUntil: now.subtract(const Duration(days: 1)),
+          effectiveUntil: LocalDate(year: 2026, month: 7, day: 19),
         ),
         throwsA(isA<SmartRoutineValidationException>()),
       );
@@ -277,6 +288,7 @@ void main() {
         final result = original.createRevision(
           newPlanId: RoutinePlanId(_newPlanUuid),
           at: now.add(const Duration(days: 1)),
+          effectiveFrom: LocalDate(year: 2026, month: 7, day: 21),
         );
 
         expect(original.replacedAt, isNull);
@@ -308,6 +320,7 @@ void main() {
         final result = original.createRevision(
           newPlanId: RoutinePlanId(_newPlanUuid),
           at: now.add(const Duration(days: 1)),
+          effectiveFrom: LocalDate(year: 2026, month: 7, day: 21),
           dose: DoseValue(value: '40', unit: 'mg'),
           route: 'sublingual',
           clinicalInstructions: 'Em jejum',
@@ -316,7 +329,10 @@ void main() {
         expect(result.previousPlan.dose, DoseValue(value: '20', unit: 'mg'));
         expect(result.previousPlan.route, 'oral');
         expect(result.previousPlan.clinicalInstructions, 'Após o café');
-        expect(result.previousPlan.effectiveFrom, now);
+        expect(
+          result.previousPlan.effectiveFrom,
+          LocalDate(year: 2026, month: 7, day: 20),
+        );
         expect(result.newPlan.dose, DoseValue(value: '40', unit: 'mg'));
         expect(result.newPlan.route, 'sublingual');
         expect(result.newPlan.clinicalInstructions, 'Em jejum');
@@ -332,6 +348,7 @@ void main() {
           () => active.createRevision(
             newPlanId: active.planId,
             at: now.add(const Duration(days: 1)),
+            effectiveFrom: LocalDate(year: 2026, month: 7, day: 21),
           ),
           throwsA(isA<SmartRoutineValidationException>()),
         );
@@ -339,6 +356,7 @@ void main() {
           () => _plan(now).createRevision(
             newPlanId: RoutinePlanId(_newPlanUuid),
             at: now.add(const Duration(days: 1)),
+            effectiveFrom: LocalDate(year: 2026, month: 7, day: 21),
           ),
           throwsA(isA<SmartRoutineValidationException>()),
         );
@@ -356,6 +374,7 @@ void main() {
           () => replaced.createRevision(
             newPlanId: RoutinePlanId(_newPlanUuid),
             at: now.add(const Duration(days: 1)),
+            effectiveFrom: LocalDate(year: 2026, month: 7, day: 21),
           ),
           throwsA(isA<SmartRoutineValidationException>()),
         );
@@ -384,10 +403,12 @@ void main() {
       final firstRevision = _plan(now, activatedAt: now).createRevision(
         newPlanId: RoutinePlanId(_newPlanUuid),
         at: now.add(const Duration(days: 1)),
+        effectiveFrom: LocalDate(year: 2026, month: 7, day: 21),
       );
       final secondRevision = _plan(now, activatedAt: now).createRevision(
         newPlanId: RoutinePlanId(_newPlanUuid),
         at: now.add(const Duration(days: 1)),
+        effectiveFrom: LocalDate(year: 2026, month: 7, day: 21),
       );
       expect(firstRevision, secondRevision);
       expect(firstRevision.hashCode, secondRevision.hashCode);
@@ -538,7 +559,7 @@ RoutinePlan _plan(
   int revision = 1,
   RoutinePlanMode mode = RoutinePlanMode.scheduled,
   PlanDurationType durationType = PlanDurationType.unknown,
-  DateTime? effectiveUntil,
+  LocalDate? effectiveUntil,
   DateTime? activatedAt,
   DateTime? replacedAt,
   DoseValue? dose,
@@ -550,7 +571,7 @@ RoutinePlan _plan(
   revision: revision,
   mode: mode,
   durationType: durationType,
-  effectiveFrom: now,
+  effectiveFrom: LocalDate.fromDateTime(now),
   effectiveUntil: effectiveUntil,
   createdAt: now,
   activatedAt: activatedAt,

@@ -1,6 +1,7 @@
 import '../../../../core/domain/entity.dart';
 import '../enums/routine_enums.dart';
 import '../errors/smart_routine_validation_exception.dart';
+import '../value_objects/local_date.dart';
 import '../value_objects/routine_values.dart';
 import '../value_objects/schedule_rule.dart';
 import '../value_objects/typed_ids.dart';
@@ -33,12 +34,12 @@ final class RoutinePlan extends Entity {
     required int revision,
     required RoutinePlanMode mode,
     required PlanDurationType durationType,
-    required DateTime effectiveFrom,
+    required LocalDate effectiveFrom,
     required DateTime createdAt,
     DoseValue? dose,
     String? route,
     String? clinicalInstructions,
-    DateTime? effectiveUntil,
+    LocalDate? effectiveUntil,
     DateTime? activatedAt,
     DateTime? replacedAt,
     RoutinePlanId? previousPlanId,
@@ -49,7 +50,7 @@ final class RoutinePlan extends Entity {
         'Plan revision must be at least 1.',
       );
     }
-    if (effectiveUntil != null && effectiveUntil.isBefore(effectiveFrom)) {
+    if (effectiveUntil != null && effectiveUntil.compareTo(effectiveFrom) < 0) {
       throw const SmartRoutineValidationException(
         'invalid_plan_effective_period',
         'Plan end cannot precede its start.',
@@ -127,8 +128,8 @@ final class RoutinePlan extends Entity {
   final int revision;
   final RoutinePlanMode mode;
   final PlanDurationType durationType;
-  final DateTime effectiveFrom;
-  final DateTime? effectiveUntil;
+  final LocalDate effectiveFrom;
+  final LocalDate? effectiveUntil;
   final DoseValue? dose;
   final String? route;
   final String? clinicalInstructions;
@@ -154,10 +155,10 @@ final class RoutinePlan extends Entity {
   PlanRevisionResult createRevision({
     required RoutinePlanId newPlanId,
     required DateTime at,
+    required LocalDate effectiveFrom,
     RoutinePlanMode? mode,
     PlanDurationType? durationType,
-    DateTime? effectiveFrom,
-    DateTime? effectiveUntil,
+    LocalDate? effectiveUntil,
     DoseValue? dose,
     String? route,
     String? clinicalInstructions,
@@ -197,7 +198,7 @@ final class RoutinePlan extends Entity {
       revision: revision + 1,
       mode: mode ?? this.mode,
       durationType: nextDuration,
-      effectiveFrom: effectiveFrom ?? at,
+      effectiveFrom: effectiveFrom,
       effectiveUntil: effectiveUntil,
       dose: dose ?? this.dose,
       route: route ?? this.route,

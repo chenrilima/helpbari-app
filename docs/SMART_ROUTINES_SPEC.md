@@ -160,11 +160,14 @@ tombstone e nunca substitui status funcional.
 
 ### 4.3 Vigência e duração
 
-- `effectiveFrom` é obrigatório para ativar um plano. Se desconhecido na
+- `effectiveFrom` é uma data clínica local obrigatória para ativar um plano. Se desconhecido na
   importação, usa-se o início de cobertura conhecido, marcado como estimado; o
   período anterior permanece desconhecido.
-- `effectiveUntil` é inclusivo no calendário do plano e opcional conforme
-  `durationMode`.
+- `effectiveUntil` é uma data clínica local inclusiva e opcional conforme
+  `durationMode`. Não representa meia-noite nem um instante absoluto.
+- `activatedAt` e `replacedAt` são instantes operacionais e delimitam o
+  intervalo semiaberto `[activatedAt, replacedAt)`. A futura resolução IANA
+  converterá o dia posterior a `effectiveUntil` no limite operacional exclusivo.
 - `durationMode` é `bounded`, `continuous`, `unknown` ou `singleDose`.
 - Ausência de término com `unknown` não pode ser inferida como continuous.
 - Plano futuro não produz ocorrências antes de `effectiveFrom`.
@@ -199,6 +202,10 @@ com motivo e faixa explícita; nunca reinterpretam silenciosamente eventos.
 
 Horários são normalizados, ordenados e únicos. Regras inválidas ou parcialmente
 extraídas permanecem draft/requiresReview.
+
+`everyDays` possui `anchorDate` clínica obrigatória e persistida na própria
+regra. Para `monthly`, um mês sem o dia configurado não produz slot; o V1 não
+antecipa para o último dia nem posterga para o mês seguinte.
 
 ### 4.6 Ocorrências e identidade
 
@@ -409,8 +416,8 @@ Migração é local-first, idempotente, por usuário e sem apagar legado:
   legado; IDs originais ficam em `legacySourceId`.
 - categoria vem da feature de origem; suplemento legado em Vitamin exige revisão
   se não puder ser distinguido.
-- plan revision 1 usa `effectiveFrom = createdAt` quando confiável; caso
-  contrário, primeiro instante de cobertura conhecido, marcado estimado.
+- plan revision 1 usa a data clínica local de `createdAt` quando confiável; caso
+  contrário, a primeira data de cobertura conhecida, marcada estimada.
 - uma regra `dailyAtTimes` recebe o único horário atual.
 - ausência de endDate vira `durationMode = unknown`, nunca continuous.
 - cada log existente materializa somente a ocorrência daquele dia e seu evento;

@@ -8,14 +8,13 @@ final class ScheduleDateEligibilityPolicy {
   ScheduleDateEligibilityResult evaluate({
     required ScheduleRule rule,
     required LocalDate localDate,
-    LocalDate? anchorDate,
   }) => switch (rule) {
     DailyAtTimesRule() => _eligible(ExpectationKind.recurringExpectation),
     SpecificWeekdaysAtTimesRule(:final weekdays) =>
       weekdays.values.contains(localDate.weekday)
           ? _eligible(ExpectationKind.recurringExpectation)
           : _notEligible(),
-    EveryNDaysRule(:final intervalDays) => _everyNDays(
+    EveryNDaysRule(:final intervalDays, :final anchorDate) => _everyNDays(
       localDate: localDate,
       anchorDate: anchorDate,
       intervalDays: intervalDays,
@@ -45,15 +44,9 @@ final class ScheduleDateEligibilityPolicy {
 
   ScheduleDateEligibilityResult _everyNDays({
     required LocalDate localDate,
-    required LocalDate? anchorDate,
+    required LocalDate anchorDate,
     required int intervalDays,
   }) {
-    if (anchorDate == null) {
-      return const ScheduleDateEligibilityResult(
-        reason: ScheduleDateEligibilityReason.anchorRequired,
-        expectationKind: ExpectationKind.unsupported,
-      );
-    }
     final days = localDate.daysSince(anchorDate);
     return days >= 0 && days % intervalDays == 0
         ? _eligible(ExpectationKind.recurringExpectation)
@@ -61,12 +54,7 @@ final class ScheduleDateEligibilityPolicy {
   }
 
   ScheduleDateEligibilityResult _monthly(LocalDate date, int dayOfMonth) {
-    if (dayOfMonth > date.daysInMonth) {
-      return const ScheduleDateEligibilityResult(
-        reason: ScheduleDateEligibilityReason.unsupported,
-        expectationKind: ExpectationKind.unsupported,
-      );
-    }
+    if (dayOfMonth > date.daysInMonth) return _notEligible();
     return date.day == dayOfMonth
         ? _eligible(ExpectationKind.recurringExpectation)
         : _notEligible();

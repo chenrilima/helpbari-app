@@ -6,28 +6,51 @@ import 'package:helpbari/features/smart_routines/domain/smart_routines_domain.da
 void main() {
   final start = DateTime.utc(2026, 7, 20, 8);
   final cutover = DateTime.utc(2026, 8, 1, 8);
+  final startDate = LocalDate(year: 2026, month: 7, day: 20);
   const validity = PlanValidityPolicy();
 
   group('plan validity and cutover', () {
     test('effective bounds are inclusive and replacement is exclusive', () {
-      final end = start.add(const Duration(days: 10));
+      final endDate = LocalDate(year: 2026, month: 7, day: 30);
       final plan = _plan(
         activatedAt: start,
         durationType: PlanDurationType.fixed,
-        effectiveUntil: end,
+        effectiveUntil: endDate,
       );
 
       expect(
         validity
-            .evaluate(plan, start.subtract(const Duration(seconds: 1)))
+            .evaluate(
+              plan: plan,
+              at: start.subtract(const Duration(seconds: 1)),
+              clinicalDate: startDate,
+            )
             .reason,
         PlanValidityReason.planNotStarted,
       );
-      expect(validity.evaluate(plan, start).isValid, isTrue);
-      expect(validity.evaluate(plan, end).isValid, isTrue);
       expect(
         validity
-            .evaluate(plan, end.add(const Duration(microseconds: 1)))
+            .evaluate(plan: plan, at: start, clinicalDate: startDate)
+            .isValid,
+        isTrue,
+      );
+      expect(
+        validity
+            .evaluate(
+              plan: plan,
+              at: DateTime.utc(2026, 7, 30, 23, 59, 59),
+              clinicalDate: endDate,
+            )
+            .isValid,
+        isTrue,
+      );
+      expect(
+        validity
+            .evaluate(
+              plan: plan,
+              at: DateTime.utc(2026, 7, 31),
+              clinicalDate: LocalDate(year: 2026, month: 7, day: 31),
+            )
             .reason,
         PlanValidityReason.planExpired,
       );
@@ -41,8 +64,19 @@ void main() {
       final unknown = _plan(activatedAt: start);
       final future = start.add(const Duration(days: 500));
 
-      expect(validity.evaluate(continuous, future).isValid, isTrue);
-      expect(validity.evaluate(unknown, future).isValid, isTrue);
+      final futureDate = LocalDate.fromDateTime(future);
+      expect(
+        validity
+            .evaluate(plan: continuous, at: future, clinicalDate: futureDate)
+            .isValid,
+        isTrue,
+      );
+      expect(
+        validity
+            .evaluate(plan: unknown, at: future, clinicalDate: futureDate)
+            .isValid,
+        isTrue,
+      );
       expect(unknown.durationType, PlanDurationType.unknown);
     });
 
@@ -52,19 +86,36 @@ void main() {
         id: _plan2,
         revision: 2,
         previousPlanId: RoutinePlanId(_plan1),
-        effectiveFrom: cutover,
+        effectiveFrom: LocalDate.fromDateTime(cutover),
         activatedAt: cutover,
       );
 
       expect(
-        validity.evaluate(_plan(), start).reason,
+        validity
+            .evaluate(plan: _plan(), at: start, clinicalDate: startDate)
+            .reason,
         PlanValidityReason.notActivated,
       );
       expect(
-        validity.evaluate(previous, cutover).reason,
+        validity
+            .evaluate(
+              plan: previous,
+              at: cutover,
+              clinicalDate: LocalDate.fromDateTime(cutover),
+            )
+            .reason,
         PlanValidityReason.planReplaced,
       );
-      expect(validity.evaluate(next, cutover).isValid, isTrue);
+      expect(
+        validity
+            .evaluate(
+              plan: next,
+              at: cutover,
+              clinicalDate: LocalDate.fromDateTime(cutover),
+            )
+            .isValid,
+        isTrue,
+      );
     });
   });
 
@@ -77,18 +128,20 @@ void main() {
         id: _plan2,
         revision: 2,
         previousPlanId: RoutinePlanId(_plan1),
-        effectiveFrom: cutover,
+        effectiveFrom: LocalDate.fromDateTime(cutover),
         activatedAt: cutover,
       );
       final ordered = selector.select(
         routineId: RoutineId(_routine1),
         plans: [previous, next],
         at: cutover,
+        clinicalDate: LocalDate.fromDateTime(cutover),
       );
       final reversed = selector.select(
         routineId: RoutineId(_routine1),
         plans: [next, previous],
         at: cutover,
+        clinicalDate: LocalDate.fromDateTime(cutover),
       );
 
       expect(ordered.reason, PlanSelectionReason.selected);
@@ -103,6 +156,7 @@ void main() {
               routineId: RoutineId(_routine1),
               plans: [_plan()],
               at: start,
+              clinicalDate: startDate,
             )
             .reason,
         PlanSelectionReason.noValidPlan,
@@ -120,6 +174,7 @@ void main() {
               routineId: RoutineId(_routine1),
               plans: [second, first],
               at: start,
+              clinicalDate: startDate,
             )
             .reason,
         PlanSelectionReason.multipleValidPlans,
@@ -137,6 +192,7 @@ void main() {
                 _plan(id: _plan2, activatedAt: start),
               ],
               at: start,
+              clinicalDate: startDate,
             )
             .reason,
         PlanSelectionReason.duplicateRevision,
@@ -147,6 +203,7 @@ void main() {
               routineId: RoutineId(_routine1),
               plans: [_plan(routineId: _routine2, activatedAt: start)],
               at: start,
+              clinicalDate: startDate,
             )
             .reason,
         PlanSelectionReason.foreignRoutine,
@@ -165,6 +222,7 @@ void main() {
                 ),
               ],
               at: start,
+              clinicalDate: startDate,
             )
             .reason,
         PlanSelectionReason.inconsistentChain,
@@ -317,39 +375,43 @@ void main() {
       );
     });
 
-    test('every N days requires anchor and uses non-negative modulo', () {
-      final rule = EveryNDaysRule(intervalDays: 3, times: [morning]);
-      expect(
-        policy.evaluate(rule: rule, localDate: monday).reason,
-        ScheduleDateEligibilityReason.anchorRequired,
+    test('every N days owns a stable anchor and uses non-negative modulo', () {
+      final rule = EveryNDaysRule(
+        intervalDays: 3,
+        anchorDate: monday,
+        times: [morning],
       );
-      expect(
-        policy
-            .evaluate(rule: rule, localDate: monday, anchorDate: monday)
-            .isEligible,
-        isTrue,
-      );
+      expect(rule.anchorDate, monday);
+      expect(policy.evaluate(rule: rule, localDate: monday).isEligible, isTrue);
       expect(
         policy
             .evaluate(
               rule: rule,
               localDate: LocalDate(year: 2026, month: 7, day: 23),
-              anchorDate: monday,
             )
             .isEligible,
         isTrue,
       );
       expect(
-        policy
-            .evaluate(rule: rule, localDate: tuesday, anchorDate: monday)
-            .isEligible,
+        policy.evaluate(rule: rule, localDate: tuesday).isEligible,
         isFalse,
       );
       expect(
         policy
-            .evaluate(rule: rule, localDate: monday, anchorDate: tuesday)
+            .evaluate(
+              rule: rule,
+              localDate: LocalDate(year: 2026, month: 7, day: 19),
+            )
             .isEligible,
         isFalse,
+      );
+      expect(
+        EveryNDaysRule(intervalDays: 3, anchorDate: monday, times: [morning]),
+        rule,
+      );
+      expect(
+        EveryNDaysRule(intervalDays: 3, anchorDate: tuesday, times: [morning]),
+        isNot(rule),
       );
     });
 
@@ -375,8 +437,35 @@ void main() {
               localDate: LocalDate(year: 2026, month: 2, day: 28),
             )
             .reason,
-        ScheduleDateEligibilityReason.unsupported,
+        ScheduleDateEligibilityReason.notEligible,
       );
+    });
+
+    test('monthly skips short months without shifting the configured day', () {
+      final rule = MonthlyRule(dayOfMonth: 31, times: [morning]);
+      final april30 = policy.evaluate(
+        rule: rule,
+        localDate: LocalDate(year: 2026, month: 4, day: 30),
+      );
+      final may1 = policy.evaluate(
+        rule: rule,
+        localDate: LocalDate(year: 2026, month: 5, day: 1),
+      );
+      final may30 = policy.evaluate(
+        rule: rule,
+        localDate: LocalDate(year: 2026, month: 5, day: 30),
+      );
+      final may31 = policy.evaluate(
+        rule: rule,
+        localDate: LocalDate(year: 2026, month: 5, day: 31),
+      );
+
+      expect(april30.reason, ScheduleDateEligibilityReason.notEligible);
+      expect(april30.expectationKind, ExpectationKind.none);
+      expect(may1.reason, ScheduleDateEligibilityReason.notEligible);
+      expect(may30.reason, ScheduleDateEligibilityReason.notEligible);
+      expect(may31.reason, ScheduleDateEligibilityReason.eligible);
+      expect(may31.expectationKind, ExpectationKind.recurringExpectation);
     });
 
     test(
@@ -700,8 +789,8 @@ RoutinePlan _plan({
   int revision = 1,
   RoutinePlanMode mode = RoutinePlanMode.scheduled,
   PlanDurationType durationType = PlanDurationType.unknown,
-  DateTime? effectiveFrom,
-  DateTime? effectiveUntil,
+  LocalDate? effectiveFrom,
+  LocalDate? effectiveUntil,
   DateTime? activatedAt,
   DateTime? replacedAt,
   RoutinePlanId? previousPlanId,
@@ -711,7 +800,7 @@ RoutinePlan _plan({
   revision: revision,
   mode: mode,
   durationType: durationType,
-  effectiveFrom: effectiveFrom ?? DateTime.utc(2026, 7, 20, 8),
+  effectiveFrom: effectiveFrom ?? LocalDate(year: 2026, month: 7, day: 20),
   effectiveUntil: effectiveUntil,
   createdAt: DateTime.utc(2026, 7, 1),
   activatedAt: activatedAt,

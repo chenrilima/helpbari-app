@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import '../enums/routine_enums.dart';
 import '../errors/smart_routine_validation_exception.dart';
+import 'local_date.dart';
 import 'routine_values.dart';
 
 sealed class ScheduleRule {
@@ -75,6 +76,7 @@ final class EveryNHoursRule extends ScheduleRule {
 final class EveryNDaysRule extends ScheduleRule {
   EveryNDaysRule({
     required this.intervalDays,
+    required this.anchorDate,
     required Iterable<TimeOfDayValue> times,
   }) : times = _normalizedTimes(times, 'day_interval_times_required'),
        super(ScheduleFrequencyType.everyNDays) {
@@ -86,15 +88,18 @@ final class EveryNDaysRule extends ScheduleRule {
     }
   }
   final int intervalDays;
+  final LocalDate anchorDate;
   final List<TimeOfDayValue> times;
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is EveryNDaysRule &&
           intervalDays == other.intervalDays &&
+          anchorDate == other.anchorDate &&
           _listEquals(times, other.times);
   @override
-  int get hashCode => Object.hash(intervalDays, Object.hashAll(times));
+  int get hashCode =>
+      Object.hash(intervalDays, anchorDate, Object.hashAll(times));
 }
 
 final class WeeklyRule extends ScheduleRule {

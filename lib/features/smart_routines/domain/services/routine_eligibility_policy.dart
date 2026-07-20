@@ -27,7 +27,6 @@ final class RoutineEligibilityPolicy {
     required Iterable<RoutinePause> pauses,
     required DateTime at,
     required LocalDate localDate,
-    LocalDate? anchorDate,
   }) {
     if (routine.isDeleted) {
       return const RoutineEligibilityResult(
@@ -47,7 +46,11 @@ final class RoutineEligibilityPolicy {
         RoutineEligibilityReason.routineInactive,
       );
     }
-    final validity = planValidityPolicy.evaluate(plan, at);
+    final validity = planValidityPolicy.evaluate(
+      plan: plan,
+      at: at,
+      clinicalDate: localDate,
+    );
     if (!validity.isValid) {
       return RoutineEligibilityResult(switch (validity.reason) {
         PlanValidityReason.notActivated =>
@@ -81,11 +84,7 @@ final class RoutineEligibilityPolicy {
     if (pause.isPaused) {
       return const RoutineEligibilityResult(RoutineEligibilityReason.paused);
     }
-    final date = datePolicy.evaluate(
-      rule: schedule.rule,
-      localDate: localDate,
-      anchorDate: anchorDate,
-    );
+    final date = datePolicy.evaluate(rule: schedule.rule, localDate: localDate);
     return RoutineEligibilityResult(switch (date.reason) {
       ScheduleDateEligibilityReason.eligible =>
         RoutineEligibilityReason.eligible,
@@ -95,7 +94,6 @@ final class RoutineEligibilityPolicy {
         RoutineEligibilityReason.dateNotEligible,
       ScheduleDateEligibilityReason.unstructured ||
       ScheduleDateEligibilityReason.unsupported ||
-      ScheduleDateEligibilityReason.anchorRequired ||
       ScheduleDateEligibilityReason.requiresInstantEvaluation =>
         RoutineEligibilityReason.unsupportedRule,
     });

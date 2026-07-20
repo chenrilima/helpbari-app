@@ -105,7 +105,6 @@ enum ExpectationKind {
 enum ScheduleDateEligibilityReason {
   eligible,
   notEligible,
-  anchorRequired,
   requiresInstantEvaluation,
   asNeeded,
   unstructured,
@@ -132,7 +131,6 @@ final class ScheduleDateEligibilityResult {
 enum ScheduleTimesResolutionReason {
   resolved,
   dateNotEligible,
-  anchorRequired,
   requiresInstantEvaluation,
   asNeeded,
   unstructured,

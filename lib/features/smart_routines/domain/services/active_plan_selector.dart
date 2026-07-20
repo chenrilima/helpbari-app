@@ -1,5 +1,6 @@
 import '../entities/routine_plan.dart';
 import '../value_objects/typed_ids.dart';
+import '../value_objects/local_date.dart';
 import 'eligibility_results.dart';
 import 'plan_validity_policy.dart';
 
@@ -11,6 +12,7 @@ final class ActivePlanSelector {
     required RoutineId routineId,
     required Iterable<RoutinePlan> plans,
     required DateTime at,
+    required LocalDate clinicalDate,
   }) {
     final ordered = plans.toList()
       ..sort((left, right) {
@@ -37,7 +39,11 @@ final class ActivePlanSelector {
       return PlanSelectionResult(reason: PlanSelectionReason.inconsistentChain);
     }
     final valid = ordered
-        .where((plan) => validityPolicy.evaluate(plan, at).isValid)
+        .where(
+          (plan) => validityPolicy
+              .evaluate(plan: plan, at: at, clinicalDate: clinicalDate)
+              .isValid,
+        )
         .toList();
     if (valid.isEmpty) {
       return PlanSelectionResult(reason: PlanSelectionReason.noValidPlan);

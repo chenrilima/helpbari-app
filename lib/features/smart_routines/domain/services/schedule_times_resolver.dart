@@ -14,12 +14,10 @@ final class ScheduleTimesResolver {
   ScheduleTimesResolution resolve({
     required RoutineSchedule schedule,
     required LocalDate localDate,
-    LocalDate? anchorDate,
   }) {
     final eligibility = datePolicy.evaluate(
       rule: schedule.rule,
       localDate: localDate,
-      anchorDate: anchorDate,
     );
     if (!eligibility.isEligible) {
       return ScheduleTimesResolution(
@@ -55,8 +53,6 @@ final class ScheduleTimesResolver {
       ScheduleTimesResolutionReason.resolved,
     ScheduleDateEligibilityReason.notEligible =>
       ScheduleTimesResolutionReason.dateNotEligible,
-    ScheduleDateEligibilityReason.anchorRequired =>
-      ScheduleTimesResolutionReason.anchorRequired,
     ScheduleDateEligibilityReason.requiresInstantEvaluation =>
       ScheduleTimesResolutionReason.requiresInstantEvaluation,
     ScheduleDateEligibilityReason.asNeeded =>
