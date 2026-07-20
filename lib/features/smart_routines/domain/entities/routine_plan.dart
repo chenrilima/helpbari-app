@@ -1,0 +1,219 @@
+import '../../../../core/domain/entity.dart';
+import '../enums/routine_enums.dart';
+import '../errors/smart_routine_validation_exception.dart';
+import '../value_objects/routine_values.dart';
+import '../value_objects/schedule_rule.dart';
+import '../value_objects/typed_ids.dart';
+
+final class RoutinePlan extends Entity {
+  factory RoutinePlan({
+    required RoutinePlanId planId,
+    required RoutineId routineId,
+    required int revision,
+    required RoutinePlanMode mode,
+    required PlanDurationType durationType,
+    required DateTime effectiveFrom,
+    required DateTime createdAt,
+    DoseValue? dose,
+    String? route,
+    String? clinicalInstructions,
+    DateTime? effectiveUntil,
+    DateTime? activatedAt,
+    DateTime? replacedAt,
+    RoutinePlanId? previousPlanId,
+  }) {
+    if (revision < 1) {
+      throw const SmartRoutineValidationException(
+        'invalid_plan_revision',
+        'Plan revision must be at least 1.',
+      );
+    }
+    if (effectiveUntil != null && effectiveUntil.isBefore(effectiveFrom)) {
+      throw const SmartRoutineValidationException(
+        'invalid_plan_effective_period',
+        'Plan end cannot precede its start.',
+      );
+    }
+    if (durationType == PlanDurationType.fixed && effectiveUntil == null) {
+      throw const SmartRoutineValidationException(
+        'fixed_plan_end_required',
+        'Fixed duration requires effectiveUntil.',
+      );
+    }
+    if (durationType != PlanDurationType.fixed && effectiveUntil != null) {
+      throw const SmartRoutineValidationException(
+        'unexpected_plan_end',
+        'Continuous and unknown duration plans cannot imply a fixed end.',
+      );
+    }
+    if (activatedAt != null && activatedAt.isBefore(createdAt)) {
+      throw const SmartRoutineValidationException(
+        'invalid_plan_activation',
+        'Plan activation cannot precede creation.',
+      );
+    }
+    if (replacedAt != null && activatedAt == null) {
+      throw const SmartRoutineValidationException(
+        'inactive_plan_replacement',
+        'Only an activated plan can be replaced.',
+      );
+    }
+    return RoutinePlan._(
+      planId: planId,
+      routineId: routineId,
+      revision: revision,
+      mode: mode,
+      durationType: durationType,
+      effectiveFrom: effectiveFrom,
+      effectiveUntil: effectiveUntil,
+      dose: dose,
+      route: _optional(route),
+      clinicalInstructions: _optional(clinicalInstructions),
+      createdAt: createdAt,
+      activatedAt: activatedAt,
+      replacedAt: replacedAt,
+      previousPlanId: previousPlanId,
+    );
+  }
+
+  const RoutinePlan._({
+    required this.planId,
+    required this.routineId,
+    required this.revision,
+    required this.mode,
+    required this.durationType,
+    required this.effectiveFrom,
+    required this.createdAt,
+    this.effectiveUntil,
+    this.dose,
+    this.route,
+    this.clinicalInstructions,
+    this.activatedAt,
+    this.replacedAt,
+    this.previousPlanId,
+  });
+
+  final RoutinePlanId planId;
+  @override
+  String get id => planId.value;
+  final RoutineId routineId;
+  final int revision;
+  final RoutinePlanMode mode;
+  final PlanDurationType durationType;
+  final DateTime effectiveFrom;
+  final DateTime? effectiveUntil;
+  final DoseValue? dose;
+  final String? route;
+  final String? clinicalInstructions;
+  final DateTime createdAt;
+  final DateTime? activatedAt;
+  final DateTime? replacedAt;
+  final RoutinePlanId? previousPlanId;
+
+  bool acceptsRule(ScheduleRule rule) => switch (mode) {
+    RoutinePlanMode.asNeeded => rule is AsNeededRule,
+    RoutinePlanMode.scheduled => rule is! AsNeededRule,
+  };
+
+  void ensureCompatibleRule(ScheduleRule rule) {
+    if (!acceptsRule(rule)) {
+      throw const SmartRoutineValidationException(
+        'incompatible_plan_schedule',
+        'Plan mode and schedule rule are incompatible.',
+      );
+    }
+  }
+
+  ({RoutinePlan replacedPlan, RoutinePlan newPlan}) createRevision({
+    required RoutinePlanId newPlanId,
+    required DateTime at,
+    RoutinePlanMode? mode,
+    PlanDurationType? durationType,
+    DateTime? effectiveFrom,
+    DateTime? effectiveUntil,
+    DoseValue? dose,
+    String? route,
+    String? clinicalInstructions,
+  }) {
+    if (activatedAt == null || replacedAt != null) {
+      throw const SmartRoutineValidationException(
+        'plan_not_revisionable',
+        'Only an active unreplaced plan can create a revision.',
+      );
+    }
+    final replaced = RoutinePlan(
+      planId: planId,
+      routineId: routineId,
+      revision: revision,
+      mode: this.mode,
+      durationType: this.durationType,
+      effectiveFrom: this.effectiveFrom,
+      effectiveUntil: this.effectiveUntil,
+      dose: this.dose,
+      route: this.route,
+      clinicalInstructions: this.clinicalInstructions,
+      createdAt: createdAt,
+      activatedAt: activatedAt,
+      replacedAt: at,
+      previousPlanId: previousPlanId,
+    );
+    final nextDuration = durationType ?? this.durationType;
+    final next = RoutinePlan(
+      planId: newPlanId,
+      routineId: routineId,
+      revision: revision + 1,
+      mode: mode ?? this.mode,
+      durationType: nextDuration,
+      effectiveFrom: effectiveFrom ?? at,
+      effectiveUntil: effectiveUntil,
+      dose: dose ?? this.dose,
+      route: route ?? this.route,
+      clinicalInstructions: clinicalInstructions ?? this.clinicalInstructions,
+      createdAt: at,
+      previousPlanId: planId,
+    );
+    return (replacedPlan: replaced, newPlan: next);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RoutinePlan &&
+          planId == other.planId &&
+          routineId == other.routineId &&
+          revision == other.revision &&
+          mode == other.mode &&
+          durationType == other.durationType &&
+          effectiveFrom == other.effectiveFrom &&
+          effectiveUntil == other.effectiveUntil &&
+          dose == other.dose &&
+          route == other.route &&
+          clinicalInstructions == other.clinicalInstructions &&
+          createdAt == other.createdAt &&
+          activatedAt == other.activatedAt &&
+          replacedAt == other.replacedAt &&
+          previousPlanId == other.previousPlanId;
+
+  @override
+  int get hashCode => Object.hash(
+    planId,
+    routineId,
+    revision,
+    mode,
+    durationType,
+    effectiveFrom,
+    effectiveUntil,
+    dose,
+    route,
+    clinicalInstructions,
+    createdAt,
+    activatedAt,
+    replacedAt,
+    previousPlanId,
+  );
+}
+
+String? _optional(String? value) {
+  final normalized = value?.trim();
+  return normalized == null || normalized.isEmpty ? null : normalized;
+}
