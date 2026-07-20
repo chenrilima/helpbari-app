@@ -17,6 +17,7 @@ import '../../../vitamins/presentation/providers/vitamin_use_cases_provider.dart
 import '../../application/privacy_deletion_service.dart';
 import '../../application/privacy_export_service.dart';
 import '../../data/datasources/drift_privacy_consent_datasource.dart';
+import '../../data/datasources/privacy_clinical_export_datasource.dart';
 import '../../data/datasources/privacy_supabase_datasource.dart';
 import '../../data/repositories/drift_privacy_repository.dart';
 import '../../data/services/privacy_local_cleanup_service.dart';
@@ -75,6 +76,9 @@ final privacyExportServiceProvider = Provider<PrivacyExportService>((ref) {
     loadSettings: () => ref.read(settingsUseCasesProvider).getSettings(),
     loadVitaminLogs: ref.read(vitaminUseCasesProvider).getLogs,
     loadMedicationLogs: ref.read(medicationUseCasesProvider).getLogs,
+    loadClinicalData: () async => PrivacyClinicalExportDatasource(
+      await ref.read(appDatabaseProvider.future),
+    ).load(userId),
     clock: ref.read(clockServiceProvider),
     userId: userId,
   );

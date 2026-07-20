@@ -20,6 +20,23 @@ void main() {
         loadSettings: () async => const AppSettings(id: 'user-a'),
         loadVitaminLogs: (_, _) async => [],
         loadMedicationLogs: (_, _) async => [],
+        loadClinicalData: () async => {
+          'documents': [
+            {
+              'id': 'document-1',
+              'remote_path': 'user-a/document-1/original.pdf',
+            },
+          ],
+          'documentProcessings': [
+            {'id': 'processing-1', 'status': 'confirmed'},
+          ],
+          'extractedDocumentFields': [
+            {'id': 'field-1', 'confirmed_value': 'confirmed'},
+          ],
+          'bioimpedance': [
+            {'id': 'bio-1', 'body_fat_percentage': 30.0},
+          ],
+        },
         clock: const _Clock(),
         userId: 'user-a',
       );
@@ -42,6 +59,11 @@ void main() {
         data['medicalExams'][0]['results'][0]['canonicalCode'],
         'vitaminD',
       );
+      expect(data['documentIntelligence']['documents'], hasLength(1));
+      expect(data['documentIntelligence']['processings'], hasLength(1));
+      expect(data['documentIntelligence']['extractedFields'], hasLength(1));
+      expect(data['documentIntelligence']['originalFilesIncluded'], isFalse);
+      expect(data['bioimpedance'], hasLength(1));
       expect(content, isNot(contains('access_token')));
       expect(content, isNot(contains('refresh_token')));
       expect(content, isNot(contains('internal_logs')));

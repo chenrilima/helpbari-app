@@ -4,21 +4,25 @@ import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/database/drift/app_database.dart';
+import 'privacy_local_file_cleanup_service.dart';
 
 class PrivacyLocalCleanupService {
   const PrivacyLocalCleanupService({
     required AppDatabase database,
     required SharedPreferences preferences,
+    this.fileCleanup = const PrivacyLocalFileCleanupService(),
   }) : _database = database,
        _preferences = preferences;
 
   final AppDatabase _database;
   final SharedPreferences _preferences;
+  final PrivacyLocalFileCleanupService fileCleanup;
 
   Future<void> clearUser(String userId) async {
     if (userId.isEmpty || userId == 'anonymous') {
       throw StateError('Invalid user for local privacy cleanup.');
     }
+    await fileCleanup.clearKnownFiles(await _knownLocalPaths(userId));
     await _database.transaction(() async {
       for (final table in _userTables) {
         await _database.customUpdate(
@@ -29,6 +33,23 @@ class PrivacyLocalCleanupService {
       }
     });
     await _clearPreferences(userId);
+  }
+
+  Future<List<String?>> _knownLocalPaths(String userId) async {
+    final documents = await (_database.select(
+      _database.documentInputRecords,
+    )..where((row) => row.userId.equals(userId))).get();
+    final legacyExams = await (_database.select(
+      _database.examRecords,
+    )..where((row) => row.userId.equals(userId))).get();
+    final medicalExams = await (_database.select(
+      _database.medicalExams,
+    )..where((row) => row.userId.equals(userId))).get();
+    return <String?>[
+      ...documents.map((row) => row.localPath),
+      ...legacyExams.map((row) => row.attachmentPath),
+      ...medicalExams.map((row) => row.legacyAttachmentPath),
+    ];
   }
 
   Future<void> _clearPreferences(String userId) async {
@@ -86,19 +107,20 @@ class PrivacyLocalCleanupService {
 
   static const _onboardingDraftKey = 'onboarding.profileDraft.v1';
   static const _userTables = <String>[
+    'medical_prescription_item_records',
+    'medical_exam_results',
+    'medical_prescription_records',
+    'medical_exams',
+    'bioimpedance_records',
+    'extracted_field_records',
+    'document_processing_records',
+    'document_input_records',
     'privacy_consent_records',
     'medication_log_records',
     'medication_records',
     'vitamin_log_records',
     'vitamin_records',
     'exam_records',
-    'medical_exams',
-    'medical_exam_results',
-    'medical_prescription_item_records',
-    'medical_prescription_records',
-    'extracted_field_records',
-    'document_processing_records',
-    'document_input_records',
     'appointment_records',
     'meal_records',
     'weight_records',

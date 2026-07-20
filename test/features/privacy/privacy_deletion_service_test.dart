@@ -54,6 +54,68 @@ void main() {
     expect(loggedOut, isFalse);
   });
 
+  test('anonymous user cannot execute deletion', () async {
+    SharedPreferences.setMockInitialValues({});
+    final database = AppDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final repository = _PrivacyRepository();
+    final service = PrivacyDeletionService(
+      privacy: PrivacyUseCases(repository),
+      localCleanup: PrivacyLocalCleanupService(
+        database: database,
+        preferences: await SharedPreferences.getInstance(),
+      ),
+      logout: () async {},
+      userId: 'anonymous',
+    );
+
+    await expectLater(service.deleteData(), throwsStateError);
+    expect(repository.storageCleared, isFalse);
+  });
+
+  test('storage failure does not run database deletion or logout', () async {
+    SharedPreferences.setMockInitialValues({});
+    final database = AppDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final repository = _PrivacyRepository()..failRemote = true;
+    var loggedOut = false;
+    final service = PrivacyDeletionService(
+      privacy: PrivacyUseCases(repository),
+      localCleanup: PrivacyLocalCleanupService(
+        database: database,
+        preferences: await SharedPreferences.getInstance(),
+      ),
+      logout: () async => loggedOut = true,
+      userId: 'user-a',
+    );
+
+    await expectLater(service.deleteData(), throwsStateError);
+    expect(loggedOut, isFalse);
+  });
+
+  test('repeating data deletion remains idempotent', () async {
+    SharedPreferences.setMockInitialValues({});
+    final database = AppDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final repository = _PrivacyRepository();
+    var logoutCount = 0;
+    final service = PrivacyDeletionService(
+      privacy: PrivacyUseCases(repository),
+      localCleanup: PrivacyLocalCleanupService(
+        database: database,
+        preferences: await SharedPreferences.getInstance(),
+      ),
+      logout: () async => logoutCount++,
+      userId: 'user-a',
+    );
+
+    await service.deleteData();
+    await service.deleteData();
+
+    expect(logoutCount, 2);
+    expect(repository.storageCleared, isTrue);
+  });
+
   test(
     'local failure after remote completion is reported as partial',
     () async {
