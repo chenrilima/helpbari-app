@@ -27008,6 +27008,7604 @@ class MedicalPrescriptionItemRecordsCompanion
   }
 }
 
+class $SmartRoutineRecordsTable extends SmartRoutineRecords
+    with TableInfo<$SmartRoutineRecordsTable, SmartRoutineRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SmartRoutineRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _prescriptionIdMeta = const VerificationMeta(
+    'prescriptionId',
+  );
+  @override
+  late final GeneratedColumn<String> prescriptionId = GeneratedColumn<String>(
+    'prescription_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _prescriptionItemIdMeta =
+      const VerificationMeta('prescriptionItemId');
+  @override
+  late final GeneratedColumn<String> prescriptionItemId =
+      GeneratedColumn<String>(
+        'prescription_item_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _personalNotesMeta = const VerificationMeta(
+    'personalNotes',
+  );
+  @override
+  late final GeneratedColumn<String> personalNotes = GeneratedColumn<String>(
+    'personal_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _iconKeyMeta = const VerificationMeta(
+    'iconKey',
+  );
+  @override
+  late final GeneratedColumn<String> iconKey = GeneratedColumn<String>(
+    'icon_key',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    category,
+    displayName,
+    status,
+    source,
+    prescriptionId,
+    prescriptionItemId,
+    personalNotes,
+    iconKey,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'smart_routine_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SmartRoutineRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_categoryMeta);
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayNameMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('prescription_id')) {
+      context.handle(
+        _prescriptionIdMeta,
+        prescriptionId.isAcceptableOrUnknown(
+          data['prescription_id']!,
+          _prescriptionIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('prescription_item_id')) {
+      context.handle(
+        _prescriptionItemIdMeta,
+        prescriptionItemId.isAcceptableOrUnknown(
+          data['prescription_item_id']!,
+          _prescriptionItemIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('personal_notes')) {
+      context.handle(
+        _personalNotesMeta,
+        personalNotes.isAcceptableOrUnknown(
+          data['personal_notes']!,
+          _personalNotesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('icon_key')) {
+      context.handle(
+        _iconKeyMeta,
+        iconKey.isAcceptableOrUnknown(data['icon_key']!, _iconKeyMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  SmartRoutineRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SmartRoutineRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      prescriptionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_id'],
+      ),
+      prescriptionItemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_item_id'],
+      ),
+      personalNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}personal_notes'],
+      ),
+      iconKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}icon_key'],
+      ),
+    );
+  }
+
+  @override
+  $SmartRoutineRecordsTable createAlias(String alias) {
+    return $SmartRoutineRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class SmartRoutineRecord extends DataClass
+    implements Insertable<SmartRoutineRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  final String category;
+  final String displayName;
+  final String status;
+  final String source;
+  final String? prescriptionId;
+  final String? prescriptionItemId;
+  final String? personalNotes;
+  final String? iconKey;
+  const SmartRoutineRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+    required this.category,
+    required this.displayName,
+    required this.status,
+    required this.source,
+    this.prescriptionId,
+    this.prescriptionItemId,
+    this.personalNotes,
+    this.iconKey,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    map['category'] = Variable<String>(category);
+    map['display_name'] = Variable<String>(displayName);
+    map['status'] = Variable<String>(status);
+    map['source'] = Variable<String>(source);
+    if (!nullToAbsent || prescriptionId != null) {
+      map['prescription_id'] = Variable<String>(prescriptionId);
+    }
+    if (!nullToAbsent || prescriptionItemId != null) {
+      map['prescription_item_id'] = Variable<String>(prescriptionItemId);
+    }
+    if (!nullToAbsent || personalNotes != null) {
+      map['personal_notes'] = Variable<String>(personalNotes);
+    }
+    if (!nullToAbsent || iconKey != null) {
+      map['icon_key'] = Variable<String>(iconKey);
+    }
+    return map;
+  }
+
+  SmartRoutineRecordsCompanion toCompanion(bool nullToAbsent) {
+    return SmartRoutineRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+      category: Value(category),
+      displayName: Value(displayName),
+      status: Value(status),
+      source: Value(source),
+      prescriptionId: prescriptionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(prescriptionId),
+      prescriptionItemId: prescriptionItemId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(prescriptionItemId),
+      personalNotes: personalNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(personalNotes),
+      iconKey: iconKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(iconKey),
+    );
+  }
+
+  factory SmartRoutineRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SmartRoutineRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+      category: serializer.fromJson<String>(json['category']),
+      displayName: serializer.fromJson<String>(json['displayName']),
+      status: serializer.fromJson<String>(json['status']),
+      source: serializer.fromJson<String>(json['source']),
+      prescriptionId: serializer.fromJson<String?>(json['prescriptionId']),
+      prescriptionItemId: serializer.fromJson<String?>(
+        json['prescriptionItemId'],
+      ),
+      personalNotes: serializer.fromJson<String?>(json['personalNotes']),
+      iconKey: serializer.fromJson<String?>(json['iconKey']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+      'category': serializer.toJson<String>(category),
+      'displayName': serializer.toJson<String>(displayName),
+      'status': serializer.toJson<String>(status),
+      'source': serializer.toJson<String>(source),
+      'prescriptionId': serializer.toJson<String?>(prescriptionId),
+      'prescriptionItemId': serializer.toJson<String?>(prescriptionItemId),
+      'personalNotes': serializer.toJson<String?>(personalNotes),
+      'iconKey': serializer.toJson<String?>(iconKey),
+    };
+  }
+
+  SmartRoutineRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+    String? category,
+    String? displayName,
+    String? status,
+    String? source,
+    Value<String?> prescriptionId = const Value.absent(),
+    Value<String?> prescriptionItemId = const Value.absent(),
+    Value<String?> personalNotes = const Value.absent(),
+    Value<String?> iconKey = const Value.absent(),
+  }) => SmartRoutineRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+    category: category ?? this.category,
+    displayName: displayName ?? this.displayName,
+    status: status ?? this.status,
+    source: source ?? this.source,
+    prescriptionId: prescriptionId.present
+        ? prescriptionId.value
+        : this.prescriptionId,
+    prescriptionItemId: prescriptionItemId.present
+        ? prescriptionItemId.value
+        : this.prescriptionItemId,
+    personalNotes: personalNotes.present
+        ? personalNotes.value
+        : this.personalNotes,
+    iconKey: iconKey.present ? iconKey.value : this.iconKey,
+  );
+  SmartRoutineRecord copyWithCompanion(SmartRoutineRecordsCompanion data) {
+    return SmartRoutineRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+      category: data.category.present ? data.category.value : this.category,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      status: data.status.present ? data.status.value : this.status,
+      source: data.source.present ? data.source.value : this.source,
+      prescriptionId: data.prescriptionId.present
+          ? data.prescriptionId.value
+          : this.prescriptionId,
+      prescriptionItemId: data.prescriptionItemId.present
+          ? data.prescriptionItemId.value
+          : this.prescriptionItemId,
+      personalNotes: data.personalNotes.present
+          ? data.personalNotes.value
+          : this.personalNotes,
+      iconKey: data.iconKey.present ? data.iconKey.value : this.iconKey,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SmartRoutineRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('category: $category, ')
+          ..write('displayName: $displayName, ')
+          ..write('status: $status, ')
+          ..write('source: $source, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('prescriptionItemId: $prescriptionItemId, ')
+          ..write('personalNotes: $personalNotes, ')
+          ..write('iconKey: $iconKey')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    category,
+    displayName,
+    status,
+    source,
+    prescriptionId,
+    prescriptionItemId,
+    personalNotes,
+    iconKey,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SmartRoutineRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError &&
+          other.category == this.category &&
+          other.displayName == this.displayName &&
+          other.status == this.status &&
+          other.source == this.source &&
+          other.prescriptionId == this.prescriptionId &&
+          other.prescriptionItemId == this.prescriptionItemId &&
+          other.personalNotes == this.personalNotes &&
+          other.iconKey == this.iconKey);
+}
+
+class SmartRoutineRecordsCompanion extends UpdateCompanion<SmartRoutineRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<String> category;
+  final Value<String> displayName;
+  final Value<String> status;
+  final Value<String> source;
+  final Value<String?> prescriptionId;
+  final Value<String?> prescriptionItemId;
+  final Value<String?> personalNotes;
+  final Value<String?> iconKey;
+  final Value<int> rowid;
+  const SmartRoutineRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.category = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.status = const Value.absent(),
+    this.source = const Value.absent(),
+    this.prescriptionId = const Value.absent(),
+    this.prescriptionItemId = const Value.absent(),
+    this.personalNotes = const Value.absent(),
+    this.iconKey = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SmartRoutineRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    required String category,
+    required String displayName,
+    required String status,
+    required String source,
+    this.prescriptionId = const Value.absent(),
+    this.prescriptionItemId = const Value.absent(),
+    this.personalNotes = const Value.absent(),
+    this.iconKey = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       category = Value(category),
+       displayName = Value(displayName),
+       status = Value(status),
+       source = Value(source);
+  static Insertable<SmartRoutineRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<String>? category,
+    Expression<String>? displayName,
+    Expression<String>? status,
+    Expression<String>? source,
+    Expression<String>? prescriptionId,
+    Expression<String>? prescriptionItemId,
+    Expression<String>? personalNotes,
+    Expression<String>? iconKey,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (category != null) 'category': category,
+      if (displayName != null) 'display_name': displayName,
+      if (status != null) 'status': status,
+      if (source != null) 'source': source,
+      if (prescriptionId != null) 'prescription_id': prescriptionId,
+      if (prescriptionItemId != null)
+        'prescription_item_id': prescriptionItemId,
+      if (personalNotes != null) 'personal_notes': personalNotes,
+      if (iconKey != null) 'icon_key': iconKey,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SmartRoutineRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<String>? category,
+    Value<String>? displayName,
+    Value<String>? status,
+    Value<String>? source,
+    Value<String?>? prescriptionId,
+    Value<String?>? prescriptionItemId,
+    Value<String?>? personalNotes,
+    Value<String?>? iconKey,
+    Value<int>? rowid,
+  }) {
+    return SmartRoutineRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      category: category ?? this.category,
+      displayName: displayName ?? this.displayName,
+      status: status ?? this.status,
+      source: source ?? this.source,
+      prescriptionId: prescriptionId ?? this.prescriptionId,
+      prescriptionItemId: prescriptionItemId ?? this.prescriptionItemId,
+      personalNotes: personalNotes ?? this.personalNotes,
+      iconKey: iconKey ?? this.iconKey,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (prescriptionId.present) {
+      map['prescription_id'] = Variable<String>(prescriptionId.value);
+    }
+    if (prescriptionItemId.present) {
+      map['prescription_item_id'] = Variable<String>(prescriptionItemId.value);
+    }
+    if (personalNotes.present) {
+      map['personal_notes'] = Variable<String>(personalNotes.value);
+    }
+    if (iconKey.present) {
+      map['icon_key'] = Variable<String>(iconKey.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SmartRoutineRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('category: $category, ')
+          ..write('displayName: $displayName, ')
+          ..write('status: $status, ')
+          ..write('source: $source, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('prescriptionItemId: $prescriptionItemId, ')
+          ..write('personalNotes: $personalNotes, ')
+          ..write('iconKey: $iconKey, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoutinePlanRecordsTable extends RoutinePlanRecords
+    with TableInfo<$RoutinePlanRecordsTable, RoutinePlanRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoutinePlanRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _routineIdMeta = const VerificationMeta(
+    'routineId',
+  );
+  @override
+  late final GeneratedColumn<String> routineId = GeneratedColumn<String>(
+    'routine_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _revisionMeta = const VerificationMeta(
+    'revision',
+  );
+  @override
+  late final GeneratedColumn<int> revision = GeneratedColumn<int>(
+    'revision',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _modeMeta = const VerificationMeta('mode');
+  @override
+  late final GeneratedColumn<String> mode = GeneratedColumn<String>(
+    'mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _durationTypeMeta = const VerificationMeta(
+    'durationType',
+  );
+  @override
+  late final GeneratedColumn<String> durationType = GeneratedColumn<String>(
+    'duration_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _effectiveFromMeta = const VerificationMeta(
+    'effectiveFrom',
+  );
+  @override
+  late final GeneratedColumn<String> effectiveFrom = GeneratedColumn<String>(
+    'effective_from',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _effectiveUntilMeta = const VerificationMeta(
+    'effectiveUntil',
+  );
+  @override
+  late final GeneratedColumn<String> effectiveUntil = GeneratedColumn<String>(
+    'effective_until',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _doseValueMeta = const VerificationMeta(
+    'doseValue',
+  );
+  @override
+  late final GeneratedColumn<String> doseValue = GeneratedColumn<String>(
+    'dose_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _doseUnitMeta = const VerificationMeta(
+    'doseUnit',
+  );
+  @override
+  late final GeneratedColumn<String> doseUnit = GeneratedColumn<String>(
+    'dose_unit',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _doseOriginalTextMeta = const VerificationMeta(
+    'doseOriginalText',
+  );
+  @override
+  late final GeneratedColumn<String> doseOriginalText = GeneratedColumn<String>(
+    'dose_original_text',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _routeMeta = const VerificationMeta('route');
+  @override
+  late final GeneratedColumn<String> route = GeneratedColumn<String>(
+    'route',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _clinicalInstructionsMeta =
+      const VerificationMeta('clinicalInstructions');
+  @override
+  late final GeneratedColumn<String> clinicalInstructions =
+      GeneratedColumn<String>(
+        'clinical_instructions',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _activatedAtMeta = const VerificationMeta(
+    'activatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> activatedAt = GeneratedColumn<DateTime>(
+    'activated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _replacedAtMeta = const VerificationMeta(
+    'replacedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> replacedAt = GeneratedColumn<DateTime>(
+    'replaced_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _previousPlanIdMeta = const VerificationMeta(
+    'previousPlanId',
+  );
+  @override
+  late final GeneratedColumn<String> previousPlanId = GeneratedColumn<String>(
+    'previous_plan_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    routineId,
+    revision,
+    mode,
+    durationType,
+    effectiveFrom,
+    effectiveUntil,
+    doseValue,
+    doseUnit,
+    doseOriginalText,
+    route,
+    clinicalInstructions,
+    activatedAt,
+    replacedAt,
+    previousPlanId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'routine_plan_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RoutinePlanRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('routine_id')) {
+      context.handle(
+        _routineIdMeta,
+        routineId.isAcceptableOrUnknown(data['routine_id']!, _routineIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_routineIdMeta);
+    }
+    if (data.containsKey('revision')) {
+      context.handle(
+        _revisionMeta,
+        revision.isAcceptableOrUnknown(data['revision']!, _revisionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_revisionMeta);
+    }
+    if (data.containsKey('mode')) {
+      context.handle(
+        _modeMeta,
+        mode.isAcceptableOrUnknown(data['mode']!, _modeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_modeMeta);
+    }
+    if (data.containsKey('duration_type')) {
+      context.handle(
+        _durationTypeMeta,
+        durationType.isAcceptableOrUnknown(
+          data['duration_type']!,
+          _durationTypeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_durationTypeMeta);
+    }
+    if (data.containsKey('effective_from')) {
+      context.handle(
+        _effectiveFromMeta,
+        effectiveFrom.isAcceptableOrUnknown(
+          data['effective_from']!,
+          _effectiveFromMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_effectiveFromMeta);
+    }
+    if (data.containsKey('effective_until')) {
+      context.handle(
+        _effectiveUntilMeta,
+        effectiveUntil.isAcceptableOrUnknown(
+          data['effective_until']!,
+          _effectiveUntilMeta,
+        ),
+      );
+    }
+    if (data.containsKey('dose_value')) {
+      context.handle(
+        _doseValueMeta,
+        doseValue.isAcceptableOrUnknown(data['dose_value']!, _doseValueMeta),
+      );
+    }
+    if (data.containsKey('dose_unit')) {
+      context.handle(
+        _doseUnitMeta,
+        doseUnit.isAcceptableOrUnknown(data['dose_unit']!, _doseUnitMeta),
+      );
+    }
+    if (data.containsKey('dose_original_text')) {
+      context.handle(
+        _doseOriginalTextMeta,
+        doseOriginalText.isAcceptableOrUnknown(
+          data['dose_original_text']!,
+          _doseOriginalTextMeta,
+        ),
+      );
+    }
+    if (data.containsKey('route')) {
+      context.handle(
+        _routeMeta,
+        route.isAcceptableOrUnknown(data['route']!, _routeMeta),
+      );
+    }
+    if (data.containsKey('clinical_instructions')) {
+      context.handle(
+        _clinicalInstructionsMeta,
+        clinicalInstructions.isAcceptableOrUnknown(
+          data['clinical_instructions']!,
+          _clinicalInstructionsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('activated_at')) {
+      context.handle(
+        _activatedAtMeta,
+        activatedAt.isAcceptableOrUnknown(
+          data['activated_at']!,
+          _activatedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('replaced_at')) {
+      context.handle(
+        _replacedAtMeta,
+        replacedAt.isAcceptableOrUnknown(data['replaced_at']!, _replacedAtMeta),
+      );
+    }
+    if (data.containsKey('previous_plan_id')) {
+      context.handle(
+        _previousPlanIdMeta,
+        previousPlanId.isAcceptableOrUnknown(
+          data['previous_plan_id']!,
+          _previousPlanIdMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  RoutinePlanRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoutinePlanRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+      routineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_id'],
+      )!,
+      revision: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}revision'],
+      )!,
+      mode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}mode'],
+      )!,
+      durationType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}duration_type'],
+      )!,
+      effectiveFrom: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}effective_from'],
+      )!,
+      effectiveUntil: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}effective_until'],
+      ),
+      doseValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dose_value'],
+      ),
+      doseUnit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dose_unit'],
+      ),
+      doseOriginalText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dose_original_text'],
+      ),
+      route: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}route'],
+      ),
+      clinicalInstructions: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}clinical_instructions'],
+      ),
+      activatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}activated_at'],
+      ),
+      replacedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}replaced_at'],
+      ),
+      previousPlanId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_plan_id'],
+      ),
+    );
+  }
+
+  @override
+  $RoutinePlanRecordsTable createAlias(String alias) {
+    return $RoutinePlanRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class RoutinePlanRecord extends DataClass
+    implements Insertable<RoutinePlanRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  final String routineId;
+  final int revision;
+  final String mode;
+  final String durationType;
+  final String effectiveFrom;
+  final String? effectiveUntil;
+  final String? doseValue;
+  final String? doseUnit;
+  final String? doseOriginalText;
+  final String? route;
+  final String? clinicalInstructions;
+  final DateTime? activatedAt;
+  final DateTime? replacedAt;
+  final String? previousPlanId;
+  const RoutinePlanRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+    required this.routineId,
+    required this.revision,
+    required this.mode,
+    required this.durationType,
+    required this.effectiveFrom,
+    this.effectiveUntil,
+    this.doseValue,
+    this.doseUnit,
+    this.doseOriginalText,
+    this.route,
+    this.clinicalInstructions,
+    this.activatedAt,
+    this.replacedAt,
+    this.previousPlanId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    map['routine_id'] = Variable<String>(routineId);
+    map['revision'] = Variable<int>(revision);
+    map['mode'] = Variable<String>(mode);
+    map['duration_type'] = Variable<String>(durationType);
+    map['effective_from'] = Variable<String>(effectiveFrom);
+    if (!nullToAbsent || effectiveUntil != null) {
+      map['effective_until'] = Variable<String>(effectiveUntil);
+    }
+    if (!nullToAbsent || doseValue != null) {
+      map['dose_value'] = Variable<String>(doseValue);
+    }
+    if (!nullToAbsent || doseUnit != null) {
+      map['dose_unit'] = Variable<String>(doseUnit);
+    }
+    if (!nullToAbsent || doseOriginalText != null) {
+      map['dose_original_text'] = Variable<String>(doseOriginalText);
+    }
+    if (!nullToAbsent || route != null) {
+      map['route'] = Variable<String>(route);
+    }
+    if (!nullToAbsent || clinicalInstructions != null) {
+      map['clinical_instructions'] = Variable<String>(clinicalInstructions);
+    }
+    if (!nullToAbsent || activatedAt != null) {
+      map['activated_at'] = Variable<DateTime>(activatedAt);
+    }
+    if (!nullToAbsent || replacedAt != null) {
+      map['replaced_at'] = Variable<DateTime>(replacedAt);
+    }
+    if (!nullToAbsent || previousPlanId != null) {
+      map['previous_plan_id'] = Variable<String>(previousPlanId);
+    }
+    return map;
+  }
+
+  RoutinePlanRecordsCompanion toCompanion(bool nullToAbsent) {
+    return RoutinePlanRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+      routineId: Value(routineId),
+      revision: Value(revision),
+      mode: Value(mode),
+      durationType: Value(durationType),
+      effectiveFrom: Value(effectiveFrom),
+      effectiveUntil: effectiveUntil == null && nullToAbsent
+          ? const Value.absent()
+          : Value(effectiveUntil),
+      doseValue: doseValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(doseValue),
+      doseUnit: doseUnit == null && nullToAbsent
+          ? const Value.absent()
+          : Value(doseUnit),
+      doseOriginalText: doseOriginalText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(doseOriginalText),
+      route: route == null && nullToAbsent
+          ? const Value.absent()
+          : Value(route),
+      clinicalInstructions: clinicalInstructions == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clinicalInstructions),
+      activatedAt: activatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(activatedAt),
+      replacedAt: replacedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(replacedAt),
+      previousPlanId: previousPlanId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousPlanId),
+    );
+  }
+
+  factory RoutinePlanRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoutinePlanRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+      routineId: serializer.fromJson<String>(json['routineId']),
+      revision: serializer.fromJson<int>(json['revision']),
+      mode: serializer.fromJson<String>(json['mode']),
+      durationType: serializer.fromJson<String>(json['durationType']),
+      effectiveFrom: serializer.fromJson<String>(json['effectiveFrom']),
+      effectiveUntil: serializer.fromJson<String?>(json['effectiveUntil']),
+      doseValue: serializer.fromJson<String?>(json['doseValue']),
+      doseUnit: serializer.fromJson<String?>(json['doseUnit']),
+      doseOriginalText: serializer.fromJson<String?>(json['doseOriginalText']),
+      route: serializer.fromJson<String?>(json['route']),
+      clinicalInstructions: serializer.fromJson<String?>(
+        json['clinicalInstructions'],
+      ),
+      activatedAt: serializer.fromJson<DateTime?>(json['activatedAt']),
+      replacedAt: serializer.fromJson<DateTime?>(json['replacedAt']),
+      previousPlanId: serializer.fromJson<String?>(json['previousPlanId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+      'routineId': serializer.toJson<String>(routineId),
+      'revision': serializer.toJson<int>(revision),
+      'mode': serializer.toJson<String>(mode),
+      'durationType': serializer.toJson<String>(durationType),
+      'effectiveFrom': serializer.toJson<String>(effectiveFrom),
+      'effectiveUntil': serializer.toJson<String?>(effectiveUntil),
+      'doseValue': serializer.toJson<String?>(doseValue),
+      'doseUnit': serializer.toJson<String?>(doseUnit),
+      'doseOriginalText': serializer.toJson<String?>(doseOriginalText),
+      'route': serializer.toJson<String?>(route),
+      'clinicalInstructions': serializer.toJson<String?>(clinicalInstructions),
+      'activatedAt': serializer.toJson<DateTime?>(activatedAt),
+      'replacedAt': serializer.toJson<DateTime?>(replacedAt),
+      'previousPlanId': serializer.toJson<String?>(previousPlanId),
+    };
+  }
+
+  RoutinePlanRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+    String? routineId,
+    int? revision,
+    String? mode,
+    String? durationType,
+    String? effectiveFrom,
+    Value<String?> effectiveUntil = const Value.absent(),
+    Value<String?> doseValue = const Value.absent(),
+    Value<String?> doseUnit = const Value.absent(),
+    Value<String?> doseOriginalText = const Value.absent(),
+    Value<String?> route = const Value.absent(),
+    Value<String?> clinicalInstructions = const Value.absent(),
+    Value<DateTime?> activatedAt = const Value.absent(),
+    Value<DateTime?> replacedAt = const Value.absent(),
+    Value<String?> previousPlanId = const Value.absent(),
+  }) => RoutinePlanRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+    routineId: routineId ?? this.routineId,
+    revision: revision ?? this.revision,
+    mode: mode ?? this.mode,
+    durationType: durationType ?? this.durationType,
+    effectiveFrom: effectiveFrom ?? this.effectiveFrom,
+    effectiveUntil: effectiveUntil.present
+        ? effectiveUntil.value
+        : this.effectiveUntil,
+    doseValue: doseValue.present ? doseValue.value : this.doseValue,
+    doseUnit: doseUnit.present ? doseUnit.value : this.doseUnit,
+    doseOriginalText: doseOriginalText.present
+        ? doseOriginalText.value
+        : this.doseOriginalText,
+    route: route.present ? route.value : this.route,
+    clinicalInstructions: clinicalInstructions.present
+        ? clinicalInstructions.value
+        : this.clinicalInstructions,
+    activatedAt: activatedAt.present ? activatedAt.value : this.activatedAt,
+    replacedAt: replacedAt.present ? replacedAt.value : this.replacedAt,
+    previousPlanId: previousPlanId.present
+        ? previousPlanId.value
+        : this.previousPlanId,
+  );
+  RoutinePlanRecord copyWithCompanion(RoutinePlanRecordsCompanion data) {
+    return RoutinePlanRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+      routineId: data.routineId.present ? data.routineId.value : this.routineId,
+      revision: data.revision.present ? data.revision.value : this.revision,
+      mode: data.mode.present ? data.mode.value : this.mode,
+      durationType: data.durationType.present
+          ? data.durationType.value
+          : this.durationType,
+      effectiveFrom: data.effectiveFrom.present
+          ? data.effectiveFrom.value
+          : this.effectiveFrom,
+      effectiveUntil: data.effectiveUntil.present
+          ? data.effectiveUntil.value
+          : this.effectiveUntil,
+      doseValue: data.doseValue.present ? data.doseValue.value : this.doseValue,
+      doseUnit: data.doseUnit.present ? data.doseUnit.value : this.doseUnit,
+      doseOriginalText: data.doseOriginalText.present
+          ? data.doseOriginalText.value
+          : this.doseOriginalText,
+      route: data.route.present ? data.route.value : this.route,
+      clinicalInstructions: data.clinicalInstructions.present
+          ? data.clinicalInstructions.value
+          : this.clinicalInstructions,
+      activatedAt: data.activatedAt.present
+          ? data.activatedAt.value
+          : this.activatedAt,
+      replacedAt: data.replacedAt.present
+          ? data.replacedAt.value
+          : this.replacedAt,
+      previousPlanId: data.previousPlanId.present
+          ? data.previousPlanId.value
+          : this.previousPlanId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutinePlanRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('routineId: $routineId, ')
+          ..write('revision: $revision, ')
+          ..write('mode: $mode, ')
+          ..write('durationType: $durationType, ')
+          ..write('effectiveFrom: $effectiveFrom, ')
+          ..write('effectiveUntil: $effectiveUntil, ')
+          ..write('doseValue: $doseValue, ')
+          ..write('doseUnit: $doseUnit, ')
+          ..write('doseOriginalText: $doseOriginalText, ')
+          ..write('route: $route, ')
+          ..write('clinicalInstructions: $clinicalInstructions, ')
+          ..write('activatedAt: $activatedAt, ')
+          ..write('replacedAt: $replacedAt, ')
+          ..write('previousPlanId: $previousPlanId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    routineId,
+    revision,
+    mode,
+    durationType,
+    effectiveFrom,
+    effectiveUntil,
+    doseValue,
+    doseUnit,
+    doseOriginalText,
+    route,
+    clinicalInstructions,
+    activatedAt,
+    replacedAt,
+    previousPlanId,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoutinePlanRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError &&
+          other.routineId == this.routineId &&
+          other.revision == this.revision &&
+          other.mode == this.mode &&
+          other.durationType == this.durationType &&
+          other.effectiveFrom == this.effectiveFrom &&
+          other.effectiveUntil == this.effectiveUntil &&
+          other.doseValue == this.doseValue &&
+          other.doseUnit == this.doseUnit &&
+          other.doseOriginalText == this.doseOriginalText &&
+          other.route == this.route &&
+          other.clinicalInstructions == this.clinicalInstructions &&
+          other.activatedAt == this.activatedAt &&
+          other.replacedAt == this.replacedAt &&
+          other.previousPlanId == this.previousPlanId);
+}
+
+class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<String> routineId;
+  final Value<int> revision;
+  final Value<String> mode;
+  final Value<String> durationType;
+  final Value<String> effectiveFrom;
+  final Value<String?> effectiveUntil;
+  final Value<String?> doseValue;
+  final Value<String?> doseUnit;
+  final Value<String?> doseOriginalText;
+  final Value<String?> route;
+  final Value<String?> clinicalInstructions;
+  final Value<DateTime?> activatedAt;
+  final Value<DateTime?> replacedAt;
+  final Value<String?> previousPlanId;
+  final Value<int> rowid;
+  const RoutinePlanRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.routineId = const Value.absent(),
+    this.revision = const Value.absent(),
+    this.mode = const Value.absent(),
+    this.durationType = const Value.absent(),
+    this.effectiveFrom = const Value.absent(),
+    this.effectiveUntil = const Value.absent(),
+    this.doseValue = const Value.absent(),
+    this.doseUnit = const Value.absent(),
+    this.doseOriginalText = const Value.absent(),
+    this.route = const Value.absent(),
+    this.clinicalInstructions = const Value.absent(),
+    this.activatedAt = const Value.absent(),
+    this.replacedAt = const Value.absent(),
+    this.previousPlanId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoutinePlanRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    required String routineId,
+    required int revision,
+    required String mode,
+    required String durationType,
+    required String effectiveFrom,
+    this.effectiveUntil = const Value.absent(),
+    this.doseValue = const Value.absent(),
+    this.doseUnit = const Value.absent(),
+    this.doseOriginalText = const Value.absent(),
+    this.route = const Value.absent(),
+    this.clinicalInstructions = const Value.absent(),
+    this.activatedAt = const Value.absent(),
+    this.replacedAt = const Value.absent(),
+    this.previousPlanId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       routineId = Value(routineId),
+       revision = Value(revision),
+       mode = Value(mode),
+       durationType = Value(durationType),
+       effectiveFrom = Value(effectiveFrom);
+  static Insertable<RoutinePlanRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<String>? routineId,
+    Expression<int>? revision,
+    Expression<String>? mode,
+    Expression<String>? durationType,
+    Expression<String>? effectiveFrom,
+    Expression<String>? effectiveUntil,
+    Expression<String>? doseValue,
+    Expression<String>? doseUnit,
+    Expression<String>? doseOriginalText,
+    Expression<String>? route,
+    Expression<String>? clinicalInstructions,
+    Expression<DateTime>? activatedAt,
+    Expression<DateTime>? replacedAt,
+    Expression<String>? previousPlanId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (routineId != null) 'routine_id': routineId,
+      if (revision != null) 'revision': revision,
+      if (mode != null) 'mode': mode,
+      if (durationType != null) 'duration_type': durationType,
+      if (effectiveFrom != null) 'effective_from': effectiveFrom,
+      if (effectiveUntil != null) 'effective_until': effectiveUntil,
+      if (doseValue != null) 'dose_value': doseValue,
+      if (doseUnit != null) 'dose_unit': doseUnit,
+      if (doseOriginalText != null) 'dose_original_text': doseOriginalText,
+      if (route != null) 'route': route,
+      if (clinicalInstructions != null)
+        'clinical_instructions': clinicalInstructions,
+      if (activatedAt != null) 'activated_at': activatedAt,
+      if (replacedAt != null) 'replaced_at': replacedAt,
+      if (previousPlanId != null) 'previous_plan_id': previousPlanId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoutinePlanRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<String>? routineId,
+    Value<int>? revision,
+    Value<String>? mode,
+    Value<String>? durationType,
+    Value<String>? effectiveFrom,
+    Value<String?>? effectiveUntil,
+    Value<String?>? doseValue,
+    Value<String?>? doseUnit,
+    Value<String?>? doseOriginalText,
+    Value<String?>? route,
+    Value<String?>? clinicalInstructions,
+    Value<DateTime?>? activatedAt,
+    Value<DateTime?>? replacedAt,
+    Value<String?>? previousPlanId,
+    Value<int>? rowid,
+  }) {
+    return RoutinePlanRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      routineId: routineId ?? this.routineId,
+      revision: revision ?? this.revision,
+      mode: mode ?? this.mode,
+      durationType: durationType ?? this.durationType,
+      effectiveFrom: effectiveFrom ?? this.effectiveFrom,
+      effectiveUntil: effectiveUntil ?? this.effectiveUntil,
+      doseValue: doseValue ?? this.doseValue,
+      doseUnit: doseUnit ?? this.doseUnit,
+      doseOriginalText: doseOriginalText ?? this.doseOriginalText,
+      route: route ?? this.route,
+      clinicalInstructions: clinicalInstructions ?? this.clinicalInstructions,
+      activatedAt: activatedAt ?? this.activatedAt,
+      replacedAt: replacedAt ?? this.replacedAt,
+      previousPlanId: previousPlanId ?? this.previousPlanId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (routineId.present) {
+      map['routine_id'] = Variable<String>(routineId.value);
+    }
+    if (revision.present) {
+      map['revision'] = Variable<int>(revision.value);
+    }
+    if (mode.present) {
+      map['mode'] = Variable<String>(mode.value);
+    }
+    if (durationType.present) {
+      map['duration_type'] = Variable<String>(durationType.value);
+    }
+    if (effectiveFrom.present) {
+      map['effective_from'] = Variable<String>(effectiveFrom.value);
+    }
+    if (effectiveUntil.present) {
+      map['effective_until'] = Variable<String>(effectiveUntil.value);
+    }
+    if (doseValue.present) {
+      map['dose_value'] = Variable<String>(doseValue.value);
+    }
+    if (doseUnit.present) {
+      map['dose_unit'] = Variable<String>(doseUnit.value);
+    }
+    if (doseOriginalText.present) {
+      map['dose_original_text'] = Variable<String>(doseOriginalText.value);
+    }
+    if (route.present) {
+      map['route'] = Variable<String>(route.value);
+    }
+    if (clinicalInstructions.present) {
+      map['clinical_instructions'] = Variable<String>(
+        clinicalInstructions.value,
+      );
+    }
+    if (activatedAt.present) {
+      map['activated_at'] = Variable<DateTime>(activatedAt.value);
+    }
+    if (replacedAt.present) {
+      map['replaced_at'] = Variable<DateTime>(replacedAt.value);
+    }
+    if (previousPlanId.present) {
+      map['previous_plan_id'] = Variable<String>(previousPlanId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutinePlanRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('routineId: $routineId, ')
+          ..write('revision: $revision, ')
+          ..write('mode: $mode, ')
+          ..write('durationType: $durationType, ')
+          ..write('effectiveFrom: $effectiveFrom, ')
+          ..write('effectiveUntil: $effectiveUntil, ')
+          ..write('doseValue: $doseValue, ')
+          ..write('doseUnit: $doseUnit, ')
+          ..write('doseOriginalText: $doseOriginalText, ')
+          ..write('route: $route, ')
+          ..write('clinicalInstructions: $clinicalInstructions, ')
+          ..write('activatedAt: $activatedAt, ')
+          ..write('replacedAt: $replacedAt, ')
+          ..write('previousPlanId: $previousPlanId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoutineScheduleRecordsTable extends RoutineScheduleRecords
+    with TableInfo<$RoutineScheduleRecordsTable, RoutineScheduleRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoutineScheduleRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _routineIdMeta = const VerificationMeta(
+    'routineId',
+  );
+  @override
+  late final GeneratedColumn<String> routineId = GeneratedColumn<String>(
+    'routine_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _planIdMeta = const VerificationMeta('planId');
+  @override
+  late final GeneratedColumn<String> planId = GeneratedColumn<String>(
+    'plan_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ruleJsonMeta = const VerificationMeta(
+    'ruleJson',
+  );
+  @override
+  late final GeneratedColumn<String> ruleJson = GeneratedColumn<String>(
+    'rule_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _timeZoneMeta = const VerificationMeta(
+    'timeZone',
+  );
+  @override
+  late final GeneratedColumn<String> timeZone = GeneratedColumn<String>(
+    'time_zone',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _reminderPreferenceMeta =
+      const VerificationMeta('reminderPreference');
+  @override
+  late final GeneratedColumn<String> reminderPreference =
+      GeneratedColumn<String>(
+        'reminder_preference',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _earlyToleranceSecondsMeta =
+      const VerificationMeta('earlyToleranceSeconds');
+  @override
+  late final GeneratedColumn<int> earlyToleranceSeconds = GeneratedColumn<int>(
+    'early_tolerance_seconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _onTimeToleranceSecondsMeta =
+      const VerificationMeta('onTimeToleranceSeconds');
+  @override
+  late final GeneratedColumn<int> onTimeToleranceSeconds = GeneratedColumn<int>(
+    'on_time_tolerance_seconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lateToleranceSecondsMeta =
+      const VerificationMeta('lateToleranceSeconds');
+  @override
+  late final GeneratedColumn<int> lateToleranceSeconds = GeneratedColumn<int>(
+    'late_tolerance_seconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isEnabledMeta = const VerificationMeta(
+    'isEnabled',
+  );
+  @override
+  late final GeneratedColumn<bool> isEnabled = GeneratedColumn<bool>(
+    'is_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_enabled" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _displayOrderMeta = const VerificationMeta(
+    'displayOrder',
+  );
+  @override
+  late final GeneratedColumn<int> displayOrder = GeneratedColumn<int>(
+    'display_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    routineId,
+    planId,
+    ruleJson,
+    timeZone,
+    reminderPreference,
+    earlyToleranceSeconds,
+    onTimeToleranceSeconds,
+    lateToleranceSeconds,
+    isEnabled,
+    displayOrder,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'routine_schedule_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RoutineScheduleRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('routine_id')) {
+      context.handle(
+        _routineIdMeta,
+        routineId.isAcceptableOrUnknown(data['routine_id']!, _routineIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_routineIdMeta);
+    }
+    if (data.containsKey('plan_id')) {
+      context.handle(
+        _planIdMeta,
+        planId.isAcceptableOrUnknown(data['plan_id']!, _planIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_planIdMeta);
+    }
+    if (data.containsKey('rule_json')) {
+      context.handle(
+        _ruleJsonMeta,
+        ruleJson.isAcceptableOrUnknown(data['rule_json']!, _ruleJsonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleJsonMeta);
+    }
+    if (data.containsKey('time_zone')) {
+      context.handle(
+        _timeZoneMeta,
+        timeZone.isAcceptableOrUnknown(data['time_zone']!, _timeZoneMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_timeZoneMeta);
+    }
+    if (data.containsKey('reminder_preference')) {
+      context.handle(
+        _reminderPreferenceMeta,
+        reminderPreference.isAcceptableOrUnknown(
+          data['reminder_preference']!,
+          _reminderPreferenceMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_reminderPreferenceMeta);
+    }
+    if (data.containsKey('early_tolerance_seconds')) {
+      context.handle(
+        _earlyToleranceSecondsMeta,
+        earlyToleranceSeconds.isAcceptableOrUnknown(
+          data['early_tolerance_seconds']!,
+          _earlyToleranceSecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_earlyToleranceSecondsMeta);
+    }
+    if (data.containsKey('on_time_tolerance_seconds')) {
+      context.handle(
+        _onTimeToleranceSecondsMeta,
+        onTimeToleranceSeconds.isAcceptableOrUnknown(
+          data['on_time_tolerance_seconds']!,
+          _onTimeToleranceSecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_onTimeToleranceSecondsMeta);
+    }
+    if (data.containsKey('late_tolerance_seconds')) {
+      context.handle(
+        _lateToleranceSecondsMeta,
+        lateToleranceSeconds.isAcceptableOrUnknown(
+          data['late_tolerance_seconds']!,
+          _lateToleranceSecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_lateToleranceSecondsMeta);
+    }
+    if (data.containsKey('is_enabled')) {
+      context.handle(
+        _isEnabledMeta,
+        isEnabled.isAcceptableOrUnknown(data['is_enabled']!, _isEnabledMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_isEnabledMeta);
+    }
+    if (data.containsKey('display_order')) {
+      context.handle(
+        _displayOrderMeta,
+        displayOrder.isAcceptableOrUnknown(
+          data['display_order']!,
+          _displayOrderMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayOrderMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  RoutineScheduleRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoutineScheduleRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+      routineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_id'],
+      )!,
+      planId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}plan_id'],
+      )!,
+      ruleJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_json'],
+      )!,
+      timeZone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}time_zone'],
+      )!,
+      reminderPreference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reminder_preference'],
+      )!,
+      earlyToleranceSeconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}early_tolerance_seconds'],
+      )!,
+      onTimeToleranceSeconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}on_time_tolerance_seconds'],
+      )!,
+      lateToleranceSeconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}late_tolerance_seconds'],
+      )!,
+      isEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_enabled'],
+      )!,
+      displayOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}display_order'],
+      )!,
+    );
+  }
+
+  @override
+  $RoutineScheduleRecordsTable createAlias(String alias) {
+    return $RoutineScheduleRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class RoutineScheduleRecord extends DataClass
+    implements Insertable<RoutineScheduleRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  final String routineId;
+  final String planId;
+  final String ruleJson;
+  final String timeZone;
+  final String reminderPreference;
+  final int earlyToleranceSeconds;
+  final int onTimeToleranceSeconds;
+  final int lateToleranceSeconds;
+  final bool isEnabled;
+  final int displayOrder;
+  const RoutineScheduleRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+    required this.routineId,
+    required this.planId,
+    required this.ruleJson,
+    required this.timeZone,
+    required this.reminderPreference,
+    required this.earlyToleranceSeconds,
+    required this.onTimeToleranceSeconds,
+    required this.lateToleranceSeconds,
+    required this.isEnabled,
+    required this.displayOrder,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    map['routine_id'] = Variable<String>(routineId);
+    map['plan_id'] = Variable<String>(planId);
+    map['rule_json'] = Variable<String>(ruleJson);
+    map['time_zone'] = Variable<String>(timeZone);
+    map['reminder_preference'] = Variable<String>(reminderPreference);
+    map['early_tolerance_seconds'] = Variable<int>(earlyToleranceSeconds);
+    map['on_time_tolerance_seconds'] = Variable<int>(onTimeToleranceSeconds);
+    map['late_tolerance_seconds'] = Variable<int>(lateToleranceSeconds);
+    map['is_enabled'] = Variable<bool>(isEnabled);
+    map['display_order'] = Variable<int>(displayOrder);
+    return map;
+  }
+
+  RoutineScheduleRecordsCompanion toCompanion(bool nullToAbsent) {
+    return RoutineScheduleRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+      routineId: Value(routineId),
+      planId: Value(planId),
+      ruleJson: Value(ruleJson),
+      timeZone: Value(timeZone),
+      reminderPreference: Value(reminderPreference),
+      earlyToleranceSeconds: Value(earlyToleranceSeconds),
+      onTimeToleranceSeconds: Value(onTimeToleranceSeconds),
+      lateToleranceSeconds: Value(lateToleranceSeconds),
+      isEnabled: Value(isEnabled),
+      displayOrder: Value(displayOrder),
+    );
+  }
+
+  factory RoutineScheduleRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoutineScheduleRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+      routineId: serializer.fromJson<String>(json['routineId']),
+      planId: serializer.fromJson<String>(json['planId']),
+      ruleJson: serializer.fromJson<String>(json['ruleJson']),
+      timeZone: serializer.fromJson<String>(json['timeZone']),
+      reminderPreference: serializer.fromJson<String>(
+        json['reminderPreference'],
+      ),
+      earlyToleranceSeconds: serializer.fromJson<int>(
+        json['earlyToleranceSeconds'],
+      ),
+      onTimeToleranceSeconds: serializer.fromJson<int>(
+        json['onTimeToleranceSeconds'],
+      ),
+      lateToleranceSeconds: serializer.fromJson<int>(
+        json['lateToleranceSeconds'],
+      ),
+      isEnabled: serializer.fromJson<bool>(json['isEnabled']),
+      displayOrder: serializer.fromJson<int>(json['displayOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+      'routineId': serializer.toJson<String>(routineId),
+      'planId': serializer.toJson<String>(planId),
+      'ruleJson': serializer.toJson<String>(ruleJson),
+      'timeZone': serializer.toJson<String>(timeZone),
+      'reminderPreference': serializer.toJson<String>(reminderPreference),
+      'earlyToleranceSeconds': serializer.toJson<int>(earlyToleranceSeconds),
+      'onTimeToleranceSeconds': serializer.toJson<int>(onTimeToleranceSeconds),
+      'lateToleranceSeconds': serializer.toJson<int>(lateToleranceSeconds),
+      'isEnabled': serializer.toJson<bool>(isEnabled),
+      'displayOrder': serializer.toJson<int>(displayOrder),
+    };
+  }
+
+  RoutineScheduleRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+    String? routineId,
+    String? planId,
+    String? ruleJson,
+    String? timeZone,
+    String? reminderPreference,
+    int? earlyToleranceSeconds,
+    int? onTimeToleranceSeconds,
+    int? lateToleranceSeconds,
+    bool? isEnabled,
+    int? displayOrder,
+  }) => RoutineScheduleRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+    routineId: routineId ?? this.routineId,
+    planId: planId ?? this.planId,
+    ruleJson: ruleJson ?? this.ruleJson,
+    timeZone: timeZone ?? this.timeZone,
+    reminderPreference: reminderPreference ?? this.reminderPreference,
+    earlyToleranceSeconds: earlyToleranceSeconds ?? this.earlyToleranceSeconds,
+    onTimeToleranceSeconds:
+        onTimeToleranceSeconds ?? this.onTimeToleranceSeconds,
+    lateToleranceSeconds: lateToleranceSeconds ?? this.lateToleranceSeconds,
+    isEnabled: isEnabled ?? this.isEnabled,
+    displayOrder: displayOrder ?? this.displayOrder,
+  );
+  RoutineScheduleRecord copyWithCompanion(
+    RoutineScheduleRecordsCompanion data,
+  ) {
+    return RoutineScheduleRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+      routineId: data.routineId.present ? data.routineId.value : this.routineId,
+      planId: data.planId.present ? data.planId.value : this.planId,
+      ruleJson: data.ruleJson.present ? data.ruleJson.value : this.ruleJson,
+      timeZone: data.timeZone.present ? data.timeZone.value : this.timeZone,
+      reminderPreference: data.reminderPreference.present
+          ? data.reminderPreference.value
+          : this.reminderPreference,
+      earlyToleranceSeconds: data.earlyToleranceSeconds.present
+          ? data.earlyToleranceSeconds.value
+          : this.earlyToleranceSeconds,
+      onTimeToleranceSeconds: data.onTimeToleranceSeconds.present
+          ? data.onTimeToleranceSeconds.value
+          : this.onTimeToleranceSeconds,
+      lateToleranceSeconds: data.lateToleranceSeconds.present
+          ? data.lateToleranceSeconds.value
+          : this.lateToleranceSeconds,
+      isEnabled: data.isEnabled.present ? data.isEnabled.value : this.isEnabled,
+      displayOrder: data.displayOrder.present
+          ? data.displayOrder.value
+          : this.displayOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutineScheduleRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('ruleJson: $ruleJson, ')
+          ..write('timeZone: $timeZone, ')
+          ..write('reminderPreference: $reminderPreference, ')
+          ..write('earlyToleranceSeconds: $earlyToleranceSeconds, ')
+          ..write('onTimeToleranceSeconds: $onTimeToleranceSeconds, ')
+          ..write('lateToleranceSeconds: $lateToleranceSeconds, ')
+          ..write('isEnabled: $isEnabled, ')
+          ..write('displayOrder: $displayOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    routineId,
+    planId,
+    ruleJson,
+    timeZone,
+    reminderPreference,
+    earlyToleranceSeconds,
+    onTimeToleranceSeconds,
+    lateToleranceSeconds,
+    isEnabled,
+    displayOrder,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoutineScheduleRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError &&
+          other.routineId == this.routineId &&
+          other.planId == this.planId &&
+          other.ruleJson == this.ruleJson &&
+          other.timeZone == this.timeZone &&
+          other.reminderPreference == this.reminderPreference &&
+          other.earlyToleranceSeconds == this.earlyToleranceSeconds &&
+          other.onTimeToleranceSeconds == this.onTimeToleranceSeconds &&
+          other.lateToleranceSeconds == this.lateToleranceSeconds &&
+          other.isEnabled == this.isEnabled &&
+          other.displayOrder == this.displayOrder);
+}
+
+class RoutineScheduleRecordsCompanion
+    extends UpdateCompanion<RoutineScheduleRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<String> routineId;
+  final Value<String> planId;
+  final Value<String> ruleJson;
+  final Value<String> timeZone;
+  final Value<String> reminderPreference;
+  final Value<int> earlyToleranceSeconds;
+  final Value<int> onTimeToleranceSeconds;
+  final Value<int> lateToleranceSeconds;
+  final Value<bool> isEnabled;
+  final Value<int> displayOrder;
+  final Value<int> rowid;
+  const RoutineScheduleRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.routineId = const Value.absent(),
+    this.planId = const Value.absent(),
+    this.ruleJson = const Value.absent(),
+    this.timeZone = const Value.absent(),
+    this.reminderPreference = const Value.absent(),
+    this.earlyToleranceSeconds = const Value.absent(),
+    this.onTimeToleranceSeconds = const Value.absent(),
+    this.lateToleranceSeconds = const Value.absent(),
+    this.isEnabled = const Value.absent(),
+    this.displayOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoutineScheduleRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    required String routineId,
+    required String planId,
+    required String ruleJson,
+    required String timeZone,
+    required String reminderPreference,
+    required int earlyToleranceSeconds,
+    required int onTimeToleranceSeconds,
+    required int lateToleranceSeconds,
+    required bool isEnabled,
+    required int displayOrder,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       routineId = Value(routineId),
+       planId = Value(planId),
+       ruleJson = Value(ruleJson),
+       timeZone = Value(timeZone),
+       reminderPreference = Value(reminderPreference),
+       earlyToleranceSeconds = Value(earlyToleranceSeconds),
+       onTimeToleranceSeconds = Value(onTimeToleranceSeconds),
+       lateToleranceSeconds = Value(lateToleranceSeconds),
+       isEnabled = Value(isEnabled),
+       displayOrder = Value(displayOrder);
+  static Insertable<RoutineScheduleRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<String>? routineId,
+    Expression<String>? planId,
+    Expression<String>? ruleJson,
+    Expression<String>? timeZone,
+    Expression<String>? reminderPreference,
+    Expression<int>? earlyToleranceSeconds,
+    Expression<int>? onTimeToleranceSeconds,
+    Expression<int>? lateToleranceSeconds,
+    Expression<bool>? isEnabled,
+    Expression<int>? displayOrder,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (routineId != null) 'routine_id': routineId,
+      if (planId != null) 'plan_id': planId,
+      if (ruleJson != null) 'rule_json': ruleJson,
+      if (timeZone != null) 'time_zone': timeZone,
+      if (reminderPreference != null) 'reminder_preference': reminderPreference,
+      if (earlyToleranceSeconds != null)
+        'early_tolerance_seconds': earlyToleranceSeconds,
+      if (onTimeToleranceSeconds != null)
+        'on_time_tolerance_seconds': onTimeToleranceSeconds,
+      if (lateToleranceSeconds != null)
+        'late_tolerance_seconds': lateToleranceSeconds,
+      if (isEnabled != null) 'is_enabled': isEnabled,
+      if (displayOrder != null) 'display_order': displayOrder,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoutineScheduleRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<String>? routineId,
+    Value<String>? planId,
+    Value<String>? ruleJson,
+    Value<String>? timeZone,
+    Value<String>? reminderPreference,
+    Value<int>? earlyToleranceSeconds,
+    Value<int>? onTimeToleranceSeconds,
+    Value<int>? lateToleranceSeconds,
+    Value<bool>? isEnabled,
+    Value<int>? displayOrder,
+    Value<int>? rowid,
+  }) {
+    return RoutineScheduleRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      routineId: routineId ?? this.routineId,
+      planId: planId ?? this.planId,
+      ruleJson: ruleJson ?? this.ruleJson,
+      timeZone: timeZone ?? this.timeZone,
+      reminderPreference: reminderPreference ?? this.reminderPreference,
+      earlyToleranceSeconds:
+          earlyToleranceSeconds ?? this.earlyToleranceSeconds,
+      onTimeToleranceSeconds:
+          onTimeToleranceSeconds ?? this.onTimeToleranceSeconds,
+      lateToleranceSeconds: lateToleranceSeconds ?? this.lateToleranceSeconds,
+      isEnabled: isEnabled ?? this.isEnabled,
+      displayOrder: displayOrder ?? this.displayOrder,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (routineId.present) {
+      map['routine_id'] = Variable<String>(routineId.value);
+    }
+    if (planId.present) {
+      map['plan_id'] = Variable<String>(planId.value);
+    }
+    if (ruleJson.present) {
+      map['rule_json'] = Variable<String>(ruleJson.value);
+    }
+    if (timeZone.present) {
+      map['time_zone'] = Variable<String>(timeZone.value);
+    }
+    if (reminderPreference.present) {
+      map['reminder_preference'] = Variable<String>(reminderPreference.value);
+    }
+    if (earlyToleranceSeconds.present) {
+      map['early_tolerance_seconds'] = Variable<int>(
+        earlyToleranceSeconds.value,
+      );
+    }
+    if (onTimeToleranceSeconds.present) {
+      map['on_time_tolerance_seconds'] = Variable<int>(
+        onTimeToleranceSeconds.value,
+      );
+    }
+    if (lateToleranceSeconds.present) {
+      map['late_tolerance_seconds'] = Variable<int>(lateToleranceSeconds.value);
+    }
+    if (isEnabled.present) {
+      map['is_enabled'] = Variable<bool>(isEnabled.value);
+    }
+    if (displayOrder.present) {
+      map['display_order'] = Variable<int>(displayOrder.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutineScheduleRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('ruleJson: $ruleJson, ')
+          ..write('timeZone: $timeZone, ')
+          ..write('reminderPreference: $reminderPreference, ')
+          ..write('earlyToleranceSeconds: $earlyToleranceSeconds, ')
+          ..write('onTimeToleranceSeconds: $onTimeToleranceSeconds, ')
+          ..write('lateToleranceSeconds: $lateToleranceSeconds, ')
+          ..write('isEnabled: $isEnabled, ')
+          ..write('displayOrder: $displayOrder, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoutinePauseRecordsTable extends RoutinePauseRecords
+    with TableInfo<$RoutinePauseRecordsTable, RoutinePauseRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoutinePauseRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _routineIdMeta = const VerificationMeta(
+    'routineId',
+  );
+  @override
+  late final GeneratedColumn<String> routineId = GeneratedColumn<String>(
+    'routine_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _planIdMeta = const VerificationMeta('planId');
+  @override
+  late final GeneratedColumn<String> planId = GeneratedColumn<String>(
+    'plan_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _scopeMeta = const VerificationMeta('scope');
+  @override
+  late final GeneratedColumn<String> scope = GeneratedColumn<String>(
+    'scope',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startsAtMeta = const VerificationMeta(
+    'startsAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startsAt = GeneratedColumn<DateTime>(
+    'starts_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endsAtMeta = const VerificationMeta('endsAt');
+  @override
+  late final GeneratedColumn<DateTime> endsAt = GeneratedColumn<DateTime>(
+    'ends_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+    'reason',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    routineId,
+    planId,
+    scope,
+    startsAt,
+    endsAt,
+    reason,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'routine_pause_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RoutinePauseRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('routine_id')) {
+      context.handle(
+        _routineIdMeta,
+        routineId.isAcceptableOrUnknown(data['routine_id']!, _routineIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_routineIdMeta);
+    }
+    if (data.containsKey('plan_id')) {
+      context.handle(
+        _planIdMeta,
+        planId.isAcceptableOrUnknown(data['plan_id']!, _planIdMeta),
+      );
+    }
+    if (data.containsKey('scope')) {
+      context.handle(
+        _scopeMeta,
+        scope.isAcceptableOrUnknown(data['scope']!, _scopeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_scopeMeta);
+    }
+    if (data.containsKey('starts_at')) {
+      context.handle(
+        _startsAtMeta,
+        startsAt.isAcceptableOrUnknown(data['starts_at']!, _startsAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startsAtMeta);
+    }
+    if (data.containsKey('ends_at')) {
+      context.handle(
+        _endsAtMeta,
+        endsAt.isAcceptableOrUnknown(data['ends_at']!, _endsAtMeta),
+      );
+    }
+    if (data.containsKey('reason')) {
+      context.handle(
+        _reasonMeta,
+        reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  RoutinePauseRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoutinePauseRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+      routineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_id'],
+      )!,
+      planId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}plan_id'],
+      ),
+      scope: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}scope'],
+      )!,
+      startsAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}starts_at'],
+      )!,
+      endsAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}ends_at'],
+      ),
+      reason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason'],
+      ),
+    );
+  }
+
+  @override
+  $RoutinePauseRecordsTable createAlias(String alias) {
+    return $RoutinePauseRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class RoutinePauseRecord extends DataClass
+    implements Insertable<RoutinePauseRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  final String routineId;
+  final String? planId;
+  final String scope;
+  final DateTime startsAt;
+  final DateTime? endsAt;
+  final String? reason;
+  const RoutinePauseRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+    required this.routineId,
+    this.planId,
+    required this.scope,
+    required this.startsAt,
+    this.endsAt,
+    this.reason,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    map['routine_id'] = Variable<String>(routineId);
+    if (!nullToAbsent || planId != null) {
+      map['plan_id'] = Variable<String>(planId);
+    }
+    map['scope'] = Variable<String>(scope);
+    map['starts_at'] = Variable<DateTime>(startsAt);
+    if (!nullToAbsent || endsAt != null) {
+      map['ends_at'] = Variable<DateTime>(endsAt);
+    }
+    if (!nullToAbsent || reason != null) {
+      map['reason'] = Variable<String>(reason);
+    }
+    return map;
+  }
+
+  RoutinePauseRecordsCompanion toCompanion(bool nullToAbsent) {
+    return RoutinePauseRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+      routineId: Value(routineId),
+      planId: planId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(planId),
+      scope: Value(scope),
+      startsAt: Value(startsAt),
+      endsAt: endsAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endsAt),
+      reason: reason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reason),
+    );
+  }
+
+  factory RoutinePauseRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoutinePauseRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+      routineId: serializer.fromJson<String>(json['routineId']),
+      planId: serializer.fromJson<String?>(json['planId']),
+      scope: serializer.fromJson<String>(json['scope']),
+      startsAt: serializer.fromJson<DateTime>(json['startsAt']),
+      endsAt: serializer.fromJson<DateTime?>(json['endsAt']),
+      reason: serializer.fromJson<String?>(json['reason']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+      'routineId': serializer.toJson<String>(routineId),
+      'planId': serializer.toJson<String?>(planId),
+      'scope': serializer.toJson<String>(scope),
+      'startsAt': serializer.toJson<DateTime>(startsAt),
+      'endsAt': serializer.toJson<DateTime?>(endsAt),
+      'reason': serializer.toJson<String?>(reason),
+    };
+  }
+
+  RoutinePauseRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+    String? routineId,
+    Value<String?> planId = const Value.absent(),
+    String? scope,
+    DateTime? startsAt,
+    Value<DateTime?> endsAt = const Value.absent(),
+    Value<String?> reason = const Value.absent(),
+  }) => RoutinePauseRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+    routineId: routineId ?? this.routineId,
+    planId: planId.present ? planId.value : this.planId,
+    scope: scope ?? this.scope,
+    startsAt: startsAt ?? this.startsAt,
+    endsAt: endsAt.present ? endsAt.value : this.endsAt,
+    reason: reason.present ? reason.value : this.reason,
+  );
+  RoutinePauseRecord copyWithCompanion(RoutinePauseRecordsCompanion data) {
+    return RoutinePauseRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+      routineId: data.routineId.present ? data.routineId.value : this.routineId,
+      planId: data.planId.present ? data.planId.value : this.planId,
+      scope: data.scope.present ? data.scope.value : this.scope,
+      startsAt: data.startsAt.present ? data.startsAt.value : this.startsAt,
+      endsAt: data.endsAt.present ? data.endsAt.value : this.endsAt,
+      reason: data.reason.present ? data.reason.value : this.reason,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutinePauseRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('scope: $scope, ')
+          ..write('startsAt: $startsAt, ')
+          ..write('endsAt: $endsAt, ')
+          ..write('reason: $reason')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    routineId,
+    planId,
+    scope,
+    startsAt,
+    endsAt,
+    reason,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoutinePauseRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError &&
+          other.routineId == this.routineId &&
+          other.planId == this.planId &&
+          other.scope == this.scope &&
+          other.startsAt == this.startsAt &&
+          other.endsAt == this.endsAt &&
+          other.reason == this.reason);
+}
+
+class RoutinePauseRecordsCompanion extends UpdateCompanion<RoutinePauseRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<String> routineId;
+  final Value<String?> planId;
+  final Value<String> scope;
+  final Value<DateTime> startsAt;
+  final Value<DateTime?> endsAt;
+  final Value<String?> reason;
+  final Value<int> rowid;
+  const RoutinePauseRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.routineId = const Value.absent(),
+    this.planId = const Value.absent(),
+    this.scope = const Value.absent(),
+    this.startsAt = const Value.absent(),
+    this.endsAt = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoutinePauseRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    required String routineId,
+    this.planId = const Value.absent(),
+    required String scope,
+    required DateTime startsAt,
+    this.endsAt = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       routineId = Value(routineId),
+       scope = Value(scope),
+       startsAt = Value(startsAt);
+  static Insertable<RoutinePauseRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<String>? routineId,
+    Expression<String>? planId,
+    Expression<String>? scope,
+    Expression<DateTime>? startsAt,
+    Expression<DateTime>? endsAt,
+    Expression<String>? reason,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (routineId != null) 'routine_id': routineId,
+      if (planId != null) 'plan_id': planId,
+      if (scope != null) 'scope': scope,
+      if (startsAt != null) 'starts_at': startsAt,
+      if (endsAt != null) 'ends_at': endsAt,
+      if (reason != null) 'reason': reason,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoutinePauseRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<String>? routineId,
+    Value<String?>? planId,
+    Value<String>? scope,
+    Value<DateTime>? startsAt,
+    Value<DateTime?>? endsAt,
+    Value<String?>? reason,
+    Value<int>? rowid,
+  }) {
+    return RoutinePauseRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      routineId: routineId ?? this.routineId,
+      planId: planId ?? this.planId,
+      scope: scope ?? this.scope,
+      startsAt: startsAt ?? this.startsAt,
+      endsAt: endsAt ?? this.endsAt,
+      reason: reason ?? this.reason,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (routineId.present) {
+      map['routine_id'] = Variable<String>(routineId.value);
+    }
+    if (planId.present) {
+      map['plan_id'] = Variable<String>(planId.value);
+    }
+    if (scope.present) {
+      map['scope'] = Variable<String>(scope.value);
+    }
+    if (startsAt.present) {
+      map['starts_at'] = Variable<DateTime>(startsAt.value);
+    }
+    if (endsAt.present) {
+      map['ends_at'] = Variable<DateTime>(endsAt.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutinePauseRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('scope: $scope, ')
+          ..write('startsAt: $startsAt, ')
+          ..write('endsAt: $endsAt, ')
+          ..write('reason: $reason, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoutineOccurrenceRecordsTable extends RoutineOccurrenceRecords
+    with TableInfo<$RoutineOccurrenceRecordsTable, RoutineOccurrenceRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoutineOccurrenceRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _routineIdMeta = const VerificationMeta(
+    'routineId',
+  );
+  @override
+  late final GeneratedColumn<String> routineId = GeneratedColumn<String>(
+    'routine_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _planIdMeta = const VerificationMeta('planId');
+  @override
+  late final GeneratedColumn<String> planId = GeneratedColumn<String>(
+    'plan_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _scheduleIdMeta = const VerificationMeta(
+    'scheduleId',
+  );
+  @override
+  late final GeneratedColumn<String> scheduleId = GeneratedColumn<String>(
+    'schedule_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _originMeta = const VerificationMeta('origin');
+  @override
+  late final GeneratedColumn<String> origin = GeneratedColumn<String>(
+    'origin',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _originalClinicalDateMeta =
+      const VerificationMeta('originalClinicalDate');
+  @override
+  late final GeneratedColumn<String> originalClinicalDate =
+      GeneratedColumn<String>(
+        'original_clinical_date',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _originalLocalHourMeta = const VerificationMeta(
+    'originalLocalHour',
+  );
+  @override
+  late final GeneratedColumn<int> originalLocalHour = GeneratedColumn<int>(
+    'original_local_hour',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _originalLocalMinuteMeta =
+      const VerificationMeta('originalLocalMinute');
+  @override
+  late final GeneratedColumn<int> originalLocalMinute = GeneratedColumn<int>(
+    'original_local_minute',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _originalTimeZoneMeta = const VerificationMeta(
+    'originalTimeZone',
+  );
+  @override
+  late final GeneratedColumn<String> originalTimeZone = GeneratedColumn<String>(
+    'original_time_zone',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _expectationKindMeta = const VerificationMeta(
+    'expectationKind',
+  );
+  @override
+  late final GeneratedColumn<String> expectationKind = GeneratedColumn<String>(
+    'expectation_kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sequenceMeta = const VerificationMeta(
+    'sequence',
+  );
+  @override
+  late final GeneratedColumn<int> sequence = GeneratedColumn<int>(
+    'sequence',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _originalScheduledForMeta =
+      const VerificationMeta('originalScheduledFor');
+  @override
+  late final GeneratedColumn<DateTime> originalScheduledFor =
+      GeneratedColumn<DateTime>(
+        'original_scheduled_for',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _originalWindowStartsAtMeta =
+      const VerificationMeta('originalWindowStartsAt');
+  @override
+  late final GeneratedColumn<DateTime> originalWindowStartsAt =
+      GeneratedColumn<DateTime>(
+        'original_window_starts_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _originalOnTimeEndsAtMeta =
+      const VerificationMeta('originalOnTimeEndsAt');
+  @override
+  late final GeneratedColumn<DateTime> originalOnTimeEndsAt =
+      GeneratedColumn<DateTime>(
+        'original_on_time_ends_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _originalWindowEndsAtMeta =
+      const VerificationMeta('originalWindowEndsAt');
+  @override
+  late final GeneratedColumn<DateTime> originalWindowEndsAt =
+      GeneratedColumn<DateTime>(
+        'original_window_ends_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _scheduledForMeta = const VerificationMeta(
+    'scheduledFor',
+  );
+  @override
+  late final GeneratedColumn<DateTime> scheduledFor = GeneratedColumn<DateTime>(
+    'scheduled_for',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _windowStartsAtMeta = const VerificationMeta(
+    'windowStartsAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> windowStartsAt =
+      GeneratedColumn<DateTime>(
+        'window_starts_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _onTimeEndsAtMeta = const VerificationMeta(
+    'onTimeEndsAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> onTimeEndsAt = GeneratedColumn<DateTime>(
+    'on_time_ends_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _windowEndsAtMeta = const VerificationMeta(
+    'windowEndsAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> windowEndsAt = GeneratedColumn<DateTime>(
+    'window_ends_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    routineId,
+    planId,
+    scheduleId,
+    origin,
+    status,
+    originalClinicalDate,
+    originalLocalHour,
+    originalLocalMinute,
+    originalTimeZone,
+    expectationKind,
+    sequence,
+    originalScheduledFor,
+    originalWindowStartsAt,
+    originalOnTimeEndsAt,
+    originalWindowEndsAt,
+    scheduledFor,
+    windowStartsAt,
+    onTimeEndsAt,
+    windowEndsAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'routine_occurrence_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RoutineOccurrenceRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('routine_id')) {
+      context.handle(
+        _routineIdMeta,
+        routineId.isAcceptableOrUnknown(data['routine_id']!, _routineIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_routineIdMeta);
+    }
+    if (data.containsKey('plan_id')) {
+      context.handle(
+        _planIdMeta,
+        planId.isAcceptableOrUnknown(data['plan_id']!, _planIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_planIdMeta);
+    }
+    if (data.containsKey('schedule_id')) {
+      context.handle(
+        _scheduleIdMeta,
+        scheduleId.isAcceptableOrUnknown(data['schedule_id']!, _scheduleIdMeta),
+      );
+    }
+    if (data.containsKey('origin')) {
+      context.handle(
+        _originMeta,
+        origin.isAcceptableOrUnknown(data['origin']!, _originMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_originMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('original_clinical_date')) {
+      context.handle(
+        _originalClinicalDateMeta,
+        originalClinicalDate.isAcceptableOrUnknown(
+          data['original_clinical_date']!,
+          _originalClinicalDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalClinicalDateMeta);
+    }
+    if (data.containsKey('original_local_hour')) {
+      context.handle(
+        _originalLocalHourMeta,
+        originalLocalHour.isAcceptableOrUnknown(
+          data['original_local_hour']!,
+          _originalLocalHourMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalLocalHourMeta);
+    }
+    if (data.containsKey('original_local_minute')) {
+      context.handle(
+        _originalLocalMinuteMeta,
+        originalLocalMinute.isAcceptableOrUnknown(
+          data['original_local_minute']!,
+          _originalLocalMinuteMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalLocalMinuteMeta);
+    }
+    if (data.containsKey('original_time_zone')) {
+      context.handle(
+        _originalTimeZoneMeta,
+        originalTimeZone.isAcceptableOrUnknown(
+          data['original_time_zone']!,
+          _originalTimeZoneMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalTimeZoneMeta);
+    }
+    if (data.containsKey('expectation_kind')) {
+      context.handle(
+        _expectationKindMeta,
+        expectationKind.isAcceptableOrUnknown(
+          data['expectation_kind']!,
+          _expectationKindMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_expectationKindMeta);
+    }
+    if (data.containsKey('sequence')) {
+      context.handle(
+        _sequenceMeta,
+        sequence.isAcceptableOrUnknown(data['sequence']!, _sequenceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sequenceMeta);
+    }
+    if (data.containsKey('original_scheduled_for')) {
+      context.handle(
+        _originalScheduledForMeta,
+        originalScheduledFor.isAcceptableOrUnknown(
+          data['original_scheduled_for']!,
+          _originalScheduledForMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalScheduledForMeta);
+    }
+    if (data.containsKey('original_window_starts_at')) {
+      context.handle(
+        _originalWindowStartsAtMeta,
+        originalWindowStartsAt.isAcceptableOrUnknown(
+          data['original_window_starts_at']!,
+          _originalWindowStartsAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalWindowStartsAtMeta);
+    }
+    if (data.containsKey('original_on_time_ends_at')) {
+      context.handle(
+        _originalOnTimeEndsAtMeta,
+        originalOnTimeEndsAt.isAcceptableOrUnknown(
+          data['original_on_time_ends_at']!,
+          _originalOnTimeEndsAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalOnTimeEndsAtMeta);
+    }
+    if (data.containsKey('original_window_ends_at')) {
+      context.handle(
+        _originalWindowEndsAtMeta,
+        originalWindowEndsAt.isAcceptableOrUnknown(
+          data['original_window_ends_at']!,
+          _originalWindowEndsAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originalWindowEndsAtMeta);
+    }
+    if (data.containsKey('scheduled_for')) {
+      context.handle(
+        _scheduledForMeta,
+        scheduledFor.isAcceptableOrUnknown(
+          data['scheduled_for']!,
+          _scheduledForMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_scheduledForMeta);
+    }
+    if (data.containsKey('window_starts_at')) {
+      context.handle(
+        _windowStartsAtMeta,
+        windowStartsAt.isAcceptableOrUnknown(
+          data['window_starts_at']!,
+          _windowStartsAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_windowStartsAtMeta);
+    }
+    if (data.containsKey('on_time_ends_at')) {
+      context.handle(
+        _onTimeEndsAtMeta,
+        onTimeEndsAt.isAcceptableOrUnknown(
+          data['on_time_ends_at']!,
+          _onTimeEndsAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_onTimeEndsAtMeta);
+    }
+    if (data.containsKey('window_ends_at')) {
+      context.handle(
+        _windowEndsAtMeta,
+        windowEndsAt.isAcceptableOrUnknown(
+          data['window_ends_at']!,
+          _windowEndsAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_windowEndsAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  RoutineOccurrenceRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoutineOccurrenceRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+      routineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_id'],
+      )!,
+      planId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}plan_id'],
+      )!,
+      scheduleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}schedule_id'],
+      ),
+      origin: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}origin'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      originalClinicalDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}original_clinical_date'],
+      )!,
+      originalLocalHour: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}original_local_hour'],
+      )!,
+      originalLocalMinute: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}original_local_minute'],
+      )!,
+      originalTimeZone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}original_time_zone'],
+      )!,
+      expectationKind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}expectation_kind'],
+      )!,
+      sequence: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sequence'],
+      )!,
+      originalScheduledFor: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}original_scheduled_for'],
+      )!,
+      originalWindowStartsAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}original_window_starts_at'],
+      )!,
+      originalOnTimeEndsAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}original_on_time_ends_at'],
+      )!,
+      originalWindowEndsAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}original_window_ends_at'],
+      )!,
+      scheduledFor: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}scheduled_for'],
+      )!,
+      windowStartsAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}window_starts_at'],
+      )!,
+      onTimeEndsAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}on_time_ends_at'],
+      )!,
+      windowEndsAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}window_ends_at'],
+      )!,
+    );
+  }
+
+  @override
+  $RoutineOccurrenceRecordsTable createAlias(String alias) {
+    return $RoutineOccurrenceRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class RoutineOccurrenceRecord extends DataClass
+    implements Insertable<RoutineOccurrenceRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  final String routineId;
+  final String planId;
+  final String? scheduleId;
+  final String origin;
+  final String status;
+  final String originalClinicalDate;
+  final int originalLocalHour;
+  final int originalLocalMinute;
+  final String originalTimeZone;
+  final String expectationKind;
+  final int sequence;
+  final DateTime originalScheduledFor;
+  final DateTime originalWindowStartsAt;
+  final DateTime originalOnTimeEndsAt;
+  final DateTime originalWindowEndsAt;
+  final DateTime scheduledFor;
+  final DateTime windowStartsAt;
+  final DateTime onTimeEndsAt;
+  final DateTime windowEndsAt;
+  const RoutineOccurrenceRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+    required this.routineId,
+    required this.planId,
+    this.scheduleId,
+    required this.origin,
+    required this.status,
+    required this.originalClinicalDate,
+    required this.originalLocalHour,
+    required this.originalLocalMinute,
+    required this.originalTimeZone,
+    required this.expectationKind,
+    required this.sequence,
+    required this.originalScheduledFor,
+    required this.originalWindowStartsAt,
+    required this.originalOnTimeEndsAt,
+    required this.originalWindowEndsAt,
+    required this.scheduledFor,
+    required this.windowStartsAt,
+    required this.onTimeEndsAt,
+    required this.windowEndsAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    map['routine_id'] = Variable<String>(routineId);
+    map['plan_id'] = Variable<String>(planId);
+    if (!nullToAbsent || scheduleId != null) {
+      map['schedule_id'] = Variable<String>(scheduleId);
+    }
+    map['origin'] = Variable<String>(origin);
+    map['status'] = Variable<String>(status);
+    map['original_clinical_date'] = Variable<String>(originalClinicalDate);
+    map['original_local_hour'] = Variable<int>(originalLocalHour);
+    map['original_local_minute'] = Variable<int>(originalLocalMinute);
+    map['original_time_zone'] = Variable<String>(originalTimeZone);
+    map['expectation_kind'] = Variable<String>(expectationKind);
+    map['sequence'] = Variable<int>(sequence);
+    map['original_scheduled_for'] = Variable<DateTime>(originalScheduledFor);
+    map['original_window_starts_at'] = Variable<DateTime>(
+      originalWindowStartsAt,
+    );
+    map['original_on_time_ends_at'] = Variable<DateTime>(originalOnTimeEndsAt);
+    map['original_window_ends_at'] = Variable<DateTime>(originalWindowEndsAt);
+    map['scheduled_for'] = Variable<DateTime>(scheduledFor);
+    map['window_starts_at'] = Variable<DateTime>(windowStartsAt);
+    map['on_time_ends_at'] = Variable<DateTime>(onTimeEndsAt);
+    map['window_ends_at'] = Variable<DateTime>(windowEndsAt);
+    return map;
+  }
+
+  RoutineOccurrenceRecordsCompanion toCompanion(bool nullToAbsent) {
+    return RoutineOccurrenceRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+      routineId: Value(routineId),
+      planId: Value(planId),
+      scheduleId: scheduleId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scheduleId),
+      origin: Value(origin),
+      status: Value(status),
+      originalClinicalDate: Value(originalClinicalDate),
+      originalLocalHour: Value(originalLocalHour),
+      originalLocalMinute: Value(originalLocalMinute),
+      originalTimeZone: Value(originalTimeZone),
+      expectationKind: Value(expectationKind),
+      sequence: Value(sequence),
+      originalScheduledFor: Value(originalScheduledFor),
+      originalWindowStartsAt: Value(originalWindowStartsAt),
+      originalOnTimeEndsAt: Value(originalOnTimeEndsAt),
+      originalWindowEndsAt: Value(originalWindowEndsAt),
+      scheduledFor: Value(scheduledFor),
+      windowStartsAt: Value(windowStartsAt),
+      onTimeEndsAt: Value(onTimeEndsAt),
+      windowEndsAt: Value(windowEndsAt),
+    );
+  }
+
+  factory RoutineOccurrenceRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoutineOccurrenceRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+      routineId: serializer.fromJson<String>(json['routineId']),
+      planId: serializer.fromJson<String>(json['planId']),
+      scheduleId: serializer.fromJson<String?>(json['scheduleId']),
+      origin: serializer.fromJson<String>(json['origin']),
+      status: serializer.fromJson<String>(json['status']),
+      originalClinicalDate: serializer.fromJson<String>(
+        json['originalClinicalDate'],
+      ),
+      originalLocalHour: serializer.fromJson<int>(json['originalLocalHour']),
+      originalLocalMinute: serializer.fromJson<int>(
+        json['originalLocalMinute'],
+      ),
+      originalTimeZone: serializer.fromJson<String>(json['originalTimeZone']),
+      expectationKind: serializer.fromJson<String>(json['expectationKind']),
+      sequence: serializer.fromJson<int>(json['sequence']),
+      originalScheduledFor: serializer.fromJson<DateTime>(
+        json['originalScheduledFor'],
+      ),
+      originalWindowStartsAt: serializer.fromJson<DateTime>(
+        json['originalWindowStartsAt'],
+      ),
+      originalOnTimeEndsAt: serializer.fromJson<DateTime>(
+        json['originalOnTimeEndsAt'],
+      ),
+      originalWindowEndsAt: serializer.fromJson<DateTime>(
+        json['originalWindowEndsAt'],
+      ),
+      scheduledFor: serializer.fromJson<DateTime>(json['scheduledFor']),
+      windowStartsAt: serializer.fromJson<DateTime>(json['windowStartsAt']),
+      onTimeEndsAt: serializer.fromJson<DateTime>(json['onTimeEndsAt']),
+      windowEndsAt: serializer.fromJson<DateTime>(json['windowEndsAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+      'routineId': serializer.toJson<String>(routineId),
+      'planId': serializer.toJson<String>(planId),
+      'scheduleId': serializer.toJson<String?>(scheduleId),
+      'origin': serializer.toJson<String>(origin),
+      'status': serializer.toJson<String>(status),
+      'originalClinicalDate': serializer.toJson<String>(originalClinicalDate),
+      'originalLocalHour': serializer.toJson<int>(originalLocalHour),
+      'originalLocalMinute': serializer.toJson<int>(originalLocalMinute),
+      'originalTimeZone': serializer.toJson<String>(originalTimeZone),
+      'expectationKind': serializer.toJson<String>(expectationKind),
+      'sequence': serializer.toJson<int>(sequence),
+      'originalScheduledFor': serializer.toJson<DateTime>(originalScheduledFor),
+      'originalWindowStartsAt': serializer.toJson<DateTime>(
+        originalWindowStartsAt,
+      ),
+      'originalOnTimeEndsAt': serializer.toJson<DateTime>(originalOnTimeEndsAt),
+      'originalWindowEndsAt': serializer.toJson<DateTime>(originalWindowEndsAt),
+      'scheduledFor': serializer.toJson<DateTime>(scheduledFor),
+      'windowStartsAt': serializer.toJson<DateTime>(windowStartsAt),
+      'onTimeEndsAt': serializer.toJson<DateTime>(onTimeEndsAt),
+      'windowEndsAt': serializer.toJson<DateTime>(windowEndsAt),
+    };
+  }
+
+  RoutineOccurrenceRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+    String? routineId,
+    String? planId,
+    Value<String?> scheduleId = const Value.absent(),
+    String? origin,
+    String? status,
+    String? originalClinicalDate,
+    int? originalLocalHour,
+    int? originalLocalMinute,
+    String? originalTimeZone,
+    String? expectationKind,
+    int? sequence,
+    DateTime? originalScheduledFor,
+    DateTime? originalWindowStartsAt,
+    DateTime? originalOnTimeEndsAt,
+    DateTime? originalWindowEndsAt,
+    DateTime? scheduledFor,
+    DateTime? windowStartsAt,
+    DateTime? onTimeEndsAt,
+    DateTime? windowEndsAt,
+  }) => RoutineOccurrenceRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+    routineId: routineId ?? this.routineId,
+    planId: planId ?? this.planId,
+    scheduleId: scheduleId.present ? scheduleId.value : this.scheduleId,
+    origin: origin ?? this.origin,
+    status: status ?? this.status,
+    originalClinicalDate: originalClinicalDate ?? this.originalClinicalDate,
+    originalLocalHour: originalLocalHour ?? this.originalLocalHour,
+    originalLocalMinute: originalLocalMinute ?? this.originalLocalMinute,
+    originalTimeZone: originalTimeZone ?? this.originalTimeZone,
+    expectationKind: expectationKind ?? this.expectationKind,
+    sequence: sequence ?? this.sequence,
+    originalScheduledFor: originalScheduledFor ?? this.originalScheduledFor,
+    originalWindowStartsAt:
+        originalWindowStartsAt ?? this.originalWindowStartsAt,
+    originalOnTimeEndsAt: originalOnTimeEndsAt ?? this.originalOnTimeEndsAt,
+    originalWindowEndsAt: originalWindowEndsAt ?? this.originalWindowEndsAt,
+    scheduledFor: scheduledFor ?? this.scheduledFor,
+    windowStartsAt: windowStartsAt ?? this.windowStartsAt,
+    onTimeEndsAt: onTimeEndsAt ?? this.onTimeEndsAt,
+    windowEndsAt: windowEndsAt ?? this.windowEndsAt,
+  );
+  RoutineOccurrenceRecord copyWithCompanion(
+    RoutineOccurrenceRecordsCompanion data,
+  ) {
+    return RoutineOccurrenceRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+      routineId: data.routineId.present ? data.routineId.value : this.routineId,
+      planId: data.planId.present ? data.planId.value : this.planId,
+      scheduleId: data.scheduleId.present
+          ? data.scheduleId.value
+          : this.scheduleId,
+      origin: data.origin.present ? data.origin.value : this.origin,
+      status: data.status.present ? data.status.value : this.status,
+      originalClinicalDate: data.originalClinicalDate.present
+          ? data.originalClinicalDate.value
+          : this.originalClinicalDate,
+      originalLocalHour: data.originalLocalHour.present
+          ? data.originalLocalHour.value
+          : this.originalLocalHour,
+      originalLocalMinute: data.originalLocalMinute.present
+          ? data.originalLocalMinute.value
+          : this.originalLocalMinute,
+      originalTimeZone: data.originalTimeZone.present
+          ? data.originalTimeZone.value
+          : this.originalTimeZone,
+      expectationKind: data.expectationKind.present
+          ? data.expectationKind.value
+          : this.expectationKind,
+      sequence: data.sequence.present ? data.sequence.value : this.sequence,
+      originalScheduledFor: data.originalScheduledFor.present
+          ? data.originalScheduledFor.value
+          : this.originalScheduledFor,
+      originalWindowStartsAt: data.originalWindowStartsAt.present
+          ? data.originalWindowStartsAt.value
+          : this.originalWindowStartsAt,
+      originalOnTimeEndsAt: data.originalOnTimeEndsAt.present
+          ? data.originalOnTimeEndsAt.value
+          : this.originalOnTimeEndsAt,
+      originalWindowEndsAt: data.originalWindowEndsAt.present
+          ? data.originalWindowEndsAt.value
+          : this.originalWindowEndsAt,
+      scheduledFor: data.scheduledFor.present
+          ? data.scheduledFor.value
+          : this.scheduledFor,
+      windowStartsAt: data.windowStartsAt.present
+          ? data.windowStartsAt.value
+          : this.windowStartsAt,
+      onTimeEndsAt: data.onTimeEndsAt.present
+          ? data.onTimeEndsAt.value
+          : this.onTimeEndsAt,
+      windowEndsAt: data.windowEndsAt.present
+          ? data.windowEndsAt.value
+          : this.windowEndsAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutineOccurrenceRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('origin: $origin, ')
+          ..write('status: $status, ')
+          ..write('originalClinicalDate: $originalClinicalDate, ')
+          ..write('originalLocalHour: $originalLocalHour, ')
+          ..write('originalLocalMinute: $originalLocalMinute, ')
+          ..write('originalTimeZone: $originalTimeZone, ')
+          ..write('expectationKind: $expectationKind, ')
+          ..write('sequence: $sequence, ')
+          ..write('originalScheduledFor: $originalScheduledFor, ')
+          ..write('originalWindowStartsAt: $originalWindowStartsAt, ')
+          ..write('originalOnTimeEndsAt: $originalOnTimeEndsAt, ')
+          ..write('originalWindowEndsAt: $originalWindowEndsAt, ')
+          ..write('scheduledFor: $scheduledFor, ')
+          ..write('windowStartsAt: $windowStartsAt, ')
+          ..write('onTimeEndsAt: $onTimeEndsAt, ')
+          ..write('windowEndsAt: $windowEndsAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    routineId,
+    planId,
+    scheduleId,
+    origin,
+    status,
+    originalClinicalDate,
+    originalLocalHour,
+    originalLocalMinute,
+    originalTimeZone,
+    expectationKind,
+    sequence,
+    originalScheduledFor,
+    originalWindowStartsAt,
+    originalOnTimeEndsAt,
+    originalWindowEndsAt,
+    scheduledFor,
+    windowStartsAt,
+    onTimeEndsAt,
+    windowEndsAt,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoutineOccurrenceRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError &&
+          other.routineId == this.routineId &&
+          other.planId == this.planId &&
+          other.scheduleId == this.scheduleId &&
+          other.origin == this.origin &&
+          other.status == this.status &&
+          other.originalClinicalDate == this.originalClinicalDate &&
+          other.originalLocalHour == this.originalLocalHour &&
+          other.originalLocalMinute == this.originalLocalMinute &&
+          other.originalTimeZone == this.originalTimeZone &&
+          other.expectationKind == this.expectationKind &&
+          other.sequence == this.sequence &&
+          other.originalScheduledFor == this.originalScheduledFor &&
+          other.originalWindowStartsAt == this.originalWindowStartsAt &&
+          other.originalOnTimeEndsAt == this.originalOnTimeEndsAt &&
+          other.originalWindowEndsAt == this.originalWindowEndsAt &&
+          other.scheduledFor == this.scheduledFor &&
+          other.windowStartsAt == this.windowStartsAt &&
+          other.onTimeEndsAt == this.onTimeEndsAt &&
+          other.windowEndsAt == this.windowEndsAt);
+}
+
+class RoutineOccurrenceRecordsCompanion
+    extends UpdateCompanion<RoutineOccurrenceRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<String> routineId;
+  final Value<String> planId;
+  final Value<String?> scheduleId;
+  final Value<String> origin;
+  final Value<String> status;
+  final Value<String> originalClinicalDate;
+  final Value<int> originalLocalHour;
+  final Value<int> originalLocalMinute;
+  final Value<String> originalTimeZone;
+  final Value<String> expectationKind;
+  final Value<int> sequence;
+  final Value<DateTime> originalScheduledFor;
+  final Value<DateTime> originalWindowStartsAt;
+  final Value<DateTime> originalOnTimeEndsAt;
+  final Value<DateTime> originalWindowEndsAt;
+  final Value<DateTime> scheduledFor;
+  final Value<DateTime> windowStartsAt;
+  final Value<DateTime> onTimeEndsAt;
+  final Value<DateTime> windowEndsAt;
+  final Value<int> rowid;
+  const RoutineOccurrenceRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.routineId = const Value.absent(),
+    this.planId = const Value.absent(),
+    this.scheduleId = const Value.absent(),
+    this.origin = const Value.absent(),
+    this.status = const Value.absent(),
+    this.originalClinicalDate = const Value.absent(),
+    this.originalLocalHour = const Value.absent(),
+    this.originalLocalMinute = const Value.absent(),
+    this.originalTimeZone = const Value.absent(),
+    this.expectationKind = const Value.absent(),
+    this.sequence = const Value.absent(),
+    this.originalScheduledFor = const Value.absent(),
+    this.originalWindowStartsAt = const Value.absent(),
+    this.originalOnTimeEndsAt = const Value.absent(),
+    this.originalWindowEndsAt = const Value.absent(),
+    this.scheduledFor = const Value.absent(),
+    this.windowStartsAt = const Value.absent(),
+    this.onTimeEndsAt = const Value.absent(),
+    this.windowEndsAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoutineOccurrenceRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    required String routineId,
+    required String planId,
+    this.scheduleId = const Value.absent(),
+    required String origin,
+    required String status,
+    required String originalClinicalDate,
+    required int originalLocalHour,
+    required int originalLocalMinute,
+    required String originalTimeZone,
+    required String expectationKind,
+    required int sequence,
+    required DateTime originalScheduledFor,
+    required DateTime originalWindowStartsAt,
+    required DateTime originalOnTimeEndsAt,
+    required DateTime originalWindowEndsAt,
+    required DateTime scheduledFor,
+    required DateTime windowStartsAt,
+    required DateTime onTimeEndsAt,
+    required DateTime windowEndsAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       routineId = Value(routineId),
+       planId = Value(planId),
+       origin = Value(origin),
+       status = Value(status),
+       originalClinicalDate = Value(originalClinicalDate),
+       originalLocalHour = Value(originalLocalHour),
+       originalLocalMinute = Value(originalLocalMinute),
+       originalTimeZone = Value(originalTimeZone),
+       expectationKind = Value(expectationKind),
+       sequence = Value(sequence),
+       originalScheduledFor = Value(originalScheduledFor),
+       originalWindowStartsAt = Value(originalWindowStartsAt),
+       originalOnTimeEndsAt = Value(originalOnTimeEndsAt),
+       originalWindowEndsAt = Value(originalWindowEndsAt),
+       scheduledFor = Value(scheduledFor),
+       windowStartsAt = Value(windowStartsAt),
+       onTimeEndsAt = Value(onTimeEndsAt),
+       windowEndsAt = Value(windowEndsAt);
+  static Insertable<RoutineOccurrenceRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<String>? routineId,
+    Expression<String>? planId,
+    Expression<String>? scheduleId,
+    Expression<String>? origin,
+    Expression<String>? status,
+    Expression<String>? originalClinicalDate,
+    Expression<int>? originalLocalHour,
+    Expression<int>? originalLocalMinute,
+    Expression<String>? originalTimeZone,
+    Expression<String>? expectationKind,
+    Expression<int>? sequence,
+    Expression<DateTime>? originalScheduledFor,
+    Expression<DateTime>? originalWindowStartsAt,
+    Expression<DateTime>? originalOnTimeEndsAt,
+    Expression<DateTime>? originalWindowEndsAt,
+    Expression<DateTime>? scheduledFor,
+    Expression<DateTime>? windowStartsAt,
+    Expression<DateTime>? onTimeEndsAt,
+    Expression<DateTime>? windowEndsAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (routineId != null) 'routine_id': routineId,
+      if (planId != null) 'plan_id': planId,
+      if (scheduleId != null) 'schedule_id': scheduleId,
+      if (origin != null) 'origin': origin,
+      if (status != null) 'status': status,
+      if (originalClinicalDate != null)
+        'original_clinical_date': originalClinicalDate,
+      if (originalLocalHour != null) 'original_local_hour': originalLocalHour,
+      if (originalLocalMinute != null)
+        'original_local_minute': originalLocalMinute,
+      if (originalTimeZone != null) 'original_time_zone': originalTimeZone,
+      if (expectationKind != null) 'expectation_kind': expectationKind,
+      if (sequence != null) 'sequence': sequence,
+      if (originalScheduledFor != null)
+        'original_scheduled_for': originalScheduledFor,
+      if (originalWindowStartsAt != null)
+        'original_window_starts_at': originalWindowStartsAt,
+      if (originalOnTimeEndsAt != null)
+        'original_on_time_ends_at': originalOnTimeEndsAt,
+      if (originalWindowEndsAt != null)
+        'original_window_ends_at': originalWindowEndsAt,
+      if (scheduledFor != null) 'scheduled_for': scheduledFor,
+      if (windowStartsAt != null) 'window_starts_at': windowStartsAt,
+      if (onTimeEndsAt != null) 'on_time_ends_at': onTimeEndsAt,
+      if (windowEndsAt != null) 'window_ends_at': windowEndsAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoutineOccurrenceRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<String>? routineId,
+    Value<String>? planId,
+    Value<String?>? scheduleId,
+    Value<String>? origin,
+    Value<String>? status,
+    Value<String>? originalClinicalDate,
+    Value<int>? originalLocalHour,
+    Value<int>? originalLocalMinute,
+    Value<String>? originalTimeZone,
+    Value<String>? expectationKind,
+    Value<int>? sequence,
+    Value<DateTime>? originalScheduledFor,
+    Value<DateTime>? originalWindowStartsAt,
+    Value<DateTime>? originalOnTimeEndsAt,
+    Value<DateTime>? originalWindowEndsAt,
+    Value<DateTime>? scheduledFor,
+    Value<DateTime>? windowStartsAt,
+    Value<DateTime>? onTimeEndsAt,
+    Value<DateTime>? windowEndsAt,
+    Value<int>? rowid,
+  }) {
+    return RoutineOccurrenceRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      routineId: routineId ?? this.routineId,
+      planId: planId ?? this.planId,
+      scheduleId: scheduleId ?? this.scheduleId,
+      origin: origin ?? this.origin,
+      status: status ?? this.status,
+      originalClinicalDate: originalClinicalDate ?? this.originalClinicalDate,
+      originalLocalHour: originalLocalHour ?? this.originalLocalHour,
+      originalLocalMinute: originalLocalMinute ?? this.originalLocalMinute,
+      originalTimeZone: originalTimeZone ?? this.originalTimeZone,
+      expectationKind: expectationKind ?? this.expectationKind,
+      sequence: sequence ?? this.sequence,
+      originalScheduledFor: originalScheduledFor ?? this.originalScheduledFor,
+      originalWindowStartsAt:
+          originalWindowStartsAt ?? this.originalWindowStartsAt,
+      originalOnTimeEndsAt: originalOnTimeEndsAt ?? this.originalOnTimeEndsAt,
+      originalWindowEndsAt: originalWindowEndsAt ?? this.originalWindowEndsAt,
+      scheduledFor: scheduledFor ?? this.scheduledFor,
+      windowStartsAt: windowStartsAt ?? this.windowStartsAt,
+      onTimeEndsAt: onTimeEndsAt ?? this.onTimeEndsAt,
+      windowEndsAt: windowEndsAt ?? this.windowEndsAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (routineId.present) {
+      map['routine_id'] = Variable<String>(routineId.value);
+    }
+    if (planId.present) {
+      map['plan_id'] = Variable<String>(planId.value);
+    }
+    if (scheduleId.present) {
+      map['schedule_id'] = Variable<String>(scheduleId.value);
+    }
+    if (origin.present) {
+      map['origin'] = Variable<String>(origin.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (originalClinicalDate.present) {
+      map['original_clinical_date'] = Variable<String>(
+        originalClinicalDate.value,
+      );
+    }
+    if (originalLocalHour.present) {
+      map['original_local_hour'] = Variable<int>(originalLocalHour.value);
+    }
+    if (originalLocalMinute.present) {
+      map['original_local_minute'] = Variable<int>(originalLocalMinute.value);
+    }
+    if (originalTimeZone.present) {
+      map['original_time_zone'] = Variable<String>(originalTimeZone.value);
+    }
+    if (expectationKind.present) {
+      map['expectation_kind'] = Variable<String>(expectationKind.value);
+    }
+    if (sequence.present) {
+      map['sequence'] = Variable<int>(sequence.value);
+    }
+    if (originalScheduledFor.present) {
+      map['original_scheduled_for'] = Variable<DateTime>(
+        originalScheduledFor.value,
+      );
+    }
+    if (originalWindowStartsAt.present) {
+      map['original_window_starts_at'] = Variable<DateTime>(
+        originalWindowStartsAt.value,
+      );
+    }
+    if (originalOnTimeEndsAt.present) {
+      map['original_on_time_ends_at'] = Variable<DateTime>(
+        originalOnTimeEndsAt.value,
+      );
+    }
+    if (originalWindowEndsAt.present) {
+      map['original_window_ends_at'] = Variable<DateTime>(
+        originalWindowEndsAt.value,
+      );
+    }
+    if (scheduledFor.present) {
+      map['scheduled_for'] = Variable<DateTime>(scheduledFor.value);
+    }
+    if (windowStartsAt.present) {
+      map['window_starts_at'] = Variable<DateTime>(windowStartsAt.value);
+    }
+    if (onTimeEndsAt.present) {
+      map['on_time_ends_at'] = Variable<DateTime>(onTimeEndsAt.value);
+    }
+    if (windowEndsAt.present) {
+      map['window_ends_at'] = Variable<DateTime>(windowEndsAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutineOccurrenceRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('origin: $origin, ')
+          ..write('status: $status, ')
+          ..write('originalClinicalDate: $originalClinicalDate, ')
+          ..write('originalLocalHour: $originalLocalHour, ')
+          ..write('originalLocalMinute: $originalLocalMinute, ')
+          ..write('originalTimeZone: $originalTimeZone, ')
+          ..write('expectationKind: $expectationKind, ')
+          ..write('sequence: $sequence, ')
+          ..write('originalScheduledFor: $originalScheduledFor, ')
+          ..write('originalWindowStartsAt: $originalWindowStartsAt, ')
+          ..write('originalOnTimeEndsAt: $originalOnTimeEndsAt, ')
+          ..write('originalWindowEndsAt: $originalWindowEndsAt, ')
+          ..write('scheduledFor: $scheduledFor, ')
+          ..write('windowStartsAt: $windowStartsAt, ')
+          ..write('onTimeEndsAt: $onTimeEndsAt, ')
+          ..write('windowEndsAt: $windowEndsAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoutineAdherenceEventRecordsTable extends RoutineAdherenceEventRecords
+    with
+        TableInfo<
+          $RoutineAdherenceEventRecordsTable,
+          RoutineAdherenceEventRecord
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoutineAdherenceEventRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _occurrenceIdMeta = const VerificationMeta(
+    'occurrenceId',
+  );
+  @override
+  late final GeneratedColumn<String> occurrenceId = GeneratedColumn<String>(
+    'occurrence_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _routineIdMeta = const VerificationMeta(
+    'routineId',
+  );
+  @override
+  late final GeneratedColumn<String> routineId = GeneratedColumn<String>(
+    'routine_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _planIdMeta = const VerificationMeta('planId');
+  @override
+  late final GeneratedColumn<String> planId = GeneratedColumn<String>(
+    'plan_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _scheduleIdMeta = const VerificationMeta(
+    'scheduleId',
+  );
+  @override
+  late final GeneratedColumn<String> scheduleId = GeneratedColumn<String>(
+    'schedule_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _actorMeta = const VerificationMeta('actor');
+  @override
+  late final GeneratedColumn<String> actor = GeneratedColumn<String>(
+    'actor',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _occurredAtUtcMeta = const VerificationMeta(
+    'occurredAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> occurredAtUtc =
+      GeneratedColumn<DateTime>(
+        'occurred_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _recordedAtUtcMeta = const VerificationMeta(
+    'recordedAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAtUtc =
+      GeneratedColumn<DateTime>(
+        'recorded_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _referencedEventIdMeta = const VerificationMeta(
+    'referencedEventId',
+  );
+  @override
+  late final GeneratedColumn<String> referencedEventId =
+      GeneratedColumn<String>(
+        'referenced_event_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _correctionActionMeta = const VerificationMeta(
+    'correctionAction',
+  );
+  @override
+  late final GeneratedColumn<String> correctionAction = GeneratedColumn<String>(
+    'correction_action',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _replacementTypeMeta = const VerificationMeta(
+    'replacementType',
+  );
+  @override
+  late final GeneratedColumn<String> replacementType = GeneratedColumn<String>(
+    'replacement_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _replacementOccurredAtUtcMeta =
+      const VerificationMeta('replacementOccurredAtUtc');
+  @override
+  late final GeneratedColumn<DateTime> replacementOccurredAtUtc =
+      GeneratedColumn<DateTime>(
+        'replacement_occurred_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _rescheduledForUtcMeta = const VerificationMeta(
+    'rescheduledForUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> rescheduledForUtc =
+      GeneratedColumn<DateTime>(
+        'rescheduled_for_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _rescheduledWindowStartsAtUtcMeta =
+      const VerificationMeta('rescheduledWindowStartsAtUtc');
+  @override
+  late final GeneratedColumn<DateTime> rescheduledWindowStartsAtUtc =
+      GeneratedColumn<DateTime>(
+        'rescheduled_window_starts_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _rescheduledOnTimeEndsAtUtcMeta =
+      const VerificationMeta('rescheduledOnTimeEndsAtUtc');
+  @override
+  late final GeneratedColumn<DateTime> rescheduledOnTimeEndsAtUtc =
+      GeneratedColumn<DateTime>(
+        'rescheduled_on_time_ends_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _rescheduledWindowEndsAtUtcMeta =
+      const VerificationMeta('rescheduledWindowEndsAtUtc');
+  @override
+  late final GeneratedColumn<DateTime> rescheduledWindowEndsAtUtc =
+      GeneratedColumn<DateTime>(
+        'rescheduled_window_ends_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _actualDoseValueMeta = const VerificationMeta(
+    'actualDoseValue',
+  );
+  @override
+  late final GeneratedColumn<String> actualDoseValue = GeneratedColumn<String>(
+    'actual_dose_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _actualDoseUnitMeta = const VerificationMeta(
+    'actualDoseUnit',
+  );
+  @override
+  late final GeneratedColumn<String> actualDoseUnit = GeneratedColumn<String>(
+    'actual_dose_unit',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _actualDoseOriginalTextMeta =
+      const VerificationMeta('actualDoseOriginalText');
+  @override
+  late final GeneratedColumn<String> actualDoseOriginalText =
+      GeneratedColumn<String>(
+        'actual_dose_original_text',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    occurrenceId,
+    routineId,
+    planId,
+    scheduleId,
+    type,
+    actor,
+    occurredAtUtc,
+    recordedAtUtc,
+    referencedEventId,
+    correctionAction,
+    replacementType,
+    replacementOccurredAtUtc,
+    rescheduledForUtc,
+    rescheduledWindowStartsAtUtc,
+    rescheduledOnTimeEndsAtUtc,
+    rescheduledWindowEndsAtUtc,
+    note,
+    actualDoseValue,
+    actualDoseUnit,
+    actualDoseOriginalText,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'routine_adherence_event_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RoutineAdherenceEventRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    if (data.containsKey('occurrence_id')) {
+      context.handle(
+        _occurrenceIdMeta,
+        occurrenceId.isAcceptableOrUnknown(
+          data['occurrence_id']!,
+          _occurrenceIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_occurrenceIdMeta);
+    }
+    if (data.containsKey('routine_id')) {
+      context.handle(
+        _routineIdMeta,
+        routineId.isAcceptableOrUnknown(data['routine_id']!, _routineIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_routineIdMeta);
+    }
+    if (data.containsKey('plan_id')) {
+      context.handle(
+        _planIdMeta,
+        planId.isAcceptableOrUnknown(data['plan_id']!, _planIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_planIdMeta);
+    }
+    if (data.containsKey('schedule_id')) {
+      context.handle(
+        _scheduleIdMeta,
+        scheduleId.isAcceptableOrUnknown(data['schedule_id']!, _scheduleIdMeta),
+      );
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('actor')) {
+      context.handle(
+        _actorMeta,
+        actor.isAcceptableOrUnknown(data['actor']!, _actorMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_actorMeta);
+    }
+    if (data.containsKey('occurred_at_utc')) {
+      context.handle(
+        _occurredAtUtcMeta,
+        occurredAtUtc.isAcceptableOrUnknown(
+          data['occurred_at_utc']!,
+          _occurredAtUtcMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_occurredAtUtcMeta);
+    }
+    if (data.containsKey('recorded_at_utc')) {
+      context.handle(
+        _recordedAtUtcMeta,
+        recordedAtUtc.isAcceptableOrUnknown(
+          data['recorded_at_utc']!,
+          _recordedAtUtcMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtUtcMeta);
+    }
+    if (data.containsKey('referenced_event_id')) {
+      context.handle(
+        _referencedEventIdMeta,
+        referencedEventId.isAcceptableOrUnknown(
+          data['referenced_event_id']!,
+          _referencedEventIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('correction_action')) {
+      context.handle(
+        _correctionActionMeta,
+        correctionAction.isAcceptableOrUnknown(
+          data['correction_action']!,
+          _correctionActionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('replacement_type')) {
+      context.handle(
+        _replacementTypeMeta,
+        replacementType.isAcceptableOrUnknown(
+          data['replacement_type']!,
+          _replacementTypeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('replacement_occurred_at_utc')) {
+      context.handle(
+        _replacementOccurredAtUtcMeta,
+        replacementOccurredAtUtc.isAcceptableOrUnknown(
+          data['replacement_occurred_at_utc']!,
+          _replacementOccurredAtUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('rescheduled_for_utc')) {
+      context.handle(
+        _rescheduledForUtcMeta,
+        rescheduledForUtc.isAcceptableOrUnknown(
+          data['rescheduled_for_utc']!,
+          _rescheduledForUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('rescheduled_window_starts_at_utc')) {
+      context.handle(
+        _rescheduledWindowStartsAtUtcMeta,
+        rescheduledWindowStartsAtUtc.isAcceptableOrUnknown(
+          data['rescheduled_window_starts_at_utc']!,
+          _rescheduledWindowStartsAtUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('rescheduled_on_time_ends_at_utc')) {
+      context.handle(
+        _rescheduledOnTimeEndsAtUtcMeta,
+        rescheduledOnTimeEndsAtUtc.isAcceptableOrUnknown(
+          data['rescheduled_on_time_ends_at_utc']!,
+          _rescheduledOnTimeEndsAtUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('rescheduled_window_ends_at_utc')) {
+      context.handle(
+        _rescheduledWindowEndsAtUtcMeta,
+        rescheduledWindowEndsAtUtc.isAcceptableOrUnknown(
+          data['rescheduled_window_ends_at_utc']!,
+          _rescheduledWindowEndsAtUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('actual_dose_value')) {
+      context.handle(
+        _actualDoseValueMeta,
+        actualDoseValue.isAcceptableOrUnknown(
+          data['actual_dose_value']!,
+          _actualDoseValueMeta,
+        ),
+      );
+    }
+    if (data.containsKey('actual_dose_unit')) {
+      context.handle(
+        _actualDoseUnitMeta,
+        actualDoseUnit.isAcceptableOrUnknown(
+          data['actual_dose_unit']!,
+          _actualDoseUnitMeta,
+        ),
+      );
+    }
+    if (data.containsKey('actual_dose_original_text')) {
+      context.handle(
+        _actualDoseOriginalTextMeta,
+        actualDoseOriginalText.isAcceptableOrUnknown(
+          data['actual_dose_original_text']!,
+          _actualDoseOriginalTextMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  RoutineAdherenceEventRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoutineAdherenceEventRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+      occurrenceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}occurrence_id'],
+      )!,
+      routineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_id'],
+      )!,
+      planId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}plan_id'],
+      )!,
+      scheduleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}schedule_id'],
+      ),
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      actor: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actor'],
+      )!,
+      occurredAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}occurred_at_utc'],
+      )!,
+      recordedAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at_utc'],
+      )!,
+      referencedEventId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}referenced_event_id'],
+      ),
+      correctionAction: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}correction_action'],
+      ),
+      replacementType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}replacement_type'],
+      ),
+      replacementOccurredAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}replacement_occurred_at_utc'],
+      ),
+      rescheduledForUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}rescheduled_for_utc'],
+      ),
+      rescheduledWindowStartsAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}rescheduled_window_starts_at_utc'],
+      ),
+      rescheduledOnTimeEndsAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}rescheduled_on_time_ends_at_utc'],
+      ),
+      rescheduledWindowEndsAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}rescheduled_window_ends_at_utc'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      actualDoseValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actual_dose_value'],
+      ),
+      actualDoseUnit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actual_dose_unit'],
+      ),
+      actualDoseOriginalText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actual_dose_original_text'],
+      ),
+    );
+  }
+
+  @override
+  $RoutineAdherenceEventRecordsTable createAlias(String alias) {
+    return $RoutineAdherenceEventRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class RoutineAdherenceEventRecord extends DataClass
+    implements Insertable<RoutineAdherenceEventRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  final String occurrenceId;
+  final String routineId;
+  final String planId;
+  final String? scheduleId;
+  final String type;
+  final String actor;
+  final DateTime occurredAtUtc;
+  final DateTime recordedAtUtc;
+  final String? referencedEventId;
+  final String? correctionAction;
+  final String? replacementType;
+  final DateTime? replacementOccurredAtUtc;
+  final DateTime? rescheduledForUtc;
+  final DateTime? rescheduledWindowStartsAtUtc;
+  final DateTime? rescheduledOnTimeEndsAtUtc;
+  final DateTime? rescheduledWindowEndsAtUtc;
+  final String? note;
+  final String? actualDoseValue;
+  final String? actualDoseUnit;
+  final String? actualDoseOriginalText;
+  const RoutineAdherenceEventRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+    required this.occurrenceId,
+    required this.routineId,
+    required this.planId,
+    this.scheduleId,
+    required this.type,
+    required this.actor,
+    required this.occurredAtUtc,
+    required this.recordedAtUtc,
+    this.referencedEventId,
+    this.correctionAction,
+    this.replacementType,
+    this.replacementOccurredAtUtc,
+    this.rescheduledForUtc,
+    this.rescheduledWindowStartsAtUtc,
+    this.rescheduledOnTimeEndsAtUtc,
+    this.rescheduledWindowEndsAtUtc,
+    this.note,
+    this.actualDoseValue,
+    this.actualDoseUnit,
+    this.actualDoseOriginalText,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    map['occurrence_id'] = Variable<String>(occurrenceId);
+    map['routine_id'] = Variable<String>(routineId);
+    map['plan_id'] = Variable<String>(planId);
+    if (!nullToAbsent || scheduleId != null) {
+      map['schedule_id'] = Variable<String>(scheduleId);
+    }
+    map['type'] = Variable<String>(type);
+    map['actor'] = Variable<String>(actor);
+    map['occurred_at_utc'] = Variable<DateTime>(occurredAtUtc);
+    map['recorded_at_utc'] = Variable<DateTime>(recordedAtUtc);
+    if (!nullToAbsent || referencedEventId != null) {
+      map['referenced_event_id'] = Variable<String>(referencedEventId);
+    }
+    if (!nullToAbsent || correctionAction != null) {
+      map['correction_action'] = Variable<String>(correctionAction);
+    }
+    if (!nullToAbsent || replacementType != null) {
+      map['replacement_type'] = Variable<String>(replacementType);
+    }
+    if (!nullToAbsent || replacementOccurredAtUtc != null) {
+      map['replacement_occurred_at_utc'] = Variable<DateTime>(
+        replacementOccurredAtUtc,
+      );
+    }
+    if (!nullToAbsent || rescheduledForUtc != null) {
+      map['rescheduled_for_utc'] = Variable<DateTime>(rescheduledForUtc);
+    }
+    if (!nullToAbsent || rescheduledWindowStartsAtUtc != null) {
+      map['rescheduled_window_starts_at_utc'] = Variable<DateTime>(
+        rescheduledWindowStartsAtUtc,
+      );
+    }
+    if (!nullToAbsent || rescheduledOnTimeEndsAtUtc != null) {
+      map['rescheduled_on_time_ends_at_utc'] = Variable<DateTime>(
+        rescheduledOnTimeEndsAtUtc,
+      );
+    }
+    if (!nullToAbsent || rescheduledWindowEndsAtUtc != null) {
+      map['rescheduled_window_ends_at_utc'] = Variable<DateTime>(
+        rescheduledWindowEndsAtUtc,
+      );
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    if (!nullToAbsent || actualDoseValue != null) {
+      map['actual_dose_value'] = Variable<String>(actualDoseValue);
+    }
+    if (!nullToAbsent || actualDoseUnit != null) {
+      map['actual_dose_unit'] = Variable<String>(actualDoseUnit);
+    }
+    if (!nullToAbsent || actualDoseOriginalText != null) {
+      map['actual_dose_original_text'] = Variable<String>(
+        actualDoseOriginalText,
+      );
+    }
+    return map;
+  }
+
+  RoutineAdherenceEventRecordsCompanion toCompanion(bool nullToAbsent) {
+    return RoutineAdherenceEventRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+      occurrenceId: Value(occurrenceId),
+      routineId: Value(routineId),
+      planId: Value(planId),
+      scheduleId: scheduleId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scheduleId),
+      type: Value(type),
+      actor: Value(actor),
+      occurredAtUtc: Value(occurredAtUtc),
+      recordedAtUtc: Value(recordedAtUtc),
+      referencedEventId: referencedEventId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referencedEventId),
+      correctionAction: correctionAction == null && nullToAbsent
+          ? const Value.absent()
+          : Value(correctionAction),
+      replacementType: replacementType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(replacementType),
+      replacementOccurredAtUtc: replacementOccurredAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(replacementOccurredAtUtc),
+      rescheduledForUtc: rescheduledForUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rescheduledForUtc),
+      rescheduledWindowStartsAtUtc:
+          rescheduledWindowStartsAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rescheduledWindowStartsAtUtc),
+      rescheduledOnTimeEndsAtUtc:
+          rescheduledOnTimeEndsAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rescheduledOnTimeEndsAtUtc),
+      rescheduledWindowEndsAtUtc:
+          rescheduledWindowEndsAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rescheduledWindowEndsAtUtc),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      actualDoseValue: actualDoseValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(actualDoseValue),
+      actualDoseUnit: actualDoseUnit == null && nullToAbsent
+          ? const Value.absent()
+          : Value(actualDoseUnit),
+      actualDoseOriginalText: actualDoseOriginalText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(actualDoseOriginalText),
+    );
+  }
+
+  factory RoutineAdherenceEventRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoutineAdherenceEventRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+      occurrenceId: serializer.fromJson<String>(json['occurrenceId']),
+      routineId: serializer.fromJson<String>(json['routineId']),
+      planId: serializer.fromJson<String>(json['planId']),
+      scheduleId: serializer.fromJson<String?>(json['scheduleId']),
+      type: serializer.fromJson<String>(json['type']),
+      actor: serializer.fromJson<String>(json['actor']),
+      occurredAtUtc: serializer.fromJson<DateTime>(json['occurredAtUtc']),
+      recordedAtUtc: serializer.fromJson<DateTime>(json['recordedAtUtc']),
+      referencedEventId: serializer.fromJson<String?>(
+        json['referencedEventId'],
+      ),
+      correctionAction: serializer.fromJson<String?>(json['correctionAction']),
+      replacementType: serializer.fromJson<String?>(json['replacementType']),
+      replacementOccurredAtUtc: serializer.fromJson<DateTime?>(
+        json['replacementOccurredAtUtc'],
+      ),
+      rescheduledForUtc: serializer.fromJson<DateTime?>(
+        json['rescheduledForUtc'],
+      ),
+      rescheduledWindowStartsAtUtc: serializer.fromJson<DateTime?>(
+        json['rescheduledWindowStartsAtUtc'],
+      ),
+      rescheduledOnTimeEndsAtUtc: serializer.fromJson<DateTime?>(
+        json['rescheduledOnTimeEndsAtUtc'],
+      ),
+      rescheduledWindowEndsAtUtc: serializer.fromJson<DateTime?>(
+        json['rescheduledWindowEndsAtUtc'],
+      ),
+      note: serializer.fromJson<String?>(json['note']),
+      actualDoseValue: serializer.fromJson<String?>(json['actualDoseValue']),
+      actualDoseUnit: serializer.fromJson<String?>(json['actualDoseUnit']),
+      actualDoseOriginalText: serializer.fromJson<String?>(
+        json['actualDoseOriginalText'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+      'occurrenceId': serializer.toJson<String>(occurrenceId),
+      'routineId': serializer.toJson<String>(routineId),
+      'planId': serializer.toJson<String>(planId),
+      'scheduleId': serializer.toJson<String?>(scheduleId),
+      'type': serializer.toJson<String>(type),
+      'actor': serializer.toJson<String>(actor),
+      'occurredAtUtc': serializer.toJson<DateTime>(occurredAtUtc),
+      'recordedAtUtc': serializer.toJson<DateTime>(recordedAtUtc),
+      'referencedEventId': serializer.toJson<String?>(referencedEventId),
+      'correctionAction': serializer.toJson<String?>(correctionAction),
+      'replacementType': serializer.toJson<String?>(replacementType),
+      'replacementOccurredAtUtc': serializer.toJson<DateTime?>(
+        replacementOccurredAtUtc,
+      ),
+      'rescheduledForUtc': serializer.toJson<DateTime?>(rescheduledForUtc),
+      'rescheduledWindowStartsAtUtc': serializer.toJson<DateTime?>(
+        rescheduledWindowStartsAtUtc,
+      ),
+      'rescheduledOnTimeEndsAtUtc': serializer.toJson<DateTime?>(
+        rescheduledOnTimeEndsAtUtc,
+      ),
+      'rescheduledWindowEndsAtUtc': serializer.toJson<DateTime?>(
+        rescheduledWindowEndsAtUtc,
+      ),
+      'note': serializer.toJson<String?>(note),
+      'actualDoseValue': serializer.toJson<String?>(actualDoseValue),
+      'actualDoseUnit': serializer.toJson<String?>(actualDoseUnit),
+      'actualDoseOriginalText': serializer.toJson<String?>(
+        actualDoseOriginalText,
+      ),
+    };
+  }
+
+  RoutineAdherenceEventRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+    String? occurrenceId,
+    String? routineId,
+    String? planId,
+    Value<String?> scheduleId = const Value.absent(),
+    String? type,
+    String? actor,
+    DateTime? occurredAtUtc,
+    DateTime? recordedAtUtc,
+    Value<String?> referencedEventId = const Value.absent(),
+    Value<String?> correctionAction = const Value.absent(),
+    Value<String?> replacementType = const Value.absent(),
+    Value<DateTime?> replacementOccurredAtUtc = const Value.absent(),
+    Value<DateTime?> rescheduledForUtc = const Value.absent(),
+    Value<DateTime?> rescheduledWindowStartsAtUtc = const Value.absent(),
+    Value<DateTime?> rescheduledOnTimeEndsAtUtc = const Value.absent(),
+    Value<DateTime?> rescheduledWindowEndsAtUtc = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+    Value<String?> actualDoseValue = const Value.absent(),
+    Value<String?> actualDoseUnit = const Value.absent(),
+    Value<String?> actualDoseOriginalText = const Value.absent(),
+  }) => RoutineAdherenceEventRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+    occurrenceId: occurrenceId ?? this.occurrenceId,
+    routineId: routineId ?? this.routineId,
+    planId: planId ?? this.planId,
+    scheduleId: scheduleId.present ? scheduleId.value : this.scheduleId,
+    type: type ?? this.type,
+    actor: actor ?? this.actor,
+    occurredAtUtc: occurredAtUtc ?? this.occurredAtUtc,
+    recordedAtUtc: recordedAtUtc ?? this.recordedAtUtc,
+    referencedEventId: referencedEventId.present
+        ? referencedEventId.value
+        : this.referencedEventId,
+    correctionAction: correctionAction.present
+        ? correctionAction.value
+        : this.correctionAction,
+    replacementType: replacementType.present
+        ? replacementType.value
+        : this.replacementType,
+    replacementOccurredAtUtc: replacementOccurredAtUtc.present
+        ? replacementOccurredAtUtc.value
+        : this.replacementOccurredAtUtc,
+    rescheduledForUtc: rescheduledForUtc.present
+        ? rescheduledForUtc.value
+        : this.rescheduledForUtc,
+    rescheduledWindowStartsAtUtc: rescheduledWindowStartsAtUtc.present
+        ? rescheduledWindowStartsAtUtc.value
+        : this.rescheduledWindowStartsAtUtc,
+    rescheduledOnTimeEndsAtUtc: rescheduledOnTimeEndsAtUtc.present
+        ? rescheduledOnTimeEndsAtUtc.value
+        : this.rescheduledOnTimeEndsAtUtc,
+    rescheduledWindowEndsAtUtc: rescheduledWindowEndsAtUtc.present
+        ? rescheduledWindowEndsAtUtc.value
+        : this.rescheduledWindowEndsAtUtc,
+    note: note.present ? note.value : this.note,
+    actualDoseValue: actualDoseValue.present
+        ? actualDoseValue.value
+        : this.actualDoseValue,
+    actualDoseUnit: actualDoseUnit.present
+        ? actualDoseUnit.value
+        : this.actualDoseUnit,
+    actualDoseOriginalText: actualDoseOriginalText.present
+        ? actualDoseOriginalText.value
+        : this.actualDoseOriginalText,
+  );
+  RoutineAdherenceEventRecord copyWithCompanion(
+    RoutineAdherenceEventRecordsCompanion data,
+  ) {
+    return RoutineAdherenceEventRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+      occurrenceId: data.occurrenceId.present
+          ? data.occurrenceId.value
+          : this.occurrenceId,
+      routineId: data.routineId.present ? data.routineId.value : this.routineId,
+      planId: data.planId.present ? data.planId.value : this.planId,
+      scheduleId: data.scheduleId.present
+          ? data.scheduleId.value
+          : this.scheduleId,
+      type: data.type.present ? data.type.value : this.type,
+      actor: data.actor.present ? data.actor.value : this.actor,
+      occurredAtUtc: data.occurredAtUtc.present
+          ? data.occurredAtUtc.value
+          : this.occurredAtUtc,
+      recordedAtUtc: data.recordedAtUtc.present
+          ? data.recordedAtUtc.value
+          : this.recordedAtUtc,
+      referencedEventId: data.referencedEventId.present
+          ? data.referencedEventId.value
+          : this.referencedEventId,
+      correctionAction: data.correctionAction.present
+          ? data.correctionAction.value
+          : this.correctionAction,
+      replacementType: data.replacementType.present
+          ? data.replacementType.value
+          : this.replacementType,
+      replacementOccurredAtUtc: data.replacementOccurredAtUtc.present
+          ? data.replacementOccurredAtUtc.value
+          : this.replacementOccurredAtUtc,
+      rescheduledForUtc: data.rescheduledForUtc.present
+          ? data.rescheduledForUtc.value
+          : this.rescheduledForUtc,
+      rescheduledWindowStartsAtUtc: data.rescheduledWindowStartsAtUtc.present
+          ? data.rescheduledWindowStartsAtUtc.value
+          : this.rescheduledWindowStartsAtUtc,
+      rescheduledOnTimeEndsAtUtc: data.rescheduledOnTimeEndsAtUtc.present
+          ? data.rescheduledOnTimeEndsAtUtc.value
+          : this.rescheduledOnTimeEndsAtUtc,
+      rescheduledWindowEndsAtUtc: data.rescheduledWindowEndsAtUtc.present
+          ? data.rescheduledWindowEndsAtUtc.value
+          : this.rescheduledWindowEndsAtUtc,
+      note: data.note.present ? data.note.value : this.note,
+      actualDoseValue: data.actualDoseValue.present
+          ? data.actualDoseValue.value
+          : this.actualDoseValue,
+      actualDoseUnit: data.actualDoseUnit.present
+          ? data.actualDoseUnit.value
+          : this.actualDoseUnit,
+      actualDoseOriginalText: data.actualDoseOriginalText.present
+          ? data.actualDoseOriginalText.value
+          : this.actualDoseOriginalText,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutineAdherenceEventRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('occurrenceId: $occurrenceId, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('type: $type, ')
+          ..write('actor: $actor, ')
+          ..write('occurredAtUtc: $occurredAtUtc, ')
+          ..write('recordedAtUtc: $recordedAtUtc, ')
+          ..write('referencedEventId: $referencedEventId, ')
+          ..write('correctionAction: $correctionAction, ')
+          ..write('replacementType: $replacementType, ')
+          ..write('replacementOccurredAtUtc: $replacementOccurredAtUtc, ')
+          ..write('rescheduledForUtc: $rescheduledForUtc, ')
+          ..write(
+            'rescheduledWindowStartsAtUtc: $rescheduledWindowStartsAtUtc, ',
+          )
+          ..write('rescheduledOnTimeEndsAtUtc: $rescheduledOnTimeEndsAtUtc, ')
+          ..write('rescheduledWindowEndsAtUtc: $rescheduledWindowEndsAtUtc, ')
+          ..write('note: $note, ')
+          ..write('actualDoseValue: $actualDoseValue, ')
+          ..write('actualDoseUnit: $actualDoseUnit, ')
+          ..write('actualDoseOriginalText: $actualDoseOriginalText')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+    occurrenceId,
+    routineId,
+    planId,
+    scheduleId,
+    type,
+    actor,
+    occurredAtUtc,
+    recordedAtUtc,
+    referencedEventId,
+    correctionAction,
+    replacementType,
+    replacementOccurredAtUtc,
+    rescheduledForUtc,
+    rescheduledWindowStartsAtUtc,
+    rescheduledOnTimeEndsAtUtc,
+    rescheduledWindowEndsAtUtc,
+    note,
+    actualDoseValue,
+    actualDoseUnit,
+    actualDoseOriginalText,
+  ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoutineAdherenceEventRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError &&
+          other.occurrenceId == this.occurrenceId &&
+          other.routineId == this.routineId &&
+          other.planId == this.planId &&
+          other.scheduleId == this.scheduleId &&
+          other.type == this.type &&
+          other.actor == this.actor &&
+          other.occurredAtUtc == this.occurredAtUtc &&
+          other.recordedAtUtc == this.recordedAtUtc &&
+          other.referencedEventId == this.referencedEventId &&
+          other.correctionAction == this.correctionAction &&
+          other.replacementType == this.replacementType &&
+          other.replacementOccurredAtUtc == this.replacementOccurredAtUtc &&
+          other.rescheduledForUtc == this.rescheduledForUtc &&
+          other.rescheduledWindowStartsAtUtc ==
+              this.rescheduledWindowStartsAtUtc &&
+          other.rescheduledOnTimeEndsAtUtc == this.rescheduledOnTimeEndsAtUtc &&
+          other.rescheduledWindowEndsAtUtc == this.rescheduledWindowEndsAtUtc &&
+          other.note == this.note &&
+          other.actualDoseValue == this.actualDoseValue &&
+          other.actualDoseUnit == this.actualDoseUnit &&
+          other.actualDoseOriginalText == this.actualDoseOriginalText);
+}
+
+class RoutineAdherenceEventRecordsCompanion
+    extends UpdateCompanion<RoutineAdherenceEventRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<String> occurrenceId;
+  final Value<String> routineId;
+  final Value<String> planId;
+  final Value<String?> scheduleId;
+  final Value<String> type;
+  final Value<String> actor;
+  final Value<DateTime> occurredAtUtc;
+  final Value<DateTime> recordedAtUtc;
+  final Value<String?> referencedEventId;
+  final Value<String?> correctionAction;
+  final Value<String?> replacementType;
+  final Value<DateTime?> replacementOccurredAtUtc;
+  final Value<DateTime?> rescheduledForUtc;
+  final Value<DateTime?> rescheduledWindowStartsAtUtc;
+  final Value<DateTime?> rescheduledOnTimeEndsAtUtc;
+  final Value<DateTime?> rescheduledWindowEndsAtUtc;
+  final Value<String?> note;
+  final Value<String?> actualDoseValue;
+  final Value<String?> actualDoseUnit;
+  final Value<String?> actualDoseOriginalText;
+  final Value<int> rowid;
+  const RoutineAdherenceEventRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.occurrenceId = const Value.absent(),
+    this.routineId = const Value.absent(),
+    this.planId = const Value.absent(),
+    this.scheduleId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.actor = const Value.absent(),
+    this.occurredAtUtc = const Value.absent(),
+    this.recordedAtUtc = const Value.absent(),
+    this.referencedEventId = const Value.absent(),
+    this.correctionAction = const Value.absent(),
+    this.replacementType = const Value.absent(),
+    this.replacementOccurredAtUtc = const Value.absent(),
+    this.rescheduledForUtc = const Value.absent(),
+    this.rescheduledWindowStartsAtUtc = const Value.absent(),
+    this.rescheduledOnTimeEndsAtUtc = const Value.absent(),
+    this.rescheduledWindowEndsAtUtc = const Value.absent(),
+    this.note = const Value.absent(),
+    this.actualDoseValue = const Value.absent(),
+    this.actualDoseUnit = const Value.absent(),
+    this.actualDoseOriginalText = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoutineAdherenceEventRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    required String occurrenceId,
+    required String routineId,
+    required String planId,
+    this.scheduleId = const Value.absent(),
+    required String type,
+    required String actor,
+    required DateTime occurredAtUtc,
+    required DateTime recordedAtUtc,
+    this.referencedEventId = const Value.absent(),
+    this.correctionAction = const Value.absent(),
+    this.replacementType = const Value.absent(),
+    this.replacementOccurredAtUtc = const Value.absent(),
+    this.rescheduledForUtc = const Value.absent(),
+    this.rescheduledWindowStartsAtUtc = const Value.absent(),
+    this.rescheduledOnTimeEndsAtUtc = const Value.absent(),
+    this.rescheduledWindowEndsAtUtc = const Value.absent(),
+    this.note = const Value.absent(),
+    this.actualDoseValue = const Value.absent(),
+    this.actualDoseUnit = const Value.absent(),
+    this.actualDoseOriginalText = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       occurrenceId = Value(occurrenceId),
+       routineId = Value(routineId),
+       planId = Value(planId),
+       type = Value(type),
+       actor = Value(actor),
+       occurredAtUtc = Value(occurredAtUtc),
+       recordedAtUtc = Value(recordedAtUtc);
+  static Insertable<RoutineAdherenceEventRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<String>? occurrenceId,
+    Expression<String>? routineId,
+    Expression<String>? planId,
+    Expression<String>? scheduleId,
+    Expression<String>? type,
+    Expression<String>? actor,
+    Expression<DateTime>? occurredAtUtc,
+    Expression<DateTime>? recordedAtUtc,
+    Expression<String>? referencedEventId,
+    Expression<String>? correctionAction,
+    Expression<String>? replacementType,
+    Expression<DateTime>? replacementOccurredAtUtc,
+    Expression<DateTime>? rescheduledForUtc,
+    Expression<DateTime>? rescheduledWindowStartsAtUtc,
+    Expression<DateTime>? rescheduledOnTimeEndsAtUtc,
+    Expression<DateTime>? rescheduledWindowEndsAtUtc,
+    Expression<String>? note,
+    Expression<String>? actualDoseValue,
+    Expression<String>? actualDoseUnit,
+    Expression<String>? actualDoseOriginalText,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (occurrenceId != null) 'occurrence_id': occurrenceId,
+      if (routineId != null) 'routine_id': routineId,
+      if (planId != null) 'plan_id': planId,
+      if (scheduleId != null) 'schedule_id': scheduleId,
+      if (type != null) 'type': type,
+      if (actor != null) 'actor': actor,
+      if (occurredAtUtc != null) 'occurred_at_utc': occurredAtUtc,
+      if (recordedAtUtc != null) 'recorded_at_utc': recordedAtUtc,
+      if (referencedEventId != null) 'referenced_event_id': referencedEventId,
+      if (correctionAction != null) 'correction_action': correctionAction,
+      if (replacementType != null) 'replacement_type': replacementType,
+      if (replacementOccurredAtUtc != null)
+        'replacement_occurred_at_utc': replacementOccurredAtUtc,
+      if (rescheduledForUtc != null) 'rescheduled_for_utc': rescheduledForUtc,
+      if (rescheduledWindowStartsAtUtc != null)
+        'rescheduled_window_starts_at_utc': rescheduledWindowStartsAtUtc,
+      if (rescheduledOnTimeEndsAtUtc != null)
+        'rescheduled_on_time_ends_at_utc': rescheduledOnTimeEndsAtUtc,
+      if (rescheduledWindowEndsAtUtc != null)
+        'rescheduled_window_ends_at_utc': rescheduledWindowEndsAtUtc,
+      if (note != null) 'note': note,
+      if (actualDoseValue != null) 'actual_dose_value': actualDoseValue,
+      if (actualDoseUnit != null) 'actual_dose_unit': actualDoseUnit,
+      if (actualDoseOriginalText != null)
+        'actual_dose_original_text': actualDoseOriginalText,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoutineAdherenceEventRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<String>? occurrenceId,
+    Value<String>? routineId,
+    Value<String>? planId,
+    Value<String?>? scheduleId,
+    Value<String>? type,
+    Value<String>? actor,
+    Value<DateTime>? occurredAtUtc,
+    Value<DateTime>? recordedAtUtc,
+    Value<String?>? referencedEventId,
+    Value<String?>? correctionAction,
+    Value<String?>? replacementType,
+    Value<DateTime?>? replacementOccurredAtUtc,
+    Value<DateTime?>? rescheduledForUtc,
+    Value<DateTime?>? rescheduledWindowStartsAtUtc,
+    Value<DateTime?>? rescheduledOnTimeEndsAtUtc,
+    Value<DateTime?>? rescheduledWindowEndsAtUtc,
+    Value<String?>? note,
+    Value<String?>? actualDoseValue,
+    Value<String?>? actualDoseUnit,
+    Value<String?>? actualDoseOriginalText,
+    Value<int>? rowid,
+  }) {
+    return RoutineAdherenceEventRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      occurrenceId: occurrenceId ?? this.occurrenceId,
+      routineId: routineId ?? this.routineId,
+      planId: planId ?? this.planId,
+      scheduleId: scheduleId ?? this.scheduleId,
+      type: type ?? this.type,
+      actor: actor ?? this.actor,
+      occurredAtUtc: occurredAtUtc ?? this.occurredAtUtc,
+      recordedAtUtc: recordedAtUtc ?? this.recordedAtUtc,
+      referencedEventId: referencedEventId ?? this.referencedEventId,
+      correctionAction: correctionAction ?? this.correctionAction,
+      replacementType: replacementType ?? this.replacementType,
+      replacementOccurredAtUtc:
+          replacementOccurredAtUtc ?? this.replacementOccurredAtUtc,
+      rescheduledForUtc: rescheduledForUtc ?? this.rescheduledForUtc,
+      rescheduledWindowStartsAtUtc:
+          rescheduledWindowStartsAtUtc ?? this.rescheduledWindowStartsAtUtc,
+      rescheduledOnTimeEndsAtUtc:
+          rescheduledOnTimeEndsAtUtc ?? this.rescheduledOnTimeEndsAtUtc,
+      rescheduledWindowEndsAtUtc:
+          rescheduledWindowEndsAtUtc ?? this.rescheduledWindowEndsAtUtc,
+      note: note ?? this.note,
+      actualDoseValue: actualDoseValue ?? this.actualDoseValue,
+      actualDoseUnit: actualDoseUnit ?? this.actualDoseUnit,
+      actualDoseOriginalText:
+          actualDoseOriginalText ?? this.actualDoseOriginalText,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (occurrenceId.present) {
+      map['occurrence_id'] = Variable<String>(occurrenceId.value);
+    }
+    if (routineId.present) {
+      map['routine_id'] = Variable<String>(routineId.value);
+    }
+    if (planId.present) {
+      map['plan_id'] = Variable<String>(planId.value);
+    }
+    if (scheduleId.present) {
+      map['schedule_id'] = Variable<String>(scheduleId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (actor.present) {
+      map['actor'] = Variable<String>(actor.value);
+    }
+    if (occurredAtUtc.present) {
+      map['occurred_at_utc'] = Variable<DateTime>(occurredAtUtc.value);
+    }
+    if (recordedAtUtc.present) {
+      map['recorded_at_utc'] = Variable<DateTime>(recordedAtUtc.value);
+    }
+    if (referencedEventId.present) {
+      map['referenced_event_id'] = Variable<String>(referencedEventId.value);
+    }
+    if (correctionAction.present) {
+      map['correction_action'] = Variable<String>(correctionAction.value);
+    }
+    if (replacementType.present) {
+      map['replacement_type'] = Variable<String>(replacementType.value);
+    }
+    if (replacementOccurredAtUtc.present) {
+      map['replacement_occurred_at_utc'] = Variable<DateTime>(
+        replacementOccurredAtUtc.value,
+      );
+    }
+    if (rescheduledForUtc.present) {
+      map['rescheduled_for_utc'] = Variable<DateTime>(rescheduledForUtc.value);
+    }
+    if (rescheduledWindowStartsAtUtc.present) {
+      map['rescheduled_window_starts_at_utc'] = Variable<DateTime>(
+        rescheduledWindowStartsAtUtc.value,
+      );
+    }
+    if (rescheduledOnTimeEndsAtUtc.present) {
+      map['rescheduled_on_time_ends_at_utc'] = Variable<DateTime>(
+        rescheduledOnTimeEndsAtUtc.value,
+      );
+    }
+    if (rescheduledWindowEndsAtUtc.present) {
+      map['rescheduled_window_ends_at_utc'] = Variable<DateTime>(
+        rescheduledWindowEndsAtUtc.value,
+      );
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (actualDoseValue.present) {
+      map['actual_dose_value'] = Variable<String>(actualDoseValue.value);
+    }
+    if (actualDoseUnit.present) {
+      map['actual_dose_unit'] = Variable<String>(actualDoseUnit.value);
+    }
+    if (actualDoseOriginalText.present) {
+      map['actual_dose_original_text'] = Variable<String>(
+        actualDoseOriginalText.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutineAdherenceEventRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('occurrenceId: $occurrenceId, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('type: $type, ')
+          ..write('actor: $actor, ')
+          ..write('occurredAtUtc: $occurredAtUtc, ')
+          ..write('recordedAtUtc: $recordedAtUtc, ')
+          ..write('referencedEventId: $referencedEventId, ')
+          ..write('correctionAction: $correctionAction, ')
+          ..write('replacementType: $replacementType, ')
+          ..write('replacementOccurredAtUtc: $replacementOccurredAtUtc, ')
+          ..write('rescheduledForUtc: $rescheduledForUtc, ')
+          ..write(
+            'rescheduledWindowStartsAtUtc: $rescheduledWindowStartsAtUtc, ',
+          )
+          ..write('rescheduledOnTimeEndsAtUtc: $rescheduledOnTimeEndsAtUtc, ')
+          ..write('rescheduledWindowEndsAtUtc: $rescheduledWindowEndsAtUtc, ')
+          ..write('note: $note, ')
+          ..write('actualDoseValue: $actualDoseValue, ')
+          ..write('actualDoseUnit: $actualDoseUnit, ')
+          ..write('actualDoseOriginalText: $actualDoseOriginalText, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -27067,6 +34665,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $MedicalPrescriptionRecordsTable(this);
   late final $MedicalPrescriptionItemRecordsTable
   medicalPrescriptionItemRecords = $MedicalPrescriptionItemRecordsTable(this);
+  late final $SmartRoutineRecordsTable smartRoutineRecords =
+      $SmartRoutineRecordsTable(this);
+  late final $RoutinePlanRecordsTable routinePlanRecords =
+      $RoutinePlanRecordsTable(this);
+  late final $RoutineScheduleRecordsTable routineScheduleRecords =
+      $RoutineScheduleRecordsTable(this);
+  late final $RoutinePauseRecordsTable routinePauseRecords =
+      $RoutinePauseRecordsTable(this);
+  late final $RoutineOccurrenceRecordsTable routineOccurrenceRecords =
+      $RoutineOccurrenceRecordsTable(this);
+  late final $RoutineAdherenceEventRecordsTable routineAdherenceEventRecords =
+      $RoutineAdherenceEventRecordsTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -27259,6 +34869,70 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'medical_prescription_items_sync_idx',
     'CREATE INDEX medical_prescription_items_sync_idx ON medical_prescription_item_records (user_id, sync_status, updated_at)',
   );
+  late final Index smartRoutinesUserStatusIdx = Index(
+    'smart_routines_user_status_idx',
+    'CREATE INDEX smart_routines_user_status_idx ON smart_routine_records (user_id, status)',
+  );
+  late final Index smartRoutinesUserSyncIdx = Index(
+    'smart_routines_user_sync_idx',
+    'CREATE INDEX smart_routines_user_sync_idx ON smart_routine_records (user_id, sync_status, updated_at)',
+  );
+  late final Index routinePlansUserRoutineRevisionIdx = Index(
+    'routine_plans_user_routine_revision_idx',
+    'CREATE INDEX routine_plans_user_routine_revision_idx ON routine_plan_records (user_id, routine_id, revision)',
+  );
+  late final Index routinePlansUserSyncIdx = Index(
+    'routine_plans_user_sync_idx',
+    'CREATE INDEX routine_plans_user_sync_idx ON routine_plan_records (user_id, sync_status, updated_at)',
+  );
+  late final Index routineSchedulesUserPlanIdx = Index(
+    'routine_schedules_user_plan_idx',
+    'CREATE INDEX routine_schedules_user_plan_idx ON routine_schedule_records (user_id, plan_id, display_order)',
+  );
+  late final Index routineSchedulesUserSyncIdx = Index(
+    'routine_schedules_user_sync_idx',
+    'CREATE INDEX routine_schedules_user_sync_idx ON routine_schedule_records (user_id, sync_status, updated_at)',
+  );
+  late final Index routinePausesUserRoutineIntervalIdx = Index(
+    'routine_pauses_user_routine_interval_idx',
+    'CREATE INDEX routine_pauses_user_routine_interval_idx ON routine_pause_records (user_id, routine_id, starts_at, ends_at)',
+  );
+  late final Index routinePausesUserSyncIdx = Index(
+    'routine_pauses_user_sync_idx',
+    'CREATE INDEX routine_pauses_user_sync_idx ON routine_pause_records (user_id, sync_status, updated_at)',
+  );
+  late final Index routineOccurrencesUserRoutineOriginalIdx = Index(
+    'routine_occurrences_user_routine_original_idx',
+    'CREATE INDEX routine_occurrences_user_routine_original_idx ON routine_occurrence_records (user_id, routine_id, original_scheduled_for)',
+  );
+  late final Index routineOccurrencesUserScheduleDateIdx = Index(
+    'routine_occurrences_user_schedule_date_idx',
+    'CREATE INDEX routine_occurrences_user_schedule_date_idx ON routine_occurrence_records (user_id, schedule_id, original_clinical_date)',
+  );
+  late final Index routineOccurrencesUserWindowIdx = Index(
+    'routine_occurrences_user_window_idx',
+    'CREATE INDEX routine_occurrences_user_window_idx ON routine_occurrence_records (user_id, window_ends_at)',
+  );
+  late final Index routineOccurrencesUserSyncIdx = Index(
+    'routine_occurrences_user_sync_idx',
+    'CREATE INDEX routine_occurrences_user_sync_idx ON routine_occurrence_records (user_id, sync_status, updated_at)',
+  );
+  late final Index routineEventsUserOccurrenceIdx = Index(
+    'routine_events_user_occurrence_idx',
+    'CREATE INDEX routine_events_user_occurrence_idx ON routine_adherence_event_records (user_id, occurrence_id, recorded_at_utc)',
+  );
+  late final Index routineEventsUserRecordedIdx = Index(
+    'routine_events_user_recorded_idx',
+    'CREATE INDEX routine_events_user_recorded_idx ON routine_adherence_event_records (user_id, recorded_at_utc, id)',
+  );
+  late final Index routineEventsUserReferenceIdx = Index(
+    'routine_events_user_reference_idx',
+    'CREATE INDEX routine_events_user_reference_idx ON routine_adherence_event_records (user_id, referenced_event_id)',
+  );
+  late final Index routineEventsUserSyncIdx = Index(
+    'routine_events_user_sync_idx',
+    'CREATE INDEX routine_events_user_sync_idx ON routine_adherence_event_records (user_id, sync_status, created_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -27287,6 +34961,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final MedicalPrescriptionDao medicalPrescriptionDao =
       MedicalPrescriptionDao(this as AppDatabase);
+  late final SmartRoutineDao smartRoutineDao = SmartRoutineDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -27324,6 +35001,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     medicalExamResults,
     medicalPrescriptionRecords,
     medicalPrescriptionItemRecords,
+    smartRoutineRecords,
+    routinePlanRecords,
+    routineScheduleRecords,
+    routinePauseRecords,
+    routineOccurrenceRecords,
+    routineAdherenceEventRecords,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -27372,6 +35055,22 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     medicalPrescriptionItemsTypeIdx,
     medicalPrescriptionItemsLinksIdx,
     medicalPrescriptionItemsSyncIdx,
+    smartRoutinesUserStatusIdx,
+    smartRoutinesUserSyncIdx,
+    routinePlansUserRoutineRevisionIdx,
+    routinePlansUserSyncIdx,
+    routineSchedulesUserPlanIdx,
+    routineSchedulesUserSyncIdx,
+    routinePausesUserRoutineIntervalIdx,
+    routinePausesUserSyncIdx,
+    routineOccurrencesUserRoutineOriginalIdx,
+    routineOccurrencesUserScheduleDateIdx,
+    routineOccurrencesUserWindowIdx,
+    routineOccurrencesUserSyncIdx,
+    routineEventsUserOccurrenceIdx,
+    routineEventsUserRecordedIdx,
+    routineEventsUserReferenceIdx,
+    routineEventsUserSyncIdx,
   ];
 }
 
@@ -39898,6 +47597,3382 @@ typedef $$MedicalPrescriptionItemRecordsTableProcessedTableManager =
       MedicalPrescriptionItemRecord,
       PrefetchHooks Function()
     >;
+typedef $$SmartRoutineRecordsTableCreateCompanionBuilder =
+    SmartRoutineRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      required String category,
+      required String displayName,
+      required String status,
+      required String source,
+      Value<String?> prescriptionId,
+      Value<String?> prescriptionItemId,
+      Value<String?> personalNotes,
+      Value<String?> iconKey,
+      Value<int> rowid,
+    });
+typedef $$SmartRoutineRecordsTableUpdateCompanionBuilder =
+    SmartRoutineRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<String> category,
+      Value<String> displayName,
+      Value<String> status,
+      Value<String> source,
+      Value<String?> prescriptionId,
+      Value<String?> prescriptionItemId,
+      Value<String?> personalNotes,
+      Value<String?> iconKey,
+      Value<int> rowid,
+    });
+
+class $$SmartRoutineRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $SmartRoutineRecordsTable> {
+  $$SmartRoutineRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get personalNotes => $composableBuilder(
+    column: $table.personalNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get iconKey => $composableBuilder(
+    column: $table.iconKey,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SmartRoutineRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SmartRoutineRecordsTable> {
+  $$SmartRoutineRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get personalNotes => $composableBuilder(
+    column: $table.personalNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get iconKey => $composableBuilder(
+    column: $table.iconKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SmartRoutineRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SmartRoutineRecordsTable> {
+  $$SmartRoutineRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get personalNotes => $composableBuilder(
+    column: $table.personalNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get iconKey =>
+      $composableBuilder(column: $table.iconKey, builder: (column) => column);
+}
+
+class $$SmartRoutineRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SmartRoutineRecordsTable,
+          SmartRoutineRecord,
+          $$SmartRoutineRecordsTableFilterComposer,
+          $$SmartRoutineRecordsTableOrderingComposer,
+          $$SmartRoutineRecordsTableAnnotationComposer,
+          $$SmartRoutineRecordsTableCreateCompanionBuilder,
+          $$SmartRoutineRecordsTableUpdateCompanionBuilder,
+          (
+            SmartRoutineRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $SmartRoutineRecordsTable,
+              SmartRoutineRecord
+            >,
+          ),
+          SmartRoutineRecord,
+          PrefetchHooks Function()
+        > {
+  $$SmartRoutineRecordsTableTableManager(
+    _$AppDatabase db,
+    $SmartRoutineRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SmartRoutineRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SmartRoutineRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SmartRoutineRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<String> category = const Value.absent(),
+                Value<String> displayName = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String?> prescriptionId = const Value.absent(),
+                Value<String?> prescriptionItemId = const Value.absent(),
+                Value<String?> personalNotes = const Value.absent(),
+                Value<String?> iconKey = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SmartRoutineRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                category: category,
+                displayName: displayName,
+                status: status,
+                source: source,
+                prescriptionId: prescriptionId,
+                prescriptionItemId: prescriptionItemId,
+                personalNotes: personalNotes,
+                iconKey: iconKey,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                required String category,
+                required String displayName,
+                required String status,
+                required String source,
+                Value<String?> prescriptionId = const Value.absent(),
+                Value<String?> prescriptionItemId = const Value.absent(),
+                Value<String?> personalNotes = const Value.absent(),
+                Value<String?> iconKey = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SmartRoutineRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                category: category,
+                displayName: displayName,
+                status: status,
+                source: source,
+                prescriptionId: prescriptionId,
+                prescriptionItemId: prescriptionItemId,
+                personalNotes: personalNotes,
+                iconKey: iconKey,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SmartRoutineRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SmartRoutineRecordsTable,
+      SmartRoutineRecord,
+      $$SmartRoutineRecordsTableFilterComposer,
+      $$SmartRoutineRecordsTableOrderingComposer,
+      $$SmartRoutineRecordsTableAnnotationComposer,
+      $$SmartRoutineRecordsTableCreateCompanionBuilder,
+      $$SmartRoutineRecordsTableUpdateCompanionBuilder,
+      (
+        SmartRoutineRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $SmartRoutineRecordsTable,
+          SmartRoutineRecord
+        >,
+      ),
+      SmartRoutineRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$RoutinePlanRecordsTableCreateCompanionBuilder =
+    RoutinePlanRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      required String routineId,
+      required int revision,
+      required String mode,
+      required String durationType,
+      required String effectiveFrom,
+      Value<String?> effectiveUntil,
+      Value<String?> doseValue,
+      Value<String?> doseUnit,
+      Value<String?> doseOriginalText,
+      Value<String?> route,
+      Value<String?> clinicalInstructions,
+      Value<DateTime?> activatedAt,
+      Value<DateTime?> replacedAt,
+      Value<String?> previousPlanId,
+      Value<int> rowid,
+    });
+typedef $$RoutinePlanRecordsTableUpdateCompanionBuilder =
+    RoutinePlanRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<String> routineId,
+      Value<int> revision,
+      Value<String> mode,
+      Value<String> durationType,
+      Value<String> effectiveFrom,
+      Value<String?> effectiveUntil,
+      Value<String?> doseValue,
+      Value<String?> doseUnit,
+      Value<String?> doseOriginalText,
+      Value<String?> route,
+      Value<String?> clinicalInstructions,
+      Value<DateTime?> activatedAt,
+      Value<DateTime?> replacedAt,
+      Value<String?> previousPlanId,
+      Value<int> rowid,
+    });
+
+class $$RoutinePlanRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $RoutinePlanRecordsTable> {
+  $$RoutinePlanRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get revision => $composableBuilder(
+    column: $table.revision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get mode => $composableBuilder(
+    column: $table.mode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get durationType => $composableBuilder(
+    column: $table.durationType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get effectiveUntil => $composableBuilder(
+    column: $table.effectiveUntil,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get doseValue => $composableBuilder(
+    column: $table.doseValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get doseUnit => $composableBuilder(
+    column: $table.doseUnit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get doseOriginalText => $composableBuilder(
+    column: $table.doseOriginalText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get route => $composableBuilder(
+    column: $table.route,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get clinicalInstructions => $composableBuilder(
+    column: $table.clinicalInstructions,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get activatedAt => $composableBuilder(
+    column: $table.activatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get replacedAt => $composableBuilder(
+    column: $table.replacedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousPlanId => $composableBuilder(
+    column: $table.previousPlanId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoutinePlanRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoutinePlanRecordsTable> {
+  $$RoutinePlanRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get revision => $composableBuilder(
+    column: $table.revision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get mode => $composableBuilder(
+    column: $table.mode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get durationType => $composableBuilder(
+    column: $table.durationType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get effectiveUntil => $composableBuilder(
+    column: $table.effectiveUntil,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get doseValue => $composableBuilder(
+    column: $table.doseValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get doseUnit => $composableBuilder(
+    column: $table.doseUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get doseOriginalText => $composableBuilder(
+    column: $table.doseOriginalText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get route => $composableBuilder(
+    column: $table.route,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get clinicalInstructions => $composableBuilder(
+    column: $table.clinicalInstructions,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get activatedAt => $composableBuilder(
+    column: $table.activatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get replacedAt => $composableBuilder(
+    column: $table.replacedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousPlanId => $composableBuilder(
+    column: $table.previousPlanId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoutinePlanRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoutinePlanRecordsTable> {
+  $$RoutinePlanRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get routineId =>
+      $composableBuilder(column: $table.routineId, builder: (column) => column);
+
+  GeneratedColumn<int> get revision =>
+      $composableBuilder(column: $table.revision, builder: (column) => column);
+
+  GeneratedColumn<String> get mode =>
+      $composableBuilder(column: $table.mode, builder: (column) => column);
+
+  GeneratedColumn<String> get durationType => $composableBuilder(
+    column: $table.durationType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get effectiveUntil => $composableBuilder(
+    column: $table.effectiveUntil,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get doseValue =>
+      $composableBuilder(column: $table.doseValue, builder: (column) => column);
+
+  GeneratedColumn<String> get doseUnit =>
+      $composableBuilder(column: $table.doseUnit, builder: (column) => column);
+
+  GeneratedColumn<String> get doseOriginalText => $composableBuilder(
+    column: $table.doseOriginalText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get route =>
+      $composableBuilder(column: $table.route, builder: (column) => column);
+
+  GeneratedColumn<String> get clinicalInstructions => $composableBuilder(
+    column: $table.clinicalInstructions,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get activatedAt => $composableBuilder(
+    column: $table.activatedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get replacedAt => $composableBuilder(
+    column: $table.replacedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousPlanId => $composableBuilder(
+    column: $table.previousPlanId,
+    builder: (column) => column,
+  );
+}
+
+class $$RoutinePlanRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoutinePlanRecordsTable,
+          RoutinePlanRecord,
+          $$RoutinePlanRecordsTableFilterComposer,
+          $$RoutinePlanRecordsTableOrderingComposer,
+          $$RoutinePlanRecordsTableAnnotationComposer,
+          $$RoutinePlanRecordsTableCreateCompanionBuilder,
+          $$RoutinePlanRecordsTableUpdateCompanionBuilder,
+          (
+            RoutinePlanRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $RoutinePlanRecordsTable,
+              RoutinePlanRecord
+            >,
+          ),
+          RoutinePlanRecord,
+          PrefetchHooks Function()
+        > {
+  $$RoutinePlanRecordsTableTableManager(
+    _$AppDatabase db,
+    $RoutinePlanRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoutinePlanRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RoutinePlanRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RoutinePlanRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<String> routineId = const Value.absent(),
+                Value<int> revision = const Value.absent(),
+                Value<String> mode = const Value.absent(),
+                Value<String> durationType = const Value.absent(),
+                Value<String> effectiveFrom = const Value.absent(),
+                Value<String?> effectiveUntil = const Value.absent(),
+                Value<String?> doseValue = const Value.absent(),
+                Value<String?> doseUnit = const Value.absent(),
+                Value<String?> doseOriginalText = const Value.absent(),
+                Value<String?> route = const Value.absent(),
+                Value<String?> clinicalInstructions = const Value.absent(),
+                Value<DateTime?> activatedAt = const Value.absent(),
+                Value<DateTime?> replacedAt = const Value.absent(),
+                Value<String?> previousPlanId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutinePlanRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                routineId: routineId,
+                revision: revision,
+                mode: mode,
+                durationType: durationType,
+                effectiveFrom: effectiveFrom,
+                effectiveUntil: effectiveUntil,
+                doseValue: doseValue,
+                doseUnit: doseUnit,
+                doseOriginalText: doseOriginalText,
+                route: route,
+                clinicalInstructions: clinicalInstructions,
+                activatedAt: activatedAt,
+                replacedAt: replacedAt,
+                previousPlanId: previousPlanId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                required String routineId,
+                required int revision,
+                required String mode,
+                required String durationType,
+                required String effectiveFrom,
+                Value<String?> effectiveUntil = const Value.absent(),
+                Value<String?> doseValue = const Value.absent(),
+                Value<String?> doseUnit = const Value.absent(),
+                Value<String?> doseOriginalText = const Value.absent(),
+                Value<String?> route = const Value.absent(),
+                Value<String?> clinicalInstructions = const Value.absent(),
+                Value<DateTime?> activatedAt = const Value.absent(),
+                Value<DateTime?> replacedAt = const Value.absent(),
+                Value<String?> previousPlanId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutinePlanRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                routineId: routineId,
+                revision: revision,
+                mode: mode,
+                durationType: durationType,
+                effectiveFrom: effectiveFrom,
+                effectiveUntil: effectiveUntil,
+                doseValue: doseValue,
+                doseUnit: doseUnit,
+                doseOriginalText: doseOriginalText,
+                route: route,
+                clinicalInstructions: clinicalInstructions,
+                activatedAt: activatedAt,
+                replacedAt: replacedAt,
+                previousPlanId: previousPlanId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoutinePlanRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoutinePlanRecordsTable,
+      RoutinePlanRecord,
+      $$RoutinePlanRecordsTableFilterComposer,
+      $$RoutinePlanRecordsTableOrderingComposer,
+      $$RoutinePlanRecordsTableAnnotationComposer,
+      $$RoutinePlanRecordsTableCreateCompanionBuilder,
+      $$RoutinePlanRecordsTableUpdateCompanionBuilder,
+      (
+        RoutinePlanRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $RoutinePlanRecordsTable,
+          RoutinePlanRecord
+        >,
+      ),
+      RoutinePlanRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$RoutineScheduleRecordsTableCreateCompanionBuilder =
+    RoutineScheduleRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      required String routineId,
+      required String planId,
+      required String ruleJson,
+      required String timeZone,
+      required String reminderPreference,
+      required int earlyToleranceSeconds,
+      required int onTimeToleranceSeconds,
+      required int lateToleranceSeconds,
+      required bool isEnabled,
+      required int displayOrder,
+      Value<int> rowid,
+    });
+typedef $$RoutineScheduleRecordsTableUpdateCompanionBuilder =
+    RoutineScheduleRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<String> routineId,
+      Value<String> planId,
+      Value<String> ruleJson,
+      Value<String> timeZone,
+      Value<String> reminderPreference,
+      Value<int> earlyToleranceSeconds,
+      Value<int> onTimeToleranceSeconds,
+      Value<int> lateToleranceSeconds,
+      Value<bool> isEnabled,
+      Value<int> displayOrder,
+      Value<int> rowid,
+    });
+
+class $$RoutineScheduleRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $RoutineScheduleRecordsTable> {
+  $$RoutineScheduleRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ruleJson => $composableBuilder(
+    column: $table.ruleJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get timeZone => $composableBuilder(
+    column: $table.timeZone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reminderPreference => $composableBuilder(
+    column: $table.reminderPreference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get earlyToleranceSeconds => $composableBuilder(
+    column: $table.earlyToleranceSeconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get onTimeToleranceSeconds => $composableBuilder(
+    column: $table.onTimeToleranceSeconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get lateToleranceSeconds => $composableBuilder(
+    column: $table.lateToleranceSeconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isEnabled => $composableBuilder(
+    column: $table.isEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get displayOrder => $composableBuilder(
+    column: $table.displayOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoutineScheduleRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoutineScheduleRecordsTable> {
+  $$RoutineScheduleRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ruleJson => $composableBuilder(
+    column: $table.ruleJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get timeZone => $composableBuilder(
+    column: $table.timeZone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reminderPreference => $composableBuilder(
+    column: $table.reminderPreference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get earlyToleranceSeconds => $composableBuilder(
+    column: $table.earlyToleranceSeconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get onTimeToleranceSeconds => $composableBuilder(
+    column: $table.onTimeToleranceSeconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get lateToleranceSeconds => $composableBuilder(
+    column: $table.lateToleranceSeconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isEnabled => $composableBuilder(
+    column: $table.isEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get displayOrder => $composableBuilder(
+    column: $table.displayOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoutineScheduleRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoutineScheduleRecordsTable> {
+  $$RoutineScheduleRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get routineId =>
+      $composableBuilder(column: $table.routineId, builder: (column) => column);
+
+  GeneratedColumn<String> get planId =>
+      $composableBuilder(column: $table.planId, builder: (column) => column);
+
+  GeneratedColumn<String> get ruleJson =>
+      $composableBuilder(column: $table.ruleJson, builder: (column) => column);
+
+  GeneratedColumn<String> get timeZone =>
+      $composableBuilder(column: $table.timeZone, builder: (column) => column);
+
+  GeneratedColumn<String> get reminderPreference => $composableBuilder(
+    column: $table.reminderPreference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get earlyToleranceSeconds => $composableBuilder(
+    column: $table.earlyToleranceSeconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get onTimeToleranceSeconds => $composableBuilder(
+    column: $table.onTimeToleranceSeconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get lateToleranceSeconds => $composableBuilder(
+    column: $table.lateToleranceSeconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isEnabled =>
+      $composableBuilder(column: $table.isEnabled, builder: (column) => column);
+
+  GeneratedColumn<int> get displayOrder => $composableBuilder(
+    column: $table.displayOrder,
+    builder: (column) => column,
+  );
+}
+
+class $$RoutineScheduleRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoutineScheduleRecordsTable,
+          RoutineScheduleRecord,
+          $$RoutineScheduleRecordsTableFilterComposer,
+          $$RoutineScheduleRecordsTableOrderingComposer,
+          $$RoutineScheduleRecordsTableAnnotationComposer,
+          $$RoutineScheduleRecordsTableCreateCompanionBuilder,
+          $$RoutineScheduleRecordsTableUpdateCompanionBuilder,
+          (
+            RoutineScheduleRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $RoutineScheduleRecordsTable,
+              RoutineScheduleRecord
+            >,
+          ),
+          RoutineScheduleRecord,
+          PrefetchHooks Function()
+        > {
+  $$RoutineScheduleRecordsTableTableManager(
+    _$AppDatabase db,
+    $RoutineScheduleRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoutineScheduleRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$RoutineScheduleRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$RoutineScheduleRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<String> routineId = const Value.absent(),
+                Value<String> planId = const Value.absent(),
+                Value<String> ruleJson = const Value.absent(),
+                Value<String> timeZone = const Value.absent(),
+                Value<String> reminderPreference = const Value.absent(),
+                Value<int> earlyToleranceSeconds = const Value.absent(),
+                Value<int> onTimeToleranceSeconds = const Value.absent(),
+                Value<int> lateToleranceSeconds = const Value.absent(),
+                Value<bool> isEnabled = const Value.absent(),
+                Value<int> displayOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutineScheduleRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                routineId: routineId,
+                planId: planId,
+                ruleJson: ruleJson,
+                timeZone: timeZone,
+                reminderPreference: reminderPreference,
+                earlyToleranceSeconds: earlyToleranceSeconds,
+                onTimeToleranceSeconds: onTimeToleranceSeconds,
+                lateToleranceSeconds: lateToleranceSeconds,
+                isEnabled: isEnabled,
+                displayOrder: displayOrder,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                required String routineId,
+                required String planId,
+                required String ruleJson,
+                required String timeZone,
+                required String reminderPreference,
+                required int earlyToleranceSeconds,
+                required int onTimeToleranceSeconds,
+                required int lateToleranceSeconds,
+                required bool isEnabled,
+                required int displayOrder,
+                Value<int> rowid = const Value.absent(),
+              }) => RoutineScheduleRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                routineId: routineId,
+                planId: planId,
+                ruleJson: ruleJson,
+                timeZone: timeZone,
+                reminderPreference: reminderPreference,
+                earlyToleranceSeconds: earlyToleranceSeconds,
+                onTimeToleranceSeconds: onTimeToleranceSeconds,
+                lateToleranceSeconds: lateToleranceSeconds,
+                isEnabled: isEnabled,
+                displayOrder: displayOrder,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoutineScheduleRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoutineScheduleRecordsTable,
+      RoutineScheduleRecord,
+      $$RoutineScheduleRecordsTableFilterComposer,
+      $$RoutineScheduleRecordsTableOrderingComposer,
+      $$RoutineScheduleRecordsTableAnnotationComposer,
+      $$RoutineScheduleRecordsTableCreateCompanionBuilder,
+      $$RoutineScheduleRecordsTableUpdateCompanionBuilder,
+      (
+        RoutineScheduleRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $RoutineScheduleRecordsTable,
+          RoutineScheduleRecord
+        >,
+      ),
+      RoutineScheduleRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$RoutinePauseRecordsTableCreateCompanionBuilder =
+    RoutinePauseRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      required String routineId,
+      Value<String?> planId,
+      required String scope,
+      required DateTime startsAt,
+      Value<DateTime?> endsAt,
+      Value<String?> reason,
+      Value<int> rowid,
+    });
+typedef $$RoutinePauseRecordsTableUpdateCompanionBuilder =
+    RoutinePauseRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<String> routineId,
+      Value<String?> planId,
+      Value<String> scope,
+      Value<DateTime> startsAt,
+      Value<DateTime?> endsAt,
+      Value<String?> reason,
+      Value<int> rowid,
+    });
+
+class $$RoutinePauseRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $RoutinePauseRecordsTable> {
+  $$RoutinePauseRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scope => $composableBuilder(
+    column: $table.scope,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startsAt => $composableBuilder(
+    column: $table.startsAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get endsAt => $composableBuilder(
+    column: $table.endsAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoutinePauseRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoutinePauseRecordsTable> {
+  $$RoutinePauseRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get scope => $composableBuilder(
+    column: $table.scope,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startsAt => $composableBuilder(
+    column: $table.startsAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get endsAt => $composableBuilder(
+    column: $table.endsAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reason => $composableBuilder(
+    column: $table.reason,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoutinePauseRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoutinePauseRecordsTable> {
+  $$RoutinePauseRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get routineId =>
+      $composableBuilder(column: $table.routineId, builder: (column) => column);
+
+  GeneratedColumn<String> get planId =>
+      $composableBuilder(column: $table.planId, builder: (column) => column);
+
+  GeneratedColumn<String> get scope =>
+      $composableBuilder(column: $table.scope, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startsAt =>
+      $composableBuilder(column: $table.startsAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endsAt =>
+      $composableBuilder(column: $table.endsAt, builder: (column) => column);
+
+  GeneratedColumn<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => column);
+}
+
+class $$RoutinePauseRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoutinePauseRecordsTable,
+          RoutinePauseRecord,
+          $$RoutinePauseRecordsTableFilterComposer,
+          $$RoutinePauseRecordsTableOrderingComposer,
+          $$RoutinePauseRecordsTableAnnotationComposer,
+          $$RoutinePauseRecordsTableCreateCompanionBuilder,
+          $$RoutinePauseRecordsTableUpdateCompanionBuilder,
+          (
+            RoutinePauseRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $RoutinePauseRecordsTable,
+              RoutinePauseRecord
+            >,
+          ),
+          RoutinePauseRecord,
+          PrefetchHooks Function()
+        > {
+  $$RoutinePauseRecordsTableTableManager(
+    _$AppDatabase db,
+    $RoutinePauseRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoutinePauseRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RoutinePauseRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$RoutinePauseRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<String> routineId = const Value.absent(),
+                Value<String?> planId = const Value.absent(),
+                Value<String> scope = const Value.absent(),
+                Value<DateTime> startsAt = const Value.absent(),
+                Value<DateTime?> endsAt = const Value.absent(),
+                Value<String?> reason = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutinePauseRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                routineId: routineId,
+                planId: planId,
+                scope: scope,
+                startsAt: startsAt,
+                endsAt: endsAt,
+                reason: reason,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                required String routineId,
+                Value<String?> planId = const Value.absent(),
+                required String scope,
+                required DateTime startsAt,
+                Value<DateTime?> endsAt = const Value.absent(),
+                Value<String?> reason = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutinePauseRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                routineId: routineId,
+                planId: planId,
+                scope: scope,
+                startsAt: startsAt,
+                endsAt: endsAt,
+                reason: reason,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoutinePauseRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoutinePauseRecordsTable,
+      RoutinePauseRecord,
+      $$RoutinePauseRecordsTableFilterComposer,
+      $$RoutinePauseRecordsTableOrderingComposer,
+      $$RoutinePauseRecordsTableAnnotationComposer,
+      $$RoutinePauseRecordsTableCreateCompanionBuilder,
+      $$RoutinePauseRecordsTableUpdateCompanionBuilder,
+      (
+        RoutinePauseRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $RoutinePauseRecordsTable,
+          RoutinePauseRecord
+        >,
+      ),
+      RoutinePauseRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$RoutineOccurrenceRecordsTableCreateCompanionBuilder =
+    RoutineOccurrenceRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      required String routineId,
+      required String planId,
+      Value<String?> scheduleId,
+      required String origin,
+      required String status,
+      required String originalClinicalDate,
+      required int originalLocalHour,
+      required int originalLocalMinute,
+      required String originalTimeZone,
+      required String expectationKind,
+      required int sequence,
+      required DateTime originalScheduledFor,
+      required DateTime originalWindowStartsAt,
+      required DateTime originalOnTimeEndsAt,
+      required DateTime originalWindowEndsAt,
+      required DateTime scheduledFor,
+      required DateTime windowStartsAt,
+      required DateTime onTimeEndsAt,
+      required DateTime windowEndsAt,
+      Value<int> rowid,
+    });
+typedef $$RoutineOccurrenceRecordsTableUpdateCompanionBuilder =
+    RoutineOccurrenceRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<String> routineId,
+      Value<String> planId,
+      Value<String?> scheduleId,
+      Value<String> origin,
+      Value<String> status,
+      Value<String> originalClinicalDate,
+      Value<int> originalLocalHour,
+      Value<int> originalLocalMinute,
+      Value<String> originalTimeZone,
+      Value<String> expectationKind,
+      Value<int> sequence,
+      Value<DateTime> originalScheduledFor,
+      Value<DateTime> originalWindowStartsAt,
+      Value<DateTime> originalOnTimeEndsAt,
+      Value<DateTime> originalWindowEndsAt,
+      Value<DateTime> scheduledFor,
+      Value<DateTime> windowStartsAt,
+      Value<DateTime> onTimeEndsAt,
+      Value<DateTime> windowEndsAt,
+      Value<int> rowid,
+    });
+
+class $$RoutineOccurrenceRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $RoutineOccurrenceRecordsTable> {
+  $$RoutineOccurrenceRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scheduleId => $composableBuilder(
+    column: $table.scheduleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get origin => $composableBuilder(
+    column: $table.origin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get originalClinicalDate => $composableBuilder(
+    column: $table.originalClinicalDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get originalLocalHour => $composableBuilder(
+    column: $table.originalLocalHour,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get originalLocalMinute => $composableBuilder(
+    column: $table.originalLocalMinute,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get originalTimeZone => $composableBuilder(
+    column: $table.originalTimeZone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get expectationKind => $composableBuilder(
+    column: $table.expectationKind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sequence => $composableBuilder(
+    column: $table.sequence,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get originalScheduledFor => $composableBuilder(
+    column: $table.originalScheduledFor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get originalWindowStartsAt => $composableBuilder(
+    column: $table.originalWindowStartsAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get originalOnTimeEndsAt => $composableBuilder(
+    column: $table.originalOnTimeEndsAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get originalWindowEndsAt => $composableBuilder(
+    column: $table.originalWindowEndsAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get scheduledFor => $composableBuilder(
+    column: $table.scheduledFor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get windowStartsAt => $composableBuilder(
+    column: $table.windowStartsAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get onTimeEndsAt => $composableBuilder(
+    column: $table.onTimeEndsAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get windowEndsAt => $composableBuilder(
+    column: $table.windowEndsAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoutineOccurrenceRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoutineOccurrenceRecordsTable> {
+  $$RoutineOccurrenceRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get scheduleId => $composableBuilder(
+    column: $table.scheduleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get origin => $composableBuilder(
+    column: $table.origin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get originalClinicalDate => $composableBuilder(
+    column: $table.originalClinicalDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get originalLocalHour => $composableBuilder(
+    column: $table.originalLocalHour,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get originalLocalMinute => $composableBuilder(
+    column: $table.originalLocalMinute,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get originalTimeZone => $composableBuilder(
+    column: $table.originalTimeZone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get expectationKind => $composableBuilder(
+    column: $table.expectationKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sequence => $composableBuilder(
+    column: $table.sequence,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get originalScheduledFor => $composableBuilder(
+    column: $table.originalScheduledFor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get originalWindowStartsAt => $composableBuilder(
+    column: $table.originalWindowStartsAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get originalOnTimeEndsAt => $composableBuilder(
+    column: $table.originalOnTimeEndsAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get originalWindowEndsAt => $composableBuilder(
+    column: $table.originalWindowEndsAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get scheduledFor => $composableBuilder(
+    column: $table.scheduledFor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get windowStartsAt => $composableBuilder(
+    column: $table.windowStartsAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get onTimeEndsAt => $composableBuilder(
+    column: $table.onTimeEndsAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get windowEndsAt => $composableBuilder(
+    column: $table.windowEndsAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoutineOccurrenceRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoutineOccurrenceRecordsTable> {
+  $$RoutineOccurrenceRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get routineId =>
+      $composableBuilder(column: $table.routineId, builder: (column) => column);
+
+  GeneratedColumn<String> get planId =>
+      $composableBuilder(column: $table.planId, builder: (column) => column);
+
+  GeneratedColumn<String> get scheduleId => $composableBuilder(
+    column: $table.scheduleId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get origin =>
+      $composableBuilder(column: $table.origin, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get originalClinicalDate => $composableBuilder(
+    column: $table.originalClinicalDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get originalLocalHour => $composableBuilder(
+    column: $table.originalLocalHour,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get originalLocalMinute => $composableBuilder(
+    column: $table.originalLocalMinute,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get originalTimeZone => $composableBuilder(
+    column: $table.originalTimeZone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get expectationKind => $composableBuilder(
+    column: $table.expectationKind,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get sequence =>
+      $composableBuilder(column: $table.sequence, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get originalScheduledFor => $composableBuilder(
+    column: $table.originalScheduledFor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get originalWindowStartsAt => $composableBuilder(
+    column: $table.originalWindowStartsAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get originalOnTimeEndsAt => $composableBuilder(
+    column: $table.originalOnTimeEndsAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get originalWindowEndsAt => $composableBuilder(
+    column: $table.originalWindowEndsAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get scheduledFor => $composableBuilder(
+    column: $table.scheduledFor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get windowStartsAt => $composableBuilder(
+    column: $table.windowStartsAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get onTimeEndsAt => $composableBuilder(
+    column: $table.onTimeEndsAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get windowEndsAt => $composableBuilder(
+    column: $table.windowEndsAt,
+    builder: (column) => column,
+  );
+}
+
+class $$RoutineOccurrenceRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoutineOccurrenceRecordsTable,
+          RoutineOccurrenceRecord,
+          $$RoutineOccurrenceRecordsTableFilterComposer,
+          $$RoutineOccurrenceRecordsTableOrderingComposer,
+          $$RoutineOccurrenceRecordsTableAnnotationComposer,
+          $$RoutineOccurrenceRecordsTableCreateCompanionBuilder,
+          $$RoutineOccurrenceRecordsTableUpdateCompanionBuilder,
+          (
+            RoutineOccurrenceRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $RoutineOccurrenceRecordsTable,
+              RoutineOccurrenceRecord
+            >,
+          ),
+          RoutineOccurrenceRecord,
+          PrefetchHooks Function()
+        > {
+  $$RoutineOccurrenceRecordsTableTableManager(
+    _$AppDatabase db,
+    $RoutineOccurrenceRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoutineOccurrenceRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$RoutineOccurrenceRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$RoutineOccurrenceRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<String> routineId = const Value.absent(),
+                Value<String> planId = const Value.absent(),
+                Value<String?> scheduleId = const Value.absent(),
+                Value<String> origin = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> originalClinicalDate = const Value.absent(),
+                Value<int> originalLocalHour = const Value.absent(),
+                Value<int> originalLocalMinute = const Value.absent(),
+                Value<String> originalTimeZone = const Value.absent(),
+                Value<String> expectationKind = const Value.absent(),
+                Value<int> sequence = const Value.absent(),
+                Value<DateTime> originalScheduledFor = const Value.absent(),
+                Value<DateTime> originalWindowStartsAt = const Value.absent(),
+                Value<DateTime> originalOnTimeEndsAt = const Value.absent(),
+                Value<DateTime> originalWindowEndsAt = const Value.absent(),
+                Value<DateTime> scheduledFor = const Value.absent(),
+                Value<DateTime> windowStartsAt = const Value.absent(),
+                Value<DateTime> onTimeEndsAt = const Value.absent(),
+                Value<DateTime> windowEndsAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutineOccurrenceRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                routineId: routineId,
+                planId: planId,
+                scheduleId: scheduleId,
+                origin: origin,
+                status: status,
+                originalClinicalDate: originalClinicalDate,
+                originalLocalHour: originalLocalHour,
+                originalLocalMinute: originalLocalMinute,
+                originalTimeZone: originalTimeZone,
+                expectationKind: expectationKind,
+                sequence: sequence,
+                originalScheduledFor: originalScheduledFor,
+                originalWindowStartsAt: originalWindowStartsAt,
+                originalOnTimeEndsAt: originalOnTimeEndsAt,
+                originalWindowEndsAt: originalWindowEndsAt,
+                scheduledFor: scheduledFor,
+                windowStartsAt: windowStartsAt,
+                onTimeEndsAt: onTimeEndsAt,
+                windowEndsAt: windowEndsAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                required String routineId,
+                required String planId,
+                Value<String?> scheduleId = const Value.absent(),
+                required String origin,
+                required String status,
+                required String originalClinicalDate,
+                required int originalLocalHour,
+                required int originalLocalMinute,
+                required String originalTimeZone,
+                required String expectationKind,
+                required int sequence,
+                required DateTime originalScheduledFor,
+                required DateTime originalWindowStartsAt,
+                required DateTime originalOnTimeEndsAt,
+                required DateTime originalWindowEndsAt,
+                required DateTime scheduledFor,
+                required DateTime windowStartsAt,
+                required DateTime onTimeEndsAt,
+                required DateTime windowEndsAt,
+                Value<int> rowid = const Value.absent(),
+              }) => RoutineOccurrenceRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                routineId: routineId,
+                planId: planId,
+                scheduleId: scheduleId,
+                origin: origin,
+                status: status,
+                originalClinicalDate: originalClinicalDate,
+                originalLocalHour: originalLocalHour,
+                originalLocalMinute: originalLocalMinute,
+                originalTimeZone: originalTimeZone,
+                expectationKind: expectationKind,
+                sequence: sequence,
+                originalScheduledFor: originalScheduledFor,
+                originalWindowStartsAt: originalWindowStartsAt,
+                originalOnTimeEndsAt: originalOnTimeEndsAt,
+                originalWindowEndsAt: originalWindowEndsAt,
+                scheduledFor: scheduledFor,
+                windowStartsAt: windowStartsAt,
+                onTimeEndsAt: onTimeEndsAt,
+                windowEndsAt: windowEndsAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoutineOccurrenceRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoutineOccurrenceRecordsTable,
+      RoutineOccurrenceRecord,
+      $$RoutineOccurrenceRecordsTableFilterComposer,
+      $$RoutineOccurrenceRecordsTableOrderingComposer,
+      $$RoutineOccurrenceRecordsTableAnnotationComposer,
+      $$RoutineOccurrenceRecordsTableCreateCompanionBuilder,
+      $$RoutineOccurrenceRecordsTableUpdateCompanionBuilder,
+      (
+        RoutineOccurrenceRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $RoutineOccurrenceRecordsTable,
+          RoutineOccurrenceRecord
+        >,
+      ),
+      RoutineOccurrenceRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$RoutineAdherenceEventRecordsTableCreateCompanionBuilder =
+    RoutineAdherenceEventRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      required String occurrenceId,
+      required String routineId,
+      required String planId,
+      Value<String?> scheduleId,
+      required String type,
+      required String actor,
+      required DateTime occurredAtUtc,
+      required DateTime recordedAtUtc,
+      Value<String?> referencedEventId,
+      Value<String?> correctionAction,
+      Value<String?> replacementType,
+      Value<DateTime?> replacementOccurredAtUtc,
+      Value<DateTime?> rescheduledForUtc,
+      Value<DateTime?> rescheduledWindowStartsAtUtc,
+      Value<DateTime?> rescheduledOnTimeEndsAtUtc,
+      Value<DateTime?> rescheduledWindowEndsAtUtc,
+      Value<String?> note,
+      Value<String?> actualDoseValue,
+      Value<String?> actualDoseUnit,
+      Value<String?> actualDoseOriginalText,
+      Value<int> rowid,
+    });
+typedef $$RoutineAdherenceEventRecordsTableUpdateCompanionBuilder =
+    RoutineAdherenceEventRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<String> occurrenceId,
+      Value<String> routineId,
+      Value<String> planId,
+      Value<String?> scheduleId,
+      Value<String> type,
+      Value<String> actor,
+      Value<DateTime> occurredAtUtc,
+      Value<DateTime> recordedAtUtc,
+      Value<String?> referencedEventId,
+      Value<String?> correctionAction,
+      Value<String?> replacementType,
+      Value<DateTime?> replacementOccurredAtUtc,
+      Value<DateTime?> rescheduledForUtc,
+      Value<DateTime?> rescheduledWindowStartsAtUtc,
+      Value<DateTime?> rescheduledOnTimeEndsAtUtc,
+      Value<DateTime?> rescheduledWindowEndsAtUtc,
+      Value<String?> note,
+      Value<String?> actualDoseValue,
+      Value<String?> actualDoseUnit,
+      Value<String?> actualDoseOriginalText,
+      Value<int> rowid,
+    });
+
+class $$RoutineAdherenceEventRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $RoutineAdherenceEventRecordsTable> {
+  $$RoutineAdherenceEventRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scheduleId => $composableBuilder(
+    column: $table.scheduleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actor => $composableBuilder(
+    column: $table.actor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get occurredAtUtc => $composableBuilder(
+    column: $table.occurredAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAtUtc => $composableBuilder(
+    column: $table.recordedAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get referencedEventId => $composableBuilder(
+    column: $table.referencedEventId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get correctionAction => $composableBuilder(
+    column: $table.correctionAction,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get replacementType => $composableBuilder(
+    column: $table.replacementType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get replacementOccurredAtUtc => $composableBuilder(
+    column: $table.replacementOccurredAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get rescheduledForUtc => $composableBuilder(
+    column: $table.rescheduledForUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get rescheduledWindowStartsAtUtc =>
+      $composableBuilder(
+        column: $table.rescheduledWindowStartsAtUtc,
+        builder: (column) => ColumnFilters(column),
+      );
+
+  ColumnFilters<DateTime> get rescheduledOnTimeEndsAtUtc => $composableBuilder(
+    column: $table.rescheduledOnTimeEndsAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get rescheduledWindowEndsAtUtc => $composableBuilder(
+    column: $table.rescheduledWindowEndsAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actualDoseValue => $composableBuilder(
+    column: $table.actualDoseValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actualDoseUnit => $composableBuilder(
+    column: $table.actualDoseUnit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actualDoseOriginalText => $composableBuilder(
+    column: $table.actualDoseOriginalText,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoutineAdherenceEventRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoutineAdherenceEventRecordsTable> {
+  $$RoutineAdherenceEventRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get scheduleId => $composableBuilder(
+    column: $table.scheduleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actor => $composableBuilder(
+    column: $table.actor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get occurredAtUtc => $composableBuilder(
+    column: $table.occurredAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAtUtc => $composableBuilder(
+    column: $table.recordedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get referencedEventId => $composableBuilder(
+    column: $table.referencedEventId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get correctionAction => $composableBuilder(
+    column: $table.correctionAction,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get replacementType => $composableBuilder(
+    column: $table.replacementType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get replacementOccurredAtUtc => $composableBuilder(
+    column: $table.replacementOccurredAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get rescheduledForUtc => $composableBuilder(
+    column: $table.rescheduledForUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get rescheduledWindowStartsAtUtc =>
+      $composableBuilder(
+        column: $table.rescheduledWindowStartsAtUtc,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<DateTime> get rescheduledOnTimeEndsAtUtc =>
+      $composableBuilder(
+        column: $table.rescheduledOnTimeEndsAtUtc,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<DateTime> get rescheduledWindowEndsAtUtc =>
+      $composableBuilder(
+        column: $table.rescheduledWindowEndsAtUtc,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actualDoseValue => $composableBuilder(
+    column: $table.actualDoseValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actualDoseUnit => $composableBuilder(
+    column: $table.actualDoseUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actualDoseOriginalText => $composableBuilder(
+    column: $table.actualDoseOriginalText,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoutineAdherenceEventRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoutineAdherenceEventRecordsTable> {
+  $$RoutineAdherenceEventRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get routineId =>
+      $composableBuilder(column: $table.routineId, builder: (column) => column);
+
+  GeneratedColumn<String> get planId =>
+      $composableBuilder(column: $table.planId, builder: (column) => column);
+
+  GeneratedColumn<String> get scheduleId => $composableBuilder(
+    column: $table.scheduleId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get actor =>
+      $composableBuilder(column: $table.actor, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get occurredAtUtc => $composableBuilder(
+    column: $table.occurredAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get recordedAtUtc => $composableBuilder(
+    column: $table.recordedAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get referencedEventId => $composableBuilder(
+    column: $table.referencedEventId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get correctionAction => $composableBuilder(
+    column: $table.correctionAction,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get replacementType => $composableBuilder(
+    column: $table.replacementType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get replacementOccurredAtUtc => $composableBuilder(
+    column: $table.replacementOccurredAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get rescheduledForUtc => $composableBuilder(
+    column: $table.rescheduledForUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get rescheduledWindowStartsAtUtc =>
+      $composableBuilder(
+        column: $table.rescheduledWindowStartsAtUtc,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<DateTime> get rescheduledOnTimeEndsAtUtc =>
+      $composableBuilder(
+        column: $table.rescheduledOnTimeEndsAtUtc,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<DateTime> get rescheduledWindowEndsAtUtc =>
+      $composableBuilder(
+        column: $table.rescheduledWindowEndsAtUtc,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<String> get actualDoseValue => $composableBuilder(
+    column: $table.actualDoseValue,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get actualDoseUnit => $composableBuilder(
+    column: $table.actualDoseUnit,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get actualDoseOriginalText => $composableBuilder(
+    column: $table.actualDoseOriginalText,
+    builder: (column) => column,
+  );
+}
+
+class $$RoutineAdherenceEventRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoutineAdherenceEventRecordsTable,
+          RoutineAdherenceEventRecord,
+          $$RoutineAdherenceEventRecordsTableFilterComposer,
+          $$RoutineAdherenceEventRecordsTableOrderingComposer,
+          $$RoutineAdherenceEventRecordsTableAnnotationComposer,
+          $$RoutineAdherenceEventRecordsTableCreateCompanionBuilder,
+          $$RoutineAdherenceEventRecordsTableUpdateCompanionBuilder,
+          (
+            RoutineAdherenceEventRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $RoutineAdherenceEventRecordsTable,
+              RoutineAdherenceEventRecord
+            >,
+          ),
+          RoutineAdherenceEventRecord,
+          PrefetchHooks Function()
+        > {
+  $$RoutineAdherenceEventRecordsTableTableManager(
+    _$AppDatabase db,
+    $RoutineAdherenceEventRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoutineAdherenceEventRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$RoutineAdherenceEventRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$RoutineAdherenceEventRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<String> occurrenceId = const Value.absent(),
+                Value<String> routineId = const Value.absent(),
+                Value<String> planId = const Value.absent(),
+                Value<String?> scheduleId = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String> actor = const Value.absent(),
+                Value<DateTime> occurredAtUtc = const Value.absent(),
+                Value<DateTime> recordedAtUtc = const Value.absent(),
+                Value<String?> referencedEventId = const Value.absent(),
+                Value<String?> correctionAction = const Value.absent(),
+                Value<String?> replacementType = const Value.absent(),
+                Value<DateTime?> replacementOccurredAtUtc =
+                    const Value.absent(),
+                Value<DateTime?> rescheduledForUtc = const Value.absent(),
+                Value<DateTime?> rescheduledWindowStartsAtUtc =
+                    const Value.absent(),
+                Value<DateTime?> rescheduledOnTimeEndsAtUtc =
+                    const Value.absent(),
+                Value<DateTime?> rescheduledWindowEndsAtUtc =
+                    const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<String?> actualDoseValue = const Value.absent(),
+                Value<String?> actualDoseUnit = const Value.absent(),
+                Value<String?> actualDoseOriginalText = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutineAdherenceEventRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                occurrenceId: occurrenceId,
+                routineId: routineId,
+                planId: planId,
+                scheduleId: scheduleId,
+                type: type,
+                actor: actor,
+                occurredAtUtc: occurredAtUtc,
+                recordedAtUtc: recordedAtUtc,
+                referencedEventId: referencedEventId,
+                correctionAction: correctionAction,
+                replacementType: replacementType,
+                replacementOccurredAtUtc: replacementOccurredAtUtc,
+                rescheduledForUtc: rescheduledForUtc,
+                rescheduledWindowStartsAtUtc: rescheduledWindowStartsAtUtc,
+                rescheduledOnTimeEndsAtUtc: rescheduledOnTimeEndsAtUtc,
+                rescheduledWindowEndsAtUtc: rescheduledWindowEndsAtUtc,
+                note: note,
+                actualDoseValue: actualDoseValue,
+                actualDoseUnit: actualDoseUnit,
+                actualDoseOriginalText: actualDoseOriginalText,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                required String occurrenceId,
+                required String routineId,
+                required String planId,
+                Value<String?> scheduleId = const Value.absent(),
+                required String type,
+                required String actor,
+                required DateTime occurredAtUtc,
+                required DateTime recordedAtUtc,
+                Value<String?> referencedEventId = const Value.absent(),
+                Value<String?> correctionAction = const Value.absent(),
+                Value<String?> replacementType = const Value.absent(),
+                Value<DateTime?> replacementOccurredAtUtc =
+                    const Value.absent(),
+                Value<DateTime?> rescheduledForUtc = const Value.absent(),
+                Value<DateTime?> rescheduledWindowStartsAtUtc =
+                    const Value.absent(),
+                Value<DateTime?> rescheduledOnTimeEndsAtUtc =
+                    const Value.absent(),
+                Value<DateTime?> rescheduledWindowEndsAtUtc =
+                    const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<String?> actualDoseValue = const Value.absent(),
+                Value<String?> actualDoseUnit = const Value.absent(),
+                Value<String?> actualDoseOriginalText = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutineAdherenceEventRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                occurrenceId: occurrenceId,
+                routineId: routineId,
+                planId: planId,
+                scheduleId: scheduleId,
+                type: type,
+                actor: actor,
+                occurredAtUtc: occurredAtUtc,
+                recordedAtUtc: recordedAtUtc,
+                referencedEventId: referencedEventId,
+                correctionAction: correctionAction,
+                replacementType: replacementType,
+                replacementOccurredAtUtc: replacementOccurredAtUtc,
+                rescheduledForUtc: rescheduledForUtc,
+                rescheduledWindowStartsAtUtc: rescheduledWindowStartsAtUtc,
+                rescheduledOnTimeEndsAtUtc: rescheduledOnTimeEndsAtUtc,
+                rescheduledWindowEndsAtUtc: rescheduledWindowEndsAtUtc,
+                note: note,
+                actualDoseValue: actualDoseValue,
+                actualDoseUnit: actualDoseUnit,
+                actualDoseOriginalText: actualDoseOriginalText,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoutineAdherenceEventRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoutineAdherenceEventRecordsTable,
+      RoutineAdherenceEventRecord,
+      $$RoutineAdherenceEventRecordsTableFilterComposer,
+      $$RoutineAdherenceEventRecordsTableOrderingComposer,
+      $$RoutineAdherenceEventRecordsTableAnnotationComposer,
+      $$RoutineAdherenceEventRecordsTableCreateCompanionBuilder,
+      $$RoutineAdherenceEventRecordsTableUpdateCompanionBuilder,
+      (
+        RoutineAdherenceEventRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $RoutineAdherenceEventRecordsTable,
+          RoutineAdherenceEventRecord
+        >,
+      ),
+      RoutineAdherenceEventRecord,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -39976,5 +51051,27 @@ class $AppDatabaseManager {
       $$MedicalPrescriptionItemRecordsTableTableManager(
         _db,
         _db.medicalPrescriptionItemRecords,
+      );
+  $$SmartRoutineRecordsTableTableManager get smartRoutineRecords =>
+      $$SmartRoutineRecordsTableTableManager(_db, _db.smartRoutineRecords);
+  $$RoutinePlanRecordsTableTableManager get routinePlanRecords =>
+      $$RoutinePlanRecordsTableTableManager(_db, _db.routinePlanRecords);
+  $$RoutineScheduleRecordsTableTableManager get routineScheduleRecords =>
+      $$RoutineScheduleRecordsTableTableManager(
+        _db,
+        _db.routineScheduleRecords,
+      );
+  $$RoutinePauseRecordsTableTableManager get routinePauseRecords =>
+      $$RoutinePauseRecordsTableTableManager(_db, _db.routinePauseRecords);
+  $$RoutineOccurrenceRecordsTableTableManager get routineOccurrenceRecords =>
+      $$RoutineOccurrenceRecordsTableTableManager(
+        _db,
+        _db.routineOccurrenceRecords,
+      );
+  $$RoutineAdherenceEventRecordsTableTableManager
+  get routineAdherenceEventRecords =>
+      $$RoutineAdherenceEventRecordsTableTableManager(
+        _db,
+        _db.routineAdherenceEventRecords,
       );
 }

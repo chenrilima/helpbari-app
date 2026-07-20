@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../../core/config/environment.dart';
 import '../../core/logger/app_logger.dart';
 import '../../core/supabase/supabase_config.dart';
+import '../../core/time/iana_timezone_bootstrap.dart';
 
 Future<void> bootstrap({
   required AppEnvironment environment,
@@ -11,6 +12,7 @@ Future<void> bootstrap({
   WidgetsFlutterBinding.ensureInitialized();
 
   Environment.current = environment;
+  IanaTimezoneBootstrap.initialize();
 
   AppLogger.info('Starting HelpBari in ${Environment.name} mode');
 

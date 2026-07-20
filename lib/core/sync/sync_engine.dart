@@ -185,7 +185,11 @@ class SyncEngine {
         final local = await repository.localOperationById(remote.recordId);
         var operationToApply = remote;
 
-        if (local != null) {
+        if (local != null &&
+            !(repository is AppendOnlySyncRepository &&
+                (repository as AppendOnlySyncRepository).isAppendOnly(
+                  remote,
+                ))) {
           operationToApply = _resolveLatest(local, remote);
           conflicts.add(
             SyncConflict(

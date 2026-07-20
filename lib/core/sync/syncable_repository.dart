@@ -30,3 +30,9 @@ abstract interface class AtomicRemoteSyncRepository {
     required DateTime syncedAt,
   });
 }
+
+/// Opts a repository out of destructive `updatedAt` conflict resolution.
+/// Same-id payload equality/conflict remains the repository's responsibility.
+abstract interface class AppendOnlySyncRepository {
+  bool isAppendOnly(SyncOperation operation);
+}

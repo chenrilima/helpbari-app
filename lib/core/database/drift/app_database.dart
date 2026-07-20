@@ -16,6 +16,7 @@ import 'daos/document_intelligence_dao.dart';
 import 'daos/bioimpedance_dao.dart';
 import 'daos/medical_exam_dao.dart';
 import 'daos/medical_prescription_dao.dart';
+import 'daos/smart_routine_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
@@ -46,6 +47,7 @@ import 'tables/bioimpedance_records.dart';
 import 'tables/medical_exams.dart';
 import 'tables/medical_exam_results.dart';
 import 'tables/medical_prescription_records.dart';
+import 'tables/smart_routine_records.dart';
 
 part 'app_database.g.dart';
 
@@ -83,6 +85,12 @@ part 'app_database.g.dart';
     MedicalExamResults,
     MedicalPrescriptionRecords,
     MedicalPrescriptionItemRecords,
+    SmartRoutineRecords,
+    RoutinePlanRecords,
+    RoutineScheduleRecords,
+    RoutinePauseRecords,
+    RoutineOccurrenceRecords,
+    RoutineAdherenceEventRecords,
   ],
   daos: [
     WaterDao,
@@ -101,6 +109,7 @@ part 'app_database.g.dart';
     BioimpedanceDao,
     MedicalExamDao,
     MedicalPrescriptionDao,
+    SmartRoutineDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -108,7 +117,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 17;
+  int get schemaVersion => 18;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -181,6 +190,14 @@ class AppDatabase extends _$AppDatabase {
       if (from < 17) {
         await migrator.createTable(medicalPrescriptionRecords);
         await migrator.createTable(medicalPrescriptionItemRecords);
+      }
+      if (from < 18) {
+        await migrator.createTable(smartRoutineRecords);
+        await migrator.createTable(routinePlanRecords);
+        await migrator.createTable(routineScheduleRecords);
+        await migrator.createTable(routinePauseRecords);
+        await migrator.createTable(routineOccurrenceRecords);
+        await migrator.createTable(routineAdherenceEventRecords);
       }
     },
     beforeOpen: (details) async {
