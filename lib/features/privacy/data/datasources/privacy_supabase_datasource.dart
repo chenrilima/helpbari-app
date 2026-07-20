@@ -106,7 +106,7 @@ class PrivacySupabaseDatasource implements PrivacyRemoteDatasource {
   Future<void> _deleteStorage() async {
     final userId = _client.auth.currentUser?.id;
     if (userId == null) throw StateError('Authentication required.');
-    for (final bucket in _privacyBuckets) {
+    for (final bucket in privacyStorageBuckets) {
       final paths = await _listFiles(bucket: bucket, path: userId);
       for (var offset = 0; offset < paths.length; offset += 100) {
         final end = (offset + 100).clamp(0, paths.length);
@@ -150,13 +150,6 @@ class PrivacySupabaseDatasource implements PrivacyRemoteDatasource {
     return result;
   }
 
-  static const _privacyBuckets = <String>[
-    'profile-photos',
-    'exam-attachments',
-    'medical-reports',
-    'report-attachments',
-  ];
-
   Future<void> _rpc({required String operation, required String function}) =>
       _interceptor.run(
         context: SupabaseRequestContext(
@@ -168,3 +161,11 @@ class PrivacySupabaseDatasource implements PrivacyRemoteDatasource {
         },
       );
 }
+
+const privacyStorageBuckets = <String>[
+  'profile-photos',
+  'exam-attachments',
+  'medical-reports',
+  'report-attachments',
+  'clinical-documents',
+];

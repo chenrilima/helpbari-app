@@ -36,13 +36,17 @@ class DriftVitaminLogLocalDatasource {
     final day = _day(date);
     final row = await _dao.getByVitaminAndDate(userId, vitaminId, day);
     final now = _clock.now();
+    final id = row?.id ?? _uuid.generate();
+    if (id.isEmpty) {
+      throw StateError('VitaminLog requires a non-empty id.');
+    }
     final dto = VitaminLogDto(
-      id: row?.id ?? _uuid.generate(),
+      id: id,
       vitaminId: vitaminId,
       date: day,
       status: status,
       syncMetadata: SyncMetadata(
-        id: row?.id ?? '',
+        id: id,
         userId: userId,
         createdAt: row?.createdAt ?? now,
         updatedAt: now,

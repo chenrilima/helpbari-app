@@ -16,6 +16,7 @@ class PrivacyExportService {
     loadVitaminLogs,
     required Future<List<dynamic>> Function(DateTime start, DateTime end)
     loadMedicationLogs,
+    this.loadClinicalData,
     required ClockService clock,
     required String userId,
   }) : _loadReport = loadReport,
@@ -31,6 +32,7 @@ class PrivacyExportService {
   _loadVitaminLogs;
   final Future<List<dynamic>> Function(DateTime start, DateTime end)
   _loadMedicationLogs;
+  final Future<Map<String, Object?>> Function()? loadClinicalData;
   final ClockService _clock;
   final String _userId;
 
@@ -44,11 +46,14 @@ class PrivacyExportService {
       _loadSettings(),
       _loadVitaminLogs(DateTime(2000), now),
       _loadMedicationLogs(DateTime(2000), now),
+      loadClinicalData?.call() ??
+          Future<Map<String, Object?>>.value(const <String, Object?>{}),
     ]);
     final snapshot = results[0];
     final settings = results[1];
     final vitaminLogs = results[2] as List;
     final medicationLogs = results[3] as List;
+    final clinicalData = results[4] as Map<String, Object?>;
     final profile = snapshot.profile;
     final data = <String, Object?>{
       'metadata': {
@@ -254,6 +259,14 @@ class PrivacyExportService {
             ],
           },
       ],
+      'documentIntelligence': {
+        'documents': clinicalData['documents'] ?? const <Object?>[],
+        'processings': clinicalData['documentProcessings'] ?? const <Object?>[],
+        'extractedFields':
+            clinicalData['extractedDocumentFields'] ?? const <Object?>[],
+        'originalFilesIncluded': false,
+      },
+      'bioimpedance': clinicalData['bioimpedance'] ?? const <Object?>[],
       'reports': [
         {
           'version': snapshot.reportVersion,
@@ -286,6 +299,12 @@ class PrivacyExportService {
       'appointments': snapshot.appointments.length,
       'medicalExams': snapshot.exams.length,
       'medicalPrescriptions': snapshot.prescriptions.length,
+      'documents': _length(clinicalData['documents']),
+      'documentProcessings': _length(clinicalData['documentProcessings']),
+      'extractedDocumentFields': _length(
+        clinicalData['extractedDocumentFields'],
+      ),
+      'bioimpedance': _length(clinicalData['bioimpedance']),
       'reports': 1,
     };
     return PrivacyExportPackage(
@@ -298,4 +317,6 @@ class PrivacyExportService {
   }
 
   String _enumName(Object value) => value.toString().split('.').last;
+
+  int _length(Object? value) => value is List ? value.length : 0;
 }

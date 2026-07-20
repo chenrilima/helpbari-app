@@ -29,6 +29,12 @@ void main() {
       "VALUES ('a','user-a','1','1',0,'d','UTC',0,0,'synced',0),"
       "('b','user-b','1','1',0,'d','UTC',0,0,'synced',0)",
     );
+    await database.customInsert(
+      "INSERT INTO bioimpedance_records "
+      "(id,user_id,measured_at,source,additional_metrics_json,created_at,updated_at,sync_status,sync_attempts) "
+      "VALUES ('bio-a','user-a',0,'manual','{}',0,0,'synced',0),"
+      "('bio-b','user-b',0,'manual','{}',0,0,'synced',0)",
+    );
   });
 
   tearDown(() => database.close());
@@ -41,6 +47,10 @@ void main() {
 
     final rows = await database.select(database.privacyConsentRecords).get();
     expect(rows.map((row) => row.userId), ['user-b']);
+    final bioimpedance = await database
+        .select(database.bioimpedanceRecords)
+        .get();
+    expect(bioimpedance.map((row) => row.userId), ['user-b']);
     expect(
       preferences.containsKey('onboarding.user.v2.user-a.completed'),
       isFalse,

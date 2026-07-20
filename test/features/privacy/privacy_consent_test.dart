@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/database/drift/app_database.dart';
 import 'package:helpbari/core/services/services.dart';
 import 'package:helpbari/features/privacy/data/datasources/drift_privacy_consent_datasource.dart';
+import 'package:helpbari/features/privacy/data/datasources/privacy_supabase_datasource.dart';
+import 'package:helpbari/features/privacy/data/dtos/privacy_consent_dto.dart';
 import 'package:helpbari/features/privacy/data/repositories/drift_privacy_repository.dart';
 import 'package:helpbari/features/privacy/domain/entities/entities.dart';
 
@@ -46,21 +48,43 @@ void main() {
       throwsStateError,
     );
   });
+
+  test('anonymous cannot request definitive removal', () async {
+    await expectLater(
+      _repository(database, 'anonymous').requestDefinitiveRemoval(),
+      throwsStateError,
+    );
+  });
+
+  test('authenticated user can request definitive removal', () async {
+    final remote = _Remote();
+
+    await _repository(
+      database,
+      'user-a',
+      remote: remote,
+    ).requestDefinitiveRemoval();
+
+    expect(remote.requested, isTrue);
+  });
 }
 
-DriftPrivacyRepository _repository(AppDatabase database, String userId) =>
-    DriftPrivacyRepository(
-      local: () async => DriftPrivacyConsentDatasource(
-        dao: database.privacyConsentDao,
-        userId: userId,
-      ),
-      remote: null,
-      clock: const _Clock(),
-      uuid: _Uuid(userId),
-      userId: userId,
-      deviceId: () async => 'device-$userId',
-      timezone: () async => 'America/Sao_Paulo',
-    );
+DriftPrivacyRepository _repository(
+  AppDatabase database,
+  String userId, {
+  PrivacyRemoteDatasource? remote,
+}) => DriftPrivacyRepository(
+  local: () async => DriftPrivacyConsentDatasource(
+    dao: database.privacyConsentDao,
+    userId: userId,
+  ),
+  remote: remote,
+  clock: const _Clock(),
+  uuid: _Uuid(userId),
+  userId: userId,
+  deviceId: () async => 'device-$userId',
+  timezone: () async => 'America/Sao_Paulo',
+);
 
 class _Clock implements ClockService {
   const _Clock();
@@ -73,4 +97,29 @@ class _Uuid implements UuidService {
   final String value;
   @override
   String generate() => 'consent-$value';
+}
+
+class _Remote implements PrivacyRemoteDatasource {
+  bool requested = false;
+
+  @override
+  bool get passwordRequired => false;
+
+  @override
+  Future<void> deleteAccount({String? password}) async {}
+
+  @override
+  Future<void> deleteData({String? password}) async {}
+
+  @override
+  Future<List<PrivacyConsentDto>> pull(
+    String userId,
+    DateTime? updatedAfter,
+  ) async => const [];
+
+  @override
+  Future<void> requestDefinitiveRemoval() async => requested = true;
+
+  @override
+  Future<PrivacyConsentDto> upsert(PrivacyConsentDto value) async => value;
 }

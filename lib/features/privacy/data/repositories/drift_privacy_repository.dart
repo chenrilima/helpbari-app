@@ -83,8 +83,12 @@ class DriftPrivacyRepository implements PrivacyRepository {
   bool get passwordRequired => _remote?.passwordRequired ?? false;
 
   @override
-  Future<void> requestDefinitiveRemoval() =>
-      _requiredRemote().requestDefinitiveRemoval();
+  Future<void> requestDefinitiveRemoval() async {
+    if (_userId == 'anonymous') {
+      throw StateError('Autenticação obrigatória para solicitar exclusão.');
+    }
+    await _requiredRemote().requestDefinitiveRemoval();
+  }
 
   @override
   Future<void> deleteRemoteData({String? password}) =>
