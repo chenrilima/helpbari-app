@@ -7,7 +7,6 @@ import '../../../baria/presentation/providers/baria_view_model_provider.dart';
 import '../../../charts/presentation/providers/chart_series_providers.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
-import '../../application/vitamin_reminder_service.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/vitamin_use_cases.dart';
 import '../../domain/value_objects/value_objects.dart';
@@ -16,9 +15,6 @@ import '../states/vitamin_state.dart';
 
 class VitaminViewModel extends Notifier<VitaminState> {
   UuidService get _uuid => ref.read(uuidServiceProvider);
-  LoggerService get _logger => ref.read(loggerServiceProvider);
-  VitaminReminderService get _reminders =>
-      ref.read(vitaminReminderServiceProvider);
   VitaminUseCases get _useCases => ref.read(vitaminUseCasesProvider);
   @override
   VitaminState build() => const VitaminState();
@@ -56,9 +52,6 @@ class VitaminViewModel extends Notifier<VitaminState> {
     final v = Vitamin(id: id ?? _uuid.generate(), name: n, scheduleTime: time);
     return _persist(() async {
       await _useCases.save(v);
-      if (scheduleReminder) {
-        await _notification(() => _reminders.scheduleIfEnabled(v));
-      }
     });
   }
 
@@ -74,14 +67,12 @@ class VitaminViewModel extends Notifier<VitaminState> {
     final v = old.copyWith(name: n, scheduleTime: time);
     return _persist(() async {
       await _useCases.update(v);
-      await _notification(() => _reminders.rescheduleIfEnabled(v));
     });
   }
 
   Future<bool> deleteVitamin(String id) => _persist(() async {
     await _useCases.delete(id);
     await ref.read(vitaminLogRepositoryProvider).deleteForVitamin(id);
-    await _notification(() => _reminders.cancel(id));
   });
   Future<void> markAsTaken(String id) => _status(id, VitaminStatus.taken);
   Future<void> markAsSkipped(String id) => _status(id, VitaminStatus.skipped);
@@ -107,16 +98,6 @@ class VitaminViewModel extends Notifier<VitaminState> {
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return false;
-    }
-  }
-
-  Future<void> _notification(Future<void> Function() op) async {
-    try {
-      await op();
-    } catch (e) {
-      _logger.warning(
-        'Vitamin notification reconciliation failed (${e.runtimeType}).',
-      );
     }
   }
 

@@ -33,7 +33,8 @@ Princípios obrigatórios:
 
 ### 2.1 Medication e Vitamin
 
-`Medication` e `Vitamin` possuem nome e exatamente um `scheduleTime`.
+Antes do Unified Treatment Engine, `Medication` e `Vitamin` possuíam nome e
+exatamente um `scheduleTime`.
 `Medication` também possui dose textual e observações. Seus logs usam a chave
 funcional `userId + entityId + logDate` e os estados `pending`, `taken` e
 `skipped`. Atualizar ou restaurar o estado sobrescreve o log diário, sem trilha
@@ -98,7 +99,9 @@ ocorrências elegíveis.
 O Sync Engine atual faz retry, tombstones e resolução LWW por `updatedAt`.
 Medical Prescription sincroniza pai e itens como agregado. Exportação LGPD e
 limpeza cobrem Medication, Vitamin, logs, prescrições e Document Intelligence.
-Smart Routines deverá entrar nesses mesmos contratos antes de qualquer cutover.
+Smart Routines entrou nesses contratos por meio do cutover local versionado e
+da migration remota incremental, cuja aplicação continua sendo uma etapa
+operacional externa.
 
 ## 3. Glossário normativo
 

@@ -13,6 +13,10 @@ part 'smart_routine_dao.g.dart';
     RoutinePauseRecords,
     RoutineOccurrenceRecords,
     RoutineAdherenceEventRecords,
+    UnifiedTreatmentLegacyMappings,
+    UnifiedTreatmentLegacyLogMappings,
+    UnifiedTreatmentRolloutFlags,
+    UnifiedTreatmentCutoverStates,
   ],
 )
 class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
@@ -24,12 +28,53 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
 
   Future<void> upsertRoutine(SmartRoutineRecordsCompanion row) =>
       into(smartRoutineRecords).insertOnConflictUpdate(row);
-  Future<void> upsertPlan(RoutinePlanRecordsCompanion row) =>
-      into(routinePlanRecords).insertOnConflictUpdate(row);
-  Future<void> upsertSchedule(RoutineScheduleRecordsCompanion row) =>
-      into(routineScheduleRecords).insertOnConflictUpdate(row);
-  Future<void> upsertPause(RoutinePauseRecordsCompanion row) =>
-      into(routinePauseRecords).insertOnConflictUpdate(row);
+  Future<void> upsertPlan(RoutinePlanRecordsCompanion row) async {
+    final routine = await getRoutine(row.userId.value, row.routineId.value);
+    if (routine == null) throw StateError('routine_plan_parent_missing');
+    final current = await getPlan(row.userId.value, row.id.value);
+    if (current != null) {
+      if (!_samePlanClinicalPayload(current, row)) {
+        throw StateError('routine_plan_payload_conflict');
+      }
+      if (current.replacedAt == null && row.replacedAt.value != null) {
+        await (update(routinePlanRecords)..where(
+              (value) =>
+                  value.userId.equals(row.userId.value) &
+                  value.id.equals(row.id.value),
+            ))
+            .write(
+              RoutinePlanRecordsCompanion(
+                replacedAt: row.replacedAt,
+                updatedAt: row.updatedAt,
+                syncStatus: row.syncStatus,
+              ),
+            );
+      }
+      return;
+    }
+    await into(routinePlanRecords).insert(row);
+  }
+
+  Future<void> upsertSchedule(RoutineScheduleRecordsCompanion row) async {
+    final routine = await getRoutine(row.userId.value, row.routineId.value);
+    final plan = await getPlan(row.userId.value, row.planId.value);
+    if (routine == null || plan == null || plan.routineId != routine.id) {
+      throw StateError('routine_schedule_parent_mismatch');
+    }
+    await into(routineScheduleRecords).insertOnConflictUpdate(row);
+  }
+
+  Future<void> upsertPause(RoutinePauseRecordsCompanion row) async {
+    final routine = await getRoutine(row.userId.value, row.routineId.value);
+    if (routine == null) throw StateError('routine_pause_parent_missing');
+    if (row.planId.value != null) {
+      final plan = await getPlan(row.userId.value, row.planId.value!);
+      if (plan == null || plan.routineId != routine.id) {
+        throw StateError('routine_pause_parent_mismatch');
+      }
+    }
+    await into(routinePauseRecords).insertOnConflictUpdate(row);
+  }
 
   Future<SmartRoutineRecord?> getRoutine(String userId, String id) =>
       (select(smartRoutineRecords)
@@ -99,6 +144,20 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
   Future<bool> insertOccurrenceIdempotent(
     RoutineOccurrenceRecordsCompanion row,
   ) async {
+    final routine = await getRoutine(row.userId.value, row.routineId.value);
+    final plan = await getPlan(row.userId.value, row.planId.value);
+    final schedule = row.scheduleId.value == null
+        ? null
+        : await getSchedule(row.userId.value, row.scheduleId.value!);
+    if (routine == null ||
+        plan == null ||
+        plan.routineId != routine.id ||
+        (row.scheduleId.value != null &&
+            (schedule == null ||
+                schedule.routineId != routine.id ||
+                schedule.planId != plan.id))) {
+      throw StateError('routine_occurrence_parent_mismatch');
+    }
     final inserted = await into(
       routineOccurrenceRecords,
     ).insert(row, mode: InsertMode.insertOrIgnore);
@@ -247,6 +306,36 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
           lastSyncError: Value(error),
         ),
       );
+
+  bool _samePlanClinicalPayload(
+    RoutinePlanRecord current,
+    RoutinePlanRecordsCompanion row,
+  ) =>
+      current.routineId == row.routineId.value &&
+      current.revision == row.revision.value &&
+      current.category == row.category.value &&
+      current.mode == row.mode.value &&
+      current.durationType == row.durationType.value &&
+      current.effectiveFrom == row.effectiveFrom.value &&
+      current.effectiveUntil == row.effectiveUntil.value &&
+      current.doseValue == row.doseValue.value &&
+      current.doseUnit == row.doseUnit.value &&
+      current.doseOriginalText == row.doseOriginalText.value &&
+      current.route == row.route.value &&
+      current.clinicalInstructions == row.clinicalInstructions.value &&
+      current.activatedAt == row.activatedAt.value &&
+      (current.replacedAt == row.replacedAt.value ||
+          (current.replacedAt == null && row.replacedAt.value != null)) &&
+      current.previousPlanId == row.previousPlanId.value &&
+      current.provenanceOrigin == row.provenanceOrigin.value &&
+      current.validationStatus == row.validationStatus.value &&
+      current.provenancePrescriptionId == row.provenancePrescriptionId.value &&
+      current.provenancePrescriptionItemId ==
+          row.provenancePrescriptionItemId.value &&
+      current.provenanceDocumentId == row.provenanceDocumentId.value &&
+      current.provenanceProfessionalReference ==
+          row.provenanceProfessionalReference.value &&
+      current.temporalPrecision == row.temporalPrecision.value;
 
   Future<void> updateSyncStatus({
     required String table,

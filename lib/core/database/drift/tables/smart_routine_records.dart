@@ -42,6 +42,7 @@ class SmartRoutineRecords extends Table with SmartRoutineSyncColumns {
 class RoutinePlanRecords extends Table with SmartRoutineSyncColumns {
   TextColumn get routineId => text()();
   IntColumn get revision => integer()();
+  TextColumn get category => text().withDefault(const Constant('other'))();
   TextColumn get mode => text()();
   TextColumn get durationType => text()();
   TextColumn get effectiveFrom => text()();
@@ -54,6 +55,16 @@ class RoutinePlanRecords extends Table with SmartRoutineSyncColumns {
   DateTimeColumn get activatedAt => dateTime().nullable()();
   DateTimeColumn get replacedAt => dateTime().nullable()();
   TextColumn get previousPlanId => text().nullable()();
+  TextColumn get provenanceOrigin =>
+      text().withDefault(const Constant('manual'))();
+  TextColumn get validationStatus =>
+      text().withDefault(const Constant('confirmed'))();
+  TextColumn get provenancePrescriptionId => text().nullable()();
+  TextColumn get provenancePrescriptionItemId => text().nullable()();
+  TextColumn get provenanceDocumentId => text().nullable()();
+  TextColumn get provenanceProfessionalReference => text().nullable()();
+  TextColumn get temporalPrecision =>
+      text().withDefault(const Constant('exact'))();
 }
 
 @TableIndex(
@@ -169,4 +180,91 @@ class RoutineAdherenceEventRecords extends Table with SmartRoutineSyncColumns {
   TextColumn get actualDoseValue => text().nullable()();
   TextColumn get actualDoseUnit => text().nullable()();
   TextColumn get actualDoseOriginalText => text().nullable()();
+}
+
+@TableIndex(
+  name: 'unified_treatment_legacy_entity_unique_idx',
+  columns: {#userId, #sourceType, #legacyEntityId},
+  unique: true,
+)
+@TableIndex(
+  name: 'unified_treatment_target_routine_unique_idx',
+  columns: {#userId, #targetRoutineId},
+  unique: true,
+)
+class UnifiedTreatmentLegacyMappings extends Table {
+  TextColumn get id => text()();
+  TextColumn get userId => text()();
+  TextColumn get sourceType => text()();
+  TextColumn get legacyEntityId => text()();
+  TextColumn get targetRoutineId => text()();
+  TextColumn get targetPlanId => text()();
+  TextColumn get targetScheduleId => text()();
+  IntColumn get migrationSchemaVersion => integer()();
+  TextColumn get status => text()();
+  DateTimeColumn get startedAtUtc => dateTime()();
+  DateTimeColumn get completedAtUtc => dateTime().nullable()();
+  TextColumn get failureCode => text().nullable()();
+  TextColumn get validationSummary => text()();
+  TextColumn get timeZone => text().nullable()();
+  TextColumn get temporalPrecision => text()();
+  BoolColumn get hasNewClinicalWrites =>
+      boolean().withDefault(const Constant(false))();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {userId, id};
+}
+
+@TableIndex(
+  name: 'unified_treatment_legacy_log_unique_idx',
+  columns: {#userId, #sourceType, #legacyLogId},
+  unique: true,
+)
+class UnifiedTreatmentLegacyLogMappings extends Table {
+  TextColumn get id => text()();
+  TextColumn get userId => text()();
+  TextColumn get sourceType => text()();
+  TextColumn get legacyLogId => text()();
+  TextColumn get legacyEntityId => text()();
+  TextColumn get occurrenceId => text()();
+  TextColumn get adherenceEventId => text().nullable()();
+  TextColumn get temporalPrecision => text()();
+  DateTimeColumn get createdAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {userId, id};
+}
+
+@TableIndex(
+  name: 'unified_treatment_rollout_key_idx',
+  columns: {#key},
+  unique: true,
+)
+class UnifiedTreatmentRolloutFlags extends Table {
+  TextColumn get key => text()();
+  BoolColumn get enabled => boolean()();
+  TextColumn get source => text()();
+  DateTimeColumn get updatedAt => dateTime()();
+  DateTimeColumn get expiresAt => dateTime().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {key};
+}
+
+class UnifiedTreatmentCutoverStates extends Table {
+  TextColumn get userId => text()();
+  TextColumn get state => text()();
+  IntColumn get migrationSchemaVersion => integer()();
+  DateTimeColumn get validatedAtUtc => dateTime().nullable()();
+  DateTimeColumn get readNewAtUtc => dateTime().nullable()();
+  DateTimeColumn get writeNewAtUtc => dateTime().nullable()();
+  TextColumn get recoveryCode => text().nullable()();
+  BoolColumn get remoteSchemaAvailable =>
+      boolean().withDefault(const Constant(false))();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {userId};
 }

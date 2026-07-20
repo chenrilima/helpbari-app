@@ -3,10 +3,17 @@ import '../repositories/repositories.dart';
 import '../value_objects/value_objects.dart';
 
 class VitaminUseCases {
-  const VitaminUseCases(this._repository, [this._logs]);
+  const VitaminUseCases(
+    this._repository, [
+    this._logs,
+    this._pendingCount,
+    this._adherence,
+  ]);
 
   final VitaminRepository _repository;
   final VitaminLogRepository? _logs;
+  final Future<int> Function(DateTime date)? _pendingCount;
+  final Future<double> Function(DateTime start, DateTime end)? _adherence;
 
   Future<List<Vitamin>> getAll() {
     return _repository.getAll();
@@ -28,6 +35,9 @@ class VitaminUseCases {
       _logs?.getByPeriod(start, end) ?? Future.value(const []);
 
   Future<int> getPendingCount({DateTime? date}) async {
+    if (_pendingCount != null) {
+      return _pendingCount(_day(date ?? DateTime.now()));
+    }
     final vitamins = await _repository.getAll();
     final day = _day(date ?? DateTime.now());
     final logs = await getLogs(day, day);
@@ -63,6 +73,7 @@ class VitaminUseCases {
         );
 
   Future<double> adherence(DateTime start, DateTime end) async {
+    if (_adherence != null) return _adherence(_day(start), _day(end));
     final logs = await getLogs(_day(start), _day(end));
     final resolved = logs
         .where((log) => log.status != VitaminStatus.pending)

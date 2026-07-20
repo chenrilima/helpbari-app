@@ -34,6 +34,7 @@ final class RoutinePlan extends Entity {
     required int revision,
     required RoutinePlanMode mode,
     required PlanDurationType durationType,
+    RoutineCategory category = RoutineCategory.other,
     required LocalDate effectiveFrom,
     required DateTime createdAt,
     DoseValue? dose,
@@ -43,6 +44,7 @@ final class RoutinePlan extends Entity {
     DateTime? activatedAt,
     DateTime? replacedAt,
     RoutinePlanId? previousPlanId,
+    RoutinePlanProvenance provenance = const RoutinePlanProvenance.manual(),
   }) {
     if (revision < 1) {
       throw const SmartRoutineValidationException(
@@ -56,13 +58,13 @@ final class RoutinePlan extends Entity {
         'Plan end cannot precede its start.',
       );
     }
-    if (durationType == PlanDurationType.fixed && effectiveUntil == null) {
+    if (durationType == PlanDurationType.bounded && effectiveUntil == null) {
       throw const SmartRoutineValidationException(
         'fixed_plan_end_required',
         'Fixed duration requires effectiveUntil.',
       );
     }
-    if (durationType != PlanDurationType.fixed && effectiveUntil != null) {
+    if (durationType != PlanDurationType.bounded && effectiveUntil != null) {
       throw const SmartRoutineValidationException(
         'unexpected_plan_end',
         'Continuous and unknown duration plans cannot imply a fixed end.',
@@ -92,6 +94,7 @@ final class RoutinePlan extends Entity {
       revision: revision,
       mode: mode,
       durationType: durationType,
+      category: category,
       effectiveFrom: effectiveFrom,
       effectiveUntil: effectiveUntil,
       dose: dose,
@@ -101,6 +104,7 @@ final class RoutinePlan extends Entity {
       activatedAt: activatedAt,
       replacedAt: replacedAt,
       previousPlanId: previousPlanId,
+      provenance: provenance,
     );
   }
 
@@ -110,6 +114,7 @@ final class RoutinePlan extends Entity {
     required this.revision,
     required this.mode,
     required this.durationType,
+    required this.category,
     required this.effectiveFrom,
     required this.createdAt,
     this.effectiveUntil,
@@ -119,6 +124,7 @@ final class RoutinePlan extends Entity {
     this.activatedAt,
     this.replacedAt,
     this.previousPlanId,
+    this.provenance = const RoutinePlanProvenance.manual(),
   });
 
   final RoutinePlanId planId;
@@ -128,6 +134,7 @@ final class RoutinePlan extends Entity {
   final int revision;
   final RoutinePlanMode mode;
   final PlanDurationType durationType;
+  final RoutineCategory category;
   final LocalDate effectiveFrom;
   final LocalDate? effectiveUntil;
   final DoseValue? dose;
@@ -137,6 +144,7 @@ final class RoutinePlan extends Entity {
   final DateTime? activatedAt;
   final DateTime? replacedAt;
   final RoutinePlanId? previousPlanId;
+  final RoutinePlanProvenance provenance;
 
   bool acceptsRule(ScheduleRule rule) => switch (mode) {
     RoutinePlanMode.asNeeded => rule is AsNeededRule,
@@ -158,6 +166,7 @@ final class RoutinePlan extends Entity {
     required LocalDate effectiveFrom,
     RoutinePlanMode? mode,
     PlanDurationType? durationType,
+    RoutineCategory? category,
     LocalDate? effectiveUntil,
     DoseValue? dose,
     String? route,
@@ -181,6 +190,7 @@ final class RoutinePlan extends Entity {
       revision: revision,
       mode: this.mode,
       durationType: this.durationType,
+      category: this.category,
       effectiveFrom: this.effectiveFrom,
       effectiveUntil: this.effectiveUntil,
       dose: this.dose,
@@ -190,6 +200,7 @@ final class RoutinePlan extends Entity {
       activatedAt: activatedAt,
       replacedAt: at,
       previousPlanId: previousPlanId,
+      provenance: provenance,
     );
     final nextDuration = durationType ?? this.durationType;
     final next = RoutinePlan(
@@ -198,6 +209,7 @@ final class RoutinePlan extends Entity {
       revision: revision + 1,
       mode: mode ?? this.mode,
       durationType: nextDuration,
+      category: category ?? this.category,
       effectiveFrom: effectiveFrom,
       effectiveUntil: effectiveUntil,
       dose: dose ?? this.dose,
@@ -205,6 +217,7 @@ final class RoutinePlan extends Entity {
       clinicalInstructions: clinicalInstructions ?? this.clinicalInstructions,
       createdAt: at,
       previousPlanId: planId,
+      provenance: provenance,
     );
     return PlanRevisionResult(previousPlan: replaced, newPlan: next);
   }
@@ -218,6 +231,7 @@ final class RoutinePlan extends Entity {
           revision == other.revision &&
           mode == other.mode &&
           durationType == other.durationType &&
+          category == other.category &&
           effectiveFrom == other.effectiveFrom &&
           effectiveUntil == other.effectiveUntil &&
           dose == other.dose &&
@@ -235,6 +249,7 @@ final class RoutinePlan extends Entity {
     revision,
     mode,
     durationType,
+    category,
     effectiveFrom,
     effectiveUntil,
     dose,
@@ -244,6 +259,58 @@ final class RoutinePlan extends Entity {
     activatedAt,
     replacedAt,
     previousPlanId,
+    provenance,
+  );
+}
+
+final class RoutinePlanProvenance {
+  const RoutinePlanProvenance({
+    required this.origin,
+    required this.validationStatus,
+    this.prescriptionId,
+    this.prescriptionItemId,
+    this.documentId,
+    this.professionalReference,
+    this.temporalPrecision = RoutineTemporalPrecision.exact,
+  });
+
+  const RoutinePlanProvenance.manual()
+    : origin = RoutinePlanOrigin.manual,
+      validationStatus = RoutineValidationStatus.confirmed,
+      prescriptionId = null,
+      prescriptionItemId = null,
+      documentId = null,
+      professionalReference = null,
+      temporalPrecision = RoutineTemporalPrecision.exact;
+
+  final RoutinePlanOrigin origin;
+  final RoutineValidationStatus validationStatus;
+  final String? prescriptionId;
+  final String? prescriptionItemId;
+  final String? documentId;
+  final String? professionalReference;
+  final RoutineTemporalPrecision temporalPrecision;
+
+  @override
+  bool operator ==(Object other) =>
+      other is RoutinePlanProvenance &&
+      origin == other.origin &&
+      validationStatus == other.validationStatus &&
+      prescriptionId == other.prescriptionId &&
+      prescriptionItemId == other.prescriptionItemId &&
+      documentId == other.documentId &&
+      professionalReference == other.professionalReference &&
+      temporalPrecision == other.temporalPrecision;
+
+  @override
+  int get hashCode => Object.hash(
+    origin,
+    validationStatus,
+    prescriptionId,
+    prescriptionItemId,
+    documentId,
+    professionalReference,
+    temporalPrecision,
   );
 }
 

@@ -191,3 +191,15 @@ Notifications V2 deverá projetar localmente uma janela móvel de ocorrências a
 partir desses schedules. Ocorrências, IDs do plugin, permissões e estado do
 sistema operacional continuarão locais. A transição deve substituir os
 projetores por feature gradualmente, sem reativar `notification_reminders`.
+
+## Unified Treatment Engine
+
+Medication e Vitamin são fachadas de apresentação sobre Smart Routines. Novas
+escritas criam ou revisam `SmartRoutine + RoutinePlan + RoutineSchedule`; ações
+diárias materializam a occurrence necessária e acrescentam um adherence event.
+As tabelas legadas são preservadas somente para migração auditável e rollback
+lógico anterior a novas escritas.
+
+O rollout usa flags persistidas e cutover por usuário. Sync remoto de Smart
+Routines permanece independente do cutover local e começa desabilitado até a
+migration remota ser confirmada. Consulte `docs/UNIFIED_TREATMENT_ENGINE.md`.

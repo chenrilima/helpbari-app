@@ -28129,6 +28129,18 @@ class $RoutinePlanRecordsTable extends RoutinePlanRecords
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('other'),
+  );
   static const VerificationMeta _modeMeta = const VerificationMeta('mode');
   @override
   late final GeneratedColumn<String> mode = GeneratedColumn<String>(
@@ -28257,6 +28269,87 @@ class $RoutinePlanRecordsTable extends RoutinePlanRecords
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _provenanceOriginMeta = const VerificationMeta(
+    'provenanceOrigin',
+  );
+  @override
+  late final GeneratedColumn<String> provenanceOrigin = GeneratedColumn<String>(
+    'provenance_origin',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('manual'),
+  );
+  static const VerificationMeta _validationStatusMeta = const VerificationMeta(
+    'validationStatus',
+  );
+  @override
+  late final GeneratedColumn<String> validationStatus = GeneratedColumn<String>(
+    'validation_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('confirmed'),
+  );
+  static const VerificationMeta _provenancePrescriptionIdMeta =
+      const VerificationMeta('provenancePrescriptionId');
+  @override
+  late final GeneratedColumn<String> provenancePrescriptionId =
+      GeneratedColumn<String>(
+        'provenance_prescription_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _provenancePrescriptionItemIdMeta =
+      const VerificationMeta('provenancePrescriptionItemId');
+  @override
+  late final GeneratedColumn<String> provenancePrescriptionItemId =
+      GeneratedColumn<String>(
+        'provenance_prescription_item_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _provenanceDocumentIdMeta =
+      const VerificationMeta('provenanceDocumentId');
+  @override
+  late final GeneratedColumn<String> provenanceDocumentId =
+      GeneratedColumn<String>(
+        'provenance_document_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _provenanceProfessionalReferenceMeta =
+      const VerificationMeta('provenanceProfessionalReference');
+  @override
+  late final GeneratedColumn<String> provenanceProfessionalReference =
+      GeneratedColumn<String>(
+        'provenance_professional_reference',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _temporalPrecisionMeta = const VerificationMeta(
+    'temporalPrecision',
+  );
+  @override
+  late final GeneratedColumn<String> temporalPrecision =
+      GeneratedColumn<String>(
+        'temporal_precision',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('exact'),
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -28270,6 +28363,7 @@ class $RoutinePlanRecordsTable extends RoutinePlanRecords
     lastSyncError,
     routineId,
     revision,
+    category,
     mode,
     durationType,
     effectiveFrom,
@@ -28282,6 +28376,13 @@ class $RoutinePlanRecordsTable extends RoutinePlanRecords
     activatedAt,
     replacedAt,
     previousPlanId,
+    provenanceOrigin,
+    validationStatus,
+    provenancePrescriptionId,
+    provenancePrescriptionItemId,
+    provenanceDocumentId,
+    provenanceProfessionalReference,
+    temporalPrecision,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -28380,6 +28481,12 @@ class $RoutinePlanRecordsTable extends RoutinePlanRecords
       );
     } else if (isInserting) {
       context.missing(_revisionMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
     }
     if (data.containsKey('mode')) {
       context.handle(
@@ -28480,6 +28587,69 @@ class $RoutinePlanRecordsTable extends RoutinePlanRecords
         ),
       );
     }
+    if (data.containsKey('provenance_origin')) {
+      context.handle(
+        _provenanceOriginMeta,
+        provenanceOrigin.isAcceptableOrUnknown(
+          data['provenance_origin']!,
+          _provenanceOriginMeta,
+        ),
+      );
+    }
+    if (data.containsKey('validation_status')) {
+      context.handle(
+        _validationStatusMeta,
+        validationStatus.isAcceptableOrUnknown(
+          data['validation_status']!,
+          _validationStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('provenance_prescription_id')) {
+      context.handle(
+        _provenancePrescriptionIdMeta,
+        provenancePrescriptionId.isAcceptableOrUnknown(
+          data['provenance_prescription_id']!,
+          _provenancePrescriptionIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('provenance_prescription_item_id')) {
+      context.handle(
+        _provenancePrescriptionItemIdMeta,
+        provenancePrescriptionItemId.isAcceptableOrUnknown(
+          data['provenance_prescription_item_id']!,
+          _provenancePrescriptionItemIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('provenance_document_id')) {
+      context.handle(
+        _provenanceDocumentIdMeta,
+        provenanceDocumentId.isAcceptableOrUnknown(
+          data['provenance_document_id']!,
+          _provenanceDocumentIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('provenance_professional_reference')) {
+      context.handle(
+        _provenanceProfessionalReferenceMeta,
+        provenanceProfessionalReference.isAcceptableOrUnknown(
+          data['provenance_professional_reference']!,
+          _provenanceProfessionalReferenceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('temporal_precision')) {
+      context.handle(
+        _temporalPrecisionMeta,
+        temporalPrecision.isAcceptableOrUnknown(
+          data['temporal_precision']!,
+          _temporalPrecisionMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -28533,6 +28703,10 @@ class $RoutinePlanRecordsTable extends RoutinePlanRecords
         DriftSqlType.int,
         data['${effectivePrefix}revision'],
       )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      )!,
       mode: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}mode'],
@@ -28581,6 +28755,34 @@ class $RoutinePlanRecordsTable extends RoutinePlanRecords
         DriftSqlType.string,
         data['${effectivePrefix}previous_plan_id'],
       ),
+      provenanceOrigin: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}provenance_origin'],
+      )!,
+      validationStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}validation_status'],
+      )!,
+      provenancePrescriptionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}provenance_prescription_id'],
+      ),
+      provenancePrescriptionItemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}provenance_prescription_item_id'],
+      ),
+      provenanceDocumentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}provenance_document_id'],
+      ),
+      provenanceProfessionalReference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}provenance_professional_reference'],
+      ),
+      temporalPrecision: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}temporal_precision'],
+      )!,
     );
   }
 
@@ -28603,6 +28805,7 @@ class RoutinePlanRecord extends DataClass
   final String? lastSyncError;
   final String routineId;
   final int revision;
+  final String category;
   final String mode;
   final String durationType;
   final String effectiveFrom;
@@ -28615,6 +28818,13 @@ class RoutinePlanRecord extends DataClass
   final DateTime? activatedAt;
   final DateTime? replacedAt;
   final String? previousPlanId;
+  final String provenanceOrigin;
+  final String validationStatus;
+  final String? provenancePrescriptionId;
+  final String? provenancePrescriptionItemId;
+  final String? provenanceDocumentId;
+  final String? provenanceProfessionalReference;
+  final String temporalPrecision;
   const RoutinePlanRecord({
     required this.id,
     required this.userId,
@@ -28627,6 +28837,7 @@ class RoutinePlanRecord extends DataClass
     this.lastSyncError,
     required this.routineId,
     required this.revision,
+    required this.category,
     required this.mode,
     required this.durationType,
     required this.effectiveFrom,
@@ -28639,6 +28850,13 @@ class RoutinePlanRecord extends DataClass
     this.activatedAt,
     this.replacedAt,
     this.previousPlanId,
+    required this.provenanceOrigin,
+    required this.validationStatus,
+    this.provenancePrescriptionId,
+    this.provenancePrescriptionItemId,
+    this.provenanceDocumentId,
+    this.provenanceProfessionalReference,
+    required this.temporalPrecision,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -28660,6 +28878,7 @@ class RoutinePlanRecord extends DataClass
     }
     map['routine_id'] = Variable<String>(routineId);
     map['revision'] = Variable<int>(revision);
+    map['category'] = Variable<String>(category);
     map['mode'] = Variable<String>(mode);
     map['duration_type'] = Variable<String>(durationType);
     map['effective_from'] = Variable<String>(effectiveFrom);
@@ -28690,6 +28909,27 @@ class RoutinePlanRecord extends DataClass
     if (!nullToAbsent || previousPlanId != null) {
       map['previous_plan_id'] = Variable<String>(previousPlanId);
     }
+    map['provenance_origin'] = Variable<String>(provenanceOrigin);
+    map['validation_status'] = Variable<String>(validationStatus);
+    if (!nullToAbsent || provenancePrescriptionId != null) {
+      map['provenance_prescription_id'] = Variable<String>(
+        provenancePrescriptionId,
+      );
+    }
+    if (!nullToAbsent || provenancePrescriptionItemId != null) {
+      map['provenance_prescription_item_id'] = Variable<String>(
+        provenancePrescriptionItemId,
+      );
+    }
+    if (!nullToAbsent || provenanceDocumentId != null) {
+      map['provenance_document_id'] = Variable<String>(provenanceDocumentId);
+    }
+    if (!nullToAbsent || provenanceProfessionalReference != null) {
+      map['provenance_professional_reference'] = Variable<String>(
+        provenanceProfessionalReference,
+      );
+    }
+    map['temporal_precision'] = Variable<String>(temporalPrecision);
     return map;
   }
 
@@ -28712,6 +28952,7 @@ class RoutinePlanRecord extends DataClass
           : Value(lastSyncError),
       routineId: Value(routineId),
       revision: Value(revision),
+      category: Value(category),
       mode: Value(mode),
       durationType: Value(durationType),
       effectiveFrom: Value(effectiveFrom),
@@ -28742,6 +28983,23 @@ class RoutinePlanRecord extends DataClass
       previousPlanId: previousPlanId == null && nullToAbsent
           ? const Value.absent()
           : Value(previousPlanId),
+      provenanceOrigin: Value(provenanceOrigin),
+      validationStatus: Value(validationStatus),
+      provenancePrescriptionId: provenancePrescriptionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(provenancePrescriptionId),
+      provenancePrescriptionItemId:
+          provenancePrescriptionItemId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(provenancePrescriptionItemId),
+      provenanceDocumentId: provenanceDocumentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(provenanceDocumentId),
+      provenanceProfessionalReference:
+          provenanceProfessionalReference == null && nullToAbsent
+          ? const Value.absent()
+          : Value(provenanceProfessionalReference),
+      temporalPrecision: Value(temporalPrecision),
     );
   }
 
@@ -28764,6 +29022,7 @@ class RoutinePlanRecord extends DataClass
       lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
       routineId: serializer.fromJson<String>(json['routineId']),
       revision: serializer.fromJson<int>(json['revision']),
+      category: serializer.fromJson<String>(json['category']),
       mode: serializer.fromJson<String>(json['mode']),
       durationType: serializer.fromJson<String>(json['durationType']),
       effectiveFrom: serializer.fromJson<String>(json['effectiveFrom']),
@@ -28778,6 +29037,21 @@ class RoutinePlanRecord extends DataClass
       activatedAt: serializer.fromJson<DateTime?>(json['activatedAt']),
       replacedAt: serializer.fromJson<DateTime?>(json['replacedAt']),
       previousPlanId: serializer.fromJson<String?>(json['previousPlanId']),
+      provenanceOrigin: serializer.fromJson<String>(json['provenanceOrigin']),
+      validationStatus: serializer.fromJson<String>(json['validationStatus']),
+      provenancePrescriptionId: serializer.fromJson<String?>(
+        json['provenancePrescriptionId'],
+      ),
+      provenancePrescriptionItemId: serializer.fromJson<String?>(
+        json['provenancePrescriptionItemId'],
+      ),
+      provenanceDocumentId: serializer.fromJson<String?>(
+        json['provenanceDocumentId'],
+      ),
+      provenanceProfessionalReference: serializer.fromJson<String?>(
+        json['provenanceProfessionalReference'],
+      ),
+      temporalPrecision: serializer.fromJson<String>(json['temporalPrecision']),
     );
   }
   @override
@@ -28795,6 +29069,7 @@ class RoutinePlanRecord extends DataClass
       'lastSyncError': serializer.toJson<String?>(lastSyncError),
       'routineId': serializer.toJson<String>(routineId),
       'revision': serializer.toJson<int>(revision),
+      'category': serializer.toJson<String>(category),
       'mode': serializer.toJson<String>(mode),
       'durationType': serializer.toJson<String>(durationType),
       'effectiveFrom': serializer.toJson<String>(effectiveFrom),
@@ -28807,6 +29082,19 @@ class RoutinePlanRecord extends DataClass
       'activatedAt': serializer.toJson<DateTime?>(activatedAt),
       'replacedAt': serializer.toJson<DateTime?>(replacedAt),
       'previousPlanId': serializer.toJson<String?>(previousPlanId),
+      'provenanceOrigin': serializer.toJson<String>(provenanceOrigin),
+      'validationStatus': serializer.toJson<String>(validationStatus),
+      'provenancePrescriptionId': serializer.toJson<String?>(
+        provenancePrescriptionId,
+      ),
+      'provenancePrescriptionItemId': serializer.toJson<String?>(
+        provenancePrescriptionItemId,
+      ),
+      'provenanceDocumentId': serializer.toJson<String?>(provenanceDocumentId),
+      'provenanceProfessionalReference': serializer.toJson<String?>(
+        provenanceProfessionalReference,
+      ),
+      'temporalPrecision': serializer.toJson<String>(temporalPrecision),
     };
   }
 
@@ -28822,6 +29110,7 @@ class RoutinePlanRecord extends DataClass
     Value<String?> lastSyncError = const Value.absent(),
     String? routineId,
     int? revision,
+    String? category,
     String? mode,
     String? durationType,
     String? effectiveFrom,
@@ -28834,6 +29123,13 @@ class RoutinePlanRecord extends DataClass
     Value<DateTime?> activatedAt = const Value.absent(),
     Value<DateTime?> replacedAt = const Value.absent(),
     Value<String?> previousPlanId = const Value.absent(),
+    String? provenanceOrigin,
+    String? validationStatus,
+    Value<String?> provenancePrescriptionId = const Value.absent(),
+    Value<String?> provenancePrescriptionItemId = const Value.absent(),
+    Value<String?> provenanceDocumentId = const Value.absent(),
+    Value<String?> provenanceProfessionalReference = const Value.absent(),
+    String? temporalPrecision,
   }) => RoutinePlanRecord(
     id: id ?? this.id,
     userId: userId ?? this.userId,
@@ -28850,6 +29146,7 @@ class RoutinePlanRecord extends DataClass
         : this.lastSyncError,
     routineId: routineId ?? this.routineId,
     revision: revision ?? this.revision,
+    category: category ?? this.category,
     mode: mode ?? this.mode,
     durationType: durationType ?? this.durationType,
     effectiveFrom: effectiveFrom ?? this.effectiveFrom,
@@ -28870,6 +29167,21 @@ class RoutinePlanRecord extends DataClass
     previousPlanId: previousPlanId.present
         ? previousPlanId.value
         : this.previousPlanId,
+    provenanceOrigin: provenanceOrigin ?? this.provenanceOrigin,
+    validationStatus: validationStatus ?? this.validationStatus,
+    provenancePrescriptionId: provenancePrescriptionId.present
+        ? provenancePrescriptionId.value
+        : this.provenancePrescriptionId,
+    provenancePrescriptionItemId: provenancePrescriptionItemId.present
+        ? provenancePrescriptionItemId.value
+        : this.provenancePrescriptionItemId,
+    provenanceDocumentId: provenanceDocumentId.present
+        ? provenanceDocumentId.value
+        : this.provenanceDocumentId,
+    provenanceProfessionalReference: provenanceProfessionalReference.present
+        ? provenanceProfessionalReference.value
+        : this.provenanceProfessionalReference,
+    temporalPrecision: temporalPrecision ?? this.temporalPrecision,
   );
   RoutinePlanRecord copyWithCompanion(RoutinePlanRecordsCompanion data) {
     return RoutinePlanRecord(
@@ -28892,6 +29204,7 @@ class RoutinePlanRecord extends DataClass
           : this.lastSyncError,
       routineId: data.routineId.present ? data.routineId.value : this.routineId,
       revision: data.revision.present ? data.revision.value : this.revision,
+      category: data.category.present ? data.category.value : this.category,
       mode: data.mode.present ? data.mode.value : this.mode,
       durationType: data.durationType.present
           ? data.durationType.value
@@ -28920,6 +29233,28 @@ class RoutinePlanRecord extends DataClass
       previousPlanId: data.previousPlanId.present
           ? data.previousPlanId.value
           : this.previousPlanId,
+      provenanceOrigin: data.provenanceOrigin.present
+          ? data.provenanceOrigin.value
+          : this.provenanceOrigin,
+      validationStatus: data.validationStatus.present
+          ? data.validationStatus.value
+          : this.validationStatus,
+      provenancePrescriptionId: data.provenancePrescriptionId.present
+          ? data.provenancePrescriptionId.value
+          : this.provenancePrescriptionId,
+      provenancePrescriptionItemId: data.provenancePrescriptionItemId.present
+          ? data.provenancePrescriptionItemId.value
+          : this.provenancePrescriptionItemId,
+      provenanceDocumentId: data.provenanceDocumentId.present
+          ? data.provenanceDocumentId.value
+          : this.provenanceDocumentId,
+      provenanceProfessionalReference:
+          data.provenanceProfessionalReference.present
+          ? data.provenanceProfessionalReference.value
+          : this.provenanceProfessionalReference,
+      temporalPrecision: data.temporalPrecision.present
+          ? data.temporalPrecision.value
+          : this.temporalPrecision,
     );
   }
 
@@ -28937,6 +29272,7 @@ class RoutinePlanRecord extends DataClass
           ..write('lastSyncError: $lastSyncError, ')
           ..write('routineId: $routineId, ')
           ..write('revision: $revision, ')
+          ..write('category: $category, ')
           ..write('mode: $mode, ')
           ..write('durationType: $durationType, ')
           ..write('effectiveFrom: $effectiveFrom, ')
@@ -28948,7 +29284,18 @@ class RoutinePlanRecord extends DataClass
           ..write('clinicalInstructions: $clinicalInstructions, ')
           ..write('activatedAt: $activatedAt, ')
           ..write('replacedAt: $replacedAt, ')
-          ..write('previousPlanId: $previousPlanId')
+          ..write('previousPlanId: $previousPlanId, ')
+          ..write('provenanceOrigin: $provenanceOrigin, ')
+          ..write('validationStatus: $validationStatus, ')
+          ..write('provenancePrescriptionId: $provenancePrescriptionId, ')
+          ..write(
+            'provenancePrescriptionItemId: $provenancePrescriptionItemId, ',
+          )
+          ..write('provenanceDocumentId: $provenanceDocumentId, ')
+          ..write(
+            'provenanceProfessionalReference: $provenanceProfessionalReference, ',
+          )
+          ..write('temporalPrecision: $temporalPrecision')
           ..write(')'))
         .toString();
   }
@@ -28966,6 +29313,7 @@ class RoutinePlanRecord extends DataClass
     lastSyncError,
     routineId,
     revision,
+    category,
     mode,
     durationType,
     effectiveFrom,
@@ -28978,6 +29326,13 @@ class RoutinePlanRecord extends DataClass
     activatedAt,
     replacedAt,
     previousPlanId,
+    provenanceOrigin,
+    validationStatus,
+    provenancePrescriptionId,
+    provenancePrescriptionItemId,
+    provenanceDocumentId,
+    provenanceProfessionalReference,
+    temporalPrecision,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -28994,6 +29349,7 @@ class RoutinePlanRecord extends DataClass
           other.lastSyncError == this.lastSyncError &&
           other.routineId == this.routineId &&
           other.revision == this.revision &&
+          other.category == this.category &&
           other.mode == this.mode &&
           other.durationType == this.durationType &&
           other.effectiveFrom == this.effectiveFrom &&
@@ -29005,7 +29361,16 @@ class RoutinePlanRecord extends DataClass
           other.clinicalInstructions == this.clinicalInstructions &&
           other.activatedAt == this.activatedAt &&
           other.replacedAt == this.replacedAt &&
-          other.previousPlanId == this.previousPlanId);
+          other.previousPlanId == this.previousPlanId &&
+          other.provenanceOrigin == this.provenanceOrigin &&
+          other.validationStatus == this.validationStatus &&
+          other.provenancePrescriptionId == this.provenancePrescriptionId &&
+          other.provenancePrescriptionItemId ==
+              this.provenancePrescriptionItemId &&
+          other.provenanceDocumentId == this.provenanceDocumentId &&
+          other.provenanceProfessionalReference ==
+              this.provenanceProfessionalReference &&
+          other.temporalPrecision == this.temporalPrecision);
 }
 
 class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
@@ -29020,6 +29385,7 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
   final Value<String?> lastSyncError;
   final Value<String> routineId;
   final Value<int> revision;
+  final Value<String> category;
   final Value<String> mode;
   final Value<String> durationType;
   final Value<String> effectiveFrom;
@@ -29032,6 +29398,13 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
   final Value<DateTime?> activatedAt;
   final Value<DateTime?> replacedAt;
   final Value<String?> previousPlanId;
+  final Value<String> provenanceOrigin;
+  final Value<String> validationStatus;
+  final Value<String?> provenancePrescriptionId;
+  final Value<String?> provenancePrescriptionItemId;
+  final Value<String?> provenanceDocumentId;
+  final Value<String?> provenanceProfessionalReference;
+  final Value<String> temporalPrecision;
   final Value<int> rowid;
   const RoutinePlanRecordsCompanion({
     this.id = const Value.absent(),
@@ -29045,6 +29418,7 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     this.lastSyncError = const Value.absent(),
     this.routineId = const Value.absent(),
     this.revision = const Value.absent(),
+    this.category = const Value.absent(),
     this.mode = const Value.absent(),
     this.durationType = const Value.absent(),
     this.effectiveFrom = const Value.absent(),
@@ -29057,6 +29431,13 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     this.activatedAt = const Value.absent(),
     this.replacedAt = const Value.absent(),
     this.previousPlanId = const Value.absent(),
+    this.provenanceOrigin = const Value.absent(),
+    this.validationStatus = const Value.absent(),
+    this.provenancePrescriptionId = const Value.absent(),
+    this.provenancePrescriptionItemId = const Value.absent(),
+    this.provenanceDocumentId = const Value.absent(),
+    this.provenanceProfessionalReference = const Value.absent(),
+    this.temporalPrecision = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   RoutinePlanRecordsCompanion.insert({
@@ -29071,6 +29452,7 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     this.lastSyncError = const Value.absent(),
     required String routineId,
     required int revision,
+    this.category = const Value.absent(),
     required String mode,
     required String durationType,
     required String effectiveFrom,
@@ -29083,6 +29465,13 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     this.activatedAt = const Value.absent(),
     this.replacedAt = const Value.absent(),
     this.previousPlanId = const Value.absent(),
+    this.provenanceOrigin = const Value.absent(),
+    this.validationStatus = const Value.absent(),
+    this.provenancePrescriptionId = const Value.absent(),
+    this.provenancePrescriptionItemId = const Value.absent(),
+    this.provenanceDocumentId = const Value.absent(),
+    this.provenanceProfessionalReference = const Value.absent(),
+    this.temporalPrecision = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        userId = Value(userId),
@@ -29106,6 +29495,7 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     Expression<String>? lastSyncError,
     Expression<String>? routineId,
     Expression<int>? revision,
+    Expression<String>? category,
     Expression<String>? mode,
     Expression<String>? durationType,
     Expression<String>? effectiveFrom,
@@ -29118,6 +29508,13 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     Expression<DateTime>? activatedAt,
     Expression<DateTime>? replacedAt,
     Expression<String>? previousPlanId,
+    Expression<String>? provenanceOrigin,
+    Expression<String>? validationStatus,
+    Expression<String>? provenancePrescriptionId,
+    Expression<String>? provenancePrescriptionItemId,
+    Expression<String>? provenanceDocumentId,
+    Expression<String>? provenanceProfessionalReference,
+    Expression<String>? temporalPrecision,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -29133,6 +29530,7 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
       if (lastSyncError != null) 'last_sync_error': lastSyncError,
       if (routineId != null) 'routine_id': routineId,
       if (revision != null) 'revision': revision,
+      if (category != null) 'category': category,
       if (mode != null) 'mode': mode,
       if (durationType != null) 'duration_type': durationType,
       if (effectiveFrom != null) 'effective_from': effectiveFrom,
@@ -29146,6 +29544,17 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
       if (activatedAt != null) 'activated_at': activatedAt,
       if (replacedAt != null) 'replaced_at': replacedAt,
       if (previousPlanId != null) 'previous_plan_id': previousPlanId,
+      if (provenanceOrigin != null) 'provenance_origin': provenanceOrigin,
+      if (validationStatus != null) 'validation_status': validationStatus,
+      if (provenancePrescriptionId != null)
+        'provenance_prescription_id': provenancePrescriptionId,
+      if (provenancePrescriptionItemId != null)
+        'provenance_prescription_item_id': provenancePrescriptionItemId,
+      if (provenanceDocumentId != null)
+        'provenance_document_id': provenanceDocumentId,
+      if (provenanceProfessionalReference != null)
+        'provenance_professional_reference': provenanceProfessionalReference,
+      if (temporalPrecision != null) 'temporal_precision': temporalPrecision,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -29162,6 +29571,7 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     Value<String?>? lastSyncError,
     Value<String>? routineId,
     Value<int>? revision,
+    Value<String>? category,
     Value<String>? mode,
     Value<String>? durationType,
     Value<String>? effectiveFrom,
@@ -29174,6 +29584,13 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     Value<DateTime?>? activatedAt,
     Value<DateTime?>? replacedAt,
     Value<String?>? previousPlanId,
+    Value<String>? provenanceOrigin,
+    Value<String>? validationStatus,
+    Value<String?>? provenancePrescriptionId,
+    Value<String?>? provenancePrescriptionItemId,
+    Value<String?>? provenanceDocumentId,
+    Value<String?>? provenanceProfessionalReference,
+    Value<String>? temporalPrecision,
     Value<int>? rowid,
   }) {
     return RoutinePlanRecordsCompanion(
@@ -29188,6 +29605,7 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
       lastSyncError: lastSyncError ?? this.lastSyncError,
       routineId: routineId ?? this.routineId,
       revision: revision ?? this.revision,
+      category: category ?? this.category,
       mode: mode ?? this.mode,
       durationType: durationType ?? this.durationType,
       effectiveFrom: effectiveFrom ?? this.effectiveFrom,
@@ -29200,6 +29618,17 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
       activatedAt: activatedAt ?? this.activatedAt,
       replacedAt: replacedAt ?? this.replacedAt,
       previousPlanId: previousPlanId ?? this.previousPlanId,
+      provenanceOrigin: provenanceOrigin ?? this.provenanceOrigin,
+      validationStatus: validationStatus ?? this.validationStatus,
+      provenancePrescriptionId:
+          provenancePrescriptionId ?? this.provenancePrescriptionId,
+      provenancePrescriptionItemId:
+          provenancePrescriptionItemId ?? this.provenancePrescriptionItemId,
+      provenanceDocumentId: provenanceDocumentId ?? this.provenanceDocumentId,
+      provenanceProfessionalReference:
+          provenanceProfessionalReference ??
+          this.provenanceProfessionalReference,
+      temporalPrecision: temporalPrecision ?? this.temporalPrecision,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -29240,6 +29669,9 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     if (revision.present) {
       map['revision'] = Variable<int>(revision.value);
     }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
     if (mode.present) {
       map['mode'] = Variable<String>(mode.value);
     }
@@ -29278,6 +29710,35 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
     if (previousPlanId.present) {
       map['previous_plan_id'] = Variable<String>(previousPlanId.value);
     }
+    if (provenanceOrigin.present) {
+      map['provenance_origin'] = Variable<String>(provenanceOrigin.value);
+    }
+    if (validationStatus.present) {
+      map['validation_status'] = Variable<String>(validationStatus.value);
+    }
+    if (provenancePrescriptionId.present) {
+      map['provenance_prescription_id'] = Variable<String>(
+        provenancePrescriptionId.value,
+      );
+    }
+    if (provenancePrescriptionItemId.present) {
+      map['provenance_prescription_item_id'] = Variable<String>(
+        provenancePrescriptionItemId.value,
+      );
+    }
+    if (provenanceDocumentId.present) {
+      map['provenance_document_id'] = Variable<String>(
+        provenanceDocumentId.value,
+      );
+    }
+    if (provenanceProfessionalReference.present) {
+      map['provenance_professional_reference'] = Variable<String>(
+        provenanceProfessionalReference.value,
+      );
+    }
+    if (temporalPrecision.present) {
+      map['temporal_precision'] = Variable<String>(temporalPrecision.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -29298,6 +29759,7 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
           ..write('lastSyncError: $lastSyncError, ')
           ..write('routineId: $routineId, ')
           ..write('revision: $revision, ')
+          ..write('category: $category, ')
           ..write('mode: $mode, ')
           ..write('durationType: $durationType, ')
           ..write('effectiveFrom: $effectiveFrom, ')
@@ -29310,6 +29772,17 @@ class RoutinePlanRecordsCompanion extends UpdateCompanion<RoutinePlanRecord> {
           ..write('activatedAt: $activatedAt, ')
           ..write('replacedAt: $replacedAt, ')
           ..write('previousPlanId: $previousPlanId, ')
+          ..write('provenanceOrigin: $provenanceOrigin, ')
+          ..write('validationStatus: $validationStatus, ')
+          ..write('provenancePrescriptionId: $provenancePrescriptionId, ')
+          ..write(
+            'provenancePrescriptionItemId: $provenancePrescriptionItemId, ',
+          )
+          ..write('provenanceDocumentId: $provenanceDocumentId, ')
+          ..write(
+            'provenanceProfessionalReference: $provenanceProfessionalReference, ',
+          )
+          ..write('temporalPrecision: $temporalPrecision, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -34606,6 +35079,2686 @@ class RoutineAdherenceEventRecordsCompanion
   }
 }
 
+class $UnifiedTreatmentLegacyMappingsTable
+    extends UnifiedTreatmentLegacyMappings
+    with
+        TableInfo<
+          $UnifiedTreatmentLegacyMappingsTable,
+          UnifiedTreatmentLegacyMapping
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UnifiedTreatmentLegacyMappingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceTypeMeta = const VerificationMeta(
+    'sourceType',
+  );
+  @override
+  late final GeneratedColumn<String> sourceType = GeneratedColumn<String>(
+    'source_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _legacyEntityIdMeta = const VerificationMeta(
+    'legacyEntityId',
+  );
+  @override
+  late final GeneratedColumn<String> legacyEntityId = GeneratedColumn<String>(
+    'legacy_entity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetRoutineIdMeta = const VerificationMeta(
+    'targetRoutineId',
+  );
+  @override
+  late final GeneratedColumn<String> targetRoutineId = GeneratedColumn<String>(
+    'target_routine_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetPlanIdMeta = const VerificationMeta(
+    'targetPlanId',
+  );
+  @override
+  late final GeneratedColumn<String> targetPlanId = GeneratedColumn<String>(
+    'target_plan_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetScheduleIdMeta = const VerificationMeta(
+    'targetScheduleId',
+  );
+  @override
+  late final GeneratedColumn<String> targetScheduleId = GeneratedColumn<String>(
+    'target_schedule_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _migrationSchemaVersionMeta =
+      const VerificationMeta('migrationSchemaVersion');
+  @override
+  late final GeneratedColumn<int> migrationSchemaVersion = GeneratedColumn<int>(
+    'migration_schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startedAtUtcMeta = const VerificationMeta(
+    'startedAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startedAtUtc = GeneratedColumn<DateTime>(
+    'started_at_utc',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtUtcMeta = const VerificationMeta(
+    'completedAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAtUtc =
+      GeneratedColumn<DateTime>(
+        'completed_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _failureCodeMeta = const VerificationMeta(
+    'failureCode',
+  );
+  @override
+  late final GeneratedColumn<String> failureCode = GeneratedColumn<String>(
+    'failure_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _validationSummaryMeta = const VerificationMeta(
+    'validationSummary',
+  );
+  @override
+  late final GeneratedColumn<String> validationSummary =
+      GeneratedColumn<String>(
+        'validation_summary',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _timeZoneMeta = const VerificationMeta(
+    'timeZone',
+  );
+  @override
+  late final GeneratedColumn<String> timeZone = GeneratedColumn<String>(
+    'time_zone',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _temporalPrecisionMeta = const VerificationMeta(
+    'temporalPrecision',
+  );
+  @override
+  late final GeneratedColumn<String> temporalPrecision =
+      GeneratedColumn<String>(
+        'temporal_precision',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _hasNewClinicalWritesMeta =
+      const VerificationMeta('hasNewClinicalWrites');
+  @override
+  late final GeneratedColumn<bool> hasNewClinicalWrites = GeneratedColumn<bool>(
+    'has_new_clinical_writes',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("has_new_clinical_writes" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    sourceType,
+    legacyEntityId,
+    targetRoutineId,
+    targetPlanId,
+    targetScheduleId,
+    migrationSchemaVersion,
+    status,
+    startedAtUtc,
+    completedAtUtc,
+    failureCode,
+    validationSummary,
+    timeZone,
+    temporalPrecision,
+    hasNewClinicalWrites,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'unified_treatment_legacy_mappings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UnifiedTreatmentLegacyMapping> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('source_type')) {
+      context.handle(
+        _sourceTypeMeta,
+        sourceType.isAcceptableOrUnknown(data['source_type']!, _sourceTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceTypeMeta);
+    }
+    if (data.containsKey('legacy_entity_id')) {
+      context.handle(
+        _legacyEntityIdMeta,
+        legacyEntityId.isAcceptableOrUnknown(
+          data['legacy_entity_id']!,
+          _legacyEntityIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_legacyEntityIdMeta);
+    }
+    if (data.containsKey('target_routine_id')) {
+      context.handle(
+        _targetRoutineIdMeta,
+        targetRoutineId.isAcceptableOrUnknown(
+          data['target_routine_id']!,
+          _targetRoutineIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_targetRoutineIdMeta);
+    }
+    if (data.containsKey('target_plan_id')) {
+      context.handle(
+        _targetPlanIdMeta,
+        targetPlanId.isAcceptableOrUnknown(
+          data['target_plan_id']!,
+          _targetPlanIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_targetPlanIdMeta);
+    }
+    if (data.containsKey('target_schedule_id')) {
+      context.handle(
+        _targetScheduleIdMeta,
+        targetScheduleId.isAcceptableOrUnknown(
+          data['target_schedule_id']!,
+          _targetScheduleIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_targetScheduleIdMeta);
+    }
+    if (data.containsKey('migration_schema_version')) {
+      context.handle(
+        _migrationSchemaVersionMeta,
+        migrationSchemaVersion.isAcceptableOrUnknown(
+          data['migration_schema_version']!,
+          _migrationSchemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migrationSchemaVersionMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('started_at_utc')) {
+      context.handle(
+        _startedAtUtcMeta,
+        startedAtUtc.isAcceptableOrUnknown(
+          data['started_at_utc']!,
+          _startedAtUtcMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_startedAtUtcMeta);
+    }
+    if (data.containsKey('completed_at_utc')) {
+      context.handle(
+        _completedAtUtcMeta,
+        completedAtUtc.isAcceptableOrUnknown(
+          data['completed_at_utc']!,
+          _completedAtUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('failure_code')) {
+      context.handle(
+        _failureCodeMeta,
+        failureCode.isAcceptableOrUnknown(
+          data['failure_code']!,
+          _failureCodeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('validation_summary')) {
+      context.handle(
+        _validationSummaryMeta,
+        validationSummary.isAcceptableOrUnknown(
+          data['validation_summary']!,
+          _validationSummaryMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_validationSummaryMeta);
+    }
+    if (data.containsKey('time_zone')) {
+      context.handle(
+        _timeZoneMeta,
+        timeZone.isAcceptableOrUnknown(data['time_zone']!, _timeZoneMeta),
+      );
+    }
+    if (data.containsKey('temporal_precision')) {
+      context.handle(
+        _temporalPrecisionMeta,
+        temporalPrecision.isAcceptableOrUnknown(
+          data['temporal_precision']!,
+          _temporalPrecisionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_temporalPrecisionMeta);
+    }
+    if (data.containsKey('has_new_clinical_writes')) {
+      context.handle(
+        _hasNewClinicalWritesMeta,
+        hasNewClinicalWrites.isAcceptableOrUnknown(
+          data['has_new_clinical_writes']!,
+          _hasNewClinicalWritesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  UnifiedTreatmentLegacyMapping map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UnifiedTreatmentLegacyMapping(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      sourceType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_type'],
+      )!,
+      legacyEntityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}legacy_entity_id'],
+      )!,
+      targetRoutineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_routine_id'],
+      )!,
+      targetPlanId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_plan_id'],
+      )!,
+      targetScheduleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_schedule_id'],
+      )!,
+      migrationSchemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}migration_schema_version'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      startedAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}started_at_utc'],
+      )!,
+      completedAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at_utc'],
+      ),
+      failureCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}failure_code'],
+      ),
+      validationSummary: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}validation_summary'],
+      )!,
+      timeZone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}time_zone'],
+      ),
+      temporalPrecision: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}temporal_precision'],
+      )!,
+      hasNewClinicalWrites: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}has_new_clinical_writes'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $UnifiedTreatmentLegacyMappingsTable createAlias(String alias) {
+    return $UnifiedTreatmentLegacyMappingsTable(attachedDatabase, alias);
+  }
+}
+
+class UnifiedTreatmentLegacyMapping extends DataClass
+    implements Insertable<UnifiedTreatmentLegacyMapping> {
+  final String id;
+  final String userId;
+  final String sourceType;
+  final String legacyEntityId;
+  final String targetRoutineId;
+  final String targetPlanId;
+  final String targetScheduleId;
+  final int migrationSchemaVersion;
+  final String status;
+  final DateTime startedAtUtc;
+  final DateTime? completedAtUtc;
+  final String? failureCode;
+  final String validationSummary;
+  final String? timeZone;
+  final String temporalPrecision;
+  final bool hasNewClinicalWrites;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const UnifiedTreatmentLegacyMapping({
+    required this.id,
+    required this.userId,
+    required this.sourceType,
+    required this.legacyEntityId,
+    required this.targetRoutineId,
+    required this.targetPlanId,
+    required this.targetScheduleId,
+    required this.migrationSchemaVersion,
+    required this.status,
+    required this.startedAtUtc,
+    this.completedAtUtc,
+    this.failureCode,
+    required this.validationSummary,
+    this.timeZone,
+    required this.temporalPrecision,
+    required this.hasNewClinicalWrites,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['source_type'] = Variable<String>(sourceType);
+    map['legacy_entity_id'] = Variable<String>(legacyEntityId);
+    map['target_routine_id'] = Variable<String>(targetRoutineId);
+    map['target_plan_id'] = Variable<String>(targetPlanId);
+    map['target_schedule_id'] = Variable<String>(targetScheduleId);
+    map['migration_schema_version'] = Variable<int>(migrationSchemaVersion);
+    map['status'] = Variable<String>(status);
+    map['started_at_utc'] = Variable<DateTime>(startedAtUtc);
+    if (!nullToAbsent || completedAtUtc != null) {
+      map['completed_at_utc'] = Variable<DateTime>(completedAtUtc);
+    }
+    if (!nullToAbsent || failureCode != null) {
+      map['failure_code'] = Variable<String>(failureCode);
+    }
+    map['validation_summary'] = Variable<String>(validationSummary);
+    if (!nullToAbsent || timeZone != null) {
+      map['time_zone'] = Variable<String>(timeZone);
+    }
+    map['temporal_precision'] = Variable<String>(temporalPrecision);
+    map['has_new_clinical_writes'] = Variable<bool>(hasNewClinicalWrites);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  UnifiedTreatmentLegacyMappingsCompanion toCompanion(bool nullToAbsent) {
+    return UnifiedTreatmentLegacyMappingsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      sourceType: Value(sourceType),
+      legacyEntityId: Value(legacyEntityId),
+      targetRoutineId: Value(targetRoutineId),
+      targetPlanId: Value(targetPlanId),
+      targetScheduleId: Value(targetScheduleId),
+      migrationSchemaVersion: Value(migrationSchemaVersion),
+      status: Value(status),
+      startedAtUtc: Value(startedAtUtc),
+      completedAtUtc: completedAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(completedAtUtc),
+      failureCode: failureCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(failureCode),
+      validationSummary: Value(validationSummary),
+      timeZone: timeZone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(timeZone),
+      temporalPrecision: Value(temporalPrecision),
+      hasNewClinicalWrites: Value(hasNewClinicalWrites),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory UnifiedTreatmentLegacyMapping.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UnifiedTreatmentLegacyMapping(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      sourceType: serializer.fromJson<String>(json['sourceType']),
+      legacyEntityId: serializer.fromJson<String>(json['legacyEntityId']),
+      targetRoutineId: serializer.fromJson<String>(json['targetRoutineId']),
+      targetPlanId: serializer.fromJson<String>(json['targetPlanId']),
+      targetScheduleId: serializer.fromJson<String>(json['targetScheduleId']),
+      migrationSchemaVersion: serializer.fromJson<int>(
+        json['migrationSchemaVersion'],
+      ),
+      status: serializer.fromJson<String>(json['status']),
+      startedAtUtc: serializer.fromJson<DateTime>(json['startedAtUtc']),
+      completedAtUtc: serializer.fromJson<DateTime?>(json['completedAtUtc']),
+      failureCode: serializer.fromJson<String?>(json['failureCode']),
+      validationSummary: serializer.fromJson<String>(json['validationSummary']),
+      timeZone: serializer.fromJson<String?>(json['timeZone']),
+      temporalPrecision: serializer.fromJson<String>(json['temporalPrecision']),
+      hasNewClinicalWrites: serializer.fromJson<bool>(
+        json['hasNewClinicalWrites'],
+      ),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'sourceType': serializer.toJson<String>(sourceType),
+      'legacyEntityId': serializer.toJson<String>(legacyEntityId),
+      'targetRoutineId': serializer.toJson<String>(targetRoutineId),
+      'targetPlanId': serializer.toJson<String>(targetPlanId),
+      'targetScheduleId': serializer.toJson<String>(targetScheduleId),
+      'migrationSchemaVersion': serializer.toJson<int>(migrationSchemaVersion),
+      'status': serializer.toJson<String>(status),
+      'startedAtUtc': serializer.toJson<DateTime>(startedAtUtc),
+      'completedAtUtc': serializer.toJson<DateTime?>(completedAtUtc),
+      'failureCode': serializer.toJson<String?>(failureCode),
+      'validationSummary': serializer.toJson<String>(validationSummary),
+      'timeZone': serializer.toJson<String?>(timeZone),
+      'temporalPrecision': serializer.toJson<String>(temporalPrecision),
+      'hasNewClinicalWrites': serializer.toJson<bool>(hasNewClinicalWrites),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  UnifiedTreatmentLegacyMapping copyWith({
+    String? id,
+    String? userId,
+    String? sourceType,
+    String? legacyEntityId,
+    String? targetRoutineId,
+    String? targetPlanId,
+    String? targetScheduleId,
+    int? migrationSchemaVersion,
+    String? status,
+    DateTime? startedAtUtc,
+    Value<DateTime?> completedAtUtc = const Value.absent(),
+    Value<String?> failureCode = const Value.absent(),
+    String? validationSummary,
+    Value<String?> timeZone = const Value.absent(),
+    String? temporalPrecision,
+    bool? hasNewClinicalWrites,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => UnifiedTreatmentLegacyMapping(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    sourceType: sourceType ?? this.sourceType,
+    legacyEntityId: legacyEntityId ?? this.legacyEntityId,
+    targetRoutineId: targetRoutineId ?? this.targetRoutineId,
+    targetPlanId: targetPlanId ?? this.targetPlanId,
+    targetScheduleId: targetScheduleId ?? this.targetScheduleId,
+    migrationSchemaVersion:
+        migrationSchemaVersion ?? this.migrationSchemaVersion,
+    status: status ?? this.status,
+    startedAtUtc: startedAtUtc ?? this.startedAtUtc,
+    completedAtUtc: completedAtUtc.present
+        ? completedAtUtc.value
+        : this.completedAtUtc,
+    failureCode: failureCode.present ? failureCode.value : this.failureCode,
+    validationSummary: validationSummary ?? this.validationSummary,
+    timeZone: timeZone.present ? timeZone.value : this.timeZone,
+    temporalPrecision: temporalPrecision ?? this.temporalPrecision,
+    hasNewClinicalWrites: hasNewClinicalWrites ?? this.hasNewClinicalWrites,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  UnifiedTreatmentLegacyMapping copyWithCompanion(
+    UnifiedTreatmentLegacyMappingsCompanion data,
+  ) {
+    return UnifiedTreatmentLegacyMapping(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      sourceType: data.sourceType.present
+          ? data.sourceType.value
+          : this.sourceType,
+      legacyEntityId: data.legacyEntityId.present
+          ? data.legacyEntityId.value
+          : this.legacyEntityId,
+      targetRoutineId: data.targetRoutineId.present
+          ? data.targetRoutineId.value
+          : this.targetRoutineId,
+      targetPlanId: data.targetPlanId.present
+          ? data.targetPlanId.value
+          : this.targetPlanId,
+      targetScheduleId: data.targetScheduleId.present
+          ? data.targetScheduleId.value
+          : this.targetScheduleId,
+      migrationSchemaVersion: data.migrationSchemaVersion.present
+          ? data.migrationSchemaVersion.value
+          : this.migrationSchemaVersion,
+      status: data.status.present ? data.status.value : this.status,
+      startedAtUtc: data.startedAtUtc.present
+          ? data.startedAtUtc.value
+          : this.startedAtUtc,
+      completedAtUtc: data.completedAtUtc.present
+          ? data.completedAtUtc.value
+          : this.completedAtUtc,
+      failureCode: data.failureCode.present
+          ? data.failureCode.value
+          : this.failureCode,
+      validationSummary: data.validationSummary.present
+          ? data.validationSummary.value
+          : this.validationSummary,
+      timeZone: data.timeZone.present ? data.timeZone.value : this.timeZone,
+      temporalPrecision: data.temporalPrecision.present
+          ? data.temporalPrecision.value
+          : this.temporalPrecision,
+      hasNewClinicalWrites: data.hasNewClinicalWrites.present
+          ? data.hasNewClinicalWrites.value
+          : this.hasNewClinicalWrites,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnifiedTreatmentLegacyMapping(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('sourceType: $sourceType, ')
+          ..write('legacyEntityId: $legacyEntityId, ')
+          ..write('targetRoutineId: $targetRoutineId, ')
+          ..write('targetPlanId: $targetPlanId, ')
+          ..write('targetScheduleId: $targetScheduleId, ')
+          ..write('migrationSchemaVersion: $migrationSchemaVersion, ')
+          ..write('status: $status, ')
+          ..write('startedAtUtc: $startedAtUtc, ')
+          ..write('completedAtUtc: $completedAtUtc, ')
+          ..write('failureCode: $failureCode, ')
+          ..write('validationSummary: $validationSummary, ')
+          ..write('timeZone: $timeZone, ')
+          ..write('temporalPrecision: $temporalPrecision, ')
+          ..write('hasNewClinicalWrites: $hasNewClinicalWrites, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    sourceType,
+    legacyEntityId,
+    targetRoutineId,
+    targetPlanId,
+    targetScheduleId,
+    migrationSchemaVersion,
+    status,
+    startedAtUtc,
+    completedAtUtc,
+    failureCode,
+    validationSummary,
+    timeZone,
+    temporalPrecision,
+    hasNewClinicalWrites,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UnifiedTreatmentLegacyMapping &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.sourceType == this.sourceType &&
+          other.legacyEntityId == this.legacyEntityId &&
+          other.targetRoutineId == this.targetRoutineId &&
+          other.targetPlanId == this.targetPlanId &&
+          other.targetScheduleId == this.targetScheduleId &&
+          other.migrationSchemaVersion == this.migrationSchemaVersion &&
+          other.status == this.status &&
+          other.startedAtUtc == this.startedAtUtc &&
+          other.completedAtUtc == this.completedAtUtc &&
+          other.failureCode == this.failureCode &&
+          other.validationSummary == this.validationSummary &&
+          other.timeZone == this.timeZone &&
+          other.temporalPrecision == this.temporalPrecision &&
+          other.hasNewClinicalWrites == this.hasNewClinicalWrites &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class UnifiedTreatmentLegacyMappingsCompanion
+    extends UpdateCompanion<UnifiedTreatmentLegacyMapping> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> sourceType;
+  final Value<String> legacyEntityId;
+  final Value<String> targetRoutineId;
+  final Value<String> targetPlanId;
+  final Value<String> targetScheduleId;
+  final Value<int> migrationSchemaVersion;
+  final Value<String> status;
+  final Value<DateTime> startedAtUtc;
+  final Value<DateTime?> completedAtUtc;
+  final Value<String?> failureCode;
+  final Value<String> validationSummary;
+  final Value<String?> timeZone;
+  final Value<String> temporalPrecision;
+  final Value<bool> hasNewClinicalWrites;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const UnifiedTreatmentLegacyMappingsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.sourceType = const Value.absent(),
+    this.legacyEntityId = const Value.absent(),
+    this.targetRoutineId = const Value.absent(),
+    this.targetPlanId = const Value.absent(),
+    this.targetScheduleId = const Value.absent(),
+    this.migrationSchemaVersion = const Value.absent(),
+    this.status = const Value.absent(),
+    this.startedAtUtc = const Value.absent(),
+    this.completedAtUtc = const Value.absent(),
+    this.failureCode = const Value.absent(),
+    this.validationSummary = const Value.absent(),
+    this.timeZone = const Value.absent(),
+    this.temporalPrecision = const Value.absent(),
+    this.hasNewClinicalWrites = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UnifiedTreatmentLegacyMappingsCompanion.insert({
+    required String id,
+    required String userId,
+    required String sourceType,
+    required String legacyEntityId,
+    required String targetRoutineId,
+    required String targetPlanId,
+    required String targetScheduleId,
+    required int migrationSchemaVersion,
+    required String status,
+    required DateTime startedAtUtc,
+    this.completedAtUtc = const Value.absent(),
+    this.failureCode = const Value.absent(),
+    required String validationSummary,
+    this.timeZone = const Value.absent(),
+    required String temporalPrecision,
+    this.hasNewClinicalWrites = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       sourceType = Value(sourceType),
+       legacyEntityId = Value(legacyEntityId),
+       targetRoutineId = Value(targetRoutineId),
+       targetPlanId = Value(targetPlanId),
+       targetScheduleId = Value(targetScheduleId),
+       migrationSchemaVersion = Value(migrationSchemaVersion),
+       status = Value(status),
+       startedAtUtc = Value(startedAtUtc),
+       validationSummary = Value(validationSummary),
+       temporalPrecision = Value(temporalPrecision),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<UnifiedTreatmentLegacyMapping> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? sourceType,
+    Expression<String>? legacyEntityId,
+    Expression<String>? targetRoutineId,
+    Expression<String>? targetPlanId,
+    Expression<String>? targetScheduleId,
+    Expression<int>? migrationSchemaVersion,
+    Expression<String>? status,
+    Expression<DateTime>? startedAtUtc,
+    Expression<DateTime>? completedAtUtc,
+    Expression<String>? failureCode,
+    Expression<String>? validationSummary,
+    Expression<String>? timeZone,
+    Expression<String>? temporalPrecision,
+    Expression<bool>? hasNewClinicalWrites,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (sourceType != null) 'source_type': sourceType,
+      if (legacyEntityId != null) 'legacy_entity_id': legacyEntityId,
+      if (targetRoutineId != null) 'target_routine_id': targetRoutineId,
+      if (targetPlanId != null) 'target_plan_id': targetPlanId,
+      if (targetScheduleId != null) 'target_schedule_id': targetScheduleId,
+      if (migrationSchemaVersion != null)
+        'migration_schema_version': migrationSchemaVersion,
+      if (status != null) 'status': status,
+      if (startedAtUtc != null) 'started_at_utc': startedAtUtc,
+      if (completedAtUtc != null) 'completed_at_utc': completedAtUtc,
+      if (failureCode != null) 'failure_code': failureCode,
+      if (validationSummary != null) 'validation_summary': validationSummary,
+      if (timeZone != null) 'time_zone': timeZone,
+      if (temporalPrecision != null) 'temporal_precision': temporalPrecision,
+      if (hasNewClinicalWrites != null)
+        'has_new_clinical_writes': hasNewClinicalWrites,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UnifiedTreatmentLegacyMappingsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? sourceType,
+    Value<String>? legacyEntityId,
+    Value<String>? targetRoutineId,
+    Value<String>? targetPlanId,
+    Value<String>? targetScheduleId,
+    Value<int>? migrationSchemaVersion,
+    Value<String>? status,
+    Value<DateTime>? startedAtUtc,
+    Value<DateTime?>? completedAtUtc,
+    Value<String?>? failureCode,
+    Value<String>? validationSummary,
+    Value<String?>? timeZone,
+    Value<String>? temporalPrecision,
+    Value<bool>? hasNewClinicalWrites,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return UnifiedTreatmentLegacyMappingsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      sourceType: sourceType ?? this.sourceType,
+      legacyEntityId: legacyEntityId ?? this.legacyEntityId,
+      targetRoutineId: targetRoutineId ?? this.targetRoutineId,
+      targetPlanId: targetPlanId ?? this.targetPlanId,
+      targetScheduleId: targetScheduleId ?? this.targetScheduleId,
+      migrationSchemaVersion:
+          migrationSchemaVersion ?? this.migrationSchemaVersion,
+      status: status ?? this.status,
+      startedAtUtc: startedAtUtc ?? this.startedAtUtc,
+      completedAtUtc: completedAtUtc ?? this.completedAtUtc,
+      failureCode: failureCode ?? this.failureCode,
+      validationSummary: validationSummary ?? this.validationSummary,
+      timeZone: timeZone ?? this.timeZone,
+      temporalPrecision: temporalPrecision ?? this.temporalPrecision,
+      hasNewClinicalWrites: hasNewClinicalWrites ?? this.hasNewClinicalWrites,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (sourceType.present) {
+      map['source_type'] = Variable<String>(sourceType.value);
+    }
+    if (legacyEntityId.present) {
+      map['legacy_entity_id'] = Variable<String>(legacyEntityId.value);
+    }
+    if (targetRoutineId.present) {
+      map['target_routine_id'] = Variable<String>(targetRoutineId.value);
+    }
+    if (targetPlanId.present) {
+      map['target_plan_id'] = Variable<String>(targetPlanId.value);
+    }
+    if (targetScheduleId.present) {
+      map['target_schedule_id'] = Variable<String>(targetScheduleId.value);
+    }
+    if (migrationSchemaVersion.present) {
+      map['migration_schema_version'] = Variable<int>(
+        migrationSchemaVersion.value,
+      );
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (startedAtUtc.present) {
+      map['started_at_utc'] = Variable<DateTime>(startedAtUtc.value);
+    }
+    if (completedAtUtc.present) {
+      map['completed_at_utc'] = Variable<DateTime>(completedAtUtc.value);
+    }
+    if (failureCode.present) {
+      map['failure_code'] = Variable<String>(failureCode.value);
+    }
+    if (validationSummary.present) {
+      map['validation_summary'] = Variable<String>(validationSummary.value);
+    }
+    if (timeZone.present) {
+      map['time_zone'] = Variable<String>(timeZone.value);
+    }
+    if (temporalPrecision.present) {
+      map['temporal_precision'] = Variable<String>(temporalPrecision.value);
+    }
+    if (hasNewClinicalWrites.present) {
+      map['has_new_clinical_writes'] = Variable<bool>(
+        hasNewClinicalWrites.value,
+      );
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnifiedTreatmentLegacyMappingsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('sourceType: $sourceType, ')
+          ..write('legacyEntityId: $legacyEntityId, ')
+          ..write('targetRoutineId: $targetRoutineId, ')
+          ..write('targetPlanId: $targetPlanId, ')
+          ..write('targetScheduleId: $targetScheduleId, ')
+          ..write('migrationSchemaVersion: $migrationSchemaVersion, ')
+          ..write('status: $status, ')
+          ..write('startedAtUtc: $startedAtUtc, ')
+          ..write('completedAtUtc: $completedAtUtc, ')
+          ..write('failureCode: $failureCode, ')
+          ..write('validationSummary: $validationSummary, ')
+          ..write('timeZone: $timeZone, ')
+          ..write('temporalPrecision: $temporalPrecision, ')
+          ..write('hasNewClinicalWrites: $hasNewClinicalWrites, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UnifiedTreatmentLegacyLogMappingsTable
+    extends UnifiedTreatmentLegacyLogMappings
+    with
+        TableInfo<
+          $UnifiedTreatmentLegacyLogMappingsTable,
+          UnifiedTreatmentLegacyLogMapping
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UnifiedTreatmentLegacyLogMappingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceTypeMeta = const VerificationMeta(
+    'sourceType',
+  );
+  @override
+  late final GeneratedColumn<String> sourceType = GeneratedColumn<String>(
+    'source_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _legacyLogIdMeta = const VerificationMeta(
+    'legacyLogId',
+  );
+  @override
+  late final GeneratedColumn<String> legacyLogId = GeneratedColumn<String>(
+    'legacy_log_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _legacyEntityIdMeta = const VerificationMeta(
+    'legacyEntityId',
+  );
+  @override
+  late final GeneratedColumn<String> legacyEntityId = GeneratedColumn<String>(
+    'legacy_entity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _occurrenceIdMeta = const VerificationMeta(
+    'occurrenceId',
+  );
+  @override
+  late final GeneratedColumn<String> occurrenceId = GeneratedColumn<String>(
+    'occurrence_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _adherenceEventIdMeta = const VerificationMeta(
+    'adherenceEventId',
+  );
+  @override
+  late final GeneratedColumn<String> adherenceEventId = GeneratedColumn<String>(
+    'adherence_event_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _temporalPrecisionMeta = const VerificationMeta(
+    'temporalPrecision',
+  );
+  @override
+  late final GeneratedColumn<String> temporalPrecision =
+      GeneratedColumn<String>(
+        'temporal_precision',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    sourceType,
+    legacyLogId,
+    legacyEntityId,
+    occurrenceId,
+    adherenceEventId,
+    temporalPrecision,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'unified_treatment_legacy_log_mappings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UnifiedTreatmentLegacyLogMapping> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('source_type')) {
+      context.handle(
+        _sourceTypeMeta,
+        sourceType.isAcceptableOrUnknown(data['source_type']!, _sourceTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceTypeMeta);
+    }
+    if (data.containsKey('legacy_log_id')) {
+      context.handle(
+        _legacyLogIdMeta,
+        legacyLogId.isAcceptableOrUnknown(
+          data['legacy_log_id']!,
+          _legacyLogIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_legacyLogIdMeta);
+    }
+    if (data.containsKey('legacy_entity_id')) {
+      context.handle(
+        _legacyEntityIdMeta,
+        legacyEntityId.isAcceptableOrUnknown(
+          data['legacy_entity_id']!,
+          _legacyEntityIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_legacyEntityIdMeta);
+    }
+    if (data.containsKey('occurrence_id')) {
+      context.handle(
+        _occurrenceIdMeta,
+        occurrenceId.isAcceptableOrUnknown(
+          data['occurrence_id']!,
+          _occurrenceIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_occurrenceIdMeta);
+    }
+    if (data.containsKey('adherence_event_id')) {
+      context.handle(
+        _adherenceEventIdMeta,
+        adherenceEventId.isAcceptableOrUnknown(
+          data['adherence_event_id']!,
+          _adherenceEventIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('temporal_precision')) {
+      context.handle(
+        _temporalPrecisionMeta,
+        temporalPrecision.isAcceptableOrUnknown(
+          data['temporal_precision']!,
+          _temporalPrecisionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_temporalPrecisionMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  UnifiedTreatmentLegacyLogMapping map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UnifiedTreatmentLegacyLogMapping(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      sourceType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_type'],
+      )!,
+      legacyLogId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}legacy_log_id'],
+      )!,
+      legacyEntityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}legacy_entity_id'],
+      )!,
+      occurrenceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}occurrence_id'],
+      )!,
+      adherenceEventId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}adherence_event_id'],
+      ),
+      temporalPrecision: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}temporal_precision'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $UnifiedTreatmentLegacyLogMappingsTable createAlias(String alias) {
+    return $UnifiedTreatmentLegacyLogMappingsTable(attachedDatabase, alias);
+  }
+}
+
+class UnifiedTreatmentLegacyLogMapping extends DataClass
+    implements Insertable<UnifiedTreatmentLegacyLogMapping> {
+  final String id;
+  final String userId;
+  final String sourceType;
+  final String legacyLogId;
+  final String legacyEntityId;
+  final String occurrenceId;
+  final String? adherenceEventId;
+  final String temporalPrecision;
+  final DateTime createdAt;
+  const UnifiedTreatmentLegacyLogMapping({
+    required this.id,
+    required this.userId,
+    required this.sourceType,
+    required this.legacyLogId,
+    required this.legacyEntityId,
+    required this.occurrenceId,
+    this.adherenceEventId,
+    required this.temporalPrecision,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['source_type'] = Variable<String>(sourceType);
+    map['legacy_log_id'] = Variable<String>(legacyLogId);
+    map['legacy_entity_id'] = Variable<String>(legacyEntityId);
+    map['occurrence_id'] = Variable<String>(occurrenceId);
+    if (!nullToAbsent || adherenceEventId != null) {
+      map['adherence_event_id'] = Variable<String>(adherenceEventId);
+    }
+    map['temporal_precision'] = Variable<String>(temporalPrecision);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  UnifiedTreatmentLegacyLogMappingsCompanion toCompanion(bool nullToAbsent) {
+    return UnifiedTreatmentLegacyLogMappingsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      sourceType: Value(sourceType),
+      legacyLogId: Value(legacyLogId),
+      legacyEntityId: Value(legacyEntityId),
+      occurrenceId: Value(occurrenceId),
+      adherenceEventId: adherenceEventId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(adherenceEventId),
+      temporalPrecision: Value(temporalPrecision),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory UnifiedTreatmentLegacyLogMapping.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UnifiedTreatmentLegacyLogMapping(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      sourceType: serializer.fromJson<String>(json['sourceType']),
+      legacyLogId: serializer.fromJson<String>(json['legacyLogId']),
+      legacyEntityId: serializer.fromJson<String>(json['legacyEntityId']),
+      occurrenceId: serializer.fromJson<String>(json['occurrenceId']),
+      adherenceEventId: serializer.fromJson<String?>(json['adherenceEventId']),
+      temporalPrecision: serializer.fromJson<String>(json['temporalPrecision']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'sourceType': serializer.toJson<String>(sourceType),
+      'legacyLogId': serializer.toJson<String>(legacyLogId),
+      'legacyEntityId': serializer.toJson<String>(legacyEntityId),
+      'occurrenceId': serializer.toJson<String>(occurrenceId),
+      'adherenceEventId': serializer.toJson<String?>(adherenceEventId),
+      'temporalPrecision': serializer.toJson<String>(temporalPrecision),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  UnifiedTreatmentLegacyLogMapping copyWith({
+    String? id,
+    String? userId,
+    String? sourceType,
+    String? legacyLogId,
+    String? legacyEntityId,
+    String? occurrenceId,
+    Value<String?> adherenceEventId = const Value.absent(),
+    String? temporalPrecision,
+    DateTime? createdAt,
+  }) => UnifiedTreatmentLegacyLogMapping(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    sourceType: sourceType ?? this.sourceType,
+    legacyLogId: legacyLogId ?? this.legacyLogId,
+    legacyEntityId: legacyEntityId ?? this.legacyEntityId,
+    occurrenceId: occurrenceId ?? this.occurrenceId,
+    adherenceEventId: adherenceEventId.present
+        ? adherenceEventId.value
+        : this.adherenceEventId,
+    temporalPrecision: temporalPrecision ?? this.temporalPrecision,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  UnifiedTreatmentLegacyLogMapping copyWithCompanion(
+    UnifiedTreatmentLegacyLogMappingsCompanion data,
+  ) {
+    return UnifiedTreatmentLegacyLogMapping(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      sourceType: data.sourceType.present
+          ? data.sourceType.value
+          : this.sourceType,
+      legacyLogId: data.legacyLogId.present
+          ? data.legacyLogId.value
+          : this.legacyLogId,
+      legacyEntityId: data.legacyEntityId.present
+          ? data.legacyEntityId.value
+          : this.legacyEntityId,
+      occurrenceId: data.occurrenceId.present
+          ? data.occurrenceId.value
+          : this.occurrenceId,
+      adherenceEventId: data.adherenceEventId.present
+          ? data.adherenceEventId.value
+          : this.adherenceEventId,
+      temporalPrecision: data.temporalPrecision.present
+          ? data.temporalPrecision.value
+          : this.temporalPrecision,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnifiedTreatmentLegacyLogMapping(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('sourceType: $sourceType, ')
+          ..write('legacyLogId: $legacyLogId, ')
+          ..write('legacyEntityId: $legacyEntityId, ')
+          ..write('occurrenceId: $occurrenceId, ')
+          ..write('adherenceEventId: $adherenceEventId, ')
+          ..write('temporalPrecision: $temporalPrecision, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    sourceType,
+    legacyLogId,
+    legacyEntityId,
+    occurrenceId,
+    adherenceEventId,
+    temporalPrecision,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UnifiedTreatmentLegacyLogMapping &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.sourceType == this.sourceType &&
+          other.legacyLogId == this.legacyLogId &&
+          other.legacyEntityId == this.legacyEntityId &&
+          other.occurrenceId == this.occurrenceId &&
+          other.adherenceEventId == this.adherenceEventId &&
+          other.temporalPrecision == this.temporalPrecision &&
+          other.createdAt == this.createdAt);
+}
+
+class UnifiedTreatmentLegacyLogMappingsCompanion
+    extends UpdateCompanion<UnifiedTreatmentLegacyLogMapping> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> sourceType;
+  final Value<String> legacyLogId;
+  final Value<String> legacyEntityId;
+  final Value<String> occurrenceId;
+  final Value<String?> adherenceEventId;
+  final Value<String> temporalPrecision;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const UnifiedTreatmentLegacyLogMappingsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.sourceType = const Value.absent(),
+    this.legacyLogId = const Value.absent(),
+    this.legacyEntityId = const Value.absent(),
+    this.occurrenceId = const Value.absent(),
+    this.adherenceEventId = const Value.absent(),
+    this.temporalPrecision = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UnifiedTreatmentLegacyLogMappingsCompanion.insert({
+    required String id,
+    required String userId,
+    required String sourceType,
+    required String legacyLogId,
+    required String legacyEntityId,
+    required String occurrenceId,
+    this.adherenceEventId = const Value.absent(),
+    required String temporalPrecision,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       sourceType = Value(sourceType),
+       legacyLogId = Value(legacyLogId),
+       legacyEntityId = Value(legacyEntityId),
+       occurrenceId = Value(occurrenceId),
+       temporalPrecision = Value(temporalPrecision),
+       createdAt = Value(createdAt);
+  static Insertable<UnifiedTreatmentLegacyLogMapping> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? sourceType,
+    Expression<String>? legacyLogId,
+    Expression<String>? legacyEntityId,
+    Expression<String>? occurrenceId,
+    Expression<String>? adherenceEventId,
+    Expression<String>? temporalPrecision,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (sourceType != null) 'source_type': sourceType,
+      if (legacyLogId != null) 'legacy_log_id': legacyLogId,
+      if (legacyEntityId != null) 'legacy_entity_id': legacyEntityId,
+      if (occurrenceId != null) 'occurrence_id': occurrenceId,
+      if (adherenceEventId != null) 'adherence_event_id': adherenceEventId,
+      if (temporalPrecision != null) 'temporal_precision': temporalPrecision,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UnifiedTreatmentLegacyLogMappingsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? sourceType,
+    Value<String>? legacyLogId,
+    Value<String>? legacyEntityId,
+    Value<String>? occurrenceId,
+    Value<String?>? adherenceEventId,
+    Value<String>? temporalPrecision,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return UnifiedTreatmentLegacyLogMappingsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      sourceType: sourceType ?? this.sourceType,
+      legacyLogId: legacyLogId ?? this.legacyLogId,
+      legacyEntityId: legacyEntityId ?? this.legacyEntityId,
+      occurrenceId: occurrenceId ?? this.occurrenceId,
+      adherenceEventId: adherenceEventId ?? this.adherenceEventId,
+      temporalPrecision: temporalPrecision ?? this.temporalPrecision,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (sourceType.present) {
+      map['source_type'] = Variable<String>(sourceType.value);
+    }
+    if (legacyLogId.present) {
+      map['legacy_log_id'] = Variable<String>(legacyLogId.value);
+    }
+    if (legacyEntityId.present) {
+      map['legacy_entity_id'] = Variable<String>(legacyEntityId.value);
+    }
+    if (occurrenceId.present) {
+      map['occurrence_id'] = Variable<String>(occurrenceId.value);
+    }
+    if (adherenceEventId.present) {
+      map['adherence_event_id'] = Variable<String>(adherenceEventId.value);
+    }
+    if (temporalPrecision.present) {
+      map['temporal_precision'] = Variable<String>(temporalPrecision.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnifiedTreatmentLegacyLogMappingsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('sourceType: $sourceType, ')
+          ..write('legacyLogId: $legacyLogId, ')
+          ..write('legacyEntityId: $legacyEntityId, ')
+          ..write('occurrenceId: $occurrenceId, ')
+          ..write('adherenceEventId: $adherenceEventId, ')
+          ..write('temporalPrecision: $temporalPrecision, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UnifiedTreatmentRolloutFlagsTable extends UnifiedTreatmentRolloutFlags
+    with
+        TableInfo<
+          $UnifiedTreatmentRolloutFlagsTable,
+          UnifiedTreatmentRolloutFlag
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UnifiedTreatmentRolloutFlagsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _keyMeta = const VerificationMeta('key');
+  @override
+  late final GeneratedColumn<String> key = GeneratedColumn<String>(
+    'key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enabledMeta = const VerificationMeta(
+    'enabled',
+  );
+  @override
+  late final GeneratedColumn<bool> enabled = GeneratedColumn<bool>(
+    'enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("enabled" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _expiresAtMeta = const VerificationMeta(
+    'expiresAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> expiresAt = GeneratedColumn<DateTime>(
+    'expires_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    key,
+    enabled,
+    source,
+    updatedAt,
+    expiresAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'unified_treatment_rollout_flags';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UnifiedTreatmentRolloutFlag> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('key')) {
+      context.handle(
+        _keyMeta,
+        key.isAcceptableOrUnknown(data['key']!, _keyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_keyMeta);
+    }
+    if (data.containsKey('enabled')) {
+      context.handle(
+        _enabledMeta,
+        enabled.isAcceptableOrUnknown(data['enabled']!, _enabledMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_enabledMeta);
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('expires_at')) {
+      context.handle(
+        _expiresAtMeta,
+        expiresAt.isAcceptableOrUnknown(data['expires_at']!, _expiresAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {key};
+  @override
+  UnifiedTreatmentRolloutFlag map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UnifiedTreatmentRolloutFlag(
+      key: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key'],
+      )!,
+      enabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}enabled'],
+      )!,
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      expiresAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}expires_at'],
+      ),
+    );
+  }
+
+  @override
+  $UnifiedTreatmentRolloutFlagsTable createAlias(String alias) {
+    return $UnifiedTreatmentRolloutFlagsTable(attachedDatabase, alias);
+  }
+}
+
+class UnifiedTreatmentRolloutFlag extends DataClass
+    implements Insertable<UnifiedTreatmentRolloutFlag> {
+  final String key;
+  final bool enabled;
+  final String source;
+  final DateTime updatedAt;
+  final DateTime? expiresAt;
+  const UnifiedTreatmentRolloutFlag({
+    required this.key,
+    required this.enabled,
+    required this.source,
+    required this.updatedAt,
+    this.expiresAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['key'] = Variable<String>(key);
+    map['enabled'] = Variable<bool>(enabled);
+    map['source'] = Variable<String>(source);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || expiresAt != null) {
+      map['expires_at'] = Variable<DateTime>(expiresAt);
+    }
+    return map;
+  }
+
+  UnifiedTreatmentRolloutFlagsCompanion toCompanion(bool nullToAbsent) {
+    return UnifiedTreatmentRolloutFlagsCompanion(
+      key: Value(key),
+      enabled: Value(enabled),
+      source: Value(source),
+      updatedAt: Value(updatedAt),
+      expiresAt: expiresAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(expiresAt),
+    );
+  }
+
+  factory UnifiedTreatmentRolloutFlag.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UnifiedTreatmentRolloutFlag(
+      key: serializer.fromJson<String>(json['key']),
+      enabled: serializer.fromJson<bool>(json['enabled']),
+      source: serializer.fromJson<String>(json['source']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      expiresAt: serializer.fromJson<DateTime?>(json['expiresAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'key': serializer.toJson<String>(key),
+      'enabled': serializer.toJson<bool>(enabled),
+      'source': serializer.toJson<String>(source),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'expiresAt': serializer.toJson<DateTime?>(expiresAt),
+    };
+  }
+
+  UnifiedTreatmentRolloutFlag copyWith({
+    String? key,
+    bool? enabled,
+    String? source,
+    DateTime? updatedAt,
+    Value<DateTime?> expiresAt = const Value.absent(),
+  }) => UnifiedTreatmentRolloutFlag(
+    key: key ?? this.key,
+    enabled: enabled ?? this.enabled,
+    source: source ?? this.source,
+    updatedAt: updatedAt ?? this.updatedAt,
+    expiresAt: expiresAt.present ? expiresAt.value : this.expiresAt,
+  );
+  UnifiedTreatmentRolloutFlag copyWithCompanion(
+    UnifiedTreatmentRolloutFlagsCompanion data,
+  ) {
+    return UnifiedTreatmentRolloutFlag(
+      key: data.key.present ? data.key.value : this.key,
+      enabled: data.enabled.present ? data.enabled.value : this.enabled,
+      source: data.source.present ? data.source.value : this.source,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      expiresAt: data.expiresAt.present ? data.expiresAt.value : this.expiresAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnifiedTreatmentRolloutFlag(')
+          ..write('key: $key, ')
+          ..write('enabled: $enabled, ')
+          ..write('source: $source, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('expiresAt: $expiresAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(key, enabled, source, updatedAt, expiresAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UnifiedTreatmentRolloutFlag &&
+          other.key == this.key &&
+          other.enabled == this.enabled &&
+          other.source == this.source &&
+          other.updatedAt == this.updatedAt &&
+          other.expiresAt == this.expiresAt);
+}
+
+class UnifiedTreatmentRolloutFlagsCompanion
+    extends UpdateCompanion<UnifiedTreatmentRolloutFlag> {
+  final Value<String> key;
+  final Value<bool> enabled;
+  final Value<String> source;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> expiresAt;
+  final Value<int> rowid;
+  const UnifiedTreatmentRolloutFlagsCompanion({
+    this.key = const Value.absent(),
+    this.enabled = const Value.absent(),
+    this.source = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.expiresAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UnifiedTreatmentRolloutFlagsCompanion.insert({
+    required String key,
+    required bool enabled,
+    required String source,
+    required DateTime updatedAt,
+    this.expiresAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : key = Value(key),
+       enabled = Value(enabled),
+       source = Value(source),
+       updatedAt = Value(updatedAt);
+  static Insertable<UnifiedTreatmentRolloutFlag> custom({
+    Expression<String>? key,
+    Expression<bool>? enabled,
+    Expression<String>? source,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? expiresAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (key != null) 'key': key,
+      if (enabled != null) 'enabled': enabled,
+      if (source != null) 'source': source,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (expiresAt != null) 'expires_at': expiresAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UnifiedTreatmentRolloutFlagsCompanion copyWith({
+    Value<String>? key,
+    Value<bool>? enabled,
+    Value<String>? source,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? expiresAt,
+    Value<int>? rowid,
+  }) {
+    return UnifiedTreatmentRolloutFlagsCompanion(
+      key: key ?? this.key,
+      enabled: enabled ?? this.enabled,
+      source: source ?? this.source,
+      updatedAt: updatedAt ?? this.updatedAt,
+      expiresAt: expiresAt ?? this.expiresAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (key.present) {
+      map['key'] = Variable<String>(key.value);
+    }
+    if (enabled.present) {
+      map['enabled'] = Variable<bool>(enabled.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (expiresAt.present) {
+      map['expires_at'] = Variable<DateTime>(expiresAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnifiedTreatmentRolloutFlagsCompanion(')
+          ..write('key: $key, ')
+          ..write('enabled: $enabled, ')
+          ..write('source: $source, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('expiresAt: $expiresAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UnifiedTreatmentCutoverStatesTable extends UnifiedTreatmentCutoverStates
+    with
+        TableInfo<
+          $UnifiedTreatmentCutoverStatesTable,
+          UnifiedTreatmentCutoverState
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UnifiedTreatmentCutoverStatesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _migrationSchemaVersionMeta =
+      const VerificationMeta('migrationSchemaVersion');
+  @override
+  late final GeneratedColumn<int> migrationSchemaVersion = GeneratedColumn<int>(
+    'migration_schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _validatedAtUtcMeta = const VerificationMeta(
+    'validatedAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> validatedAtUtc =
+      GeneratedColumn<DateTime>(
+        'validated_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _readNewAtUtcMeta = const VerificationMeta(
+    'readNewAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> readNewAtUtc = GeneratedColumn<DateTime>(
+    'read_new_at_utc',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _writeNewAtUtcMeta = const VerificationMeta(
+    'writeNewAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> writeNewAtUtc =
+      GeneratedColumn<DateTime>(
+        'write_new_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _recoveryCodeMeta = const VerificationMeta(
+    'recoveryCode',
+  );
+  @override
+  late final GeneratedColumn<String> recoveryCode = GeneratedColumn<String>(
+    'recovery_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _remoteSchemaAvailableMeta =
+      const VerificationMeta('remoteSchemaAvailable');
+  @override
+  late final GeneratedColumn<bool> remoteSchemaAvailable =
+      GeneratedColumn<bool>(
+        'remote_schema_available',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("remote_schema_available" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    userId,
+    state,
+    migrationSchemaVersion,
+    validatedAtUtc,
+    readNewAtUtc,
+    writeNewAtUtc,
+    recoveryCode,
+    remoteSchemaAvailable,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'unified_treatment_cutover_states';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UnifiedTreatmentCutoverState> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stateMeta);
+    }
+    if (data.containsKey('migration_schema_version')) {
+      context.handle(
+        _migrationSchemaVersionMeta,
+        migrationSchemaVersion.isAcceptableOrUnknown(
+          data['migration_schema_version']!,
+          _migrationSchemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_migrationSchemaVersionMeta);
+    }
+    if (data.containsKey('validated_at_utc')) {
+      context.handle(
+        _validatedAtUtcMeta,
+        validatedAtUtc.isAcceptableOrUnknown(
+          data['validated_at_utc']!,
+          _validatedAtUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('read_new_at_utc')) {
+      context.handle(
+        _readNewAtUtcMeta,
+        readNewAtUtc.isAcceptableOrUnknown(
+          data['read_new_at_utc']!,
+          _readNewAtUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('write_new_at_utc')) {
+      context.handle(
+        _writeNewAtUtcMeta,
+        writeNewAtUtc.isAcceptableOrUnknown(
+          data['write_new_at_utc']!,
+          _writeNewAtUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('recovery_code')) {
+      context.handle(
+        _recoveryCodeMeta,
+        recoveryCode.isAcceptableOrUnknown(
+          data['recovery_code']!,
+          _recoveryCodeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('remote_schema_available')) {
+      context.handle(
+        _remoteSchemaAvailableMeta,
+        remoteSchemaAvailable.isAcceptableOrUnknown(
+          data['remote_schema_available']!,
+          _remoteSchemaAvailableMeta,
+        ),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId};
+  @override
+  UnifiedTreatmentCutoverState map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UnifiedTreatmentCutoverState(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      )!,
+      migrationSchemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}migration_schema_version'],
+      )!,
+      validatedAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}validated_at_utc'],
+      ),
+      readNewAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}read_new_at_utc'],
+      ),
+      writeNewAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}write_new_at_utc'],
+      ),
+      recoveryCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}recovery_code'],
+      ),
+      remoteSchemaAvailable: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}remote_schema_available'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $UnifiedTreatmentCutoverStatesTable createAlias(String alias) {
+    return $UnifiedTreatmentCutoverStatesTable(attachedDatabase, alias);
+  }
+}
+
+class UnifiedTreatmentCutoverState extends DataClass
+    implements Insertable<UnifiedTreatmentCutoverState> {
+  final String userId;
+  final String state;
+  final int migrationSchemaVersion;
+  final DateTime? validatedAtUtc;
+  final DateTime? readNewAtUtc;
+  final DateTime? writeNewAtUtc;
+  final String? recoveryCode;
+  final bool remoteSchemaAvailable;
+  final DateTime updatedAt;
+  const UnifiedTreatmentCutoverState({
+    required this.userId,
+    required this.state,
+    required this.migrationSchemaVersion,
+    this.validatedAtUtc,
+    this.readNewAtUtc,
+    this.writeNewAtUtc,
+    this.recoveryCode,
+    required this.remoteSchemaAvailable,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['state'] = Variable<String>(state);
+    map['migration_schema_version'] = Variable<int>(migrationSchemaVersion);
+    if (!nullToAbsent || validatedAtUtc != null) {
+      map['validated_at_utc'] = Variable<DateTime>(validatedAtUtc);
+    }
+    if (!nullToAbsent || readNewAtUtc != null) {
+      map['read_new_at_utc'] = Variable<DateTime>(readNewAtUtc);
+    }
+    if (!nullToAbsent || writeNewAtUtc != null) {
+      map['write_new_at_utc'] = Variable<DateTime>(writeNewAtUtc);
+    }
+    if (!nullToAbsent || recoveryCode != null) {
+      map['recovery_code'] = Variable<String>(recoveryCode);
+    }
+    map['remote_schema_available'] = Variable<bool>(remoteSchemaAvailable);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  UnifiedTreatmentCutoverStatesCompanion toCompanion(bool nullToAbsent) {
+    return UnifiedTreatmentCutoverStatesCompanion(
+      userId: Value(userId),
+      state: Value(state),
+      migrationSchemaVersion: Value(migrationSchemaVersion),
+      validatedAtUtc: validatedAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(validatedAtUtc),
+      readNewAtUtc: readNewAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(readNewAtUtc),
+      writeNewAtUtc: writeNewAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(writeNewAtUtc),
+      recoveryCode: recoveryCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(recoveryCode),
+      remoteSchemaAvailable: Value(remoteSchemaAvailable),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory UnifiedTreatmentCutoverState.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UnifiedTreatmentCutoverState(
+      userId: serializer.fromJson<String>(json['userId']),
+      state: serializer.fromJson<String>(json['state']),
+      migrationSchemaVersion: serializer.fromJson<int>(
+        json['migrationSchemaVersion'],
+      ),
+      validatedAtUtc: serializer.fromJson<DateTime?>(json['validatedAtUtc']),
+      readNewAtUtc: serializer.fromJson<DateTime?>(json['readNewAtUtc']),
+      writeNewAtUtc: serializer.fromJson<DateTime?>(json['writeNewAtUtc']),
+      recoveryCode: serializer.fromJson<String?>(json['recoveryCode']),
+      remoteSchemaAvailable: serializer.fromJson<bool>(
+        json['remoteSchemaAvailable'],
+      ),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'state': serializer.toJson<String>(state),
+      'migrationSchemaVersion': serializer.toJson<int>(migrationSchemaVersion),
+      'validatedAtUtc': serializer.toJson<DateTime?>(validatedAtUtc),
+      'readNewAtUtc': serializer.toJson<DateTime?>(readNewAtUtc),
+      'writeNewAtUtc': serializer.toJson<DateTime?>(writeNewAtUtc),
+      'recoveryCode': serializer.toJson<String?>(recoveryCode),
+      'remoteSchemaAvailable': serializer.toJson<bool>(remoteSchemaAvailable),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  UnifiedTreatmentCutoverState copyWith({
+    String? userId,
+    String? state,
+    int? migrationSchemaVersion,
+    Value<DateTime?> validatedAtUtc = const Value.absent(),
+    Value<DateTime?> readNewAtUtc = const Value.absent(),
+    Value<DateTime?> writeNewAtUtc = const Value.absent(),
+    Value<String?> recoveryCode = const Value.absent(),
+    bool? remoteSchemaAvailable,
+    DateTime? updatedAt,
+  }) => UnifiedTreatmentCutoverState(
+    userId: userId ?? this.userId,
+    state: state ?? this.state,
+    migrationSchemaVersion:
+        migrationSchemaVersion ?? this.migrationSchemaVersion,
+    validatedAtUtc: validatedAtUtc.present
+        ? validatedAtUtc.value
+        : this.validatedAtUtc,
+    readNewAtUtc: readNewAtUtc.present ? readNewAtUtc.value : this.readNewAtUtc,
+    writeNewAtUtc: writeNewAtUtc.present
+        ? writeNewAtUtc.value
+        : this.writeNewAtUtc,
+    recoveryCode: recoveryCode.present ? recoveryCode.value : this.recoveryCode,
+    remoteSchemaAvailable: remoteSchemaAvailable ?? this.remoteSchemaAvailable,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  UnifiedTreatmentCutoverState copyWithCompanion(
+    UnifiedTreatmentCutoverStatesCompanion data,
+  ) {
+    return UnifiedTreatmentCutoverState(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      state: data.state.present ? data.state.value : this.state,
+      migrationSchemaVersion: data.migrationSchemaVersion.present
+          ? data.migrationSchemaVersion.value
+          : this.migrationSchemaVersion,
+      validatedAtUtc: data.validatedAtUtc.present
+          ? data.validatedAtUtc.value
+          : this.validatedAtUtc,
+      readNewAtUtc: data.readNewAtUtc.present
+          ? data.readNewAtUtc.value
+          : this.readNewAtUtc,
+      writeNewAtUtc: data.writeNewAtUtc.present
+          ? data.writeNewAtUtc.value
+          : this.writeNewAtUtc,
+      recoveryCode: data.recoveryCode.present
+          ? data.recoveryCode.value
+          : this.recoveryCode,
+      remoteSchemaAvailable: data.remoteSchemaAvailable.present
+          ? data.remoteSchemaAvailable.value
+          : this.remoteSchemaAvailable,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnifiedTreatmentCutoverState(')
+          ..write('userId: $userId, ')
+          ..write('state: $state, ')
+          ..write('migrationSchemaVersion: $migrationSchemaVersion, ')
+          ..write('validatedAtUtc: $validatedAtUtc, ')
+          ..write('readNewAtUtc: $readNewAtUtc, ')
+          ..write('writeNewAtUtc: $writeNewAtUtc, ')
+          ..write('recoveryCode: $recoveryCode, ')
+          ..write('remoteSchemaAvailable: $remoteSchemaAvailable, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    userId,
+    state,
+    migrationSchemaVersion,
+    validatedAtUtc,
+    readNewAtUtc,
+    writeNewAtUtc,
+    recoveryCode,
+    remoteSchemaAvailable,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UnifiedTreatmentCutoverState &&
+          other.userId == this.userId &&
+          other.state == this.state &&
+          other.migrationSchemaVersion == this.migrationSchemaVersion &&
+          other.validatedAtUtc == this.validatedAtUtc &&
+          other.readNewAtUtc == this.readNewAtUtc &&
+          other.writeNewAtUtc == this.writeNewAtUtc &&
+          other.recoveryCode == this.recoveryCode &&
+          other.remoteSchemaAvailable == this.remoteSchemaAvailable &&
+          other.updatedAt == this.updatedAt);
+}
+
+class UnifiedTreatmentCutoverStatesCompanion
+    extends UpdateCompanion<UnifiedTreatmentCutoverState> {
+  final Value<String> userId;
+  final Value<String> state;
+  final Value<int> migrationSchemaVersion;
+  final Value<DateTime?> validatedAtUtc;
+  final Value<DateTime?> readNewAtUtc;
+  final Value<DateTime?> writeNewAtUtc;
+  final Value<String?> recoveryCode;
+  final Value<bool> remoteSchemaAvailable;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const UnifiedTreatmentCutoverStatesCompanion({
+    this.userId = const Value.absent(),
+    this.state = const Value.absent(),
+    this.migrationSchemaVersion = const Value.absent(),
+    this.validatedAtUtc = const Value.absent(),
+    this.readNewAtUtc = const Value.absent(),
+    this.writeNewAtUtc = const Value.absent(),
+    this.recoveryCode = const Value.absent(),
+    this.remoteSchemaAvailable = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UnifiedTreatmentCutoverStatesCompanion.insert({
+    required String userId,
+    required String state,
+    required int migrationSchemaVersion,
+    this.validatedAtUtc = const Value.absent(),
+    this.readNewAtUtc = const Value.absent(),
+    this.writeNewAtUtc = const Value.absent(),
+    this.recoveryCode = const Value.absent(),
+    this.remoteSchemaAvailable = const Value.absent(),
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       state = Value(state),
+       migrationSchemaVersion = Value(migrationSchemaVersion),
+       updatedAt = Value(updatedAt);
+  static Insertable<UnifiedTreatmentCutoverState> custom({
+    Expression<String>? userId,
+    Expression<String>? state,
+    Expression<int>? migrationSchemaVersion,
+    Expression<DateTime>? validatedAtUtc,
+    Expression<DateTime>? readNewAtUtc,
+    Expression<DateTime>? writeNewAtUtc,
+    Expression<String>? recoveryCode,
+    Expression<bool>? remoteSchemaAvailable,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (state != null) 'state': state,
+      if (migrationSchemaVersion != null)
+        'migration_schema_version': migrationSchemaVersion,
+      if (validatedAtUtc != null) 'validated_at_utc': validatedAtUtc,
+      if (readNewAtUtc != null) 'read_new_at_utc': readNewAtUtc,
+      if (writeNewAtUtc != null) 'write_new_at_utc': writeNewAtUtc,
+      if (recoveryCode != null) 'recovery_code': recoveryCode,
+      if (remoteSchemaAvailable != null)
+        'remote_schema_available': remoteSchemaAvailable,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UnifiedTreatmentCutoverStatesCompanion copyWith({
+    Value<String>? userId,
+    Value<String>? state,
+    Value<int>? migrationSchemaVersion,
+    Value<DateTime?>? validatedAtUtc,
+    Value<DateTime?>? readNewAtUtc,
+    Value<DateTime?>? writeNewAtUtc,
+    Value<String?>? recoveryCode,
+    Value<bool>? remoteSchemaAvailable,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return UnifiedTreatmentCutoverStatesCompanion(
+      userId: userId ?? this.userId,
+      state: state ?? this.state,
+      migrationSchemaVersion:
+          migrationSchemaVersion ?? this.migrationSchemaVersion,
+      validatedAtUtc: validatedAtUtc ?? this.validatedAtUtc,
+      readNewAtUtc: readNewAtUtc ?? this.readNewAtUtc,
+      writeNewAtUtc: writeNewAtUtc ?? this.writeNewAtUtc,
+      recoveryCode: recoveryCode ?? this.recoveryCode,
+      remoteSchemaAvailable:
+          remoteSchemaAvailable ?? this.remoteSchemaAvailable,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (migrationSchemaVersion.present) {
+      map['migration_schema_version'] = Variable<int>(
+        migrationSchemaVersion.value,
+      );
+    }
+    if (validatedAtUtc.present) {
+      map['validated_at_utc'] = Variable<DateTime>(validatedAtUtc.value);
+    }
+    if (readNewAtUtc.present) {
+      map['read_new_at_utc'] = Variable<DateTime>(readNewAtUtc.value);
+    }
+    if (writeNewAtUtc.present) {
+      map['write_new_at_utc'] = Variable<DateTime>(writeNewAtUtc.value);
+    }
+    if (recoveryCode.present) {
+      map['recovery_code'] = Variable<String>(recoveryCode.value);
+    }
+    if (remoteSchemaAvailable.present) {
+      map['remote_schema_available'] = Variable<bool>(
+        remoteSchemaAvailable.value,
+      );
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UnifiedTreatmentCutoverStatesCompanion(')
+          ..write('userId: $userId, ')
+          ..write('state: $state, ')
+          ..write('migrationSchemaVersion: $migrationSchemaVersion, ')
+          ..write('validatedAtUtc: $validatedAtUtc, ')
+          ..write('readNewAtUtc: $readNewAtUtc, ')
+          ..write('writeNewAtUtc: $writeNewAtUtc, ')
+          ..write('recoveryCode: $recoveryCode, ')
+          ..write('remoteSchemaAvailable: $remoteSchemaAvailable, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -34677,6 +37830,16 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $RoutineOccurrenceRecordsTable(this);
   late final $RoutineAdherenceEventRecordsTable routineAdherenceEventRecords =
       $RoutineAdherenceEventRecordsTable(this);
+  late final $UnifiedTreatmentLegacyMappingsTable
+  unifiedTreatmentLegacyMappings = $UnifiedTreatmentLegacyMappingsTable(this);
+  late final $UnifiedTreatmentLegacyLogMappingsTable
+  unifiedTreatmentLegacyLogMappings = $UnifiedTreatmentLegacyLogMappingsTable(
+    this,
+  );
+  late final $UnifiedTreatmentRolloutFlagsTable unifiedTreatmentRolloutFlags =
+      $UnifiedTreatmentRolloutFlagsTable(this);
+  late final $UnifiedTreatmentCutoverStatesTable unifiedTreatmentCutoverStates =
+      $UnifiedTreatmentCutoverStatesTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -34933,6 +38096,22 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'routine_events_user_sync_idx',
     'CREATE INDEX routine_events_user_sync_idx ON routine_adherence_event_records (user_id, sync_status, created_at)',
   );
+  late final Index unifiedTreatmentLegacyEntityUniqueIdx = Index(
+    'unified_treatment_legacy_entity_unique_idx',
+    'CREATE UNIQUE INDEX unified_treatment_legacy_entity_unique_idx ON unified_treatment_legacy_mappings (user_id, source_type, legacy_entity_id)',
+  );
+  late final Index unifiedTreatmentTargetRoutineUniqueIdx = Index(
+    'unified_treatment_target_routine_unique_idx',
+    'CREATE UNIQUE INDEX unified_treatment_target_routine_unique_idx ON unified_treatment_legacy_mappings (user_id, target_routine_id)',
+  );
+  late final Index unifiedTreatmentLegacyLogUniqueIdx = Index(
+    'unified_treatment_legacy_log_unique_idx',
+    'CREATE UNIQUE INDEX unified_treatment_legacy_log_unique_idx ON unified_treatment_legacy_log_mappings (user_id, source_type, legacy_log_id)',
+  );
+  late final Index unifiedTreatmentRolloutKeyIdx = Index(
+    'unified_treatment_rollout_key_idx',
+    'CREATE UNIQUE INDEX unified_treatment_rollout_key_idx ON unified_treatment_rollout_flags ("key")',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -35007,6 +38186,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     routinePauseRecords,
     routineOccurrenceRecords,
     routineAdherenceEventRecords,
+    unifiedTreatmentLegacyMappings,
+    unifiedTreatmentLegacyLogMappings,
+    unifiedTreatmentRolloutFlags,
+    unifiedTreatmentCutoverStates,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -35071,6 +38254,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     routineEventsUserRecordedIdx,
     routineEventsUserReferenceIdx,
     routineEventsUserSyncIdx,
+    unifiedTreatmentLegacyEntityUniqueIdx,
+    unifiedTreatmentTargetRoutineUniqueIdx,
+    unifiedTreatmentLegacyLogUniqueIdx,
+    unifiedTreatmentRolloutKeyIdx,
   ];
 }
 
@@ -48070,6 +51257,7 @@ typedef $$RoutinePlanRecordsTableCreateCompanionBuilder =
       Value<String?> lastSyncError,
       required String routineId,
       required int revision,
+      Value<String> category,
       required String mode,
       required String durationType,
       required String effectiveFrom,
@@ -48082,6 +51270,13 @@ typedef $$RoutinePlanRecordsTableCreateCompanionBuilder =
       Value<DateTime?> activatedAt,
       Value<DateTime?> replacedAt,
       Value<String?> previousPlanId,
+      Value<String> provenanceOrigin,
+      Value<String> validationStatus,
+      Value<String?> provenancePrescriptionId,
+      Value<String?> provenancePrescriptionItemId,
+      Value<String?> provenanceDocumentId,
+      Value<String?> provenanceProfessionalReference,
+      Value<String> temporalPrecision,
       Value<int> rowid,
     });
 typedef $$RoutinePlanRecordsTableUpdateCompanionBuilder =
@@ -48097,6 +51292,7 @@ typedef $$RoutinePlanRecordsTableUpdateCompanionBuilder =
       Value<String?> lastSyncError,
       Value<String> routineId,
       Value<int> revision,
+      Value<String> category,
       Value<String> mode,
       Value<String> durationType,
       Value<String> effectiveFrom,
@@ -48109,6 +51305,13 @@ typedef $$RoutinePlanRecordsTableUpdateCompanionBuilder =
       Value<DateTime?> activatedAt,
       Value<DateTime?> replacedAt,
       Value<String?> previousPlanId,
+      Value<String> provenanceOrigin,
+      Value<String> validationStatus,
+      Value<String?> provenancePrescriptionId,
+      Value<String?> provenancePrescriptionItemId,
+      Value<String?> provenanceDocumentId,
+      Value<String?> provenanceProfessionalReference,
+      Value<String> temporalPrecision,
       Value<int> rowid,
     });
 
@@ -48176,6 +51379,11 @@ class $$RoutinePlanRecordsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get mode => $composableBuilder(
     column: $table.mode,
     builder: (column) => ColumnFilters(column),
@@ -48233,6 +51441,42 @@ class $$RoutinePlanRecordsTableFilterComposer
 
   ColumnFilters<String> get previousPlanId => $composableBuilder(
     column: $table.previousPlanId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get provenanceOrigin => $composableBuilder(
+    column: $table.provenanceOrigin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get validationStatus => $composableBuilder(
+    column: $table.validationStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get provenancePrescriptionId => $composableBuilder(
+    column: $table.provenancePrescriptionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get provenancePrescriptionItemId => $composableBuilder(
+    column: $table.provenancePrescriptionItemId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get provenanceDocumentId => $composableBuilder(
+    column: $table.provenanceDocumentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get provenanceProfessionalReference =>
+      $composableBuilder(
+        column: $table.provenanceProfessionalReference,
+        builder: (column) => ColumnFilters(column),
+      );
+
+  ColumnFilters<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -48301,6 +51545,11 @@ class $$RoutinePlanRecordsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get mode => $composableBuilder(
     column: $table.mode,
     builder: (column) => ColumnOrderings(column),
@@ -48360,6 +51609,43 @@ class $$RoutinePlanRecordsTableOrderingComposer
     column: $table.previousPlanId,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get provenanceOrigin => $composableBuilder(
+    column: $table.provenanceOrigin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get validationStatus => $composableBuilder(
+    column: $table.validationStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get provenancePrescriptionId => $composableBuilder(
+    column: $table.provenancePrescriptionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get provenancePrescriptionItemId =>
+      $composableBuilder(
+        column: $table.provenancePrescriptionItemId,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<String> get provenanceDocumentId => $composableBuilder(
+    column: $table.provenanceDocumentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get provenanceProfessionalReference =>
+      $composableBuilder(
+        column: $table.provenanceProfessionalReference,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$RoutinePlanRecordsTableAnnotationComposer
@@ -48412,6 +51698,9 @@ class $$RoutinePlanRecordsTableAnnotationComposer
   GeneratedColumn<int> get revision =>
       $composableBuilder(column: $table.revision, builder: (column) => column);
 
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
   GeneratedColumn<String> get mode =>
       $composableBuilder(column: $table.mode, builder: (column) => column);
 
@@ -48461,6 +51750,43 @@ class $$RoutinePlanRecordsTableAnnotationComposer
 
   GeneratedColumn<String> get previousPlanId => $composableBuilder(
     column: $table.previousPlanId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get provenanceOrigin => $composableBuilder(
+    column: $table.provenanceOrigin,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get validationStatus => $composableBuilder(
+    column: $table.validationStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get provenancePrescriptionId => $composableBuilder(
+    column: $table.provenancePrescriptionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get provenancePrescriptionItemId =>
+      $composableBuilder(
+        column: $table.provenancePrescriptionItemId,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get provenanceDocumentId => $composableBuilder(
+    column: $table.provenanceDocumentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get provenanceProfessionalReference =>
+      $composableBuilder(
+        column: $table.provenanceProfessionalReference,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
     builder: (column) => column,
   );
 }
@@ -48516,6 +51842,7 @@ class $$RoutinePlanRecordsTableTableManager
                 Value<String?> lastSyncError = const Value.absent(),
                 Value<String> routineId = const Value.absent(),
                 Value<int> revision = const Value.absent(),
+                Value<String> category = const Value.absent(),
                 Value<String> mode = const Value.absent(),
                 Value<String> durationType = const Value.absent(),
                 Value<String> effectiveFrom = const Value.absent(),
@@ -48528,6 +51855,15 @@ class $$RoutinePlanRecordsTableTableManager
                 Value<DateTime?> activatedAt = const Value.absent(),
                 Value<DateTime?> replacedAt = const Value.absent(),
                 Value<String?> previousPlanId = const Value.absent(),
+                Value<String> provenanceOrigin = const Value.absent(),
+                Value<String> validationStatus = const Value.absent(),
+                Value<String?> provenancePrescriptionId = const Value.absent(),
+                Value<String?> provenancePrescriptionItemId =
+                    const Value.absent(),
+                Value<String?> provenanceDocumentId = const Value.absent(),
+                Value<String?> provenanceProfessionalReference =
+                    const Value.absent(),
+                Value<String> temporalPrecision = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RoutinePlanRecordsCompanion(
                 id: id,
@@ -48541,6 +51877,7 @@ class $$RoutinePlanRecordsTableTableManager
                 lastSyncError: lastSyncError,
                 routineId: routineId,
                 revision: revision,
+                category: category,
                 mode: mode,
                 durationType: durationType,
                 effectiveFrom: effectiveFrom,
@@ -48553,6 +51890,14 @@ class $$RoutinePlanRecordsTableTableManager
                 activatedAt: activatedAt,
                 replacedAt: replacedAt,
                 previousPlanId: previousPlanId,
+                provenanceOrigin: provenanceOrigin,
+                validationStatus: validationStatus,
+                provenancePrescriptionId: provenancePrescriptionId,
+                provenancePrescriptionItemId: provenancePrescriptionItemId,
+                provenanceDocumentId: provenanceDocumentId,
+                provenanceProfessionalReference:
+                    provenanceProfessionalReference,
+                temporalPrecision: temporalPrecision,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -48568,6 +51913,7 @@ class $$RoutinePlanRecordsTableTableManager
                 Value<String?> lastSyncError = const Value.absent(),
                 required String routineId,
                 required int revision,
+                Value<String> category = const Value.absent(),
                 required String mode,
                 required String durationType,
                 required String effectiveFrom,
@@ -48580,6 +51926,15 @@ class $$RoutinePlanRecordsTableTableManager
                 Value<DateTime?> activatedAt = const Value.absent(),
                 Value<DateTime?> replacedAt = const Value.absent(),
                 Value<String?> previousPlanId = const Value.absent(),
+                Value<String> provenanceOrigin = const Value.absent(),
+                Value<String> validationStatus = const Value.absent(),
+                Value<String?> provenancePrescriptionId = const Value.absent(),
+                Value<String?> provenancePrescriptionItemId =
+                    const Value.absent(),
+                Value<String?> provenanceDocumentId = const Value.absent(),
+                Value<String?> provenanceProfessionalReference =
+                    const Value.absent(),
+                Value<String> temporalPrecision = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RoutinePlanRecordsCompanion.insert(
                 id: id,
@@ -48593,6 +51948,7 @@ class $$RoutinePlanRecordsTableTableManager
                 lastSyncError: lastSyncError,
                 routineId: routineId,
                 revision: revision,
+                category: category,
                 mode: mode,
                 durationType: durationType,
                 effectiveFrom: effectiveFrom,
@@ -48605,6 +51961,14 @@ class $$RoutinePlanRecordsTableTableManager
                 activatedAt: activatedAt,
                 replacedAt: replacedAt,
                 previousPlanId: previousPlanId,
+                provenanceOrigin: provenanceOrigin,
+                validationStatus: validationStatus,
+                provenancePrescriptionId: provenancePrescriptionId,
+                provenancePrescriptionItemId: provenancePrescriptionItemId,
+                provenanceDocumentId: provenanceDocumentId,
+                provenanceProfessionalReference:
+                    provenanceProfessionalReference,
+                temporalPrecision: temporalPrecision,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -50973,6 +54337,1329 @@ typedef $$RoutineAdherenceEventRecordsTableProcessedTableManager =
       RoutineAdherenceEventRecord,
       PrefetchHooks Function()
     >;
+typedef $$UnifiedTreatmentLegacyMappingsTableCreateCompanionBuilder =
+    UnifiedTreatmentLegacyMappingsCompanion Function({
+      required String id,
+      required String userId,
+      required String sourceType,
+      required String legacyEntityId,
+      required String targetRoutineId,
+      required String targetPlanId,
+      required String targetScheduleId,
+      required int migrationSchemaVersion,
+      required String status,
+      required DateTime startedAtUtc,
+      Value<DateTime?> completedAtUtc,
+      Value<String?> failureCode,
+      required String validationSummary,
+      Value<String?> timeZone,
+      required String temporalPrecision,
+      Value<bool> hasNewClinicalWrites,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$UnifiedTreatmentLegacyMappingsTableUpdateCompanionBuilder =
+    UnifiedTreatmentLegacyMappingsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> sourceType,
+      Value<String> legacyEntityId,
+      Value<String> targetRoutineId,
+      Value<String> targetPlanId,
+      Value<String> targetScheduleId,
+      Value<int> migrationSchemaVersion,
+      Value<String> status,
+      Value<DateTime> startedAtUtc,
+      Value<DateTime?> completedAtUtc,
+      Value<String?> failureCode,
+      Value<String> validationSummary,
+      Value<String?> timeZone,
+      Value<String> temporalPrecision,
+      Value<bool> hasNewClinicalWrites,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$UnifiedTreatmentLegacyMappingsTableFilterComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentLegacyMappingsTable> {
+  $$UnifiedTreatmentLegacyMappingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get legacyEntityId => $composableBuilder(
+    column: $table.legacyEntityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetRoutineId => $composableBuilder(
+    column: $table.targetRoutineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetPlanId => $composableBuilder(
+    column: $table.targetPlanId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetScheduleId => $composableBuilder(
+    column: $table.targetScheduleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get migrationSchemaVersion => $composableBuilder(
+    column: $table.migrationSchemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startedAtUtc => $composableBuilder(
+    column: $table.startedAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAtUtc => $composableBuilder(
+    column: $table.completedAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get failureCode => $composableBuilder(
+    column: $table.failureCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get validationSummary => $composableBuilder(
+    column: $table.validationSummary,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get timeZone => $composableBuilder(
+    column: $table.timeZone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get hasNewClinicalWrites => $composableBuilder(
+    column: $table.hasNewClinicalWrites,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$UnifiedTreatmentLegacyMappingsTableOrderingComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentLegacyMappingsTable> {
+  $$UnifiedTreatmentLegacyMappingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get legacyEntityId => $composableBuilder(
+    column: $table.legacyEntityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetRoutineId => $composableBuilder(
+    column: $table.targetRoutineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetPlanId => $composableBuilder(
+    column: $table.targetPlanId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetScheduleId => $composableBuilder(
+    column: $table.targetScheduleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get migrationSchemaVersion => $composableBuilder(
+    column: $table.migrationSchemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startedAtUtc => $composableBuilder(
+    column: $table.startedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAtUtc => $composableBuilder(
+    column: $table.completedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get failureCode => $composableBuilder(
+    column: $table.failureCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get validationSummary => $composableBuilder(
+    column: $table.validationSummary,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get timeZone => $composableBuilder(
+    column: $table.timeZone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get hasNewClinicalWrites => $composableBuilder(
+    column: $table.hasNewClinicalWrites,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UnifiedTreatmentLegacyMappingsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentLegacyMappingsTable> {
+  $$UnifiedTreatmentLegacyMappingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get legacyEntityId => $composableBuilder(
+    column: $table.legacyEntityId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get targetRoutineId => $composableBuilder(
+    column: $table.targetRoutineId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get targetPlanId => $composableBuilder(
+    column: $table.targetPlanId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get targetScheduleId => $composableBuilder(
+    column: $table.targetScheduleId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get migrationSchemaVersion => $composableBuilder(
+    column: $table.migrationSchemaVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startedAtUtc => $composableBuilder(
+    column: $table.startedAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get completedAtUtc => $composableBuilder(
+    column: $table.completedAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get failureCode => $composableBuilder(
+    column: $table.failureCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get validationSummary => $composableBuilder(
+    column: $table.validationSummary,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get timeZone =>
+      $composableBuilder(column: $table.timeZone, builder: (column) => column);
+
+  GeneratedColumn<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get hasNewClinicalWrites => $composableBuilder(
+    column: $table.hasNewClinicalWrites,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$UnifiedTreatmentLegacyMappingsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UnifiedTreatmentLegacyMappingsTable,
+          UnifiedTreatmentLegacyMapping,
+          $$UnifiedTreatmentLegacyMappingsTableFilterComposer,
+          $$UnifiedTreatmentLegacyMappingsTableOrderingComposer,
+          $$UnifiedTreatmentLegacyMappingsTableAnnotationComposer,
+          $$UnifiedTreatmentLegacyMappingsTableCreateCompanionBuilder,
+          $$UnifiedTreatmentLegacyMappingsTableUpdateCompanionBuilder,
+          (
+            UnifiedTreatmentLegacyMapping,
+            BaseReferences<
+              _$AppDatabase,
+              $UnifiedTreatmentLegacyMappingsTable,
+              UnifiedTreatmentLegacyMapping
+            >,
+          ),
+          UnifiedTreatmentLegacyMapping,
+          PrefetchHooks Function()
+        > {
+  $$UnifiedTreatmentLegacyMappingsTableTableManager(
+    _$AppDatabase db,
+    $UnifiedTreatmentLegacyMappingsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UnifiedTreatmentLegacyMappingsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$UnifiedTreatmentLegacyMappingsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$UnifiedTreatmentLegacyMappingsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> sourceType = const Value.absent(),
+                Value<String> legacyEntityId = const Value.absent(),
+                Value<String> targetRoutineId = const Value.absent(),
+                Value<String> targetPlanId = const Value.absent(),
+                Value<String> targetScheduleId = const Value.absent(),
+                Value<int> migrationSchemaVersion = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> startedAtUtc = const Value.absent(),
+                Value<DateTime?> completedAtUtc = const Value.absent(),
+                Value<String?> failureCode = const Value.absent(),
+                Value<String> validationSummary = const Value.absent(),
+                Value<String?> timeZone = const Value.absent(),
+                Value<String> temporalPrecision = const Value.absent(),
+                Value<bool> hasNewClinicalWrites = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UnifiedTreatmentLegacyMappingsCompanion(
+                id: id,
+                userId: userId,
+                sourceType: sourceType,
+                legacyEntityId: legacyEntityId,
+                targetRoutineId: targetRoutineId,
+                targetPlanId: targetPlanId,
+                targetScheduleId: targetScheduleId,
+                migrationSchemaVersion: migrationSchemaVersion,
+                status: status,
+                startedAtUtc: startedAtUtc,
+                completedAtUtc: completedAtUtc,
+                failureCode: failureCode,
+                validationSummary: validationSummary,
+                timeZone: timeZone,
+                temporalPrecision: temporalPrecision,
+                hasNewClinicalWrites: hasNewClinicalWrites,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String sourceType,
+                required String legacyEntityId,
+                required String targetRoutineId,
+                required String targetPlanId,
+                required String targetScheduleId,
+                required int migrationSchemaVersion,
+                required String status,
+                required DateTime startedAtUtc,
+                Value<DateTime?> completedAtUtc = const Value.absent(),
+                Value<String?> failureCode = const Value.absent(),
+                required String validationSummary,
+                Value<String?> timeZone = const Value.absent(),
+                required String temporalPrecision,
+                Value<bool> hasNewClinicalWrites = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => UnifiedTreatmentLegacyMappingsCompanion.insert(
+                id: id,
+                userId: userId,
+                sourceType: sourceType,
+                legacyEntityId: legacyEntityId,
+                targetRoutineId: targetRoutineId,
+                targetPlanId: targetPlanId,
+                targetScheduleId: targetScheduleId,
+                migrationSchemaVersion: migrationSchemaVersion,
+                status: status,
+                startedAtUtc: startedAtUtc,
+                completedAtUtc: completedAtUtc,
+                failureCode: failureCode,
+                validationSummary: validationSummary,
+                timeZone: timeZone,
+                temporalPrecision: temporalPrecision,
+                hasNewClinicalWrites: hasNewClinicalWrites,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$UnifiedTreatmentLegacyMappingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UnifiedTreatmentLegacyMappingsTable,
+      UnifiedTreatmentLegacyMapping,
+      $$UnifiedTreatmentLegacyMappingsTableFilterComposer,
+      $$UnifiedTreatmentLegacyMappingsTableOrderingComposer,
+      $$UnifiedTreatmentLegacyMappingsTableAnnotationComposer,
+      $$UnifiedTreatmentLegacyMappingsTableCreateCompanionBuilder,
+      $$UnifiedTreatmentLegacyMappingsTableUpdateCompanionBuilder,
+      (
+        UnifiedTreatmentLegacyMapping,
+        BaseReferences<
+          _$AppDatabase,
+          $UnifiedTreatmentLegacyMappingsTable,
+          UnifiedTreatmentLegacyMapping
+        >,
+      ),
+      UnifiedTreatmentLegacyMapping,
+      PrefetchHooks Function()
+    >;
+typedef $$UnifiedTreatmentLegacyLogMappingsTableCreateCompanionBuilder =
+    UnifiedTreatmentLegacyLogMappingsCompanion Function({
+      required String id,
+      required String userId,
+      required String sourceType,
+      required String legacyLogId,
+      required String legacyEntityId,
+      required String occurrenceId,
+      Value<String?> adherenceEventId,
+      required String temporalPrecision,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$UnifiedTreatmentLegacyLogMappingsTableUpdateCompanionBuilder =
+    UnifiedTreatmentLegacyLogMappingsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> sourceType,
+      Value<String> legacyLogId,
+      Value<String> legacyEntityId,
+      Value<String> occurrenceId,
+      Value<String?> adherenceEventId,
+      Value<String> temporalPrecision,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+class $$UnifiedTreatmentLegacyLogMappingsTableFilterComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentLegacyLogMappingsTable> {
+  $$UnifiedTreatmentLegacyLogMappingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get legacyLogId => $composableBuilder(
+    column: $table.legacyLogId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get legacyEntityId => $composableBuilder(
+    column: $table.legacyEntityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get adherenceEventId => $composableBuilder(
+    column: $table.adherenceEventId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$UnifiedTreatmentLegacyLogMappingsTableOrderingComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentLegacyLogMappingsTable> {
+  $$UnifiedTreatmentLegacyLogMappingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get legacyLogId => $composableBuilder(
+    column: $table.legacyLogId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get legacyEntityId => $composableBuilder(
+    column: $table.legacyEntityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get adherenceEventId => $composableBuilder(
+    column: $table.adherenceEventId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UnifiedTreatmentLegacyLogMappingsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentLegacyLogMappingsTable> {
+  $$UnifiedTreatmentLegacyLogMappingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceType => $composableBuilder(
+    column: $table.sourceType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get legacyLogId => $composableBuilder(
+    column: $table.legacyLogId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get legacyEntityId => $composableBuilder(
+    column: $table.legacyEntityId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get adherenceEventId => $composableBuilder(
+    column: $table.adherenceEventId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get temporalPrecision => $composableBuilder(
+    column: $table.temporalPrecision,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$UnifiedTreatmentLegacyLogMappingsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UnifiedTreatmentLegacyLogMappingsTable,
+          UnifiedTreatmentLegacyLogMapping,
+          $$UnifiedTreatmentLegacyLogMappingsTableFilterComposer,
+          $$UnifiedTreatmentLegacyLogMappingsTableOrderingComposer,
+          $$UnifiedTreatmentLegacyLogMappingsTableAnnotationComposer,
+          $$UnifiedTreatmentLegacyLogMappingsTableCreateCompanionBuilder,
+          $$UnifiedTreatmentLegacyLogMappingsTableUpdateCompanionBuilder,
+          (
+            UnifiedTreatmentLegacyLogMapping,
+            BaseReferences<
+              _$AppDatabase,
+              $UnifiedTreatmentLegacyLogMappingsTable,
+              UnifiedTreatmentLegacyLogMapping
+            >,
+          ),
+          UnifiedTreatmentLegacyLogMapping,
+          PrefetchHooks Function()
+        > {
+  $$UnifiedTreatmentLegacyLogMappingsTableTableManager(
+    _$AppDatabase db,
+    $UnifiedTreatmentLegacyLogMappingsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UnifiedTreatmentLegacyLogMappingsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$UnifiedTreatmentLegacyLogMappingsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$UnifiedTreatmentLegacyLogMappingsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> sourceType = const Value.absent(),
+                Value<String> legacyLogId = const Value.absent(),
+                Value<String> legacyEntityId = const Value.absent(),
+                Value<String> occurrenceId = const Value.absent(),
+                Value<String?> adherenceEventId = const Value.absent(),
+                Value<String> temporalPrecision = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UnifiedTreatmentLegacyLogMappingsCompanion(
+                id: id,
+                userId: userId,
+                sourceType: sourceType,
+                legacyLogId: legacyLogId,
+                legacyEntityId: legacyEntityId,
+                occurrenceId: occurrenceId,
+                adherenceEventId: adherenceEventId,
+                temporalPrecision: temporalPrecision,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String sourceType,
+                required String legacyLogId,
+                required String legacyEntityId,
+                required String occurrenceId,
+                Value<String?> adherenceEventId = const Value.absent(),
+                required String temporalPrecision,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => UnifiedTreatmentLegacyLogMappingsCompanion.insert(
+                id: id,
+                userId: userId,
+                sourceType: sourceType,
+                legacyLogId: legacyLogId,
+                legacyEntityId: legacyEntityId,
+                occurrenceId: occurrenceId,
+                adherenceEventId: adherenceEventId,
+                temporalPrecision: temporalPrecision,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$UnifiedTreatmentLegacyLogMappingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UnifiedTreatmentLegacyLogMappingsTable,
+      UnifiedTreatmentLegacyLogMapping,
+      $$UnifiedTreatmentLegacyLogMappingsTableFilterComposer,
+      $$UnifiedTreatmentLegacyLogMappingsTableOrderingComposer,
+      $$UnifiedTreatmentLegacyLogMappingsTableAnnotationComposer,
+      $$UnifiedTreatmentLegacyLogMappingsTableCreateCompanionBuilder,
+      $$UnifiedTreatmentLegacyLogMappingsTableUpdateCompanionBuilder,
+      (
+        UnifiedTreatmentLegacyLogMapping,
+        BaseReferences<
+          _$AppDatabase,
+          $UnifiedTreatmentLegacyLogMappingsTable,
+          UnifiedTreatmentLegacyLogMapping
+        >,
+      ),
+      UnifiedTreatmentLegacyLogMapping,
+      PrefetchHooks Function()
+    >;
+typedef $$UnifiedTreatmentRolloutFlagsTableCreateCompanionBuilder =
+    UnifiedTreatmentRolloutFlagsCompanion Function({
+      required String key,
+      required bool enabled,
+      required String source,
+      required DateTime updatedAt,
+      Value<DateTime?> expiresAt,
+      Value<int> rowid,
+    });
+typedef $$UnifiedTreatmentRolloutFlagsTableUpdateCompanionBuilder =
+    UnifiedTreatmentRolloutFlagsCompanion Function({
+      Value<String> key,
+      Value<bool> enabled,
+      Value<String> source,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> expiresAt,
+      Value<int> rowid,
+    });
+
+class $$UnifiedTreatmentRolloutFlagsTableFilterComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentRolloutFlagsTable> {
+  $$UnifiedTreatmentRolloutFlagsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get enabled => $composableBuilder(
+    column: $table.enabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get expiresAt => $composableBuilder(
+    column: $table.expiresAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$UnifiedTreatmentRolloutFlagsTableOrderingComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentRolloutFlagsTable> {
+  $$UnifiedTreatmentRolloutFlagsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get enabled => $composableBuilder(
+    column: $table.enabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get expiresAt => $composableBuilder(
+    column: $table.expiresAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UnifiedTreatmentRolloutFlagsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentRolloutFlagsTable> {
+  $$UnifiedTreatmentRolloutFlagsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get key =>
+      $composableBuilder(column: $table.key, builder: (column) => column);
+
+  GeneratedColumn<bool> get enabled =>
+      $composableBuilder(column: $table.enabled, builder: (column) => column);
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get expiresAt =>
+      $composableBuilder(column: $table.expiresAt, builder: (column) => column);
+}
+
+class $$UnifiedTreatmentRolloutFlagsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UnifiedTreatmentRolloutFlagsTable,
+          UnifiedTreatmentRolloutFlag,
+          $$UnifiedTreatmentRolloutFlagsTableFilterComposer,
+          $$UnifiedTreatmentRolloutFlagsTableOrderingComposer,
+          $$UnifiedTreatmentRolloutFlagsTableAnnotationComposer,
+          $$UnifiedTreatmentRolloutFlagsTableCreateCompanionBuilder,
+          $$UnifiedTreatmentRolloutFlagsTableUpdateCompanionBuilder,
+          (
+            UnifiedTreatmentRolloutFlag,
+            BaseReferences<
+              _$AppDatabase,
+              $UnifiedTreatmentRolloutFlagsTable,
+              UnifiedTreatmentRolloutFlag
+            >,
+          ),
+          UnifiedTreatmentRolloutFlag,
+          PrefetchHooks Function()
+        > {
+  $$UnifiedTreatmentRolloutFlagsTableTableManager(
+    _$AppDatabase db,
+    $UnifiedTreatmentRolloutFlagsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UnifiedTreatmentRolloutFlagsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$UnifiedTreatmentRolloutFlagsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$UnifiedTreatmentRolloutFlagsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> key = const Value.absent(),
+                Value<bool> enabled = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> expiresAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UnifiedTreatmentRolloutFlagsCompanion(
+                key: key,
+                enabled: enabled,
+                source: source,
+                updatedAt: updatedAt,
+                expiresAt: expiresAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String key,
+                required bool enabled,
+                required String source,
+                required DateTime updatedAt,
+                Value<DateTime?> expiresAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UnifiedTreatmentRolloutFlagsCompanion.insert(
+                key: key,
+                enabled: enabled,
+                source: source,
+                updatedAt: updatedAt,
+                expiresAt: expiresAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$UnifiedTreatmentRolloutFlagsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UnifiedTreatmentRolloutFlagsTable,
+      UnifiedTreatmentRolloutFlag,
+      $$UnifiedTreatmentRolloutFlagsTableFilterComposer,
+      $$UnifiedTreatmentRolloutFlagsTableOrderingComposer,
+      $$UnifiedTreatmentRolloutFlagsTableAnnotationComposer,
+      $$UnifiedTreatmentRolloutFlagsTableCreateCompanionBuilder,
+      $$UnifiedTreatmentRolloutFlagsTableUpdateCompanionBuilder,
+      (
+        UnifiedTreatmentRolloutFlag,
+        BaseReferences<
+          _$AppDatabase,
+          $UnifiedTreatmentRolloutFlagsTable,
+          UnifiedTreatmentRolloutFlag
+        >,
+      ),
+      UnifiedTreatmentRolloutFlag,
+      PrefetchHooks Function()
+    >;
+typedef $$UnifiedTreatmentCutoverStatesTableCreateCompanionBuilder =
+    UnifiedTreatmentCutoverStatesCompanion Function({
+      required String userId,
+      required String state,
+      required int migrationSchemaVersion,
+      Value<DateTime?> validatedAtUtc,
+      Value<DateTime?> readNewAtUtc,
+      Value<DateTime?> writeNewAtUtc,
+      Value<String?> recoveryCode,
+      Value<bool> remoteSchemaAvailable,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$UnifiedTreatmentCutoverStatesTableUpdateCompanionBuilder =
+    UnifiedTreatmentCutoverStatesCompanion Function({
+      Value<String> userId,
+      Value<String> state,
+      Value<int> migrationSchemaVersion,
+      Value<DateTime?> validatedAtUtc,
+      Value<DateTime?> readNewAtUtc,
+      Value<DateTime?> writeNewAtUtc,
+      Value<String?> recoveryCode,
+      Value<bool> remoteSchemaAvailable,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$UnifiedTreatmentCutoverStatesTableFilterComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentCutoverStatesTable> {
+  $$UnifiedTreatmentCutoverStatesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get migrationSchemaVersion => $composableBuilder(
+    column: $table.migrationSchemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get validatedAtUtc => $composableBuilder(
+    column: $table.validatedAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get readNewAtUtc => $composableBuilder(
+    column: $table.readNewAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get writeNewAtUtc => $composableBuilder(
+    column: $table.writeNewAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recoveryCode => $composableBuilder(
+    column: $table.recoveryCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get remoteSchemaAvailable => $composableBuilder(
+    column: $table.remoteSchemaAvailable,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$UnifiedTreatmentCutoverStatesTableOrderingComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentCutoverStatesTable> {
+  $$UnifiedTreatmentCutoverStatesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get migrationSchemaVersion => $composableBuilder(
+    column: $table.migrationSchemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get validatedAtUtc => $composableBuilder(
+    column: $table.validatedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get readNewAtUtc => $composableBuilder(
+    column: $table.readNewAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get writeNewAtUtc => $composableBuilder(
+    column: $table.writeNewAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recoveryCode => $composableBuilder(
+    column: $table.recoveryCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get remoteSchemaAvailable => $composableBuilder(
+    column: $table.remoteSchemaAvailable,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UnifiedTreatmentCutoverStatesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UnifiedTreatmentCutoverStatesTable> {
+  $$UnifiedTreatmentCutoverStatesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<int> get migrationSchemaVersion => $composableBuilder(
+    column: $table.migrationSchemaVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get validatedAtUtc => $composableBuilder(
+    column: $table.validatedAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get readNewAtUtc => $composableBuilder(
+    column: $table.readNewAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get writeNewAtUtc => $composableBuilder(
+    column: $table.writeNewAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get recoveryCode => $composableBuilder(
+    column: $table.recoveryCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get remoteSchemaAvailable => $composableBuilder(
+    column: $table.remoteSchemaAvailable,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$UnifiedTreatmentCutoverStatesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UnifiedTreatmentCutoverStatesTable,
+          UnifiedTreatmentCutoverState,
+          $$UnifiedTreatmentCutoverStatesTableFilterComposer,
+          $$UnifiedTreatmentCutoverStatesTableOrderingComposer,
+          $$UnifiedTreatmentCutoverStatesTableAnnotationComposer,
+          $$UnifiedTreatmentCutoverStatesTableCreateCompanionBuilder,
+          $$UnifiedTreatmentCutoverStatesTableUpdateCompanionBuilder,
+          (
+            UnifiedTreatmentCutoverState,
+            BaseReferences<
+              _$AppDatabase,
+              $UnifiedTreatmentCutoverStatesTable,
+              UnifiedTreatmentCutoverState
+            >,
+          ),
+          UnifiedTreatmentCutoverState,
+          PrefetchHooks Function()
+        > {
+  $$UnifiedTreatmentCutoverStatesTableTableManager(
+    _$AppDatabase db,
+    $UnifiedTreatmentCutoverStatesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UnifiedTreatmentCutoverStatesTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$UnifiedTreatmentCutoverStatesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$UnifiedTreatmentCutoverStatesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<String> state = const Value.absent(),
+                Value<int> migrationSchemaVersion = const Value.absent(),
+                Value<DateTime?> validatedAtUtc = const Value.absent(),
+                Value<DateTime?> readNewAtUtc = const Value.absent(),
+                Value<DateTime?> writeNewAtUtc = const Value.absent(),
+                Value<String?> recoveryCode = const Value.absent(),
+                Value<bool> remoteSchemaAvailable = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UnifiedTreatmentCutoverStatesCompanion(
+                userId: userId,
+                state: state,
+                migrationSchemaVersion: migrationSchemaVersion,
+                validatedAtUtc: validatedAtUtc,
+                readNewAtUtc: readNewAtUtc,
+                writeNewAtUtc: writeNewAtUtc,
+                recoveryCode: recoveryCode,
+                remoteSchemaAvailable: remoteSchemaAvailable,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required String state,
+                required int migrationSchemaVersion,
+                Value<DateTime?> validatedAtUtc = const Value.absent(),
+                Value<DateTime?> readNewAtUtc = const Value.absent(),
+                Value<DateTime?> writeNewAtUtc = const Value.absent(),
+                Value<String?> recoveryCode = const Value.absent(),
+                Value<bool> remoteSchemaAvailable = const Value.absent(),
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => UnifiedTreatmentCutoverStatesCompanion.insert(
+                userId: userId,
+                state: state,
+                migrationSchemaVersion: migrationSchemaVersion,
+                validatedAtUtc: validatedAtUtc,
+                readNewAtUtc: readNewAtUtc,
+                writeNewAtUtc: writeNewAtUtc,
+                recoveryCode: recoveryCode,
+                remoteSchemaAvailable: remoteSchemaAvailable,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$UnifiedTreatmentCutoverStatesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UnifiedTreatmentCutoverStatesTable,
+      UnifiedTreatmentCutoverState,
+      $$UnifiedTreatmentCutoverStatesTableFilterComposer,
+      $$UnifiedTreatmentCutoverStatesTableOrderingComposer,
+      $$UnifiedTreatmentCutoverStatesTableAnnotationComposer,
+      $$UnifiedTreatmentCutoverStatesTableCreateCompanionBuilder,
+      $$UnifiedTreatmentCutoverStatesTableUpdateCompanionBuilder,
+      (
+        UnifiedTreatmentCutoverState,
+        BaseReferences<
+          _$AppDatabase,
+          $UnifiedTreatmentCutoverStatesTable,
+          UnifiedTreatmentCutoverState
+        >,
+      ),
+      UnifiedTreatmentCutoverState,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -51073,5 +55760,29 @@ class $AppDatabaseManager {
       $$RoutineAdherenceEventRecordsTableTableManager(
         _db,
         _db.routineAdherenceEventRecords,
+      );
+  $$UnifiedTreatmentLegacyMappingsTableTableManager
+  get unifiedTreatmentLegacyMappings =>
+      $$UnifiedTreatmentLegacyMappingsTableTableManager(
+        _db,
+        _db.unifiedTreatmentLegacyMappings,
+      );
+  $$UnifiedTreatmentLegacyLogMappingsTableTableManager
+  get unifiedTreatmentLegacyLogMappings =>
+      $$UnifiedTreatmentLegacyLogMappingsTableTableManager(
+        _db,
+        _db.unifiedTreatmentLegacyLogMappings,
+      );
+  $$UnifiedTreatmentRolloutFlagsTableTableManager
+  get unifiedTreatmentRolloutFlags =>
+      $$UnifiedTreatmentRolloutFlagsTableTableManager(
+        _db,
+        _db.unifiedTreatmentRolloutFlags,
+      );
+  $$UnifiedTreatmentCutoverStatesTableTableManager
+  get unifiedTreatmentCutoverStates =>
+      $$UnifiedTreatmentCutoverStatesTableTableManager(
+        _db,
+        _db.unifiedTreatmentCutoverStates,
       );
 }

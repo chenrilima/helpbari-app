@@ -17,6 +17,23 @@ class PrivacyClinicalExportDatasource {
       'documentProcessings': await _rows('document_processing_records', userId),
       'extractedDocumentFields': await _rows('extracted_field_records', userId),
       'bioimpedance': await _rows('bioimpedance_records', userId),
+      'smartRoutines': await _rows('smart_routine_records', userId),
+      'routinePlans': await _rows('routine_plan_records', userId),
+      'routineSchedules': await _rows('routine_schedule_records', userId),
+      'routinePauses': await _rows('routine_pause_records', userId),
+      'routineOccurrences': await _rows('routine_occurrence_records', userId),
+      'routineAdherenceEvents': await _rows(
+        'routine_adherence_event_records',
+        userId,
+      ),
+      'unifiedTreatmentMappings': await _rows(
+        'unified_treatment_legacy_mappings',
+        userId,
+      ),
+      'unifiedTreatmentLogMappings': await _rows(
+        'unified_treatment_legacy_log_mappings',
+        userId,
+      ),
     };
   }
 

@@ -364,7 +364,7 @@ void main() {
     test('clinical and operational plan boundaries prevent generation', () {
       final future = _plan(effectiveFrom: tuesday, activatedAt: operationalAt);
       final expired = _plan(
-        durationType: PlanDurationType.fixed,
+        durationType: PlanDurationType.bounded,
         effectiveUntil: LocalDate(year: 2026, month: 7, day: 19),
         activatedAt: operationalAt,
       );

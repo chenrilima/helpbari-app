@@ -91,6 +91,10 @@ part 'app_database.g.dart';
     RoutinePauseRecords,
     RoutineOccurrenceRecords,
     RoutineAdherenceEventRecords,
+    UnifiedTreatmentLegacyMappings,
+    UnifiedTreatmentLegacyLogMappings,
+    UnifiedTreatmentRolloutFlags,
+    UnifiedTreatmentCutoverStates,
   ],
   daos: [
     WaterDao,
@@ -117,7 +121,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 18;
+  int get schemaVersion => 19;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -199,9 +203,74 @@ class AppDatabase extends _$AppDatabase {
         await migrator.createTable(routineOccurrenceRecords);
         await migrator.createTable(routineAdherenceEventRecords);
       }
+      if (from < 19) {
+        await migrator.addColumn(
+          routinePlanRecords,
+          routinePlanRecords.category,
+        );
+        await migrator.addColumn(
+          routinePlanRecords,
+          routinePlanRecords.provenanceOrigin,
+        );
+        await migrator.addColumn(
+          routinePlanRecords,
+          routinePlanRecords.validationStatus,
+        );
+        await migrator.addColumn(
+          routinePlanRecords,
+          routinePlanRecords.provenancePrescriptionId,
+        );
+        await migrator.addColumn(
+          routinePlanRecords,
+          routinePlanRecords.provenancePrescriptionItemId,
+        );
+        await migrator.addColumn(
+          routinePlanRecords,
+          routinePlanRecords.provenanceDocumentId,
+        );
+        await migrator.addColumn(
+          routinePlanRecords,
+          routinePlanRecords.provenanceProfessionalReference,
+        );
+        await migrator.addColumn(
+          routinePlanRecords,
+          routinePlanRecords.temporalPrecision,
+        );
+        await customStatement(
+          "UPDATE routine_plan_records SET duration_type = 'bounded' "
+          "WHERE duration_type = 'fixed'",
+        );
+        await migrator.createTable(unifiedTreatmentLegacyMappings);
+        await migrator.createTable(unifiedTreatmentLegacyLogMappings);
+        await migrator.createTable(unifiedTreatmentRolloutFlags);
+        await migrator.createTable(unifiedTreatmentCutoverStates);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
+      if (details.versionNow >= 19) {
+        await batch((batch) {
+          final now = DateTime.now().toUtc();
+          for (final entry in const <String, bool>{
+            'unified_treatment_migration_enabled': true,
+            'unified_treatment_cutover_enabled': true,
+            'unified_treatment_read_new_enabled': true,
+            'unified_treatment_write_new_enabled': true,
+            'unified_treatment_remote_sync_enabled': false,
+          }.entries) {
+            batch.insert(
+              unifiedTreatmentRolloutFlags,
+              UnifiedTreatmentRolloutFlagsCompanion.insert(
+                key: entry.key,
+                enabled: entry.value,
+                source: 'schemaDefault',
+                updatedAt: now,
+              ),
+              mode: InsertMode.insertOrIgnore,
+            );
+          }
+        });
+      }
     },
   );
 }
