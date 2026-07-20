@@ -417,7 +417,12 @@ void main() {
 
     test('temporal, PRN, free-form and short-month cases stay explicit', () {
       expect(
-        policy.evaluate(rule: EveryNHoursRule(6), localDate: monday).reason,
+        policy
+            .evaluate(
+              rule: EveryNHoursRule(6, anchorAtUtc: DateTime.utc(2026, 7, 20)),
+              localDate: monday,
+            )
+            .reason,
         ScheduleDateEligibilityReason.requiresInstantEvaluation,
       );
       expect(
@@ -554,7 +559,13 @@ void main() {
         expect(
           resolver
               .resolve(
-                schedule: _schedule(plan: scheduled, rule: EveryNHoursRule(8)),
+                schedule: _schedule(
+                  plan: scheduled,
+                  rule: EveryNHoursRule(
+                    8,
+                    anchorAtUtc: DateTime.utc(2026, 7, 20),
+                  ),
+                ),
                 localDate: monday,
               )
               .reason,

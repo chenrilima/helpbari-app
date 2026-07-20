@@ -133,10 +133,22 @@ final class OccurrenceWindow {
   factory OccurrenceWindow({
     required DateTime windowStartsAt,
     required DateTime scheduledFor,
+    required DateTime onTimeEndsAt,
     required DateTime windowEndsAt,
   }) {
+    if (!windowStartsAt.isUtc ||
+        !scheduledFor.isUtc ||
+        !onTimeEndsAt.isUtc ||
+        !windowEndsAt.isUtc) {
+      throw const SmartRoutineValidationException(
+        'occurrence_window_requires_utc',
+        'Occurrence window timestamps must be UTC.',
+      );
+    }
     if (windowStartsAt.isAfter(scheduledFor) ||
-        scheduledFor.isAfter(windowEndsAt)) {
+        scheduledFor.isAfter(onTimeEndsAt) ||
+        onTimeEndsAt.isAfter(windowEndsAt) ||
+        !windowStartsAt.isBefore(windowEndsAt)) {
       throw const SmartRoutineValidationException(
         'invalid_occurrence_window',
         'Occurrence window timestamps are out of order.',
@@ -145,6 +157,7 @@ final class OccurrenceWindow {
     return OccurrenceWindow._(
       windowStartsAt: windowStartsAt,
       scheduledFor: scheduledFor,
+      onTimeEndsAt: onTimeEndsAt,
       windowEndsAt: windowEndsAt,
     );
   }
@@ -152,11 +165,13 @@ final class OccurrenceWindow {
   const OccurrenceWindow._({
     required this.windowStartsAt,
     required this.scheduledFor,
+    required this.onTimeEndsAt,
     required this.windowEndsAt,
   });
 
   final DateTime windowStartsAt;
   final DateTime scheduledFor;
+  final DateTime onTimeEndsAt;
   final DateTime windowEndsAt;
 
   @override
@@ -165,10 +180,53 @@ final class OccurrenceWindow {
       other is OccurrenceWindow &&
           windowStartsAt == other.windowStartsAt &&
           scheduledFor == other.scheduledFor &&
+          onTimeEndsAt == other.onTimeEndsAt &&
           windowEndsAt == other.windowEndsAt;
 
   @override
-  int get hashCode => Object.hash(windowStartsAt, scheduledFor, windowEndsAt);
+  int get hashCode =>
+      Object.hash(windowStartsAt, scheduledFor, onTimeEndsAt, windowEndsAt);
+}
+
+final class OccurrenceWindowDefinition {
+  factory OccurrenceWindowDefinition({
+    required Duration earlyTolerance,
+    required Duration onTimeTolerance,
+    required Duration lateTolerance,
+  }) {
+    if (earlyTolerance.isNegative ||
+        onTimeTolerance.isNegative ||
+        lateTolerance.isNegative) {
+      throw const SmartRoutineValidationException(
+        'negative_occurrence_window_tolerance',
+        'Occurrence window tolerances cannot be negative.',
+      );
+    }
+    return OccurrenceWindowDefinition._(
+      earlyTolerance,
+      onTimeTolerance,
+      lateTolerance,
+    );
+  }
+
+  const OccurrenceWindowDefinition._(
+    this.earlyTolerance,
+    this.onTimeTolerance,
+    this.lateTolerance,
+  );
+  final Duration earlyTolerance;
+  final Duration onTimeTolerance;
+  final Duration lateTolerance;
+
+  @override
+  bool operator ==(Object other) =>
+      other is OccurrenceWindowDefinition &&
+      earlyTolerance == other.earlyTolerance &&
+      onTimeTolerance == other.onTimeTolerance &&
+      lateTolerance == other.lateTolerance;
+  @override
+  int get hashCode =>
+      Object.hash(earlyTolerance, onTimeTolerance, lateTolerance);
 }
 
 final class DoseValue {

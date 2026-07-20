@@ -55,8 +55,9 @@ final class SpecificWeekdaysAtTimesRule extends ScheduleRule {
 }
 
 final class EveryNHoursRule extends ScheduleRule {
-  EveryNHoursRule(this.intervalHours)
-    : super(ScheduleFrequencyType.everyNHours) {
+  EveryNHoursRule(this.intervalHours, {required DateTime anchorAtUtc})
+    : anchorAtUtc = _requiredUtc(anchorAtUtc, 'invalid_hour_interval_anchor'),
+      super(ScheduleFrequencyType.everyNHours) {
     if (intervalHours <= 0) {
       throw const SmartRoutineValidationException(
         'invalid_hour_interval',
@@ -65,12 +66,22 @@ final class EveryNHoursRule extends ScheduleRule {
     }
   }
   final int intervalHours;
+  final DateTime anchorAtUtc;
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is EveryNHoursRule && intervalHours == other.intervalHours;
+      other is EveryNHoursRule &&
+          intervalHours == other.intervalHours &&
+          anchorAtUtc == other.anchorAtUtc;
   @override
-  int get hashCode => Object.hash(frequencyType, intervalHours);
+  int get hashCode => Object.hash(frequencyType, intervalHours, anchorAtUtc);
+}
+
+DateTime _requiredUtc(DateTime value, String code) {
+  if (!value.isUtc) {
+    throw SmartRoutineValidationException(code, 'A UTC instant is required.');
+  }
+  return value;
 }
 
 final class EveryNDaysRule extends ScheduleRule {

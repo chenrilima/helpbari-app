@@ -53,6 +53,7 @@ void main() {
         OccurrenceWindow(
           windowStartsAt: now,
           scheduledFor: now.add(const Duration(minutes: 10)),
+          onTimeEndsAt: now.add(const Duration(minutes: 10)),
           windowEndsAt: now.add(const Duration(minutes: 20)),
         ).scheduledFor,
         now.add(const Duration(minutes: 10)),
@@ -61,6 +62,7 @@ void main() {
         () => OccurrenceWindow(
           windowStartsAt: now,
           scheduledFor: now.subtract(const Duration(minutes: 1)),
+          onTimeEndsAt: now.subtract(const Duration(minutes: 1)),
           windowEndsAt: now.add(const Duration(minutes: 20)),
         ),
         throwsA(isA<SmartRoutineValidationException>()),
@@ -113,9 +115,9 @@ void main() {
     });
 
     test('interval rules require positive intervals', () {
-      expect(EveryNHoursRule(6).intervalHours, 6);
+      expect(EveryNHoursRule(6, anchorAtUtc: now).intervalHours, 6);
       expect(
-        () => EveryNHoursRule(0),
+        () => EveryNHoursRule(0, anchorAtUtc: now),
         throwsA(isA<SmartRoutineValidationException>()),
       );
       expect(
@@ -475,6 +477,11 @@ void main() {
           originalWindow: originalWindow,
           currentWindow: originalWindow,
           status: RoutineOccurrenceStatus.expected,
+          originalClinicalDate: LocalDate(year: 2026, month: 7, day: 20),
+          originalLocalTime: TimeOfDayValue(hour: 8, minute: 0),
+          originalTimeZone: IanaTimeZone('UTC'),
+          expectationKind: ExpectationKind.recurringExpectation,
+          sequence: 0,
         ),
         throwsA(isA<SmartRoutineValidationException>()),
       );
@@ -601,6 +608,7 @@ RoutineSchedule _schedule(
 OccurrenceWindow _window(DateTime scheduledFor) => OccurrenceWindow(
   windowStartsAt: scheduledFor.subtract(const Duration(minutes: 30)),
   scheduledFor: scheduledFor,
+  onTimeEndsAt: scheduledFor.add(const Duration(minutes: 15)),
   windowEndsAt: scheduledFor.add(const Duration(minutes: 30)),
 );
 
@@ -613,6 +621,11 @@ RoutineOccurrence _occurrence(OccurrenceWindow window) => RoutineOccurrence(
   originalWindow: window,
   currentWindow: window,
   status: RoutineOccurrenceStatus.expected,
+  originalClinicalDate: LocalDate(year: 2026, month: 7, day: 20),
+  originalLocalTime: TimeOfDayValue(hour: 8, minute: 0),
+  originalTimeZone: IanaTimeZone('UTC'),
+  expectationKind: ExpectationKind.recurringExpectation,
+  sequence: 0,
 );
 
 RoutineAdherenceEvent _event(DateTime now) => RoutineAdherenceEvent(

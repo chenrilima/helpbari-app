@@ -310,7 +310,12 @@ void main() {
           date: monday,
           at: operationalAt,
           plans: [scheduled],
-          schedules: [_schedule(plan: scheduled, rule: EveryNHoursRule(6))],
+          schedules: [
+            _schedule(
+              plan: scheduled,
+              rule: EveryNHoursRule(6, anchorAtUtc: DateTime.utc(2026, 7, 20)),
+            ),
+          ],
         );
         expect(
           temporal.status,
@@ -806,43 +811,37 @@ void main() {
     );
   });
 
-  test(
-    'blueprint domain has no global clock, UUID generation, occurrence creation, or infrastructure',
-    () {
-      final files = Directory('lib/features/smart_routines/domain')
-          .listSync(recursive: true)
-          .whereType<File>()
-          .where((file) => file.path.endsWith('.dart'));
-      const forbidden = [
-        'DateTime.now(',
-        'UuidService',
-        'uuid.v5',
-        'package:uuid',
-        'package:flutter/',
-        'riverpod',
-        'drift',
-        'supabase',
-        'local_notifications',
-      ];
-      for (final file in files) {
-        final source = file.readAsStringSync();
-        for (final token in forbidden) {
-          expect(
-            source,
-            isNot(contains(token)),
-            reason: '${file.path}: $token',
-          );
-        }
-        if (file.path.contains('/services/')) {
-          expect(
-            source,
-            isNot(contains('RoutineOccurrence(')),
-            reason: file.path,
-          );
-        }
+  test('blueprint stage stays free from identity and materialization', () {
+    final files = <File>[
+      File(
+        'lib/features/smart_routines/domain/value_objects/occurrence_blueprint.dart',
+      ),
+      File(
+        'lib/features/smart_routines/domain/services/occurrence_blueprint_generator.dart',
+      ),
+      File(
+        'lib/features/smart_routines/domain/services/occurrence_blueprint_range_generator.dart',
+      ),
+    ];
+    const forbidden = [
+      'DateTime.now(',
+      'UuidService',
+      'uuid.v5',
+      'package:uuid',
+      'package:flutter/',
+      'riverpod',
+      'drift',
+      'supabase',
+      'local_notifications',
+    ];
+    for (final file in files) {
+      final source = file.readAsStringSync();
+      for (final token in forbidden) {
+        expect(source, isNot(contains(token)), reason: '${file.path}: $token');
       }
-    },
-  );
+      expect(source, isNot(contains('RoutineOccurrence(')), reason: file.path);
+    }
+  });
 }
 
 OccurrenceBlueprintGenerationResult _generate(

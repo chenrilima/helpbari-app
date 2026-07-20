@@ -74,6 +74,12 @@ final class RoutineSchedule extends Entity {
   final bool isEnabled;
   final int displayOrder;
 
+  OccurrenceWindowDefinition get windowDefinition => OccurrenceWindowDefinition(
+    earlyTolerance: earlyTolerance,
+    onTimeTolerance: onTimeTolerance,
+    lateTolerance: lateTolerance,
+  );
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

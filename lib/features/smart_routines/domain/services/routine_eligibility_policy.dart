@@ -27,6 +27,7 @@ final class RoutineEligibilityPolicy {
     required Iterable<RoutinePause> pauses,
     required DateTime at,
     required LocalDate localDate,
+    bool allowInstantRule = false,
   }) {
     if (routine.isDeleted) {
       return const RoutineEligibilityResult(
@@ -93,9 +94,12 @@ final class RoutineEligibilityPolicy {
       ScheduleDateEligibilityReason.notEligible =>
         RoutineEligibilityReason.dateNotEligible,
       ScheduleDateEligibilityReason.unstructured ||
-      ScheduleDateEligibilityReason.unsupported ||
-      ScheduleDateEligibilityReason.requiresInstantEvaluation =>
+      ScheduleDateEligibilityReason.unsupported =>
         RoutineEligibilityReason.unsupportedRule,
+      ScheduleDateEligibilityReason.requiresInstantEvaluation =>
+        allowInstantRule
+            ? RoutineEligibilityReason.eligible
+            : RoutineEligibilityReason.unsupportedRule,
     });
   }
 }

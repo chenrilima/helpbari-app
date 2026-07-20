@@ -41,6 +41,30 @@ enum RoutineOccurrenceStatus {
 
 enum RoutineOccurrenceOrigin { generated, adHocAsNeeded, migrated }
 
+enum NonexistentLocalTimePolicy { shiftForward, reject }
+
+enum AmbiguousLocalTimePolicy { earlierOccurrence, reject }
+
+enum ScheduleInstantResolutionState {
+  exact,
+  shiftedForward,
+  ambiguousEarlierOffset,
+}
+
+enum ScheduleInstantResolutionFailure {
+  invalidTimeZone,
+  nonexistentLocalTimeRejected,
+  ambiguousLocalTimeRejected,
+}
+
+enum OccurrenceMaterializationFailure {
+  temporalResolution,
+  missingWindowDefinition,
+  invalidWindow,
+  identityFailure,
+  inconsistentBlueprint,
+}
+
 enum AdherenceEventActor { user, caregiver, system, imported }
 
 enum RoutinePauseScope { routine, plan }
