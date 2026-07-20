@@ -5,6 +5,27 @@ import '../value_objects/routine_values.dart';
 import '../value_objects/schedule_rule.dart';
 import '../value_objects/typed_ids.dart';
 
+/// The two immutable snapshots produced by a plan revision.
+///
+/// Persistence must store [previousPlan] and [newPlan] atomically. This domain
+/// result performs no persistence and mutates neither source nor result plans.
+final class PlanRevisionResult {
+  const PlanRevisionResult({required this.previousPlan, required this.newPlan});
+
+  final RoutinePlan previousPlan;
+  final RoutinePlan newPlan;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PlanRevisionResult &&
+          previousPlan == other.previousPlan &&
+          newPlan == other.newPlan;
+
+  @override
+  int get hashCode => Object.hash(previousPlan, newPlan);
+}
+
 final class RoutinePlan extends Entity {
   factory RoutinePlan({
     required RoutinePlanId planId,
@@ -56,6 +77,12 @@ final class RoutinePlan extends Entity {
       throw const SmartRoutineValidationException(
         'inactive_plan_replacement',
         'Only an activated plan can be replaced.',
+      );
+    }
+    if (replacedAt != null && replacedAt.isBefore(activatedAt!)) {
+      throw const SmartRoutineValidationException(
+        'invalid_plan_replacement',
+        'Plan replacement cannot precede activation.',
       );
     }
     return RoutinePlan._(
@@ -124,7 +151,7 @@ final class RoutinePlan extends Entity {
     }
   }
 
-  ({RoutinePlan replacedPlan, RoutinePlan newPlan}) createRevision({
+  PlanRevisionResult createRevision({
     required RoutinePlanId newPlanId,
     required DateTime at,
     RoutinePlanMode? mode,
@@ -139,6 +166,12 @@ final class RoutinePlan extends Entity {
       throw const SmartRoutineValidationException(
         'plan_not_revisionable',
         'Only an active unreplaced plan can create a revision.',
+      );
+    }
+    if (newPlanId == planId) {
+      throw const SmartRoutineValidationException(
+        'duplicate_plan_revision_id',
+        'A plan revision requires a new identity.',
       );
     }
     final replaced = RoutinePlan(
@@ -172,7 +205,7 @@ final class RoutinePlan extends Entity {
       createdAt: at,
       previousPlanId: planId,
     );
-    return (replacedPlan: replaced, newPlan: next);
+    return PlanRevisionResult(previousPlan: replaced, newPlan: next);
   }
 
   @override

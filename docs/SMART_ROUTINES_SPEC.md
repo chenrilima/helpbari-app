@@ -151,11 +151,12 @@ um draft ainda não ativado.
 | paused | Não durante pausas efetivas. | Retomada explícita volta a active; passado não é recalculado. |
 | completed | Não após `completedAt`. | Reinício cria nova revisão/plano; histórico permanece concluído. |
 | canceled | Não após `canceledAt`. | Reativação excepcional cria nova revisão e registra motivo. |
-| archived | Não enquanto oculto. | Estado de organização; restauração recupera o estado funcional anterior, sem criar ocorrências retroativas. |
+| archived | Não. | Estado terminal de organização no V1; retomada futura exige duplicação ou nova rotina. |
 
 `completed` significa fim esperado do tratamento; `canceled`, interrupção antes
-do fim; `archived`, ocultação organizacional. `deletedAt` é apenas tombstone e
-nunca substitui status funcional.
+do fim; `archived`, ocultação organizacional terminal no V1. Arquivar preserva
+todo o histórico e não permite restauração funcional. `deletedAt` é apenas
+tombstone e nunca substitui status funcional.
 
 ### 4.3 Vigência e duração
 
@@ -627,4 +628,3 @@ flag até invariantes e métricas de cutover serem verificadas.
 | SR-016 | Categoria pode mudar relatórios passados. | Categoria faz parte da revisão do plano. | Mudança pós-ativação cria revisão. | Aceita |
 | SR-017 | Janela pode parecer orientação clínica. | É configuração de acompanhamento com disclaimer e defaults copiáveis por schedule. | UX deve evitar linguagem prescritiva. | Aceita |
 | SR-018 | Exclusão técnica era confundida com estado. | Tombstone nunca substitui status funcional. | Sync e domínio mantêm semânticas separadas. | Aceita |
-

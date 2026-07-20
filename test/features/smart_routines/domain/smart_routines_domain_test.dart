@@ -169,17 +169,7 @@ void main() {
       );
 
       expect(paused.status, RoutineStatus.paused);
-      expect(archived.statusBeforeArchive, RoutineStatus.active);
-      expect(
-        archived
-            .rename('Novo nome', now.add(const Duration(minutes: 4)))
-            .statusBeforeArchive,
-        RoutineStatus.active,
-      );
-      expect(
-        archived.restoreFromArchive(now.add(const Duration(minutes: 5))).status,
-        RoutineStatus.active,
-      );
+      expect(archived.status, RoutineStatus.archived);
       expect(
         () => active.changeStatus(RoutineStatus.active, now),
         returnsNormally,
@@ -203,6 +193,50 @@ void main() {
         throwsA(isA<SmartRoutineValidationException>()),
       );
     });
+
+    test('archived is terminal and cannot restore a functional status', () {
+      final archived = _routine(now).changeStatus(
+        RoutineStatus.archived,
+        now.add(const Duration(minutes: 1)),
+      );
+
+      for (final next in [
+        RoutineStatus.active,
+        RoutineStatus.paused,
+        RoutineStatus.completed,
+        RoutineStatus.canceled,
+      ]) {
+        expect(
+          () =>
+              archived.changeStatus(next, now.add(const Duration(minutes: 2))),
+          throwsA(isA<SmartRoutineValidationException>()),
+        );
+      }
+    });
+
+    test(
+      'completed and canceled can be archived without changing tombstone',
+      () {
+        final deletedAt = now.subtract(const Duration(days: 1));
+        final routine = _routine(now, deletedAt: deletedAt);
+
+        final completed = routine.changeStatus(RoutineStatus.completed, now);
+        final canceled = routine.changeStatus(RoutineStatus.canceled, now);
+
+        expect(
+          completed.changeStatus(RoutineStatus.archived, now).status,
+          RoutineStatus.archived,
+        );
+        expect(
+          canceled.changeStatus(RoutineStatus.archived, now).status,
+          RoutineStatus.archived,
+        );
+        expect(
+          completed.changeStatus(RoutineStatus.archived, now).deletedAt,
+          deletedAt,
+        );
+      },
+    );
 
     test('plan validates revisions, periods, duration semantics and modes', () {
       expect(
@@ -246,13 +280,93 @@ void main() {
         );
 
         expect(original.replacedAt, isNull);
+        expect(result, isA<PlanRevisionResult>());
+        expect(result.previousPlan.planId, original.planId);
         expect(
-          result.replacedPlan.replacedAt,
+          result.previousPlan.replacedAt,
           now.add(const Duration(days: 1)),
         );
+        expect(result.newPlan.planId, RoutinePlanId(_newPlanUuid));
+        expect(result.newPlan.routineId, original.routineId);
         expect(result.newPlan.revision, 2);
         expect(result.newPlan.previousPlanId, original.planId);
         expect(result.newPlan.activatedAt, isNull);
+        expect(result.newPlan.replacedAt, isNull);
+      },
+    );
+
+    test(
+      'revision preserves previous content and applies changes only to new plan',
+      () {
+        final original = _plan(
+          now,
+          activatedAt: now,
+          dose: DoseValue(value: '20', unit: 'mg'),
+          route: 'oral',
+          clinicalInstructions: 'Após o café',
+        );
+        final result = original.createRevision(
+          newPlanId: RoutinePlanId(_newPlanUuid),
+          at: now.add(const Duration(days: 1)),
+          dose: DoseValue(value: '40', unit: 'mg'),
+          route: 'sublingual',
+          clinicalInstructions: 'Em jejum',
+        );
+
+        expect(result.previousPlan.dose, DoseValue(value: '20', unit: 'mg'));
+        expect(result.previousPlan.route, 'oral');
+        expect(result.previousPlan.clinicalInstructions, 'Após o café');
+        expect(result.previousPlan.effectiveFrom, now);
+        expect(result.newPlan.dose, DoseValue(value: '40', unit: 'mg'));
+        expect(result.newPlan.route, 'sublingual');
+        expect(result.newPlan.clinicalInstructions, 'Em jejum');
+        expect(original.replacedAt, isNull);
+      },
+    );
+
+    test(
+      'revision rejects reused identity and invalid replacement lifecycle',
+      () {
+        final active = _plan(now, activatedAt: now);
+        expect(
+          () => active.createRevision(
+            newPlanId: active.planId,
+            at: now.add(const Duration(days: 1)),
+          ),
+          throwsA(isA<SmartRoutineValidationException>()),
+        );
+        expect(
+          () => _plan(now).createRevision(
+            newPlanId: RoutinePlanId(_newPlanUuid),
+            at: now.add(const Duration(days: 1)),
+          ),
+          throwsA(isA<SmartRoutineValidationException>()),
+        );
+        expect(
+          () => _plan(now, replacedAt: now.add(const Duration(hours: 1))),
+          throwsA(isA<SmartRoutineValidationException>()),
+        );
+
+        final replaced = _plan(
+          now,
+          activatedAt: now,
+          replacedAt: now.add(const Duration(hours: 1)),
+        );
+        expect(
+          () => replaced.createRevision(
+            newPlanId: RoutinePlanId(_newPlanUuid),
+            at: now.add(const Duration(days: 1)),
+          ),
+          throwsA(isA<SmartRoutineValidationException>()),
+        );
+        expect(
+          () => _plan(
+            now,
+            activatedAt: now.add(const Duration(hours: 2)),
+            replacedAt: now.add(const Duration(hours: 1)),
+          ),
+          throwsA(isA<SmartRoutineValidationException>()),
+        );
       },
     );
 
@@ -267,6 +381,16 @@ void main() {
         DailyAtTimesRule([TimeOfDayValue(hour: 8, minute: 0)]),
         DailyAtTimesRule([TimeOfDayValue(hour: 8, minute: 0)]),
       );
+      final firstRevision = _plan(now, activatedAt: now).createRevision(
+        newPlanId: RoutinePlanId(_newPlanUuid),
+        at: now.add(const Duration(days: 1)),
+      );
+      final secondRevision = _plan(now, activatedAt: now).createRevision(
+        newPlanId: RoutinePlanId(_newPlanUuid),
+        at: now.add(const Duration(days: 1)),
+      );
+      expect(firstRevision, secondRevision);
+      expect(firstRevision.hashCode, secondRevision.hashCode);
     });
   });
 
@@ -398,7 +522,7 @@ void main() {
   });
 }
 
-SmartRoutine _routine(DateTime now) => SmartRoutine(
+SmartRoutine _routine(DateTime now, {DateTime? deletedAt}) => SmartRoutine(
   routineId: RoutineId(_routineUuid),
   category: RoutineCategory.medication,
   displayName: 'Omeprazol',
@@ -406,6 +530,7 @@ SmartRoutine _routine(DateTime now) => SmartRoutine(
   source: RoutineSource.manual,
   createdAt: now,
   updatedAt: now,
+  deletedAt: deletedAt,
 );
 
 RoutinePlan _plan(
@@ -415,6 +540,10 @@ RoutinePlan _plan(
   PlanDurationType durationType = PlanDurationType.unknown,
   DateTime? effectiveUntil,
   DateTime? activatedAt,
+  DateTime? replacedAt,
+  DoseValue? dose,
+  String? route,
+  String? clinicalInstructions,
 }) => RoutinePlan(
   planId: RoutinePlanId(_planUuid),
   routineId: RoutineId(_routineUuid),
@@ -425,6 +554,10 @@ RoutinePlan _plan(
   effectiveUntil: effectiveUntil,
   createdAt: now,
   activatedAt: activatedAt,
+  replacedAt: replacedAt,
+  dose: dose,
+  route: route,
+  clinicalInstructions: clinicalInstructions,
 );
 
 RoutineSchedule _schedule(

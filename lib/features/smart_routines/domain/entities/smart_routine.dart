@@ -16,7 +16,6 @@ final class SmartRoutine extends Entity {
     PrescriptionItemReference? prescriptionReference,
     String? personalNotes,
     String? iconKey,
-    RoutineStatus? statusBeforeArchive,
     DateTime? deletedAt,
   }) {
     final name = displayName.trim();
@@ -32,18 +31,6 @@ final class SmartRoutine extends Entity {
         'Routine updatedAt cannot precede createdAt.',
       );
     }
-    if (status == RoutineStatus.archived && statusBeforeArchive == null) {
-      throw const SmartRoutineValidationException(
-        'archive_source_status_required',
-        'Archived routine requires its previous functional status.',
-      );
-    }
-    if (status != RoutineStatus.archived && statusBeforeArchive != null) {
-      throw const SmartRoutineValidationException(
-        'unexpected_archive_source_status',
-        'Only an archived routine may retain its previous status.',
-      );
-    }
     return SmartRoutine._(
       routineId: routineId,
       category: category,
@@ -55,7 +42,6 @@ final class SmartRoutine extends Entity {
       prescriptionReference: prescriptionReference,
       personalNotes: _optional(personalNotes),
       iconKey: _optional(iconKey),
-      statusBeforeArchive: statusBeforeArchive,
       deletedAt: deletedAt,
     );
   }
@@ -71,7 +57,6 @@ final class SmartRoutine extends Entity {
     this.prescriptionReference,
     this.personalNotes,
     this.iconKey,
-    this.statusBeforeArchive,
     this.deletedAt,
   });
 
@@ -85,7 +70,6 @@ final class SmartRoutine extends Entity {
   final PrescriptionItemReference? prescriptionReference;
   final String? personalNotes;
   final String? iconKey;
-  final RoutineStatus? statusBeforeArchive;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
@@ -104,56 +88,25 @@ final class SmartRoutine extends Entity {
         'Cannot change routine status from ${status.name} to ${next.name}.',
       );
     }
-    return _copy(
-      status: next,
-      statusBeforeArchive: next == RoutineStatus.archived ? status : null,
-      updatedAt: at,
-    );
-  }
-
-  SmartRoutine restoreFromArchive(DateTime at) {
-    if (status != RoutineStatus.archived || statusBeforeArchive == null) {
-      throw const SmartRoutineValidationException(
-        'routine_not_archived',
-        'Only an archived routine can be restored.',
-      );
-    }
-    return SmartRoutine(
-      routineId: routineId,
-      category: category,
-      displayName: displayName,
-      status: statusBeforeArchive!,
-      source: source,
-      createdAt: createdAt,
-      updatedAt: at,
-      prescriptionReference: prescriptionReference,
-      personalNotes: personalNotes,
-      iconKey: iconKey,
-      deletedAt: deletedAt,
-    );
+    return _copy(status: next, updatedAt: at);
   }
 
   SmartRoutine _copy({
     String? displayName,
     RoutineStatus? status,
-    RoutineStatus? statusBeforeArchive,
     DateTime? updatedAt,
   }) {
-    final nextStatus = status ?? this.status;
     return SmartRoutine(
       routineId: routineId,
       category: category,
       displayName: displayName ?? this.displayName,
-      status: nextStatus,
+      status: status ?? this.status,
       source: source,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       prescriptionReference: prescriptionReference,
       personalNotes: personalNotes,
       iconKey: iconKey,
-      statusBeforeArchive: nextStatus == RoutineStatus.archived
-          ? statusBeforeArchive ?? this.statusBeforeArchive
-          : null,
       deletedAt: deletedAt,
     );
   }
@@ -170,7 +123,6 @@ final class SmartRoutine extends Entity {
           prescriptionReference == other.prescriptionReference &&
           personalNotes == other.personalNotes &&
           iconKey == other.iconKey &&
-          statusBeforeArchive == other.statusBeforeArchive &&
           createdAt == other.createdAt &&
           updatedAt == other.updatedAt &&
           deletedAt == other.deletedAt;
@@ -185,7 +137,6 @@ final class SmartRoutine extends Entity {
     prescriptionReference,
     personalNotes,
     iconKey,
-    statusBeforeArchive,
     createdAt,
     updatedAt,
     deletedAt,
