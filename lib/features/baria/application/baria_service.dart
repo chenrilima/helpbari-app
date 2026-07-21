@@ -10,6 +10,7 @@ import '../../academy/application/knowledge_use_cases.dart';
 import '../../academy/domain/entities/entities.dart';
 import '../domain/models/models.dart';
 import 'baria_context_cache.dart';
+import '../domain/ports/baria_treatment_context_port.dart';
 
 abstract interface class BariaContextService {
   Future<BariaContext> buildContext();
@@ -25,6 +26,7 @@ class BariaService implements BariaContextService {
     required SyncState Function() syncState,
     required String userId,
     KnowledgeUseCases? knowledge,
+    required BariaTreatmentContextPort treatment,
     this.cacheDuration = const Duration(minutes: 5),
     BariaContextCache? cache,
   }) : _dashboard = dashboard,
@@ -33,6 +35,7 @@ class BariaService implements BariaContextService {
        _syncState = syncState,
        _userId = userId,
        _knowledge = knowledge,
+       _treatment = treatment,
        _cache = cache ?? BariaContextCache();
 
   final HealthDashboardUseCases _dashboard;
@@ -41,6 +44,7 @@ class BariaService implements BariaContextService {
   final SyncState Function() _syncState;
   final String _userId;
   final KnowledgeUseCases? _knowledge;
+  final BariaTreatmentContextPort _treatment;
   final Duration cacheDuration;
   final BariaContextCache _cache;
 
@@ -74,8 +78,10 @@ class BariaService implements BariaContextService {
       _knowledge == null
           ? Future<KnowledgeCatalog?>.value()
           : _safe(() => _knowledge.loadCatalog()),
+      _safe(() => _treatment.load(now)),
     ]);
     final catalog = values[4] as KnowledgeCatalog?;
+    final treatment = values[5] as BariaTreatmentContext?;
     final articles = (catalog?.articles ?? const <KnowledgeArticle>[])
         .take(3)
         .toList();
@@ -116,6 +122,7 @@ class BariaService implements BariaContextService {
       recommendedArticles: List.unmodifiable(articles),
       relevantNotifications: List.unmodifiable(notifications),
       homeInsights: List.unmodifiable(homeInsights),
+      treatment: treatment,
     );
     _cache.write(context);
     return context;

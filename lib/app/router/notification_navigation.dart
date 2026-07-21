@@ -6,6 +6,7 @@ String? notificationLocation(LocalNotificationPayload payload) {
     NotificationSource.appointment => AppRoutes.appointments,
     NotificationSource.vitamin => AppRoutes.vitamins,
     NotificationSource.medication => AppRoutes.medications,
+    NotificationSource.smartRoutineOccurrence => AppRoutes.home,
     NotificationSource.push => null,
   };
   if (route == null) return null;

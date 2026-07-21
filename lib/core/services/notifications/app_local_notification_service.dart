@@ -57,12 +57,22 @@ class AppLocalNotificationService implements LocalNotificationService {
     const androidSettings = AndroidInitializationSettings(
       '@mipmap/ic_launcher',
     );
-    const darwinSettings = DarwinInitializationSettings(
+    final darwinSettings = DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
+      notificationCategories: <DarwinNotificationCategory>[
+        DarwinNotificationCategory(
+          'helpbari_routine_occurrence',
+          actions: <DarwinNotificationAction>[
+            DarwinNotificationAction.plain('taken', 'Tomado'),
+            DarwinNotificationAction.plain('skipped', 'Ignorar'),
+            DarwinNotificationAction.plain('remindLater', 'Lembrar depois'),
+          ],
+        ),
+      ],
     );
-    const settings = InitializationSettings(
+    final settings = InitializationSettings(
       android: androidSettings,
       iOS: darwinSettings,
     );
@@ -246,22 +256,35 @@ class AppLocalNotificationService implements LocalNotificationService {
       channelDescription: _channelDescription,
       importance: Importance.high,
       priority: Priority.high,
+      actions: <AndroidNotificationAction>[
+        AndroidNotificationAction('taken', 'Tomado'),
+        AndroidNotificationAction('skipped', 'Ignorar'),
+        AndroidNotificationAction('remindLater', 'Lembrar depois'),
+      ],
     );
     const iosDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
+      categoryIdentifier: 'helpbari_routine_occurrence',
     );
 
     return const NotificationDetails(android: androidDetails, iOS: iosDetails);
   }
 
   void _handleTap(NotificationResponse response) {
-    _emitPayload(response.payload);
+    _emitPayload(response.payload, action: response.actionId);
   }
 
-  void _emitPayload(String? encoded, {bool retainForFirstListener = false}) {
-    final payload = LocalNotificationPayload.decode(encoded);
+  void _emitPayload(
+    String? encoded, {
+    bool retainForFirstListener = false,
+    String? action,
+  }) {
+    final decoded = LocalNotificationPayload.decode(encoded);
+    final payload = decoded == null || action == null || action.isEmpty
+        ? decoded
+        : decoded.copyWith(action: action);
 
     if (payload == null) {
       _logger.warning('Payload de notificacao invalido.');

@@ -5,6 +5,7 @@ import '../../../../core/services/service_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/datasources/drift_medical_prescription_local_datasource.dart';
 import '../../data/repositories/drift_medical_prescription_repository.dart';
+import '../../data/repositories/drift_prescription_platform_repository.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../states/medical_prescription_state.dart';
@@ -30,6 +31,25 @@ final medicalPrescriptionUseCasesProvider =
         ref.watch(medicalPrescriptionRepositoryProvider),
       ),
     );
+
+final prescriptionPlatformRepositoryProvider =
+    FutureProvider<PrescriptionPlatformRepository>((ref) async {
+      final userId = ref.watch(authSessionProvider)?.id ?? 'anonymous';
+      final database = await ref.read(appDatabaseProvider.future);
+      final notifications = ref.read(notificationSchedulerProvider);
+      final timeZone = notifications.state.timeZone ?? 'UTC';
+      return DriftPrescriptionPlatformRepository(
+        database: database,
+        prescriptions: DriftMedicalPrescriptionLocalDatasource(
+          dao: database.medicalPrescriptionDao,
+          clock: ref.read(clockServiceProvider),
+          userId: userId,
+        ),
+        clock: ref.read(clockServiceProvider),
+        userId: userId,
+        timeZone: timeZone,
+      );
+    });
 
 final medicalPrescriptionViewModelProvider =
     NotifierProvider<MedicalPrescriptionViewModel, MedicalPrescriptionState>(

@@ -20,3 +20,4 @@ export 'schedule_instant_resolver.dart';
 export 'schedule_date_eligibility_policy.dart';
 export 'schedule_plan_compatibility_policy.dart';
 export 'schedule_times_resolver.dart';
+export 'treatment_query_models.dart';

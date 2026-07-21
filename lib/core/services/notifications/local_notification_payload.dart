@@ -4,6 +4,7 @@ enum NotificationSource {
   vitamin,
   medication,
   appointment,
+  smartRoutineOccurrence,
   push;
 
   static NotificationSource? tryParse(String value) => NotificationSource.values
@@ -25,6 +26,17 @@ class LocalNotificationPayload {
   final String userId;
   final String action;
   final Map<String, String> data;
+
+  LocalNotificationPayload copyWith({
+    String? action,
+    Map<String, String>? data,
+  }) => LocalNotificationPayload(
+    source: source,
+    entityId: entityId,
+    userId: userId,
+    action: action ?? this.action,
+    data: data ?? this.data,
+  );
 
   String encode() {
     return jsonEncode(<String, Object>{

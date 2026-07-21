@@ -6,8 +6,6 @@ import 'package:helpbari/features/appointments/domain/usecases/appointment_use_c
 import 'package:helpbari/features/home/domain/usecases/health_dashboard_use_cases.dart';
 import 'package:helpbari/features/meals/domain/repositories/repositories.dart';
 import 'package:helpbari/features/meals/domain/usecases/use_cases.dart';
-import 'package:helpbari/features/medications/domain/repositories/repositories.dart';
-import 'package:helpbari/features/medications/domain/usecases/use_cases.dart';
 import 'package:helpbari/features/medical_exams/domain/entities/entities.dart';
 import 'package:helpbari/features/medical_exams/domain/repositories/medical_exam_repository.dart';
 import 'package:helpbari/features/medical_exams/domain/usecases/medical_exam_use_cases.dart';
@@ -20,8 +18,8 @@ import 'package:helpbari/features/profile/domain/usecases/update_profile_use_cas
 import 'package:helpbari/features/settings/domain/entities/entities.dart';
 import 'package:helpbari/features/settings/domain/repositories/repositories.dart';
 import 'package:helpbari/features/settings/domain/usecases/setting_use_cases.dart';
-import 'package:helpbari/features/vitamins/domain/repositories/repositories.dart';
-import 'package:helpbari/features/vitamins/domain/usecases/vitamin_use_cases.dart';
+import 'package:helpbari/features/smart_routines/domain/enums/routine_enums.dart';
+import 'package:helpbari/features/smart_routines/domain/services/treatment_query_models.dart';
 import 'package:helpbari/features/water/domain/repositories/water_repository.dart';
 import 'package:helpbari/features/water/domain/usecases/water_use_cases.dart';
 import 'package:helpbari/features/weight/domain/repositories/weight_repository.dart';
@@ -53,17 +51,10 @@ void main() {
         weight: WeightUseCases(_WeightRepository()),
         water: WaterUseCases(_WaterRepository(), const _Clock()),
         meals: MealUseCases(_MealRepository()),
-        vitamins: VitaminUseCases(
-          _VitaminRepository(),
-          _VitaminLogRepository(),
-        ),
-        medications: MedicationUseCases(
-          _MedicationRepository(),
-          _MedicationLogRepository(),
-        ),
         appointments: AppointmentUseCases(_AppointmentRepository()),
         exams: MedicalExamUseCases(_MedicalExamRepository([latest])),
         settings: SettingsUseCases(_SettingsRepository()),
+        treatment: () async => const _TreatmentQuery(),
       );
 
       final aggregate = await useCases.load(
@@ -112,34 +103,6 @@ class _MealRepository implements MealRepository {
   }
 }
 
-class _VitaminRepository implements VitaminRepository {
-  @override
-  dynamic noSuchMethod(Invocation invocation) {
-    return Future.value(const []);
-  }
-}
-
-class _VitaminLogRepository implements VitaminLogRepository {
-  @override
-  dynamic noSuchMethod(Invocation invocation) {
-    return Future.value(const []);
-  }
-}
-
-class _MedicationRepository implements MedicationRepository {
-  @override
-  dynamic noSuchMethod(Invocation invocation) {
-    return Future.value(const []);
-  }
-}
-
-class _MedicationLogRepository implements MedicationLogRepository {
-  @override
-  dynamic noSuchMethod(Invocation invocation) {
-    return Future.value(const []);
-  }
-}
-
 class _AppointmentRepository implements AppointmentRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) {
@@ -171,4 +134,31 @@ class _SettingsRepository implements SettingsRepository {
   dynamic noSuchMethod(Invocation invocation) {
     return Future.value(const AppSettings(id: 'user-a'));
   }
+}
+
+class _TreatmentQuery implements TreatmentAdherenceQueryService {
+  const _TreatmentQuery();
+
+  @override
+  Future<TreatmentAdherenceSummary> summary(
+    DateTime start,
+    DateTime end,
+  ) async => const TreatmentAdherenceSummary(
+    eligible: 0,
+    taken: 0,
+    takenOnTime: 0,
+    skipped: 0,
+    missed: 0,
+    coverage: 0,
+    coverageState: AdherenceCoverageState.unknown,
+    origin: TreatmentDataOrigin.smartRoutines,
+  );
+
+  @override
+  Future<TodayTreatmentReadModel> today(DateTime date) async =>
+      TodayTreatmentReadModel(
+        date: date,
+        occurrences: const [],
+        adherence: await summary(date, date),
+      );
 }

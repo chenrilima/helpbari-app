@@ -23,6 +23,7 @@ import '../../../home/domain/usecases/use_cases.dart';
 import '../entities/entities.dart';
 import '../models/models.dart';
 import '../repositories/repositories.dart';
+import '../../../smart_routines/domain/services/treatment_query_models.dart';
 
 class MedicalReportUseCases {
   const MedicalReportUseCases({
@@ -39,6 +40,7 @@ class MedicalReportUseCases {
     required ClockService clock,
     HealthDashboardUseCases? dashboardUseCases,
     MedicalPrescriptionUseCases? prescriptionUseCases,
+    required Future<TreatmentAdherenceQueryService> Function() treatment,
   }) : _repository = repository,
        _profileUseCases = profileUseCases,
        _weightUseCases = weightUseCases,
@@ -51,7 +53,8 @@ class MedicalReportUseCases {
        _settingsUseCases = settingsUseCases,
        _clock = clock,
        _dashboardUseCases = dashboardUseCases,
-       _prescriptionUseCases = prescriptionUseCases;
+       _prescriptionUseCases = prescriptionUseCases,
+       _treatment = treatment;
 
   final MedicalReportRepository _repository;
   final ProfileUseCases _profileUseCases;
@@ -66,6 +69,7 @@ class MedicalReportUseCases {
   final ClockService _clock;
   final HealthDashboardUseCases? _dashboardUseCases;
   final MedicalPrescriptionUseCases? _prescriptionUseCases;
+  final Future<TreatmentAdherenceQueryService> Function() _treatment;
 
   Future<GeneratedMedicalReport> generateCompleteReport({
     ReportTemplate? template,
@@ -120,17 +124,15 @@ class MedicalReportUseCases {
     final medicationLogs = results[10] as List<MedicationLog>;
     final dashboard = results[11] as HealthDashboardAggregate?;
     final prescriptions = results[12] as List<MedicalPrescription>;
+    final treatmentAdherence = await (await _treatment()).summary(
+      periodStart,
+      periodEnd,
+    );
     final fallbackPendingVitamins = dashboard == null
         ? await _vitaminUseCases.getPendingCount(date: now)
         : null;
     final fallbackPendingMedications = dashboard == null
         ? await _medicationUseCases.getPendingCount(date: now)
-        : null;
-    final fallbackVitaminAdherence = dashboard == null
-        ? await _vitaminUseCases.adherence(periodStart, periodEnd)
-        : null;
-    final fallbackMedicationAdherence = dashboard == null
-        ? await _medicationUseCases.adherence(periodStart, periodEnd)
         : null;
     final currentWeight = weightHistory.isEmpty
         ? null
@@ -225,12 +227,13 @@ class MedicalReportUseCases {
             latestExam: calculatedSummary.latestExam,
             weightProgress: calculatedSummary.weightProgress,
           );
-    final vitaminAdherence = dashboard == null
-        ? fallbackVitaminAdherence
-        : _average(dashboard.days.map((day) => day.vitaminAdherence));
-    final medicationAdherence = dashboard == null
-        ? fallbackMedicationAdherence
-        : _average(dashboard.days.map((day) => day.medicationAdherence));
+    final canonicalAdherence = treatmentAdherence.coverage >= .6
+        ? treatmentAdherence.adherence == null
+              ? null
+              : treatmentAdherence.adherence! * 100
+        : null;
+    final vitaminAdherence = canonicalAdherence;
+    final medicationAdherence = canonicalAdherence;
     final observations = _automaticObservations(
       settings: settings,
       averageDailyWaterMl: averageDailyWaterMl,
@@ -268,13 +271,8 @@ class MedicalReportUseCases {
       medicationAdherencePercent: medicationAdherence,
       automaticObservations: List.unmodifiable(observations),
       attachments: attachments,
+      treatmentAdherence: treatmentAdherence,
     );
-  }
-
-  double? _average(Iterable<double?> values) {
-    final available = values.whereType<double>().toList();
-    if (available.isEmpty) return null;
-    return available.reduce((a, b) => a + b) / available.length * 100;
   }
 
   List<String> _automaticObservations({

@@ -3,14 +3,14 @@ import '../../../appointments/domain/entities/entities.dart';
 import '../../../appointments/domain/usecases/use_cases.dart';
 import '../../../meals/domain/entities/entities.dart';
 import '../../../meals/domain/usecases/use_cases.dart';
-import '../../../medications/domain/usecases/use_cases.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
 import '../../../medical_exams/domain/usecases/medical_exam_use_cases.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../profile/domain/usecases/use_cases.dart';
 import '../../../settings/domain/entities/entities.dart';
 import '../../../settings/domain/usecases/use_cases.dart';
-import '../../../vitamins/domain/usecases/vitamin_use_cases.dart';
+import '../../../smart_routines/domain/services/treatment_query_models.dart';
+import '../../../smart_routines/domain/enums/routine_enums.dart';
 import '../../../water/domain/entities/entities.dart';
 import '../../../water/domain/usecases/use_cases.dart';
 import '../../../weight/domain/entities/entities.dart';
@@ -23,30 +23,27 @@ class HealthDashboardUseCases {
     required WeightUseCases weight,
     required WaterUseCases water,
     required MealUseCases meals,
-    required VitaminUseCases vitamins,
-    required MedicationUseCases medications,
     required AppointmentUseCases appointments,
     required MedicalExamUseCases exams,
     required SettingsUseCases settings,
+    required Future<TreatmentAdherenceQueryService> Function() treatment,
   }) : _profile = profile,
        _weight = weight,
        _water = water,
        _meals = meals,
-       _vitamins = vitamins,
-       _medications = medications,
        _appointments = appointments,
        _exams = exams,
-       _settings = settings;
+       _settings = settings,
+       _treatment = treatment;
 
   final ProfileUseCases _profile;
   final WeightUseCases _weight;
   final WaterUseCases _water;
   final MealUseCases _meals;
-  final VitaminUseCases _vitamins;
-  final MedicationUseCases _medications;
   final AppointmentUseCases _appointments;
   final MedicalExamUseCases _exams;
   final SettingsUseCases _settings;
+  final Future<TreatmentAdherenceQueryService> Function() _treatment;
 
   Future<HealthDashboardAggregate> load({
     required DateTime start,
@@ -64,12 +61,6 @@ class HealthDashboardUseCases {
       _read(() => _weight.getHistory(), HealthDataSection.weight, unavailable),
       _read(() => _water.getHistory(), HealthDataSection.water, unavailable),
       _read(() => _meals.getAll(), HealthDataSection.meals, unavailable),
-      _read(() => _vitamins.getAll(), HealthDataSection.vitamins, unavailable),
-      _read(
-        () => _medications.getAll(),
-        HealthDataSection.medications,
-        unavailable,
-      ),
       _read(
         () => _appointments.getAll(),
         HealthDataSection.appointments,
@@ -86,9 +77,10 @@ class HealthDashboardUseCases {
     final weights = (results[1] as List<WeightRecord>?) ?? const [];
     final water = (results[2] as List<WaterRecord>?) ?? const [];
     final meals = (results[3] as List<Meal>?) ?? const [];
-    final appointments = (results[6] as List<Appointment>?) ?? const [];
-    final exams = (results[7] as List<MedicalExam>?) ?? const [];
-    final settings = results[8] as AppSettings?;
+    final appointments = (results[4] as List<Appointment>?) ?? const [];
+    final exams = (results[5] as List<MedicalExam>?) ?? const [];
+    final settings = results[6] as AppSettings?;
+    final treatment = await _treatment();
 
     final days = <DailyHealthAggregate>[];
     for (
@@ -117,27 +109,20 @@ class HealthDashboardUseCases {
           : ProteinCalculator.goalForWeightKg(
               weightKg ?? profile.initialWeight.value,
             );
-      final vitaminAdherencePercent =
-          unavailable.contains(HealthDataSection.vitamins)
-          ? null
-          : await _vitamins.adherence(date, date);
-      final medicationAdherencePercent =
-          unavailable.contains(HealthDataSection.medications)
-          ? null
-          : await _medications.adherence(date, date);
-      final vitaminAdherence = vitaminAdherencePercent == null
-          ? null
-          : vitaminAdherencePercent / 100;
-      final medicationAdherence = medicationAdherencePercent == null
-          ? null
-          : medicationAdherencePercent / 100;
-      final pendingVitamins = unavailable.contains(HealthDataSection.vitamins)
-          ? null
-          : await _vitamins.getPendingCount(date: date);
-      final pendingMedications =
-          unavailable.contains(HealthDataSection.medications)
-          ? null
-          : await _medications.getPendingCount(date: date);
+      final treatmentToday = await treatment.today(date);
+      final treatmentAdherence =
+          treatmentToday.adherence.coverageState ==
+              AdherenceCoverageState.complete
+          ? treatmentToday.adherence.adherence
+          : null;
+      final vitaminAdherence = treatmentAdherence;
+      final medicationAdherence = treatmentAdherence;
+      final pendingVitamins = treatmentToday.pendingFor(
+        RoutineCategory.vitamin,
+      );
+      final pendingMedications = treatmentToday.pendingFor(
+        RoutineCategory.medication,
+      );
       final score = HealthScoreCalculator.calculateV2(
         HealthScoreInput(
           hydration:

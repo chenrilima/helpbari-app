@@ -7,6 +7,7 @@ import '../../core/services/service_providers.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/settings/presentation/providers/setting_use_cases_provider.dart';
 import '../../features/settings/presentation/providers/settings_reminder_sync_provider.dart';
+import '../../features/smart_routines/presentation/providers/unified_treatment_providers.dart';
 
 final notificationBootstrapProvider =
     Provider<NotificationBootstrapCoordinator>((ref) {
@@ -57,6 +58,26 @@ class NotificationBootstrapCoordinator {
     final settings = await _ref.read(settingsUseCasesProvider).getSettings();
     if (_ref.read(authSessionProvider)?.id != userId) return;
     await _ref.read(settingsReminderSyncServiceProvider).restore(settings);
+    final now = DateTime.now().toUtc();
+    final occurrenceWindow = await _ref.read(
+      occurrenceWindowServiceProvider.future,
+    );
+    final projections = await occurrenceWindow.materializeAndProject(
+      fromUtc: now.subtract(const Duration(hours: 12)),
+      untilUtc: now.add(const Duration(days: 7)),
+    );
+    await _ref
+        .read(notificationV2ReconcilerProvider.future)
+        .then(
+          (reconciler) => reconciler.reconcile(
+            userId: userId,
+            desired: projections,
+            now: now,
+          ),
+        );
+    await _ref
+        .read(notificationActionHandlerProvider.future)
+        .then((handler) => handler.process(userId));
   }
 
   void _enqueue(Future<void> Function() operation) {

@@ -9,6 +9,7 @@ import '../../../vitamins/domain/entities/entities.dart';
 import '../../../water/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
 import '../entities/entities.dart';
+import '../../../smart_routines/domain/services/treatment_query_models.dart';
 
 class MedicalReportSnapshot {
   const MedicalReportSnapshot({
@@ -35,6 +36,7 @@ class MedicalReportSnapshot {
     this.profile,
     this.attachments = const [],
     this.prescriptions = const [],
+    this.treatmentAdherence,
   });
 
   final DateTime generatedAt;
@@ -60,6 +62,7 @@ class MedicalReportSnapshot {
   final double? medicationAdherencePercent;
   final List<String> automaticObservations;
   final List<ReportAttachment> attachments;
+  final TreatmentAdherenceSummary? treatmentAdherence;
 
   WeightRecord? get latestWeight {
     return weightHistory.isEmpty ? null : weightHistory.first;

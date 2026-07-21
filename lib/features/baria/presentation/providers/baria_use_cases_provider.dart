@@ -10,6 +10,8 @@ import '../../application/baria_service.dart';
 import '../../data/repositories/contextual_baria_repository.dart';
 import '../../domain/repositories/baria_repository.dart';
 import '../../domain/usecases/baria_use_cases.dart';
+import '../../domain/ports/baria_treatment_context_port.dart';
+import '../../../smart_routines/presentation/providers/unified_treatment_providers.dart';
 
 final bariaServiceProvider = Provider<BariaService>((ref) {
   final userId = ref.watch(authSessionProvider)?.id ?? 'anonymous';
@@ -20,6 +22,9 @@ final bariaServiceProvider = Provider<BariaService>((ref) {
     syncState: () => ref.read(syncManagerProvider),
     userId: userId,
     knowledge: ref.watch(knowledgeUseCasesProvider),
+    treatment: QueryServiceBariaTreatmentContextPort(
+      () => ref.read(treatmentAdherenceQueryServiceProvider.future),
+    ),
   );
 });
 

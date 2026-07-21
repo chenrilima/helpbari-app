@@ -34,6 +34,16 @@ class PrivacyClinicalExportDatasource {
         'unified_treatment_legacy_log_mappings',
         userId,
       ),
+      'prescriptionVersions': await _rows(
+        'prescription_version_records',
+        userId,
+      ),
+      'prescriptionReviews': await _rows('prescription_review_records', userId),
+      'treatmentProposals': await _rows('treatment_proposal_records', userId),
+      'prescriptionRoutineLinks': await _rows(
+        'prescription_routine_link_records',
+        userId,
+      ),
     };
   }
 

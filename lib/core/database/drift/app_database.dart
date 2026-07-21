@@ -48,6 +48,7 @@ import 'tables/medical_exams.dart';
 import 'tables/medical_exam_results.dart';
 import 'tables/medical_prescription_records.dart';
 import 'tables/smart_routine_records.dart';
+import 'tables/macro2_records.dart';
 
 part 'app_database.g.dart';
 
@@ -95,6 +96,12 @@ part 'app_database.g.dart';
     UnifiedTreatmentLegacyLogMappings,
     UnifiedTreatmentRolloutFlags,
     UnifiedTreatmentCutoverStates,
+    PrescriptionVersionRecords,
+    PrescriptionReviewRecords,
+    TreatmentProposalRecords,
+    PrescriptionRoutineLinkRecords,
+    NotificationManifestRecords,
+    NotificationActionInboxRecords,
   ],
   daos: [
     WaterDao,
@@ -121,7 +128,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 19;
+  int get schemaVersion => 20;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -244,6 +251,14 @@ class AppDatabase extends _$AppDatabase {
         await migrator.createTable(unifiedTreatmentLegacyLogMappings);
         await migrator.createTable(unifiedTreatmentRolloutFlags);
         await migrator.createTable(unifiedTreatmentCutoverStates);
+      }
+      if (from < 20) {
+        await migrator.createTable(prescriptionVersionRecords);
+        await migrator.createTable(prescriptionReviewRecords);
+        await migrator.createTable(treatmentProposalRecords);
+        await migrator.createTable(prescriptionRoutineLinkRecords);
+        await migrator.createTable(notificationManifestRecords);
+        await migrator.createTable(notificationActionInboxRecords);
       }
     },
     beforeOpen: (details) async {
