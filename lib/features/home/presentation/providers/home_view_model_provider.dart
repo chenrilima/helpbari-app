@@ -7,6 +7,7 @@ import '../../../meals/presentation/providers/meal_use_cases_provider.dart';
 import '../../../medical_exams/presentation/providers/medical_exam_use_cases_provider.dart';
 import '../../../profile/presentation/providers/profile_use_case_providers.dart';
 import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
+import '../../../settings/domain/entities/setting.dart';
 import '../../../water/presentation/providers/water_use_cases_provider.dart';
 import '../../../weight/presentation/providers/weight_use_cases_provider.dart';
 import '../../../smart_routines/presentation/providers/unified_treatment_providers.dart';
@@ -244,13 +245,13 @@ final quickActionsProvider = FutureProvider<QuickActionsReadModel>((ref) async {
   final context = ref.watch(_homeRequestContextProvider);
   final values = await Future.wait<Object>([
     ref.watch(todayAgendaProvider.future),
-    ref.watch(homePrescriptionReviewCountProvider.future),
+    ref.watch(settingsUseCasesProvider).getSettings(),
   ]);
   return ref
       .watch(homeIntelligenceQueryFacadeProvider)
       .composeQuickActions(
         agenda: values[0] as AgendaReadModel,
-        prescriptionsAwaitingReview: values[1] as int,
+        settings: values[1] as AppSettings,
         freshness: context.freshness,
         pendingSync: context.pendingSync,
       );

@@ -26,6 +26,8 @@ import '../../features/medical_exams/presentation/pages/medical_exam_details_pag
 import '../../features/medical_exams/presentation/pages/medical_exams_page.dart';
 import '../../features/medical_exams/presentation/pages/register_medical_exam_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/more/presentation/pages/more_page.dart';
+import '../../features/treatment/presentation/pages/treatment_page.dart';
 import '../../features/meals/presentation/pages/register_meal_page.dart';
 import '../../features/medical_reports/presentation/pages/medical_reports_page.dart';
 import '../../features/medical_prescriptions/domain/entities/entities.dart';
@@ -71,6 +73,7 @@ import '../../features/bioimpedance/domain/entities/entities.dart'
 import 'app_routes.dart';
 import 'app_redirect_resolver.dart';
 import 'notification_navigation.dart';
+import '../shell/main_shell.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -103,6 +106,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
   final router = GoRouter(
     navigatorKey: rootNavigatorKey,
+    restorationScopeId: 'helpbari-router',
     initialLocation: AppRoutes.splash,
     refreshListenable: refreshListenable,
     redirect: (context, state) {
@@ -167,9 +171,43 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.login,
         builder: (context, state) => const LoginPage(),
       ),
-      GoRoute(
-        path: AppRoutes.home,
-        builder: (context, state) => const HomePage(),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            MainShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.home,
+                builder: (context, state) => const HomePage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.treatment,
+                builder: (context, state) => const TreatmentPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.progress,
+                builder: (context, state) => const ProgressPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.more,
+                builder: (context, state) => const MorePage(),
+              ),
+            ],
+          ),
+        ],
       ),
       GoRoute(
         path: AppRoutes.signUp,
@@ -247,10 +285,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.examDetails,
         builder: (context, state) =>
             MedicalExamDetailsPage(exam: state.extra! as MedicalExam),
-      ),
-      GoRoute(
-        path: AppRoutes.progress,
-        builder: (context, state) => const ProgressPage(),
       ),
       GoRoute(
         path: AppRoutes.medications,

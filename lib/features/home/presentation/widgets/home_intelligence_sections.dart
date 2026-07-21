@@ -18,29 +18,23 @@ class NextActionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (model.actions.isEmpty) return const SizedBox.shrink();
     return HomeSection(
       title: 'Agora',
       subtitle: 'O que merece atenção neste momento.',
-      child: model.actions.isEmpty
-          ? const HBEmptyState(
-              title: 'Tudo acompanhado por agora',
-              description:
-                  'Sua próxima ação aparecerá aqui quando for aplicável.',
-              icon: Icons.check_circle_outline,
-            )
-          : Column(
-              children: [
-                for (var index = 0; index < model.actions.length; index++) ...[
-                  TodayTaskCard(
-                    icon: _icon(model.actions[index].priority),
-                    title: model.actions[index].title,
-                    subtitle: model.actions[index].reason,
-                    onTap: () => onAction(model.actions[index]),
-                  ),
-                  if (index != model.actions.length - 1) const HBGap.sm(),
-                ],
-              ],
+      child: Column(
+        children: [
+          for (var index = 0; index < model.actions.length; index++) ...[
+            TodayTaskCard(
+              icon: _icon(model.actions[index].priority),
+              title: model.actions[index].title,
+              subtitle: model.actions[index].reason,
+              onTap: () => onAction(model.actions[index]),
             ),
+            if (index != model.actions.length - 1) const HBGap.sm(),
+          ],
+        ],
+      ),
     );
   }
 
@@ -52,62 +46,107 @@ class NextActionsSection extends StatelessWidget {
   };
 }
 
-class IntelligentAgendaSection extends StatelessWidget {
+class IntelligentAgendaSection extends StatefulWidget {
   const IntelligentAgendaSection({
     required this.model,
-    required this.todayOnly,
     required this.onItem,
+    this.todayOnly,
     super.key,
   });
 
   final AgendaReadModel model;
-  final bool todayOnly;
   final ValueChanged<AgendaItemReadModel> onItem;
+  final bool? todayOnly;
+
+  @override
+  State<IntelligentAgendaSection> createState() =>
+      _IntelligentAgendaSectionState();
+}
+
+class _IntelligentAgendaSectionState extends State<IntelligentAgendaSection> {
+  late bool _todayOnly = widget.todayOnly ?? true;
 
   @override
   Widget build(BuildContext context) {
-    final today = model.start;
-    final items = model.items
+    final today = widget.model.start;
+    final items = widget.model.items
         .where((item) {
           final isToday =
               item.effectiveAt.year == today.year &&
               item.effectiveAt.month == today.month &&
               item.effectiveAt.day == today.day;
-          if (todayOnly) return isToday;
-          return !isToday && item.effectiveAt.isAfter(today);
+          return _todayOnly
+              ? isToday
+              : !isToday && item.effectiveAt.isAfter(today);
         })
-        .take(todayOnly ? 5 : 3)
         .toList(growable: false);
     return HomeSection(
-      title: todayOnly ? 'Agenda de hoje' : 'Próximos compromissos',
-      child: items.isEmpty
-          ? HBEmptyState(
+      title: 'Seu dia',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SegmentedButton<bool>(
+            segments: const [
+              ButtonSegment(value: true, label: Text('Hoje')),
+              ButtonSegment(value: false, label: Text('Próximos 7 dias')),
+            ],
+            selected: {_todayOnly},
+            onSelectionChanged: (value) =>
+                setState(() => _todayOnly = value.first),
+          ),
+          const HBGap.md(),
+          if (items.isEmpty)
+            HBEmptyState(
               title: 'Nenhum item aplicável',
-              description: todayOnly
+              description: _todayOnly
                   ? 'Não há ocorrências ou consultas para hoje.'
                   : 'Não há compromissos nos próximos sete dias.',
               icon: Icons.event_available_outlined,
             )
-          : Column(
+          else
+            Column(
               children: [
                 for (var index = 0; index < items.length; index++) ...[
-                  Opacity(
-                    opacity: items[index].state == AgendaItemState.resolved
-                        ? .62
-                        : 1,
-                    child: TodayTaskCard(
-                      icon: _icon(items[index]),
-                      title: items[index].title,
-                      subtitle: _subtitle(items[index]),
-                      onTap: () => onItem(items[index]),
+                  Semantics(
+                    label: items[index].accessibilityLabel,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 52,
+                          child: HBText(
+                            _time(items[index]),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                        Expanded(
+                          child: Opacity(
+                            opacity:
+                                items[index].state == AgendaItemState.resolved
+                                ? .62
+                                : 1,
+                            child: TodayTaskCard(
+                              icon: _icon(items[index]),
+                              title: items[index].title,
+                              subtitle: _subtitle(items[index]),
+                              onTap: () => widget.onItem(items[index]),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   if (index != items.length - 1) const HBGap.sm(),
                 ],
               ],
             ),
+        ],
+      ),
     );
   }
+
+  String _time(AgendaItemReadModel item) =>
+      '${item.effectiveAt.hour.toString().padLeft(2, '0')}:${item.effectiveAt.minute.toString().padLeft(2, '0')}';
 
   IconData _icon(AgendaItemReadModel item) => switch (item.type) {
     AgendaItemType.treatment => Icons.medication_outlined,
@@ -128,7 +167,7 @@ class IntelligentAgendaSection extends StatelessWidget {
       AgendaItemState.requiresReview => 'requer revisão',
       AgendaItemState.unavailable => 'indisponível',
     };
-    if (todayOnly) return '$hour:$minute • $state';
+    if (_todayOnly) return state;
     final day = item.effectiveAt.day.toString().padLeft(2, '0');
     final month = item.effectiveAt.month.toString().padLeft(2, '0');
     return '$day/$month • $hour:$minute • $state';
@@ -142,15 +181,9 @@ class DailyProgressSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final metrics = [
-      model.routine,
-      model.water,
-      model.protein,
-      model.weight,
-      model.streak,
-    ];
+    final metrics = [model.routine, model.water, model.protein];
     return HomeSection(
-      title: 'Progresso do dia',
+      title: 'Como está seu dia',
       subtitle: 'Cada indicador usa sua própria cobertura de dados.',
       child: Column(
         children: [

@@ -368,7 +368,7 @@ class NextActionsReadModel extends HomeValueReadModel {
   NextActionsReadModel({
     required Iterable<NextActionReadModel> actions,
     required this.status,
-  }) : actions = List.unmodifiable(actions.take(3));
+  }) : actions = List.unmodifiable(actions.take(1));
 
   final List<NextActionReadModel> actions;
   final HomeSectionStatus status;

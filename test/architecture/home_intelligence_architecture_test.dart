@@ -47,7 +47,8 @@ void main() {
     ).readAsStringSync();
 
     expect('QuickActionsSection('.allMatches(page), hasLength(1));
-    expect(page, isNot(contains('IntelligentQuickActionsSection(')));
+    expect(page, contains('IntelligentQuickActionsSection('));
+    expect(page, isNot(contains('QuickActionsSection(onOpen:')));
     expect(model, isNot(contains('quickWater')));
   });
 
