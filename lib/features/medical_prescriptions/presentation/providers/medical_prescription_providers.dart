@@ -13,7 +13,10 @@ import '../viewmodels/medical_prescription_view_model.dart';
 
 final medicalPrescriptionRepositoryProvider =
     Provider<MedicalPrescriptionRepository>((ref) {
-      final userId = ref.watch(authSessionProvider)?.id ?? 'anonymous';
+      final userId = ref.watch(authSessionProvider)?.id;
+      if (userId == null) {
+        throw StateError('Authenticated user is required for prescriptions.');
+      }
       return DriftMedicalPrescriptionRepository(
         () async => DriftMedicalPrescriptionLocalDatasource(
           dao: (await ref.read(
@@ -34,7 +37,10 @@ final medicalPrescriptionUseCasesProvider =
 
 final prescriptionPlatformRepositoryProvider =
     FutureProvider<PrescriptionPlatformRepository>((ref) async {
-      final userId = ref.watch(authSessionProvider)?.id ?? 'anonymous';
+      final userId = ref.watch(authSessionProvider)?.id;
+      if (userId == null) {
+        throw StateError('Authenticated user is required for prescriptions.');
+      }
       final database = await ref.read(appDatabaseProvider.future);
       final notifications = ref.read(notificationSchedulerProvider);
       final timeZone = notifications.state.timeZone ?? 'UTC';

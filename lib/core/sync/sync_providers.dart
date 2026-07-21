@@ -290,7 +290,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
   return () async {
     ref.invalidate(settingsUseCasesProvider);
     ref.invalidate(dailyWaterGoalProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(healthDashboardUseCasesProvider);
     ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(waterViewModelProvider);
@@ -332,7 +332,6 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(vitaminViewModelProvider.notifier).loadVitamins(),
       ref.read(medicationViewModelProvider.notifier).loadMedications(),
       ref.read(bioimpedanceViewModelProvider.notifier).loadHistory(),
-      ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),
     ]);

@@ -113,7 +113,7 @@ class WeightViewModel extends Notifier<WeightState> {
 
   void _invalidateConsumers() {
     ref.invalidate(weightUseCasesProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(weightChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(healthPeriodAggregateProvider);

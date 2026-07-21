@@ -53,6 +53,7 @@ class _Query implements TreatmentAdherenceQueryService {
             scheduledFor: date,
             windowEndsAt: date.add(const Duration(hours: 1)),
             state: OccurrenceAdherenceState.pending,
+            operationalState: TreatmentOccurrenceState.open,
           ),
         ],
         adherence: const TreatmentAdherenceSummary(

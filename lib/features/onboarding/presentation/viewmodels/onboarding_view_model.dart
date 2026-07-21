@@ -284,7 +284,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
     ref.invalidate(dailyWaterGoalProvider);
     ref.invalidate(profileViewModelProvider);
     ref.invalidate(settingsViewModelProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(waterViewModelProvider);
     ref.invalidate(weightUseCasesProvider);
     ref.invalidate(weightViewModelProvider);

@@ -82,6 +82,27 @@ class HealthDashboardUseCases {
     final settings = results[6] as AppSettings?;
     final treatment = await _treatment();
     final treatmentDays = await treatment.days(from, to);
+    final waterByDay = <String, List<WaterRecord>>{};
+    for (final record in water) {
+      waterByDay
+          .putIfAbsent(_dateKey(record.recordedAt), () => <WaterRecord>[])
+          .add(record);
+    }
+    final mealsByDay = <String, List<Meal>>{};
+    for (final meal in meals) {
+      mealsByDay
+          .putIfAbsent(_dateKey(meal.mealDate.value), () => <Meal>[])
+          .add(meal);
+    }
+    final weightsByDay = <String, List<WeightRecord>>{};
+    for (final record in weights) {
+      weightsByDay
+          .putIfAbsent(
+            _dateKey(record.recordedAt.value),
+            () => <WeightRecord>[],
+          )
+          .add(record);
+    }
 
     final days = <DailyHealthAggregate>[];
     for (
@@ -89,13 +110,10 @@ class HealthDashboardUseCases {
       !date.isAfter(to);
       date = DateTime(date.year, date.month, date.day + 1)
     ) {
-      final dayWater = water.where((r) => _day(r.recordedAt) == date).toList();
-      final dayMeals = meals
-          .where((m) => _day(m.mealDate.value) == date)
-          .toList();
-      final dayWeights = weights
-          .where((w) => _day(w.recordedAt.value) == date)
-          .toList();
+      final key = _dateKey(date);
+      final dayWater = waterByDay[key] ?? const <WaterRecord>[];
+      final dayMeals = mealsByDay[key] ?? const <Meal>[];
+      final dayWeights = weightsByDay[key] ?? const <WeightRecord>[];
       final waterMl =
           unavailable.contains(HealthDataSection.water) || dayWater.isEmpty
           ? null
@@ -111,13 +129,20 @@ class HealthDashboardUseCases {
               weightKg ?? profile.initialWeight.value,
             );
       final treatmentToday = treatmentDays[_dateKey(date)]!;
-      final treatmentAdherence =
-          treatmentToday.adherence.coverageState ==
-              AdherenceCoverageState.complete
-          ? treatmentToday.adherence.adherence
+      final vitaminSummary = treatmentToday.adherenceFor(
+        RoutineCategory.vitamin,
+      );
+      final medicationSummary = treatmentToday.adherenceFor(
+        RoutineCategory.medication,
+      );
+      final vitaminAdherence =
+          vitaminSummary?.coverageState == AdherenceCoverageState.complete
+          ? vitaminSummary?.adherence
           : null;
-      final vitaminAdherence = treatmentAdherence;
-      final medicationAdherence = treatmentAdherence;
+      final medicationAdherence =
+          medicationSummary?.coverageState == AdherenceCoverageState.complete
+          ? medicationSummary?.adherence
+          : null;
       final pendingVitamins = treatmentToday.pendingFor(
         RoutineCategory.vitamin,
       );

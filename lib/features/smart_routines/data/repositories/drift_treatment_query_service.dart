@@ -99,10 +99,36 @@ class DriftTreatmentAdherenceQueryService
   ) async {
     final occurrences = await _occurrences(start, end);
     final events = await _events(occurrences.map((value) => value.id));
-    return _summaryFrom(occurrences, events, clock.now().toUtc());
+    final evaluatedAt = clock.now().toUtc();
+    final global = _summaryFromRows(occurrences, events, evaluatedAt);
+    final routines = await _routinesFor(occurrences);
+    final byId = {for (final row in routines) row.id: row};
+    final byCategory = <RoutineCategory, TreatmentAdherenceSummary>{};
+    for (final category in RoutineCategory.values) {
+      final rows = occurrences
+          .where(
+            (row) =>
+                (byId[row.routineId]?.category ?? 'other') == category.name,
+          )
+          .toList(growable: false);
+      if (rows.isEmpty) continue;
+      byCategory[category] = _summaryFromRows(rows, events, evaluatedAt);
+    }
+    return TreatmentAdherenceSummary(
+      eligible: global.eligible,
+      taken: global.taken,
+      takenOnTime: global.takenOnTime,
+      skipped: global.skipped,
+      missed: global.missed,
+      coverage: global.coverage,
+      coverageState: global.coverageState,
+      origin: global.origin,
+      formulaVersion: global.formulaVersion,
+      byCategory: Map.unmodifiable(byCategory),
+    );
   }
 
-  TreatmentAdherenceSummary _summaryFrom(
+  TreatmentAdherenceSummary _summaryFromRows(
     List<RoutineOccurrenceRecord> occurrences,
     Map<String, List<RoutineAdherenceEventRecord>> events,
     DateTime now,
@@ -130,7 +156,7 @@ class DriftTreatmentAdherenceQueryService
           taken++;
           onTime++;
         case OccurrenceAdherenceState.takenLate:
-          break;
+          taken++;
         case OccurrenceAdherenceState.skipped:
           skipped++;
         case OccurrenceAdherenceState.missed:
@@ -172,13 +198,7 @@ class DriftTreatmentAdherenceQueryService
   ) async {
     final occurrences = await _occurrences(start, end);
     final events = await _events(occurrences.map((value) => value.id));
-    final routineIds = occurrences.map((value) => value.routineId).toSet();
-    final routines = routineIds.isEmpty
-        ? const <SmartRoutineRecord>[]
-        : await (database.select(database.smartRoutineRecords)..where(
-                (row) => row.userId.equals(userId) & row.id.isIn(routineIds),
-              ))
-              .get();
+    final routines = await _routinesFor(occurrences);
     final byId = {for (final row in routines) row.id: row};
     final occurrenceById = {for (final row in occurrences) row.id: row};
     final evaluatedAt = clock.now().toUtc();
@@ -197,6 +217,12 @@ class DriftTreatmentAdherenceQueryService
         scheduledFor: occurrence.scheduledFor,
         windowEndsAt: occurrence.windowEndsAt,
         state: projection.state,
+        operationalState: _operationalState(
+          row: occurrence,
+          state: projection.state,
+          now: evaluatedAt,
+        ),
+        originalScheduledFor: occurrence.originalScheduledFor,
       );
     }).toList()..sort((a, b) => a.scheduledFor.compareTo(b.scheduledFor));
     final itemsByDay = <String, List<TodayTreatmentOccurrence>>{};
@@ -216,13 +242,68 @@ class DriftTreatmentAdherenceQueryService
       final dayRows = occurrences
           .where((row) => row.originalClinicalDate == key)
           .toList(growable: false);
+      final global = _summaryFromRows(dayRows, events, evaluatedAt);
+      final categorySummaries = <RoutineCategory, TreatmentAdherenceSummary>{};
+      for (final category in RoutineCategory.values) {
+        final categoryRows = dayRows
+            .where(
+              (row) =>
+                  (byId[row.routineId]?.category ?? 'other') == category.name,
+            )
+            .toList(growable: false);
+        if (categoryRows.isEmpty) continue;
+        categorySummaries[category] = _summaryFromRows(
+          categoryRows,
+          events,
+          evaluatedAt,
+        );
+      }
       result[key] = TodayTreatmentReadModel(
         date: date,
         occurrences: List.unmodifiable(itemsByDay[key] ?? const []),
-        adherence: _summaryFrom(dayRows, events, evaluatedAt),
+        adherence: TreatmentAdherenceSummary(
+          eligible: global.eligible,
+          taken: global.taken,
+          takenOnTime: global.takenOnTime,
+          skipped: global.skipped,
+          missed: global.missed,
+          coverage: global.coverage,
+          coverageState: global.coverageState,
+          origin: global.origin,
+          formulaVersion: global.formulaVersion,
+          byCategory: Map.unmodifiable(categorySummaries),
+        ),
       );
     }
     return result;
+  }
+
+  TreatmentOccurrenceState _operationalState({
+    required RoutineOccurrenceRecord row,
+    required OccurrenceAdherenceState state,
+    required DateTime now,
+  }) {
+    if (state == OccurrenceAdherenceState.inconsistent) {
+      return TreatmentOccurrenceState.requiresReview;
+    }
+    if (row.status == RoutineOccurrenceStatus.canceled.name ||
+        row.status == RoutineOccurrenceStatus.notApplicable.name ||
+        row.status == RoutineOccurrenceStatus.paused.name) {
+      return TreatmentOccurrenceState.canceled;
+    }
+    if (state == OccurrenceAdherenceState.missed) {
+      return TreatmentOccurrenceState.missed;
+    }
+    if (state != OccurrenceAdherenceState.pending) {
+      return TreatmentOccurrenceState.resolved;
+    }
+    if (now.isBefore(row.windowStartsAt)) {
+      return TreatmentOccurrenceState.future;
+    }
+    if (now.isBefore(row.scheduledFor)) {
+      return TreatmentOccurrenceState.due;
+    }
+    return TreatmentOccurrenceState.open;
   }
 
   Future<List<RoutineOccurrenceRecord>> _occurrences(
@@ -237,6 +318,16 @@ class DriftTreatmentAdherenceQueryService
                 row.deletedAt.isNull(),
           ))
           .get();
+
+  Future<List<SmartRoutineRecord>> _routinesFor(
+    Iterable<RoutineOccurrenceRecord> occurrences,
+  ) async {
+    final routineIds = occurrences.map((value) => value.routineId).toSet();
+    if (routineIds.isEmpty) return const <SmartRoutineRecord>[];
+    return (database.select(database.smartRoutineRecords)
+          ..where((row) => row.userId.equals(userId) & row.id.isIn(routineIds)))
+        .get();
+  }
 
   String _date(DateTime value) =>
       '${value.year.toString().padLeft(4, '0')}-'

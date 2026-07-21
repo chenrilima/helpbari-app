@@ -47,7 +47,12 @@ final unifiedTreatmentRemoteSyncEnabledProvider = FutureProvider<bool>((
 
 final treatmentAdherenceQueryServiceProvider =
     FutureProvider<TreatmentAdherenceQueryService>((ref) async {
-      final userId = ref.watch(authSessionProvider)?.id ?? 'anonymous';
+      final userId = ref.watch(authSessionProvider)?.id;
+      if (userId == null) {
+        throw StateError(
+          'Authenticated user is required for treatment queries.',
+        );
+      }
       final database = await ref.watch(appDatabaseProvider.future);
       final delegate = DriftTreatmentAdherenceQueryService(
         database: database,
@@ -74,7 +79,12 @@ final notificationPlatformRepositoryProvider =
 
 final occurrenceWindowServiceProvider =
     FutureProvider<DriftOccurrenceWindowService>((ref) async {
-      final userId = ref.watch(authSessionProvider)?.id ?? 'anonymous';
+      final userId = ref.watch(authSessionProvider)?.id;
+      if (userId == null) {
+        throw StateError(
+          'Authenticated user is required for occurrence queries.',
+        );
+      }
       return DriftOccurrenceWindowService(
         database: await ref.watch(appDatabaseProvider.future),
         userId: userId,

@@ -10,6 +10,7 @@ import '../../../water/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
 import '../entities/entities.dart';
 import '../../../smart_routines/domain/services/treatment_query_models.dart';
+import '../../../home/domain/models/home_intelligence_models.dart';
 
 class MedicalReportSnapshot {
   const MedicalReportSnapshot({
@@ -38,6 +39,7 @@ class MedicalReportSnapshot {
     this.prescriptions = const [],
     this.treatmentAdherence,
     this.treatmentToday,
+    this.homeIntelligence,
   });
 
   final DateTime generatedAt;
@@ -65,6 +67,7 @@ class MedicalReportSnapshot {
   final List<ReportAttachment> attachments;
   final TreatmentAdherenceSummary? treatmentAdherence;
   final TodayTreatmentReadModel? treatmentToday;
+  final TodayDashboardReadModel? homeIntelligence;
 
   WeightRecord? get latestWeight {
     return weightHistory.isEmpty ? null : weightHistory.first;

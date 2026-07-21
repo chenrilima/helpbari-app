@@ -273,7 +273,7 @@ class ProfileViewModel extends Notifier<ProfileState> {
 
   void _afterLocalCommit() {
     ref.invalidate(profileUseCasesProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     unawaited(
       ref.read(syncManagerProvider.notifier).syncNow().catchError((_) => null),
     );

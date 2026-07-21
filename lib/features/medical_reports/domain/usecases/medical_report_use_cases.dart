@@ -24,6 +24,7 @@ import '../entities/entities.dart';
 import '../models/models.dart';
 import '../repositories/repositories.dart';
 import '../../../smart_routines/domain/services/treatment_query_models.dart';
+import '../../../smart_routines/domain/enums/routine_enums.dart';
 
 class MedicalReportUseCases {
   const MedicalReportUseCases({
@@ -41,6 +42,7 @@ class MedicalReportUseCases {
     HealthDashboardUseCases? dashboardUseCases,
     MedicalPrescriptionUseCases? prescriptionUseCases,
     required Future<TreatmentAdherenceQueryService> Function() treatment,
+    Future<TodayDashboardReadModel> Function()? homeIntelligence,
   }) : _repository = repository,
        _profileUseCases = profileUseCases,
        _weightUseCases = weightUseCases,
@@ -54,7 +56,8 @@ class MedicalReportUseCases {
        _clock = clock,
        _dashboardUseCases = dashboardUseCases,
        _prescriptionUseCases = prescriptionUseCases,
-       _treatment = treatment;
+       _treatment = treatment,
+       _homeIntelligence = homeIntelligence;
 
   final MedicalReportRepository _repository;
   final ProfileUseCases _profileUseCases;
@@ -70,6 +73,7 @@ class MedicalReportUseCases {
   final HealthDashboardUseCases? _dashboardUseCases;
   final MedicalPrescriptionUseCases? _prescriptionUseCases;
   final Future<TreatmentAdherenceQueryService> Function() _treatment;
+  final Future<TodayDashboardReadModel> Function()? _homeIntelligence;
 
   Future<GeneratedMedicalReport> generateCompleteReport({
     ReportTemplate? template,
@@ -91,7 +95,8 @@ class MedicalReportUseCases {
     final now = _clock.now();
     final periodStart = DateTime(now.year, now.month, now.day - 29);
     final periodEnd = DateTime(now.year, now.month, now.day);
-    final dashboardFuture = _dashboardUseCases == null
+    final dashboardFuture =
+        _dashboardUseCases == null || _homeIntelligence != null
         ? Future<HealthDashboardAggregate?>.value(null)
         : _dashboardUseCases.load(start: periodStart, end: periodEnd);
     final results = await Future.wait<dynamic>([
@@ -109,6 +114,9 @@ class MedicalReportUseCases {
       dashboardFuture,
       _prescriptionUseCases?.getAll() ??
           Future<List<MedicalPrescription>>.value(const []),
+      _homeIntelligence == null
+          ? Future<TodayDashboardReadModel?>.value(null)
+          : _homeIntelligence(),
     ]);
 
     final profile = results[0] as Profile?;
@@ -124,6 +132,7 @@ class MedicalReportUseCases {
     final medicationLogs = results[10] as List<MedicationLog>;
     final dashboard = results[11] as HealthDashboardAggregate?;
     final prescriptions = results[12] as List<MedicalPrescription>;
+    final homeIntelligence = results[13] as TodayDashboardReadModel?;
     final treatmentService = await _treatment();
     final treatmentAdherence = await treatmentService.summary(
       periodStart,
@@ -216,26 +225,37 @@ class MedicalReportUseCases {
             ),
       weightProgress: weightProgress,
     );
-    final dailySummary = dashboard == null
+    final dailySummary = dashboard == null && homeIntelligence == null
         ? calculatedSummary
         : DailySummary(
             hydration: calculatedSummary.hydration,
-            pendingVitamins: dashboard.today.pendingVitamins ?? 0,
-            pendingMedications: dashboard.today.pendingMedications ?? 0,
-            registeredMeals: dashboard.today.mealsCount ?? 0,
+            pendingVitamins:
+                dashboard?.today.pendingVitamins ??
+                calculatedSummary.pendingVitamins,
+            pendingMedications:
+                dashboard?.today.pendingMedications ??
+                calculatedSummary.pendingMedications,
             protein: calculatedSummary.protein,
-            healthScore: dashboard.today.healthScore,
+            registeredMeals: todayMeals.length,
+            healthScore:
+                homeIntelligence?.healthScore ??
+                dashboard?.today.healthScore ??
+                calculatedSummary.healthScore,
             nextAppointment: calculatedSummary.nextAppointment,
             latestExam: calculatedSummary.latestExam,
             weightProgress: calculatedSummary.weightProgress,
           );
-    final canonicalAdherence = treatmentAdherence.coverage >= .6
-        ? treatmentAdherence.adherence == null
-              ? null
-              : treatmentAdherence.adherence! * 100
-        : null;
-    final vitaminAdherence = canonicalAdherence;
-    final medicationAdherence = canonicalAdherence;
+    double? categoryAdherence(RoutineCategory category) {
+      final value = treatmentAdherence.byCategory[category];
+      return value == null ||
+              value.coverageState != AdherenceCoverageState.complete ||
+              value.adherence == null
+          ? null
+          : value.adherence! * 100;
+    }
+
+    final vitaminAdherence = categoryAdherence(RoutineCategory.vitamin);
+    final medicationAdherence = categoryAdherence(RoutineCategory.medication);
     final observations = _automaticObservations(
       settings: settings,
       averageDailyWaterMl: averageDailyWaterMl,
@@ -275,6 +295,7 @@ class MedicalReportUseCases {
       attachments: attachments,
       treatmentAdherence: treatmentAdherence,
       treatmentToday: treatmentToday,
+      homeIntelligence: homeIntelligence,
     );
   }
 

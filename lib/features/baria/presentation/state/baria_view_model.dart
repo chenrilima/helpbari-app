@@ -21,8 +21,8 @@ class BariaViewModel extends Notifier<BariaState> {
 
   @override
   BariaState build() {
-    ref.listen(homeViewModelProvider, (previous, next) {
-      if (previous != null && previous != next && !next.isLoading) {
+    ref.listen(todayDashboardProvider, (previous, next) {
+      if (previous != null && previous != next && next.hasValue) {
         unawaited(loadDailyInsight());
       }
     });

@@ -59,7 +59,7 @@ class MedicalExamViewModel extends Notifier<MedicalExamState> {
 
   Future<void> _refresh() async {
     ref.invalidate(medicalExamUseCasesProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);
     ref.invalidate(bariaViewModelProvider);

@@ -20,8 +20,9 @@ abstract interface class BariaContextService {
 
 class BariaService implements BariaContextService {
   BariaService({
-    required HealthDashboardUseCases dashboard,
-    required MedicalReportUseCases reports,
+    HealthDashboardUseCases? dashboard,
+    MedicalReportUseCases? reports,
+    this.intelligence,
     required ClockService clock,
     required SyncState Function() syncState,
     required String userId,
@@ -38,8 +39,9 @@ class BariaService implements BariaContextService {
        _treatment = treatment,
        _cache = cache ?? BariaContextCache();
 
-  final HealthDashboardUseCases _dashboard;
-  final MedicalReportUseCases _reports;
+  final HealthDashboardUseCases? _dashboard;
+  final MedicalReportUseCases? _reports;
+  final Future<TodayDashboardReadModel> Function()? intelligence;
   final ClockService _clock;
   final SyncState Function() _syncState;
   final String _userId;
@@ -59,22 +61,61 @@ class BariaService implements BariaContextService {
       maxAge: cacheDuration,
     );
     if (cached != null) return cached;
+    if (intelligence != null) {
+      final values = await Future.wait<Object?>([
+        _safe(intelligence!),
+        _knowledge == null
+            ? Future<KnowledgeCatalog?>.value()
+            : _safe(() => _knowledge.loadCatalog()),
+        _safe(() => _treatment.load(now)),
+      ]);
+      final dashboard = values[0] as TodayDashboardReadModel?;
+      final catalog = values[1] as KnowledgeCatalog?;
+      final context = BariaContext(
+        userId: _userId,
+        generatedAt: now,
+        today: null,
+        week: null,
+        month: null,
+        report: null,
+        syncState: _syncState(),
+        recommendedArticles: List.unmodifiable(
+          (catalog?.articles ?? const <KnowledgeArticle>[]).take(3),
+        ),
+        relevantNotifications: const [],
+        homeInsights: List.unmodifiable(
+          dashboard?.insights.insights.map((value) => value.message) ??
+              const <String>[],
+        ),
+        treatment: values[2] as BariaTreatmentContext?,
+        intelligence: dashboard,
+      );
+      _cache.write(context);
+      return context;
+    }
+    final dashboardService = _dashboard;
+    final reportsService = _reports;
+    if (dashboardService == null || reportsService == null) {
+      throw StateError('BarIA context source is unavailable.');
+    }
     final today = _day(now);
     final values = await Future.wait<Object?>([
-      _safe(() => _dashboard.load(start: today, end: today)),
+      _safe(() => dashboardService.load(start: today, end: today)),
       _safe(
-        () => _dashboard.load(
+        () => dashboardService.load(
           start: DateTime(today.year, today.month, today.day - 6),
           end: today,
         ),
       ),
       _safe(
-        () => _dashboard.load(
+        () => dashboardService.load(
           start: DateTime(today.year, today.month, today.day - 29),
           end: today,
         ),
       ),
-      _safe(() => _reports.buildSnapshot(template: ReportTemplate.complete())),
+      _safe(
+        () => reportsService.buildSnapshot(template: ReportTemplate.complete()),
+      ),
       _knowledge == null
           ? Future<KnowledgeCatalog?>.value()
           : _safe(() => _knowledge.loadCatalog()),

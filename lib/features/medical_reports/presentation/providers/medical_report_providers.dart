@@ -41,6 +41,7 @@ final medicalReportUseCasesProvider = Provider<MedicalReportUseCases>((ref) {
     dashboardUseCases: ref.read(healthDashboardUseCasesProvider),
     prescriptionUseCases: ref.read(medicalPrescriptionUseCasesProvider),
     treatment: () => ref.read(treatmentAdherenceQueryServiceProvider.future),
+    homeIntelligence: () => ref.read(todayDashboardProvider.future),
   );
 });
 
