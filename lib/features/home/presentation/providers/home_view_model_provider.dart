@@ -1,7 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../states/home_state.dart';
-import '../viewmodels/home_view_model.dart';
 import '../../domain/usecases/use_cases.dart';
 import '../../../appointments/presentation/providers/appointment_use_cases_provider.dart';
 import '../../../meals/presentation/providers/meal_use_cases_provider.dart';
@@ -33,10 +31,6 @@ final healthDashboardUseCasesProvider = Provider<HealthDashboardUseCases>((
     treatment: () => ref.read(treatmentAdherenceQueryServiceProvider.future),
   );
 });
-
-final homeViewModelProvider = NotifierProvider<HomeViewModel, HomeState>(
-  HomeViewModel.new,
-);
 
 final homeIntelligenceQueryFacadeProvider =
     Provider<HomeIntelligenceQueryFacade>((ref) {

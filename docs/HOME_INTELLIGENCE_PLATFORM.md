@@ -88,3 +88,36 @@ saúde.
 
 Macro 3 não cria feature flags, shadow mode, tabela Supabase ou migration para
 read models. Feature Flags pertencem à Macro 6.
+
+## Gate arquitetural pós-implementação
+
+Status atual: **não aprovado para encerramento**.
+
+O gate adversarial confirmou e corrigiu a ausência de refresh na virada do dia
+e a possibilidade de double tap em quick actions. Também removeu o
+`HomeViewModel` legado e transformou `BariaInsightEngine` em adapter do feed
+canônico, sem regras paralelas.
+
+Permanecem bloqueadores para aprovação:
+
+- `HealthDashboardUseCases` ainda usa APIs amplas `getAll/getHistory`, que
+  carregam históricos sem limite antes de filtrar o intervalo;
+- os providers de seção derivam do mesmo `todayDashboardProvider`; portanto a
+  granularidade declarada não corresponde ao grafo real de consultas;
+- o refresh pós-sync ainda invalida consumidores globais sem identificar quais
+  fontes mudaram;
+- os read models são imutáveis, mas ainda não possuem igualdade/hashCode por
+  valor nem validam todas as combinações contraditórias de state, coverage e
+  action;
+- não existem testes suficientes de corrida entre troca de usuário e Futures
+  em andamento, snapshot local preservado durante refresh e volume/N+1.
+
+Enquanto esses itens existirem, a Macro 3 não deve ser considerada encerrada e
+a Macro 4 não deve começar.
+
+### Operação remota
+
+Durante o gate, o ambiente remoto estava sem as migrations aprovadas
+`20260720030000` e `20260721000000`. Ambas foram aplicadas e verificadas no
+histórico remoto. A ausência da segunda migration causava falha no pull de
+`PrescriptionPlatformSyncRepository` durante o bootstrap.

@@ -15,6 +15,7 @@ import '../../../smart_routines/application/notification_platform.dart';
 import '../../../smart_routines/presentation/providers/unified_treatment_providers.dart';
 import '../../../water/presentation/providers/water_view_model_provider.dart';
 import '../../domain/models/home_intelligence_models.dart';
+import '../../application/home_runtime_guard.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/health_score_overview_section.dart';
 import '../widgets/home_header.dart';
@@ -28,13 +29,21 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _HomePageState extends ConsumerState<HomePage>
+    with WidgetsBindingObserver {
   final _disposed = Completer<void>();
+  final _runtimeGuard = HomeRuntimeGuard();
+  static const _dayPolicy = ClinicalDayRefreshPolicy();
+  Timer? _dayRefreshTimer;
+  DateTime? _snapshotDate;
+  String? _snapshotTimeZone;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     Future.microtask(_refreshAfterSync);
+    Future.microtask(_scheduleDayRefresh);
   }
 
   Future<void> _refreshAfterSync() async {
@@ -48,8 +57,44 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _dayRefreshTimer?.cancel();
     if (!_disposed.isCompleted) _disposed.complete();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refreshForClinicalDayIfNeeded();
+    }
+  }
+
+  void _scheduleDayRefresh() {
+    _dayRefreshTimer?.cancel();
+    final now = ref.read(clockServiceProvider).now();
+    _dayRefreshTimer = Timer(_dayPolicy.untilNextDay(now), () {
+      if (!mounted) return;
+      ref.invalidate(todayDashboardProvider);
+      _scheduleDayRefresh();
+    });
+  }
+
+  void _refreshForClinicalDayIfNeeded() {
+    final snapshotDate = _snapshotDate;
+    final snapshotTimeZone = _snapshotTimeZone;
+    if (snapshotDate == null || snapshotTimeZone == null) return;
+    final currentTimeZone =
+        ref.read(notificationSchedulerProvider).state.timeZone ?? 'UTC';
+    if (_dayPolicy.shouldRefresh(
+      snapshotDate: snapshotDate,
+      now: ref.read(clockServiceProvider).now(),
+      snapshotTimeZone: snapshotTimeZone,
+      currentTimeZone: currentTimeZone,
+    )) {
+      ref.invalidate(todayDashboardProvider);
+      _scheduleDayRefresh();
+    }
   }
 
   Future<void> _signOut() => ref.read(authViewModelProvider.notifier).signOut();
@@ -82,79 +127,107 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Future<void> _runQuickAction(QuickActionReadModel action) async {
-    if (action.kind == HomeActionKind.quickWater) {
-      final saved = await ref
-          .read(waterViewModelProvider.notifier)
-          .registerWater(200);
-      if (!mounted) return;
-      if (saved) {
-        HBSnackBar.success(context, message: '200 ml registrados no aparelho.');
-        ref.invalidate(todayDashboardProvider);
-      } else {
-        HBSnackBar.error(
-          context,
-          message: 'Não foi possível registrar a água.',
-        );
+    final guardKey = 'quick:${action.id}';
+    if (!_runtimeGuard.begin(guardKey)) return;
+    try {
+      if (action.kind == HomeActionKind.quickWater) {
+        final expectedUserId = ref.read(authSessionProvider)?.id;
+        if (expectedUserId == null) return;
+        final saved = await ref
+            .read(waterViewModelProvider.notifier)
+            .registerWater(200);
+        if (!mounted || ref.read(authSessionProvider)?.id != expectedUserId) {
+          return;
+        }
+        if (saved) {
+          HBSnackBar.success(
+            context,
+            message: '200 ml registrados no aparelho.',
+          );
+          ref.invalidate(todayDashboardProvider);
+        } else {
+          HBSnackBar.error(
+            context,
+            message: 'Não foi possível registrar a água.',
+          );
+        }
+        return;
       }
-      return;
+      if (action.kind == HomeActionKind.treatmentCommand &&
+          action.sourceId != null) {
+        await _recordOccurrence(action.sourceId!);
+        return;
+      }
+      await _openRoute(action.deepLink);
+    } finally {
+      _runtimeGuard.complete(guardKey);
     }
-    if (action.kind == HomeActionKind.treatmentCommand &&
-        action.sourceId != null) {
-      await _recordOccurrence(action.sourceId!);
-      return;
-    }
-    await _openRoute(action.deepLink);
   }
 
   Future<void> _recordOccurrence(String occurrenceId) async {
-    final action = await HBDialog.custom<RoutineNotificationActionType>(
-      context,
-      title: 'Registrar rotina',
-      content: const HBText(
-        'Escolha apenas o que corresponde ao seu registro. Esta ação não altera dose ou tratamento.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancelar'),
-        ),
-        TextButton(
-          onPressed: () =>
-              Navigator.pop(context, RoutineNotificationActionType.skipped),
-          child: const Text('Não realizado'),
-        ),
-        TextButton(
-          onPressed: () =>
-              Navigator.pop(context, RoutineNotificationActionType.taken),
-          child: const Text('Registrar conclusão'),
-        ),
-      ],
-    );
-    if (action == null || !mounted) return;
-    final user = ref.read(authSessionProvider);
-    if (user == null) return;
+    final guardKey = 'occurrence:$occurrenceId';
+    if (!_runtimeGuard.begin(guardKey)) return;
+    final expectedUserId = ref.read(authSessionProvider)?.id;
+    if (expectedUserId == null) {
+      _runtimeGuard.complete(guardKey);
+      return;
+    }
     try {
-      final commands = await ref.read(
-        notificationPlatformRepositoryProvider.future,
+      final action = await HBDialog.custom<RoutineNotificationActionType>(
+        context,
+        title: 'Registrar rotina',
+        content: const HBText(
+          'Escolha apenas o que corresponde ao seu registro. Esta ação não altera dose ou tratamento.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.pop(context, RoutineNotificationActionType.skipped),
+            child: const Text('Não realizado'),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.pop(context, RoutineNotificationActionType.taken),
+            child: const Text('Registrar conclusão'),
+          ),
+        ],
       );
-      await commands.markOccurrence(
-        userId: user.id,
-        occurrenceId: occurrenceId,
-        actionId: ref.read(uuidServiceProvider).generate(),
-        action: action,
-        occurredAtUtc: ref.read(clockServiceProvider).now().toUtc(),
-      );
-      ref.invalidate(todayDashboardProvider);
-      if (mounted) {
-        HBSnackBar.success(context, message: 'Registro salvo no aparelho.');
+      if (action == null ||
+          !mounted ||
+          ref.read(authSessionProvider)?.id != expectedUserId) {
+        return;
       }
-    } catch (_) {
-      if (mounted) {
-        HBSnackBar.error(
-          context,
-          message: 'Não foi possível salvar este registro.',
+      final user = ref.read(authSessionProvider);
+      if (user == null || user.id != expectedUserId) return;
+      try {
+        final commands = await ref.read(
+          notificationPlatformRepositoryProvider.future,
         );
+        await commands.markOccurrence(
+          userId: user.id,
+          occurrenceId: occurrenceId,
+          actionId: ref.read(uuidServiceProvider).generate(),
+          action: action,
+          occurredAtUtc: ref.read(clockServiceProvider).now().toUtc(),
+        );
+        ref.invalidate(todayDashboardProvider);
+        if (mounted) {
+          HBSnackBar.success(context, message: 'Registro salvo no aparelho.');
+        }
+      } catch (_) {
+        if (mounted) {
+          HBSnackBar.error(
+            context,
+            message: 'Não foi possível salvar este registro.',
+          );
+        }
       }
+    } finally {
+      _runtimeGuard.complete(guardKey);
     }
   }
 
@@ -189,7 +262,11 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
           ],
         ),
-        data: (model) => _content(model, authState is AuthLoading),
+        data: (model) {
+          _snapshotDate = model.clinicalDate;
+          _snapshotTimeZone = model.timeZone;
+          return _content(model, authState is AuthLoading);
+        },
       ),
     );
   }

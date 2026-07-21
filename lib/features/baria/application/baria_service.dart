@@ -1,16 +1,11 @@
 import '../../../core/services/clock_service.dart';
 import '../../../core/sync/sync.dart';
-import '../../../core/health/health.dart';
-import '../../home/domain/models/models.dart';
-import '../../home/domain/usecases/use_cases.dart';
-import '../../medical_reports/domain/entities/report_template.dart';
-import '../../medical_reports/domain/models/models.dart';
-import '../../medical_reports/domain/usecases/use_cases.dart';
 import '../../academy/application/knowledge_use_cases.dart';
 import '../../academy/domain/entities/entities.dart';
+import '../../home/domain/models/models.dart';
 import '../domain/models/models.dart';
-import 'baria_context_cache.dart';
 import '../domain/ports/baria_treatment_context_port.dart';
+import 'baria_context_cache.dart';
 
 abstract interface class BariaContextService {
   Future<BariaContext> buildContext();
@@ -20,9 +15,7 @@ abstract interface class BariaContextService {
 
 class BariaService implements BariaContextService {
   BariaService({
-    HealthDashboardUseCases? dashboard,
-    MedicalReportUseCases? reports,
-    this.intelligence,
+    required this.intelligence,
     required ClockService clock,
     required SyncState Function() syncState,
     required String userId,
@@ -30,18 +23,14 @@ class BariaService implements BariaContextService {
     required BariaTreatmentContextPort treatment,
     this.cacheDuration = const Duration(minutes: 5),
     BariaContextCache? cache,
-  }) : _dashboard = dashboard,
-       _reports = reports,
-       _clock = clock,
+  }) : _clock = clock,
        _syncState = syncState,
        _userId = userId,
        _knowledge = knowledge,
        _treatment = treatment,
        _cache = cache ?? BariaContextCache();
 
-  final HealthDashboardUseCases? _dashboard;
-  final MedicalReportUseCases? _reports;
-  final Future<TodayDashboardReadModel> Function()? intelligence;
+  final Future<TodayDashboardReadModel> Function() intelligence;
   final ClockService _clock;
   final SyncState Function() _syncState;
   final String _userId;
@@ -61,109 +50,35 @@ class BariaService implements BariaContextService {
       maxAge: cacheDuration,
     );
     if (cached != null) return cached;
-    if (intelligence != null) {
-      final values = await Future.wait<Object?>([
-        _safe(intelligence!),
-        _knowledge == null
-            ? Future<KnowledgeCatalog?>.value()
-            : _safe(() => _knowledge.loadCatalog()),
-        _safe(() => _treatment.load(now)),
-      ]);
-      final dashboard = values[0] as TodayDashboardReadModel?;
-      final catalog = values[1] as KnowledgeCatalog?;
-      final context = BariaContext(
-        userId: _userId,
-        generatedAt: now,
-        today: null,
-        week: null,
-        month: null,
-        report: null,
-        syncState: _syncState(),
-        recommendedArticles: List.unmodifiable(
-          (catalog?.articles ?? const <KnowledgeArticle>[]).take(3),
-        ),
-        relevantNotifications: const [],
-        homeInsights: List.unmodifiable(
-          dashboard?.insights.insights.map((value) => value.message) ??
-              const <String>[],
-        ),
-        treatment: values[2] as BariaTreatmentContext?,
-        intelligence: dashboard,
-      );
-      _cache.write(context);
-      return context;
-    }
-    final dashboardService = _dashboard;
-    final reportsService = _reports;
-    if (dashboardService == null || reportsService == null) {
-      throw StateError('BarIA context source is unavailable.');
-    }
-    final today = _day(now);
     final values = await Future.wait<Object?>([
-      _safe(() => dashboardService.load(start: today, end: today)),
-      _safe(
-        () => dashboardService.load(
-          start: DateTime(today.year, today.month, today.day - 6),
-          end: today,
-        ),
-      ),
-      _safe(
-        () => dashboardService.load(
-          start: DateTime(today.year, today.month, today.day - 29),
-          end: today,
-        ),
-      ),
-      _safe(
-        () => reportsService.buildSnapshot(template: ReportTemplate.complete()),
-      ),
+      _safe(intelligence),
       _knowledge == null
           ? Future<KnowledgeCatalog?>.value()
           : _safe(() => _knowledge.loadCatalog()),
       _safe(() => _treatment.load(now)),
     ]);
-    final catalog = values[4] as KnowledgeCatalog?;
-    final treatment = values[5] as BariaTreatmentContext?;
-    final articles = (catalog?.articles ?? const <KnowledgeArticle>[])
-        .take(3)
-        .toList();
-    final todayAggregate = values[0] as HealthDashboardAggregate?;
-    final todayData = todayAggregate?.today;
-    final profile = todayAggregate?.profile;
-    final currentWeight = todayAggregate?.latestWeight?.weight.value;
-    final proteinGoal = profile == null
-        ? 0
-        : ProteinCalculator.goalForWeightKg(
-            currentWeight ?? profile.initialWeight.value,
-          );
-    final homeInsights = todayData == null
-        ? const <String>[]
-        : HealthInsightGenerator.generate(
-            waterCurrentMl: todayData.waterMl ?? 0,
-            waterGoalMl: todayData.waterGoalMl ?? 0,
-            proteinCurrentGrams: todayData.proteinGrams ?? 0,
-            proteinGoalGrams: proteinGoal,
-            pendingVitamins: todayData.pendingVitamins ?? 0,
-            pendingMedications: todayData.pendingMedications ?? 0,
-          ).map((insight) => insight.message).toList();
-    final notifications = <String>[
-      if ((todayAggregate?.today.pendingVitamins ?? 0) > 0)
-        'Vitaminas pendentes',
-      if ((todayAggregate?.today.pendingMedications ?? 0) > 0)
-        'Medicamentos pendentes',
-      if (todayAggregate?.nextAppointment != null) 'Próxima consulta agendada',
-    ];
+    final dashboard = values[0] as TodayDashboardReadModel?;
+    if (dashboard == null || dashboard.userId != _userId) {
+      throw StateError('BarIA context user is unavailable or mismatched.');
+    }
+    final catalog = values[1] as KnowledgeCatalog?;
     final context = BariaContext(
       userId: _userId,
       generatedAt: now,
-      today: values[0] as HealthDashboardAggregate?,
-      week: values[1] as HealthDashboardAggregate?,
-      month: values[2] as HealthDashboardAggregate?,
-      report: values[3] as MedicalReportSnapshot?,
+      today: null,
+      week: null,
+      month: null,
+      report: null,
       syncState: _syncState(),
-      recommendedArticles: List.unmodifiable(articles),
-      relevantNotifications: List.unmodifiable(notifications),
-      homeInsights: List.unmodifiable(homeInsights),
-      treatment: treatment,
+      recommendedArticles: List.unmodifiable(
+        (catalog?.articles ?? const <KnowledgeArticle>[]).take(3),
+      ),
+      relevantNotifications: const [],
+      homeInsights: List.unmodifiable(
+        dashboard.insights.insights.map((value) => value.message),
+      ),
+      treatment: values[2] as BariaTreatmentContext?,
+      intelligence: dashboard,
     );
     _cache.write(context);
     return context;
@@ -171,47 +86,11 @@ class BariaService implements BariaContextService {
 
   @override
   List<String> insights(BariaContext context) {
-    final result = <String>[];
-    final today = context.todayData;
-    final week = context.week;
-    if (today?.waterMl != null && week != null) {
-      final values = week.days
-          .map((day) => day.waterMl)
-          .whereType<int>()
-          .toList();
-      if (values.isNotEmpty) {
-        final average = values.reduce((a, b) => a + b) / values.length;
-        if (today!.waterMl! > average) {
-          result.add(
-            'Hoje seu registro de água está acima da média dos dias registrados nesta semana.',
-          );
-        } else if (values.length >= 2 && today.waterMl! < average) {
-          result.add(
-            'Hoje seu registro de água está abaixo da média dos dias registrados nesta semana.',
-          );
-        }
-      }
-    }
-    if (today?.mealsCount == null) {
-      result.add('Ainda não há refeição registrada hoje.');
-    }
-    if ((today?.pendingVitamins ?? 0) > 0 ||
-        (today?.pendingMedications ?? 0) > 0) {
-      result.add('Há registros de vitaminas ou medicamentos pendentes hoje.');
-    }
-    final lastWeight = context.report?.latestWeight?.recordedAt.value;
-    if (lastWeight == null) {
-      result.add('Não há peso registrado para avaliar evolução.');
-    } else if (context.generatedAt.difference(lastWeight).inDays > 14) {
-      result.add('Não há pesagem recente nos últimos 14 dias.');
-    }
-    final pending = context.pendingOfflineOperations;
-    if (pending != null && pending > 0) {
-      result.add(
-        'Existem $pending operações com falha aguardando nova sincronização.',
-      );
-    }
-    return result;
+    if (context.userId != _userId) return const [];
+    return List.unmodifiable(
+      context.intelligence?.insights.insights.map((value) => value.message) ??
+          const <String>[],
+    );
   }
 
   Future<T?> _safe<T>(Future<T> Function() action) async {
@@ -221,7 +100,4 @@ class BariaService implements BariaContextService {
       return null;
     }
   }
-
-  static DateTime _day(DateTime value) =>
-      DateTime(value.year, value.month, value.day);
 }
