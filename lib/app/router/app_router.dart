@@ -75,6 +75,8 @@ import 'notification_navigation.dart';
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouterProvider = Provider<GoRouter>((ref) {
+  String? pendingDestination;
+  String? pendingUserId;
   final refreshListenable = _GoRouterRefreshStream(
     ref.watch(sessionManagerProvider).authStateChanges,
   );
@@ -107,13 +109,50 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final location = state.uri.path;
       final onboardingState = ref.read(onboardingViewModelProvider);
       final session = ref.read(authSessionProvider);
-      return AppRedirectResolver.resolve(
+      final authState = ref.read(authViewModelProvider);
+      final phase = AppRedirectResolver.phaseFor(
+        session: session,
+        authState: authState,
+        onboardingState: onboardingState,
+      );
+      final isProtectedDestination =
+          !AppRedirectResolver.isPublic(location) &&
+          location != AppRoutes.onboarding;
+      if (isProtectedDestination && phase != AppEntryPhase.ready) {
+        pendingDestination = state.uri.toString();
+        pendingUserId = session?.id;
+      }
+      if (session == null && pendingUserId != null) {
+        pendingDestination = null;
+        pendingUserId = null;
+      } else if (session != null &&
+          pendingUserId != null &&
+          pendingUserId != session.id) {
+        pendingDestination = null;
+        pendingUserId = null;
+      } else if (session != null && pendingDestination != null) {
+        pendingUserId ??= session.id;
+      }
+
+      final resolved = AppRedirectResolver.resolve(
         location: location,
         session: session,
         onboardingState: onboardingState,
-        authState: ref.read(authViewModelProvider),
+        authState: authState,
         profileState: ref.read(profileViewModelProvider),
       );
+      if (phase == AppEntryPhase.ready &&
+          pendingUserId == session?.id &&
+          pendingDestination != null &&
+          (resolved == AppRoutes.home ||
+              location == AppRoutes.home ||
+              AppRedirectResolver.isPublic(location))) {
+        final destination = pendingDestination;
+        pendingDestination = null;
+        pendingUserId = null;
+        return destination;
+      }
+      return resolved;
     },
     routes: [
       GoRoute(

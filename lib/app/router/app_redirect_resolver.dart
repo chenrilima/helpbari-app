@@ -37,11 +37,11 @@ abstract final class AppRedirectResolver {
       AppEntryPhase.authenticatedResolvingAccount =>
         location == AppRoutes.splash ? null : AppRoutes.splash,
       AppEntryPhase.unauthenticated || AppEntryPhase.sessionExpired =>
-        _isPublic(location) ? null : AppRoutes.login,
+        isPublic(location) ? null : AppRoutes.login,
       AppEntryPhase.onboardingRequired || AppEntryPhase.fatalRecovery =>
         location == AppRoutes.onboarding ? null : AppRoutes.onboarding,
       AppEntryPhase.ready =>
-        _isPublic(location) || location == AppRoutes.onboarding
+        isPublic(location) || location == AppRoutes.onboarding
             ? AppRoutes.home
             : null,
     };
@@ -72,7 +72,7 @@ abstract final class AppRedirectResolver {
     };
   }
 
-  static bool _isPublic(String location) => const {
+  static bool isPublic(String location) => const {
     AppRoutes.splash,
     AppRoutes.login,
     AppRoutes.signUp,

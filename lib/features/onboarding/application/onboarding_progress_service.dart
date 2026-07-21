@@ -77,6 +77,8 @@ final class OnboardingProgressService {
         ? OnboardingProgressStatus.completed
         : profile != null
         ? OnboardingProgressStatus.needsReview
+        : legacyCompleted
+        ? OnboardingProgressStatus.needsReview
         : hasDraft
         ? OnboardingProgressStatus.inProgress
         : OnboardingProgressStatus.notStarted;
@@ -90,6 +92,8 @@ final class OnboardingProgressService {
           ? null
           : profile != null && !hasConsent
           ? 'legalConsents'
+          : legacyCompleted
+          ? 'basicProfile'
           : legacyStepId,
       completedStepIds: completed
           ? OnboardingV1Contract.stepIds.toSet()

@@ -137,14 +137,14 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         isAuthenticated: true,
         userCompleted: false,
         isResolvingSession: false,
-        hasProfile: profile != null || locallyCompleted,
+        hasProfile: profile != null,
         hasCurrentLegalConsent: hasConsent,
         resolutionFailed: false,
         draft: draft.copyWith(
           termsAccepted: false,
           privacyPolicyAccepted: false,
         ),
-        currentStep: (profile != null || locallyCompleted) && !hasConsent
+        currentStep: profile != null && !hasConsent
             ? OnboardingStep.documents
             : _stepForId(progress.currentStepId, OnboardingStep.values[resume]),
         canonicalProgress: progress,
@@ -154,7 +154,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       if (ref.read(authSessionProvider)?.id != userId) return;
       state = state.copyWith(
         isAuthenticated: true,
-        userCompleted: locallyCompleted,
+        userCompleted: false,
         isResolvingSession: false,
         resolutionFailed: true,
         errorMessage: PresentationErrorMapper.message(
@@ -199,7 +199,9 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         canonicalProgress: await service.saveStep(
           progress: progress,
           currentStepId: _stepId(step),
-          completedStepId: _stepId(OnboardingStep.values[state.currentIndex - 1]),
+          completedStepId: _stepId(
+            OnboardingStep.values[state.currentIndex - 1],
+          ),
         ),
       );
     }
@@ -264,9 +266,11 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       await _useCases.markDraftConsumed(user.id);
       await _useCases.clearDraft(user.id);
       await _useCases.saveResumeStep(user.id, OnboardingStep.completion.index);
-      final currentProgress = state.canonicalProgress ??
-          await (await ref.read(onboardingProgressServiceProvider.future))
-              .resolve(user.id);
+      final currentProgress =
+          state.canonicalProgress ??
+          await (await ref.read(
+            onboardingProgressServiceProvider.future,
+          )).resolve(user.id);
       final completedProgress = await (await ref.read(
         onboardingProgressServiceProvider.future,
       )).complete(currentProgress);
@@ -321,15 +325,13 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
 
   Future<void> toggleTracking(String tracking) {
     final draft = state.draft;
-    return updateDraft(
-      switch (tracking) {
-        'treatment' => draft.copyWith(trackTreatment: !draft.trackTreatment),
-        'water' => draft.copyWith(trackWater: !draft.trackWater),
-        'meals' => draft.copyWith(trackMeals: !draft.trackMeals),
-        'weight' => draft.copyWith(trackWeight: !draft.trackWeight),
-        _ => draft,
-      },
-    );
+    return updateDraft(switch (tracking) {
+      'treatment' => draft.copyWith(trackTreatment: !draft.trackTreatment),
+      'water' => draft.copyWith(trackWater: !draft.trackWater),
+      'meals' => draft.copyWith(trackMeals: !draft.trackMeals),
+      'weight' => draft.copyWith(trackWeight: !draft.trackWeight),
+      _ => draft,
+    });
   }
 
   void _invalidateConsumers() {
@@ -356,14 +358,17 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
     OnboardingStep.completion => 'completion',
   };
 
-  OnboardingStep _stepForId(String? id, OnboardingStep fallback) => switch (id) {
-    'welcome' => OnboardingStep.welcome,
-    'reminderPreference' => OnboardingStep.permissions,
-    'trackingPreferences' || 'trackingConfiguration' => OnboardingStep.goals,
-    'basicProfile' || 'bariatricJourney' || 'weightAndGoals' =>
-      OnboardingStep.initialData,
-    'legalConsents' => OnboardingStep.documents,
-    'completion' => OnboardingStep.completion,
-    _ => fallback,
-  };
+  OnboardingStep _stepForId(String? id, OnboardingStep fallback) =>
+      switch (id) {
+        'welcome' => OnboardingStep.welcome,
+        'reminderPreference' => OnboardingStep.permissions,
+        'trackingPreferences' ||
+        'trackingConfiguration' => OnboardingStep.goals,
+        'basicProfile' ||
+        'bariatricJourney' ||
+        'weightAndGoals' => OnboardingStep.initialData,
+        'legalConsents' => OnboardingStep.documents,
+        'completion' => OnboardingStep.completion,
+        _ => fallback,
+      };
 }

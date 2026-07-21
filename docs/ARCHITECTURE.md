@@ -223,3 +223,12 @@ determinístico, com linguagem não prescritiva. Consulte
 `docs/HOME_INTELLIGENCE_PLATFORM.md`.
 
 Feature Flags não fazem parte da Macro 3 e permanecem reservadas à Macro 6.
+
+## Onboarding V1 e entrada canônica
+
+O onboarding possui estado versionado offline-first em Drift, sincronizado pelo
+Sync Engine existente e espelhado em `onboarding_states` no Supabase. A entrada
+do app é decidida por uma única máquina de estados que combina sessão, perfil,
+consentimento legal e progresso canônico. Preferências de acompanhamento ficam
+em Settings e a permissão de notificações só é solicitada após opt-in explícito.
+Consulte `docs/ONBOARDING_V1_FOUNDATION.md` e `docs/PRODUCT_FREEZE_V1.md`.

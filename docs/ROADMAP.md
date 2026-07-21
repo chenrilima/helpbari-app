@@ -1,5 +1,8 @@
 # HelpBari Roadmap
 
+> Nota: para sequência, escopo e decisões congeladas da V1,
+> `docs/PRODUCT_FREEZE_V1.md` prevalece sobre este roadmap histórico.
+
 ## Foundation
 
 - [x] Router

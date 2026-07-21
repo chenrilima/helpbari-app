@@ -71,9 +71,23 @@ void main() {
     expect(result.profile.surgeryType.name, 'bypass');
     expect(settingsRepository.value.dailyWaterGoalMl, 2500);
     expect(settingsRepository.value.vitaminRemindersEnabled, isFalse);
+    expect(settingsRepository.value.waterTrackingEnabled, isTrue);
     expect(weightRepository.records.single.weight.value, 96.5);
     expect(weightRepository.records.single.id, _weightRecordId);
     expect(privacyRepository.hasConsent, isTrue);
+  });
+
+  test('preserves water goal when water tracking is not selected', () async {
+    final draft = _draft().copyWith(
+      trackWater: false,
+      waterGoal: '',
+      waterGoalConfirmed: false,
+    );
+
+    await service.complete(draft: draft, user: _user);
+
+    expect(settingsRepository.value.dailyWaterGoalMl, 2000);
+    expect(settingsRepository.value.waterTrackingEnabled, isFalse);
   });
 
   test('does not record consent when a mandatory local save fails', () async {

@@ -82,7 +82,7 @@ void main() {
       fixture.state.entryStatus,
       AppEntryStatus.authenticatedOnboardingPending,
     );
-    expect(fixture.state.currentStep, OnboardingStep.profile);
+    expect(fixture.state.currentStep, OnboardingStep.initialData);
   });
 
   test(
@@ -96,7 +96,7 @@ void main() {
         fixture.state.entryStatus,
         AppEntryStatus.authenticatedOnboardingPending,
       );
-      expect(fixture.state.currentStep, OnboardingStep.profile);
+      expect(fixture.state.currentStep, OnboardingStep.initialData);
     },
   );
 
