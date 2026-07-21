@@ -5,6 +5,7 @@ import 'package:helpbari/features/appointments/domain/repositories/repositories.
 import 'package:helpbari/features/appointments/domain/entities/entities.dart';
 import 'package:helpbari/features/appointments/domain/usecases/appointment_use_cases.dart';
 import 'package:helpbari/features/home/domain/usecases/health_dashboard_use_cases.dart';
+import 'package:helpbari/features/home/domain/models/health_dashboard_aggregate.dart';
 import 'package:helpbari/features/meals/domain/repositories/repositories.dart';
 import 'package:helpbari/features/meals/domain/entities/entities.dart';
 import 'package:helpbari/features/meals/domain/usecases/use_cases.dart';
@@ -71,6 +72,92 @@ void main() {
       expect(aggregate.latestExam?.title, 'Hemograma completo');
     },
   );
+
+  test('treatment recomposition performs no health repository reads', () async {
+    final meals = _CountingMealRepository();
+    final useCases = HealthDashboardUseCases(
+      profile: ProfileUseCases(
+        getProfile: GetProfileUseCase(_ProfileRepository()),
+        saveProfile: SaveProfileUseCase(_ProfileRepository()),
+        updateProfile: UpdateProfileUseCase(_ProfileRepository()),
+        deleteProfile: DeleteProfileUseCase(_ProfileRepository()),
+      ),
+      weight: WeightUseCases(_WeightRepository()),
+      water: WaterUseCases(_WaterRepository(), const _Clock()),
+      meals: MealUseCases(meals),
+      appointments: AppointmentUseCases(_AppointmentRepository()),
+      exams: MedicalExamUseCases(_MedicalExamRepository(const [])),
+      settings: SettingsUseCases(_SettingsRepository()),
+      treatment: () async => const _TreatmentQuery(),
+    );
+    final date = DateTime.utc(2026, 7, 18);
+    final aggregate = await useCases.load(start: date, end: date);
+    expect(meals.periodReads, 1);
+    final treatment = TodayTreatmentReadModel(
+      date: date,
+      occurrences: const [],
+      adherence: const TreatmentAdherenceSummary(
+        eligible: 1,
+        taken: 1,
+        takenOnTime: 1,
+        skipped: 0,
+        missed: 0,
+        coverage: 1,
+        coverageState: AdherenceCoverageState.complete,
+        origin: TreatmentDataOrigin.smartRoutines,
+        byCategory: {
+          RoutineCategory.vitamin: TreatmentAdherenceSummary(
+            eligible: 1,
+            taken: 1,
+            takenOnTime: 1,
+            skipped: 0,
+            missed: 0,
+            coverage: 1,
+            coverageState: AdherenceCoverageState.complete,
+            origin: TreatmentDataOrigin.smartRoutines,
+          ),
+        },
+      ),
+    );
+
+    final recomposed = useCases.applyTreatment(aggregate, {
+      '2026-07-18': treatment,
+    });
+
+    expect(meals.periodReads, 1);
+    expect(recomposed.today.vitaminAdherence, 1);
+    expect(recomposed.today.pendingVitamins, 0);
+  });
+
+  test('treatment failure preserves the remaining local snapshot', () async {
+    final useCases = HealthDashboardUseCases(
+      profile: ProfileUseCases(
+        getProfile: GetProfileUseCase(_ProfileRepository()),
+        saveProfile: SaveProfileUseCase(_ProfileRepository()),
+        updateProfile: UpdateProfileUseCase(_ProfileRepository()),
+        deleteProfile: DeleteProfileUseCase(_ProfileRepository()),
+      ),
+      weight: WeightUseCases(_WeightRepository()),
+      water: WaterUseCases(_WaterRepository(), const _Clock()),
+      meals: MealUseCases(_MealRepository()),
+      appointments: AppointmentUseCases(_AppointmentRepository()),
+      exams: MedicalExamUseCases(_MedicalExamRepository(const [])),
+      settings: SettingsUseCases(_SettingsRepository()),
+      treatment: () async => const _FailingTreatmentQuery(),
+    );
+
+    final aggregate = await useCases.load(
+      start: DateTime.utc(2026, 7, 18),
+      end: DateTime.utc(2026, 7, 18),
+    );
+
+    expect(
+      aggregate.unavailableSections,
+      contains(HealthDataSection.treatment),
+    );
+    expect(aggregate.today.pendingVitamins, isNull);
+    expect(aggregate.today.pendingMedications, isNull);
+  });
 }
 
 class _Clock implements ClockService {
@@ -128,6 +215,25 @@ class _MealRepository implements MealRepository, MealRangeRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) {
     return Future.value(const []);
+  }
+}
+
+class _CountingMealRepository implements MealRepository, MealRangeRepository {
+  int periodReads = 0;
+
+  @override
+  Future<List<Meal>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async {
+    periodReads++;
+    return const [];
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    return Future.value(const <Meal>[]);
   }
 }
 
@@ -232,4 +338,22 @@ class _TreatmentQuery implements TreatmentAdherenceQueryService {
     }
     return result;
   }
+}
+
+class _FailingTreatmentQuery implements TreatmentAdherenceQueryService {
+  const _FailingTreatmentQuery();
+
+  @override
+  Future<Map<String, TodayTreatmentReadModel>> days(
+    DateTime start,
+    DateTime end,
+  ) => Future.error(StateError('treatment unavailable'));
+
+  @override
+  Future<TreatmentAdherenceSummary> summary(DateTime start, DateTime end) =>
+      Future.error(StateError('treatment unavailable'));
+
+  @override
+  Future<TodayTreatmentReadModel> today(DateTime date) =>
+      Future.error(StateError('treatment unavailable'));
 }

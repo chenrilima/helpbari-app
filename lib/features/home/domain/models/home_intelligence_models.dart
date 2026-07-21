@@ -116,7 +116,12 @@ class CoverageReadModel extends HomeValueReadModel {
     this.formulaVersion,
   }) : assert(rate == null || (rate >= 0 && rate <= 1)),
        assert(state != CoverageState.sufficient || rate != null),
-       assert(state == CoverageState.sufficient || rate != 1);
+       assert(state == CoverageState.sufficient || rate != 1),
+       assert(
+         (state != CoverageState.unavailable &&
+                 state != CoverageState.notApplicable) ||
+             rate == null,
+       );
 
   final CoverageState state;
   final double? rate;
@@ -169,7 +174,14 @@ class AgendaItemReadModel extends HomeValueReadModel {
     this.deepLink,
     Iterable<HomeActionKind> allowedActions = const <HomeActionKind>{},
     this.hasIncompleteData = false,
-  }) : assert(id != '' && sourceId != '' && timeZone != ''),
+  }) : assert(
+         id.trim().isNotEmpty &&
+             sourceId.trim().isNotEmpty &&
+             title.trim().isNotEmpty &&
+             timeZone.trim().isNotEmpty &&
+             source.trim().isNotEmpty &&
+             accessibilityLabel.trim().isNotEmpty,
+       ),
        allowedActions = Set.unmodifiable(allowedActions);
 
   final String id;
@@ -217,7 +229,8 @@ class AgendaReadModel extends HomeValueReadModel {
     required this.end,
     required Iterable<AgendaItemReadModel> items,
     required this.status,
-  }) : items = List.unmodifiable(items);
+  }) : assert(start.isBefore(end)),
+       items = List.unmodifiable(items);
 
   final DateTime start;
   final DateTime end;
@@ -259,7 +272,20 @@ class TreatmentSummaryReadModel extends HomeValueReadModel {
     required this.formulaVersion,
     required Map<RoutineCategory, double?> adherenceByCategory,
     required this.status,
-  }) : adherenceByCategory = Map.unmodifiable(adherenceByCategory);
+  }) : assert(
+         due >= 0 &&
+             open >= 0 &&
+             resolved >= 0 &&
+             missed >= 0 &&
+             requiresReview >= 0,
+       ),
+       assert(adherence == null || (adherence >= 0 && adherence <= 1)),
+       assert(
+         onTimeAdherence == null ||
+             (onTimeAdherence >= 0 && onTimeAdherence <= 1),
+       ),
+       assert(formulaVersion.trim().isNotEmpty),
+       adherenceByCategory = Map.unmodifiable(adherenceByCategory);
 
   final int due;
   final int open;
@@ -303,7 +329,14 @@ class NextActionReadModel extends HomeValueReadModel {
     this.dueAt,
     this.deepLink,
     this.command,
-  }) : assert(deepLink != null || command != null);
+  }) : assert(deepLink != null || command != null),
+       assert(
+         id != '' &&
+             title != '' &&
+             reason != '' &&
+             source != '' &&
+             accessibilityLabel != '',
+       );
 
   final String id;
   final String title;
@@ -356,7 +389,10 @@ class ProgressMetricReadModel extends HomeValueReadModel {
     this.progress,
     this.accessibilityLabel,
   }) : assert(state != ProgressMetricState.available || value != null),
-       assert(target == null || target > 0);
+       assert(target == null || target > 0),
+       assert(progress == null || target != null),
+       assert(progress == null || (progress >= 0 && progress <= 1)),
+       assert(id != '' && label != '');
 
   final String id;
   final String label;
@@ -449,7 +485,11 @@ class QuickActionReadModel extends HomeValueReadModel {
     required this.accessibilityLabel,
     this.deepLink,
     this.sourceId,
-  }) : assert(deepLink != null || sourceId != null);
+  }) : assert(id != '' && title != '' && accessibilityLabel != ''),
+       assert(
+         (kind == HomeActionKind.route && deepLink != null) ||
+             (kind == HomeActionKind.treatmentCommand && sourceId != null),
+       );
 
   final String id;
   final String title;
@@ -538,7 +578,12 @@ class InsightFeedReadModel extends HomeValueReadModel {
   InsightFeedReadModel({
     required Iterable<DeterministicInsightReadModel> insights,
     required this.status,
-  }) : insights = List.unmodifiable(insights);
+  }) : assert(
+         insights.every(
+           (insight) => insight.expiresAt.isAfter(status.freshness.generatedAt),
+         ),
+       ),
+       insights = List.unmodifiable(insights);
 
   final List<DeterministicInsightReadModel> insights;
   final HomeSectionStatus status;
@@ -590,7 +635,7 @@ class TodayDashboardReadModel extends HomeValueReadModel {
     required this.status,
     this.userName,
     this.healthScore,
-  });
+  }) : assert(userId != '' && timeZone != '');
 
   final String userId;
   final DateTime clinicalDate;

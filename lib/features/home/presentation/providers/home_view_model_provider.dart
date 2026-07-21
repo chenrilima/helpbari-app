@@ -21,6 +21,7 @@ import '../../domain/models/home_intelligence_models.dart';
 import '../../domain/models/health_dashboard_aggregate.dart';
 import '../../../appointments/domain/entities/entities.dart';
 import '../../../smart_routines/domain/services/treatment_query_models.dart';
+import '../../../smart_routines/domain/enums/routine_enums.dart';
 
 final healthDashboardUseCasesProvider = Provider<HealthDashboardUseCases>((
   ref,
@@ -52,6 +53,7 @@ final homeIntelligenceQueryFacadeProvider =
             ref.read(treatmentAdherenceQueryServiceProvider.future),
         appointments: ref.watch(appointmentUseCasesProvider),
         prescriptions: ref.watch(medicalPrescriptionUseCasesProvider),
+        weight: ref.watch(weightUseCasesProvider),
         clock: ref.watch(clockServiceProvider),
         syncState: () => ref.read(syncManagerProvider),
         timeZone: () =>
@@ -59,10 +61,14 @@ final homeIntelligenceQueryFacadeProvider =
       );
     });
 
+final homeClinicalNowProvider = Provider<DateTime>(
+  (ref) => ref.watch(clockServiceProvider).now(),
+);
+
 final _homeRequestContextProvider = Provider<_HomeRequestContext>((ref) {
   final session = ref.watch(authSessionProvider);
   if (session == null) throw StateError('Authenticated user is required.');
-  final now = ref.watch(clockServiceProvider).now();
+  final now = ref.watch(homeClinicalNowProvider);
   final sync = ref.watch(syncManagerProvider);
   final lastSyncAt = sync.lastSyncAt;
   return _HomeRequestContext(
@@ -82,17 +88,35 @@ final _homeRequestContextProvider = Provider<_HomeRequestContext>((ref) {
   );
 });
 
-final homeHealthSourceProvider = FutureProvider<HealthDashboardAggregate?>((
+final homeHealthBaseSourceProvider = FutureProvider<HealthDashboardAggregate?>((
   ref,
 ) async {
   final context = ref.watch(_homeRequestContextProvider);
-  final treatmentDays = await ref.watch(homeTreatmentSourceProvider.future);
   return ref
       .watch(healthDashboardUseCasesProvider)
       .load(
         start: context.date,
         end: context.date,
-        treatmentDaysOverride: treatmentDays,
+        treatmentDaysOverride: {
+          _dateKey(context.date): _emptyTreatmentDay(context.date),
+        },
+      );
+});
+
+final homeHealthSourceProvider = FutureProvider<HealthDashboardAggregate?>((
+  ref,
+) async {
+  final values = await Future.wait<Object?>([
+    ref.watch(homeHealthBaseSourceProvider.future),
+    ref.watch(homeTreatmentSourceProvider.future),
+  ]);
+  final aggregate = values[0] as HealthDashboardAggregate?;
+  if (aggregate == null) return null;
+  return ref
+      .watch(healthDashboardUseCasesProvider)
+      .applyTreatment(
+        aggregate,
+        values[1] as Map<String, TodayTreatmentReadModel>,
       );
 });
 
@@ -311,6 +335,22 @@ String _dateKey(DateTime value) =>
     '${value.year.toString().padLeft(4, '0')}-'
     '${value.month.toString().padLeft(2, '0')}-'
     '${value.day.toString().padLeft(2, '0')}';
+
+TodayTreatmentReadModel _emptyTreatmentDay(DateTime date) =>
+    TodayTreatmentReadModel(
+      date: date,
+      occurrences: const [],
+      adherence: const TreatmentAdherenceSummary(
+        eligible: 0,
+        taken: 0,
+        takenOnTime: 0,
+        skipped: 0,
+        missed: 0,
+        coverage: 0,
+        coverageState: AdherenceCoverageState.unknown,
+        origin: TreatmentDataOrigin.smartRoutines,
+      ),
+    );
 
 final homeSyncStatusProvider = Provider<SyncState>(
   (ref) => ref.watch(syncManagerProvider),

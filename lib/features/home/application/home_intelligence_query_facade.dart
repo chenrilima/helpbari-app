@@ -3,8 +3,8 @@ import '../../../core/services/clock_service.dart';
 import '../../../core/sync/sync_state.dart';
 import '../../appointments/domain/entities/entities.dart';
 import '../../appointments/domain/usecases/use_cases.dart';
-import '../../medical_prescriptions/domain/entities/entities.dart';
 import '../../medical_prescriptions/domain/usecases/use_cases.dart';
+import '../../weight/domain/usecases/use_cases.dart';
 import '../../smart_routines/domain/enums/routine_enums.dart';
 import '../../smart_routines/domain/services/treatment_query_models.dart';
 import '../domain/models/models.dart';
@@ -18,6 +18,7 @@ class HomeIntelligenceQueryFacade {
     required this.treatment,
     required this.appointments,
     required this.prescriptions,
+    required this.weight,
     required this.clock,
     required this.syncState,
     required this.timeZone,
@@ -29,6 +30,7 @@ class HomeIntelligenceQueryFacade {
   final Future<TreatmentAdherenceQueryService> Function() treatment;
   final AppointmentUseCases appointments;
   final MedicalPrescriptionUseCases prescriptions;
+  final WeightUseCases weight;
   final ClockService clock;
   final SyncState Function() syncState;
   final String Function() timeZone;
@@ -41,12 +43,14 @@ class HomeIntelligenceQueryFacade {
     final now = clock.now();
     final end = DateTime(now.year, now.month, now.day);
     final start = DateTime(now.year, now.month, now.day - days + 1);
-    final aggregate = await dashboard.load(start: start, end: end);
-    final points = aggregate.days
-        .where((day) => day.weightKg != null)
+    final endExclusive = DateTime(end.year, end.month, end.day + 1);
+    final records = await weight.getByPeriod(start, endExclusive);
+    final points = records
         .map(
-          (day) =>
-              ProgressTrendPointReadModel(date: day.date, value: day.weightKg!),
+          (record) => ProgressTrendPointReadModel(
+            date: record.recordedAt.value,
+            value: record.weight.value,
+          ),
         )
         .toList(growable: false);
     final rate = days <= 0 ? null : points.length / days;
@@ -82,14 +86,13 @@ class HomeIntelligenceQueryFacade {
       _safe(() => dashboard.load(start: date, end: date)),
       _safe(() async => (await treatment()).days(date, end)),
       _safe(() => appointments.getByPeriod(date, end)),
-      _safe(prescriptions.getAll),
+      _safe(prescriptions.countRequiringReview),
     ]);
     final health = values[0] as HealthDashboardAggregate?;
     final treatmentDays =
         values[1] as Map<String, TodayTreatmentReadModel>? ?? const {};
     final appointmentValues = values[2] as List<Appointment>? ?? const [];
-    final prescriptionValues =
-        values[3] as List<MedicalPrescription>? ?? const [];
+    final prescriptionsAwaitingReview = values[3] as int? ?? 0;
     final sync = syncState();
     final pendingSync =
         sync.phase == SyncPhase.partialFailure ||
@@ -132,19 +135,16 @@ class HomeIntelligenceQueryFacade {
       freshness: freshness,
       pendingSync: pendingSync,
     );
-    final awaitingReview = prescriptionValues
-        .where((value) => value.requiresReview)
-        .length;
     final nextActions = composeNextActions(
       now: now,
       agenda: agenda,
-      prescriptionsAwaitingReview: awaitingReview,
+      prescriptionsAwaitingReview: prescriptionsAwaitingReview,
       freshness: freshness,
       pendingSync: pendingSync,
     );
     final quickActions = composeQuickActions(
       agenda: agenda,
-      prescriptionsAwaitingReview: awaitingReview,
+      prescriptionsAwaitingReview: prescriptionsAwaitingReview,
       freshness: freshness,
       pendingSync: pendingSync,
     );
@@ -153,7 +153,7 @@ class HomeIntelligenceQueryFacade {
       health: health,
       treatment: treatmentSummary,
       agenda: agenda,
-      prescriptionsAwaitingReview: awaitingReview,
+      prescriptionsAwaitingReview: prescriptionsAwaitingReview,
       freshness: freshness,
       pendingSync: pendingSync,
     );

@@ -69,10 +69,12 @@ class IntelligentAgendaSection extends StatelessWidget {
     final today = model.start;
     final items = model.items
         .where((item) {
-          if (!todayOnly) return true;
-          return item.effectiveAt.year == today.year &&
+          final isToday =
+              item.effectiveAt.year == today.year &&
               item.effectiveAt.month == today.month &&
               item.effectiveAt.day == today.day;
+          if (todayOnly) return isToday;
+          return !isToday && item.effectiveAt.isAfter(today);
         })
         .take(todayOnly ? 5 : 3)
         .toList(growable: false);
@@ -126,7 +128,10 @@ class IntelligentAgendaSection extends StatelessWidget {
       AgendaItemState.requiresReview => 'requer revisão',
       AgendaItemState.unavailable => 'indisponível',
     };
-    return '$hour:$minute • $state';
+    if (todayOnly) return '$hour:$minute • $state';
+    final day = item.effectiveAt.day.toString().padLeft(2, '0');
+    final month = item.effectiveAt.month.toString().padLeft(2, '0');
+    return '$day/$month • $hour:$minute • $state';
   }
 }
 

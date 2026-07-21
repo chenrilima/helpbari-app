@@ -35,7 +35,6 @@ class SyncBootstrapCoordinator {
         ) {
           AppLogger.error(
             'Initial sync failed (${error.runtimeType}).',
-            error: error,
             stackTrace: stack,
           );
         }),
@@ -60,7 +59,6 @@ class SyncBootstrapCoordinator {
       // Sync errors are represented by SyncResult; bootstrap must remain usable.
       AppLogger.error(
         'Initial sync wait failed (${error.runtimeType}).',
-        error: error,
         stackTrace: stackTrace,
       );
     } finally {
@@ -83,7 +81,6 @@ class SyncBootstrapCoordinator {
       // Manual retry preserves the offline-first UI on infrastructure errors.
       AppLogger.error(
         'Manual sync retry failed (${error.runtimeType}).',
-        error: error,
         stackTrace: stackTrace,
       );
     }

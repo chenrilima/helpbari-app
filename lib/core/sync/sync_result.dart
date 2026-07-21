@@ -68,6 +68,8 @@ class SyncResult {
 
   bool get isSuccess => repositoriesProcessed > 0 && errors.isEmpty;
   bool get hasConflicts => conflicts.isNotEmpty;
+  bool belongsTo(String? currentUserId) =>
+      userId != null && userId == currentUserId;
 
   SyncResult copyWith({
     DateTime? completedAt,

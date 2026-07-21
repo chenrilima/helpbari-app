@@ -91,7 +91,7 @@ read models. Feature Flags pertencem à Macro 6.
 
 ## Gate arquitetural pós-implementação
 
-Status atual: **não aprovado para encerramento**.
+Status histórico do primeiro gate: **reprovado**.
 
 O gate adversarial confirmou e corrigiu a ausência de refresh na virada do dia
 e a possibilidade de double tap em quick actions. Também removeu o
@@ -167,3 +167,59 @@ Durante o gate, o ambiente remoto estava sem as migrations aprovadas
 `20260720030000` e `20260721000000`. Ambas foram aplicadas e verificadas no
 histórico remoto. A ausência da segunda migration causava falha no pull de
 `PrescriptionPlatformSyncRepository` durante o bootstrap.
+
+## Nova auditoria independente
+
+Status: **aprovada em 2026-07-21**, após inspeção do código e testes
+adversariais; este status substitui a pendência histórica acima.
+
+A auditoria não confiou no relatório de correções e encontrou problemas reais
+adicionais, corrigidos antes da aprovação:
+
+- a fonte de saúde observava tratamento e fazia occurrence recarregar água,
+  refeições, peso, appointments e exames. Saúde básica e composição de
+  tratamento agora são fontes distintas; recompor adesão/Health Score não faz
+  I/O nos históricos de saúde;
+- a virada do dia invalidava somente o dashboard final e podia reutilizar
+  fontes da data anterior. `homeClinicalNowProvider` agora invalida todo o
+  grafo dependente da data clínica;
+- retorno de navegação e sync sem mudanças provocavam refresh amplo. Navegação
+  não invalida a Home, e o resultado estruturado do sync é a única autoridade
+  de refresh remoto;
+- resultados de sync, BarIA e Reports podiam terminar após logout/troca de
+  usuário. Todos revalidam a sessão e descartam Futures antigos;
+- o gráfico de peso usava o agregador completo. Ele consulta exclusivamente
+  peso no intervalo solicitado;
+- o caminho alternativo da facade carregava prescrições completas para contar
+  revisões. Ele usa a projeção `countRequiringReview`;
+- falha de tratamento derrubava o agregado inteiro. Agora ela marca somente a
+  seção de tratamento como indisponível, sem fabricar zero;
+- catálogos ativos materializavam todas as revisões de planos em Dart. A
+  seleção da última revisão ocorre no SQLite e as relações atuais são lidas em
+  batch;
+- logs de sync/report podiam receber exceções com conteúdo remoto. Logs agora
+  preservam somente domínio/operação, tipo técnico e stack trace.
+
+### Orçamento revalidado
+
+- bootstrap diário: uma leitura básica por domínio de saúde, uma janela de
+  tratamento, uma janela de agenda e uma projeção de prescrições;
+- mudança de treatment/occurrence: recompõe tratamento e consumidores
+  derivados sem consultar refeições, água, peso, appointments ou exames;
+- tendência de peso: uma query de peso por intervalo;
+- exames: uma query dos exames e uma query em batch dos resultados;
+- prescrições de Reports: uma projeção limitada e uma query em batch dos itens;
+- catálogos Medication/Vitamin: última revisão selecionada no SQLite, seguida
+  por leituras em batch de rotinas, planos e schedules atuais; logs históricos
+  não participam.
+
+Não foram adicionadas migrations, tabelas Supabase, Feature Flags ou código
+gerado pela Macro 3. `supabase migration list` confirmou paridade local/remota
+até `20260721000000` durante a auditoria.
+
+### Smoke tests operacionais
+
+Widgets automatizados cobrem rotas, escala de texto e ausência de overflow da
+seção de ações. TalkBack, VoiceOver, mudança real de timezone/DST, retorno de
+background e falha de rede em dispositivo físico permanecem no checklist
+operacional de release; não há defeito estrutural conhecido nesses fluxos.

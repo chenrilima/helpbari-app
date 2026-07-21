@@ -23,6 +23,21 @@ void main() {
     expect(source, contains('watch(homeTreatmentSourceProvider.future)'));
   });
 
+  test('treatment changes do not re-read the health base source', () {
+    final source = File(
+      'lib/features/home/presentation/providers/home_view_model_provider.dart',
+    ).readAsStringSync();
+    final baseStart = source.indexOf('final homeHealthBaseSourceProvider');
+    final derivedStart = source.indexOf('final homeHealthSourceProvider');
+    final treatmentStart = source.indexOf('final homeTreatmentSourceProvider');
+    final baseBody = source.substring(baseStart, derivedStart);
+    final derivedBody = source.substring(derivedStart, treatmentStart);
+
+    expect(baseBody, isNot(contains('homeTreatmentSourceProvider')));
+    expect(derivedBody, contains('homeHealthBaseSourceProvider.future'));
+    expect(derivedBody, contains('homeTreatmentSourceProvider.future'));
+  });
+
   test('Home has a single navigational quick-actions section', () {
     final page = File(
       'lib/features/home/presentation/pages/home_page.dart',
@@ -47,6 +62,8 @@ void main() {
     expect(source, isNot(contains('_appointmentUseCases.getAll()')));
     expect(source, isNot(contains('_examUseCases.getHistory()')));
     expect(source, isNot(contains('_prescriptionUseCases?.getAll()')));
+    expect(source, isNot(contains('getPendingCount')));
+    expect(source, contains('treatmentToday.pendingFor'));
   });
 
   test('medical exam interval projection batches result reads', () {
@@ -80,5 +97,45 @@ void main() {
 
     expect(source, contains('skipLoadingOnRefresh: true'));
     expect(source, contains('skipLoadingOnReload: true'));
+  });
+
+  test('clinical-day and navigation refreshes are scoped', () {
+    final source = File(
+      'lib/features/home/presentation/pages/home_page.dart',
+    ).readAsStringSync();
+
+    expect(source, contains('ref.invalidate(homeClinicalNowProvider)'));
+    expect(source, isNot(contains('pushAndRefresh')));
+  });
+
+  test('weight trend and prescription review avoid broad consumers', () {
+    final source = File(
+      'lib/features/home/application/home_intelligence_query_facade.dart',
+    ).readAsStringSync();
+    final trendStart = source.indexOf('Future<ProgressTrendReadModel>');
+    final todayStart = source.indexOf('Future<TodayDashboardReadModel>');
+    final trendBody = source.substring(trendStart, todayStart);
+
+    expect(trendBody, contains('weight.getByPeriod'));
+    expect(trendBody, isNot(contains('dashboard.load')));
+    expect(source, contains('prescriptions.countRequiringReview'));
+    expect(source, isNot(contains('prescriptions.getAll')));
+  });
+
+  test('session-sensitive consumers reject old asynchronous results', () {
+    final sync = File('lib/core/sync/sync_providers.dart').readAsStringSync();
+    final baria = File(
+      'lib/features/baria/presentation/state/baria_view_model.dart',
+    ).readAsStringSync();
+    final reports = File(
+      'lib/features/medical_reports/presentation/viewmodels/'
+      'medical_report_view_model.dart',
+    ).readAsStringSync();
+
+    expect(sync, contains('result.belongsTo(currentUserId)'));
+    expect(baria, contains('_insightRequest++'));
+    expect(baria, contains("ref.read(authSessionProvider)?.id == userId"));
+    expect(reports, contains('ref.watch(authSessionProvider)'));
+    expect(reports, contains('_isCurrent(request, expectedUserId)'));
   });
 }

@@ -292,13 +292,15 @@ final syncDataRefreshProvider = Provider<Future<void> Function(SyncResult)>((
   ref,
 ) {
   return (result) async {
+    final currentUserId = ref.read(authSessionProvider)?.id;
+    if (!result.belongsTo(currentUserId)) return;
     final domains = result.domainsChanged;
     final homeAreas = const HomeSyncInvalidationPolicy().areasFor(domains);
     if (domains.isEmpty && !result.fullRefreshRequired) return;
     if (!result.fullRefreshRequired) {
       if (domains.contains(SyncDomain.water)) {
         if (homeAreas.contains(HomeRefreshArea.healthSource)) {
-          ref.invalidate(homeHealthSourceProvider);
+          ref.invalidate(homeHealthBaseSourceProvider);
         }
         ref.invalidate(waterViewModelProvider);
         ref.invalidate(waterChartSeriesProvider);
@@ -307,7 +309,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function(SyncResult)>((
       }
       if (domains.contains(SyncDomain.weight)) {
         if (homeAreas.contains(HomeRefreshArea.healthSource)) {
-          ref.invalidate(homeHealthSourceProvider);
+          ref.invalidate(homeHealthBaseSourceProvider);
         }
         ref.invalidate(weightViewModelProvider);
         ref.invalidate(weightChartSeriesProvider);
@@ -317,7 +319,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function(SyncResult)>((
       }
       if (domains.contains(SyncDomain.meals)) {
         if (homeAreas.contains(HomeRefreshArea.healthSource)) {
-          ref.invalidate(homeHealthSourceProvider);
+          ref.invalidate(homeHealthBaseSourceProvider);
         }
         ref.invalidate(mealViewModelProvider);
         ref.invalidate(dailyProgressProvider);
@@ -353,7 +355,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function(SyncResult)>((
       }
       if (domains.contains(SyncDomain.settings)) {
         if (homeAreas.contains(HomeRefreshArea.healthSource)) {
-          ref.invalidate(homeHealthSourceProvider);
+          ref.invalidate(homeHealthBaseSourceProvider);
         }
         ref.invalidate(settingsUseCasesProvider);
         ref.invalidate(settingsViewModelProvider);
@@ -361,7 +363,7 @@ final syncDataRefreshProvider = Provider<Future<void> Function(SyncResult)>((
       }
       if (domains.contains(SyncDomain.profile)) {
         if (homeAreas.contains(HomeRefreshArea.healthSource)) {
-          ref.invalidate(homeHealthSourceProvider);
+          ref.invalidate(homeHealthBaseSourceProvider);
         }
         ref.invalidate(profileViewModelProvider);
       }

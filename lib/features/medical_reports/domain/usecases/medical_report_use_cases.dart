@@ -143,12 +143,12 @@ class MedicalReportUseCases {
       periodEnd,
     );
     final treatmentToday = await treatmentService.today(periodEnd);
-    final fallbackPendingVitamins = dashboard == null
-        ? await _vitaminUseCases.getPendingCount(date: now)
-        : null;
-    final fallbackPendingMedications = dashboard == null
-        ? await _medicationUseCases.getPendingCount(date: now)
-        : null;
+    final fallbackPendingVitamins =
+        dashboard?.today.pendingVitamins ??
+        treatmentToday.pendingFor(RoutineCategory.vitamin);
+    final fallbackPendingMedications =
+        dashboard?.today.pendingMedications ??
+        treatmentToday.pendingFor(RoutineCategory.medication);
     final currentWeight = latestWeight?.weight.value;
     final referenceWeight = currentWeight ?? profile?.initialWeight.value;
     final targetWeight = profile?.targetWeight?.value;
@@ -202,8 +202,8 @@ class MedicalReportUseCases {
     final calculatedSummary = DailySummaryCalculator.calculate(
       waterConsumedMl: totalWaterToday,
       waterGoalMl: settings.dailyWaterGoalMl,
-      pendingVitamins: fallbackPendingVitamins ?? 0,
-      pendingMedications: fallbackPendingMedications ?? 0,
+      pendingVitamins: fallbackPendingVitamins,
+      pendingMedications: fallbackPendingMedications,
       registeredMeals: todayMeals.length,
       totalProteinGrams: totalProteinToday,
       proteinGoalGrams: proteinGoal,

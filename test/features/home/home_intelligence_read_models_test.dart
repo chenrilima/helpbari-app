@@ -80,6 +80,71 @@ void main() {
       () => FreshnessReadModel(generatedAt: now, isStale: true),
       throwsAssertionError,
     );
+    expect(
+      () => CoverageReadModel(state: CoverageState.unavailable, rate: .5),
+      throwsAssertionError,
+    );
+  });
+
+  test('rejects invalid actions, intervals, progress and expired insights', () {
+    expect(
+      () => QuickActionReadModel(
+        id: 'water',
+        title: 'Água',
+        kind: HomeActionKind.route,
+        sourceId: 'water',
+        accessibilityLabel: 'Abrir água',
+      ),
+      throwsAssertionError,
+    );
+    expect(
+      () => AgendaReadModel(
+        start: now,
+        end: now,
+        items: const [],
+        status: status,
+      ),
+      throwsAssertionError,
+    );
+    expect(
+      () => ProgressMetricReadModel(
+        id: 'water',
+        label: 'Água',
+        state: ProgressMetricState.available,
+        value: 100,
+        progress: .5,
+        coverage: const CoverageReadModel(
+          state: CoverageState.sufficient,
+          rate: 1,
+        ),
+      ),
+      throwsAssertionError,
+    );
+    expect(
+      () => InsightFeedReadModel(
+        insights: [
+          DeterministicInsightReadModel(
+            id: 'expired',
+            ruleId: 'rule',
+            ruleVersion: 'v1',
+            title: 'Insight',
+            message: 'Mensagem',
+            priority: InsightPriority.low,
+            sources: const ['water'],
+            deduplicationKey: 'expired',
+            expiresAt: now,
+            cooldown: const Duration(hours: 1),
+            coverage: const CoverageReadModel(
+              state: CoverageState.sufficient,
+              rate: 1,
+            ),
+            disclaimer: 'Acompanhamento',
+          ),
+        ],
+        status: status,
+      ),
+      throwsAssertionError,
+    );
   });
 }
 

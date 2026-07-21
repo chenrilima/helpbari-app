@@ -59,6 +59,7 @@ final class OnboardingState {
   AppEntryStatus get entryStatus {
     if (!isAuthenticated) return AppEntryStatus.unauthenticated;
     if (isResolvingSession) return AppEntryStatus.loading;
+    if (userCompleted) return AppEntryStatus.authenticatedReady;
     if (resolutionFailed) return AppEntryStatus.failure;
     if (!hasProfile) return AppEntryStatus.authenticatedOnboardingPending;
     if (!hasCurrentLegalConsent) {

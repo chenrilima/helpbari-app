@@ -101,7 +101,13 @@ class HealthDashboardUseCases {
     final settings = results[6] as AppSettings?;
     final latestWeight = results[7] as WeightRecord?;
     final treatmentDays =
-        treatmentDaysOverride ?? await (await _treatment()).days(from, to);
+        treatmentDaysOverride ??
+        await _read(
+          () async => (await _treatment()).days(from, to),
+          HealthDataSection.treatment,
+          unavailable,
+        ) ??
+        const <String, TodayTreatmentReadModel>{};
     final waterByDay = <String, List<WaterRecord>>{};
     for (final record in water) {
       waterByDay
@@ -148,11 +154,11 @@ class HealthDashboardUseCases {
           : ProteinCalculator.goalForWeightKg(
               weightKg ?? profile.initialWeight.value,
             );
-      final treatmentToday = treatmentDays[_dateKey(date)]!;
-      final vitaminSummary = treatmentToday.adherenceFor(
+      final treatmentToday = treatmentDays[_dateKey(date)];
+      final vitaminSummary = treatmentToday?.adherenceFor(
         RoutineCategory.vitamin,
       );
-      final medicationSummary = treatmentToday.adherenceFor(
+      final medicationSummary = treatmentToday?.adherenceFor(
         RoutineCategory.medication,
       );
       final vitaminAdherence =
@@ -163,10 +169,10 @@ class HealthDashboardUseCases {
           medicationSummary?.coverageState == AdherenceCoverageState.complete
           ? medicationSummary?.adherence
           : null;
-      final pendingVitamins = treatmentToday.pendingFor(
+      final pendingVitamins = treatmentToday?.pendingFor(
         RoutineCategory.vitamin,
       );
-      final pendingMedications = treatmentToday.pendingFor(
+      final pendingMedications = treatmentToday?.pendingFor(
         RoutineCategory.medication,
       );
       final score = HealthScoreCalculator.calculateV2(
@@ -213,6 +219,82 @@ class HealthDashboardUseCases {
       latestWeight: latestWeight,
       nextAppointment: upcoming.firstOrNull,
       latestExam: exams.firstOrNull,
+    );
+  }
+
+  HealthDashboardAggregate applyTreatment(
+    HealthDashboardAggregate aggregate,
+    Map<String, TodayTreatmentReadModel> treatmentDays,
+  ) {
+    final days = aggregate.days
+        .map((day) {
+          final treatment = treatmentDays[_dateKey(day.date)];
+          if (treatment == null) return day;
+          final vitaminSummary = treatment.adherenceFor(
+            RoutineCategory.vitamin,
+          );
+          final medicationSummary = treatment.adherenceFor(
+            RoutineCategory.medication,
+          );
+          final vitaminAdherence =
+              vitaminSummary?.coverageState == AdherenceCoverageState.complete
+              ? vitaminSummary?.adherence
+              : null;
+          final medicationAdherence =
+              medicationSummary?.coverageState ==
+                  AdherenceCoverageState.complete
+              ? medicationSummary?.adherence
+              : null;
+          final proteinGoal = aggregate.profile == null
+              ? null
+              : ProteinCalculator.goalForWeightKg(
+                  day.weightKg ?? aggregate.profile!.initialWeight.value,
+                );
+          return DailyHealthAggregate(
+            date: day.date,
+            waterMl: day.waterMl,
+            waterGoalMl: day.waterGoalMl,
+            mealsCount: day.mealsCount,
+            proteinGrams: day.proteinGrams,
+            vitaminAdherence: vitaminAdherence,
+            medicationAdherence: medicationAdherence,
+            weightKg: day.weightKg,
+            healthScore: HealthScoreCalculator.calculateV2(
+              HealthScoreInput(
+                hydration:
+                    day.waterMl == null ||
+                        day.waterGoalMl == null ||
+                        day.waterGoalMl! <= 0
+                    ? null
+                    : day.waterMl! / day.waterGoalMl!,
+                protein:
+                    day.proteinGrams == null ||
+                        proteinGoal == null ||
+                        proteinGoal <= 0
+                    ? null
+                    : day.proteinGrams! / proteinGoal,
+                meals: day.mealsCount == null ? null : day.mealsCount! / 3,
+                vitamins: vitaminAdherence,
+                medications: medicationAdherence,
+                weight: _weightProgress(aggregate.profile, day.weightKg),
+              ),
+            ),
+            pendingVitamins: treatment.pendingFor(RoutineCategory.vitamin),
+            pendingMedications: treatment.pendingFor(
+              RoutineCategory.medication,
+            ),
+          );
+        })
+        .toList(growable: false);
+    return HealthDashboardAggregate(
+      periodStart: aggregate.periodStart,
+      periodEnd: aggregate.periodEnd,
+      days: List.unmodifiable(days),
+      unavailableSections: aggregate.unavailableSections,
+      profile: aggregate.profile,
+      latestWeight: aggregate.latestWeight,
+      nextAppointment: aggregate.nextAppointment,
+      latestExam: aggregate.latestExam,
     );
   }
 

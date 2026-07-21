@@ -72,6 +72,30 @@ void main() {
     expect(fixture.state.currentStep, OnboardingStep.documents);
   });
 
+  test(
+    'local completion does not ask profile fields again after login',
+    () async {
+      final fixture = _Fixture(user: user, profile: null, consent: true);
+      await fixture.repository.completeForUser(user.id);
+      await fixture.resolve();
+
+      expect(fixture.state.entryStatus, AppEntryStatus.authenticatedReady);
+      expect(fixture.state.currentStep, OnboardingStep.completion);
+    },
+  );
+
+  test('local completion only asks for renewed legal acceptance', () async {
+    final fixture = _Fixture(user: user, profile: null, consent: false);
+    await fixture.repository.completeForUser(user.id);
+    await fixture.resolve();
+
+    expect(
+      fixture.state.entryStatus,
+      AppEntryStatus.authenticatedLegalAcceptancePending,
+    );
+    expect(fixture.state.currentStep, OnboardingStep.documents);
+  });
+
   test('local restoration failure never manufactures completion', () async {
     final fixture = _Fixture(
       user: user,

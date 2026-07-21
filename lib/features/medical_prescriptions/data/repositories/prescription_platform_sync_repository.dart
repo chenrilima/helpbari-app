@@ -124,27 +124,7 @@ class PrescriptionPlatformSyncRepository
         : row['sync_status'] as String? ?? 'synced';
     switch (table) {
       case 'prescription_versions':
-        await database
-            .into(database.prescriptionVersionRecords)
-            .insertOnConflictUpdate(
-              PrescriptionVersionRecordsCompanion.insert(
-                id: row['id'] as String,
-                userId: userId,
-                prescriptionId: row['prescription_id'] as String,
-                revision: row['revision'] as int,
-                status: row['status'] as String,
-                snapshotJson: _json(row['snapshot']),
-                sourceProcessingId: Value(
-                  row['source_processing_id'] as String?,
-                ),
-                submittedAt: Value(_date(row['submitted_at'])),
-                confirmedAt: Value(_date(row['confirmed_at'])),
-                createdAt: _date(row['created_at'])!,
-                updatedAt: _date(row['updated_at'])!,
-                deletedAt: Value(_date(row['deleted_at'])),
-                syncStatus: status,
-              ),
-            );
+        await _applyVersion(row, status);
         return;
       case 'prescription_reviews':
         await database
@@ -211,6 +191,86 @@ class PrescriptionPlatformSyncRepository
         return;
     }
   }
+
+  Future<void> _applyVersion(Map<String, dynamic> row, String status) async {
+    final id = row['id'] as String;
+    final incomingSnapshot = _json(row['snapshot']);
+    final existing =
+        await (database.select(database.prescriptionVersionRecords)..where(
+              (record) => record.userId.equals(userId) & record.id.equals(id),
+            ))
+            .getSingleOrNull();
+    final incomingStatus = row['status'] as String;
+    if (existing != null &&
+        (existing.status == 'confirmed' || existing.status == 'archived')) {
+      final statusAllowed =
+          existing.status == incomingStatus ||
+          (existing.status == 'confirmed' && incomingStatus == 'archived');
+      final sameClinicalValue =
+          statusAllowed &&
+          existing.prescriptionId == row['prescription_id'] &&
+          existing.revision == row['revision'] &&
+          _jsonEquals(existing.snapshotJson, incomingSnapshot) &&
+          existing.sourceProcessingId == row['source_processing_id'] &&
+          _sameInstant(existing.submittedAt, _date(row['submitted_at'])) &&
+          _sameInstant(existing.confirmedAt, _date(row['confirmed_at'])) &&
+          _sameInstant(existing.createdAt, _date(row['created_at'])) &&
+          _sameInstant(existing.deletedAt, _date(row['deleted_at']));
+      if (!sameClinicalValue) {
+        throw StateError('Conflicting immutable prescription version.');
+      }
+      await (database.update(database.prescriptionVersionRecords)..where(
+            (record) =>
+                record.userId.equals(userId) & record.id.equals(existing.id),
+          ))
+          .write(
+            PrescriptionVersionRecordsCompanion(
+              status: Value(incomingStatus),
+              updatedAt: Value(_date(row['updated_at'])!),
+              syncStatus: Value(status),
+            ),
+          );
+      return;
+    }
+    await database
+        .into(database.prescriptionVersionRecords)
+        .insertOnConflictUpdate(
+          PrescriptionVersionRecordsCompanion.insert(
+            id: id,
+            userId: userId,
+            prescriptionId: row['prescription_id'] as String,
+            revision: row['revision'] as int,
+            status: incomingStatus,
+            snapshotJson: incomingSnapshot,
+            sourceProcessingId: Value(row['source_processing_id'] as String?),
+            submittedAt: Value(_date(row['submitted_at'])),
+            confirmedAt: Value(_date(row['confirmed_at'])),
+            createdAt: _date(row['created_at'])!,
+            updatedAt: _date(row['updated_at'])!,
+            deletedAt: Value(_date(row['deleted_at'])),
+            syncStatus: status,
+          ),
+        );
+  }
+
+  bool _jsonEquals(String left, String right) =>
+      jsonEncode(_canonicalJson(jsonDecode(left))) ==
+      jsonEncode(_canonicalJson(jsonDecode(right)));
+
+  Object? _canonicalJson(Object? value) => switch (value) {
+    final Map<Object?, Object?> map => <String, Object?>{
+      for (final key in map.keys.map((key) => key.toString()).toList()..sort())
+        key: _canonicalJson(map[key]),
+    },
+    final List<Object?> list => list.map(_canonicalJson).toList(),
+    _ => value,
+  };
+
+  bool _sameInstant(DateTime? left, DateTime? right) =>
+      left == null || right == null
+      ? left == right
+      : left.toUtc().millisecondsSinceEpoch ~/ 1000 ==
+            right.toUtc().millisecondsSinceEpoch ~/ 1000;
 
   @override
   Future<void> markSynced(String recordId, {required DateTime syncedAt}) =>

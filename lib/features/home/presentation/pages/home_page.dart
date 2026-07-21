@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/bootstrap/sync_bootstrap_provider.dart';
 import '../../../../app/router/app_routes.dart';
-import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
@@ -53,7 +52,6 @@ class _HomePageState extends ConsumerState<HomePage>
     await ref
         .read(syncBootstrapProvider)
         .waitForInitialSync(user.id, cancelled: _disposed.future);
-    if (mounted) ref.invalidate(todayDashboardProvider);
   }
 
   @override
@@ -76,7 +74,7 @@ class _HomePageState extends ConsumerState<HomePage>
     final now = ref.read(clockServiceProvider).now();
     _dayRefreshTimer = Timer(_dayPolicy.untilNextDay(now), () {
       if (!mounted) return;
-      ref.invalidate(todayDashboardProvider);
+      ref.invalidate(homeClinicalNowProvider);
       _scheduleDayRefresh();
     });
   }
@@ -93,7 +91,7 @@ class _HomePageState extends ConsumerState<HomePage>
       snapshotTimeZone: snapshotTimeZone,
       currentTimeZone: currentTimeZone,
     )) {
-      ref.invalidate(todayDashboardProvider);
+      ref.invalidate(homeClinicalNowProvider);
       _scheduleDayRefresh();
     }
   }
@@ -107,7 +105,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Future<void> _openRoute(String? route) async {
     if (route == null || route == AppRoutes.home) return;
-    await context.pushAndRefresh(route, onRefresh: _retry);
+    await context.push(route);
   }
 
   Future<void> _openFeature(String route) async {
