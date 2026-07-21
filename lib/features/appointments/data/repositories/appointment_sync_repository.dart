@@ -1,3 +1,4 @@
+import '../../../../core/supabase/database/supabase_database.dart';
 import '../../../../core/sync/sync.dart';
 import '../../domain/value_objects/value_objects.dart';
 import '../datasources/appointment_supabase_datasource.dart';
@@ -12,7 +13,8 @@ class AppointmentSyncRepository
         SyncableRepository,
         PagedPullSyncRepository,
         RepositorySyncCursor,
-        AtomicRemoteSyncRepository {
+        AtomicRemoteSyncRepository,
+        VersionedPushSyncRepository {
   const AppointmentSyncRepository({
     required Future<DriftAppointmentLocalDatasource> Function() local,
     required AppointmentSupabaseDatasource remote,
@@ -44,6 +46,26 @@ class AppointmentSyncRepository
   @override
   Future<void> push(SyncOperation operation) async => (await _local())
       .applyRemote(await _remote.upsert(_dto(operation), userId: _userId));
+  @override
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  }) async {
+    try {
+      final remote = await _remote.upsertVersioned(
+        _dto(operation),
+        userId: _userId,
+        baseRevision: baseRevision,
+      );
+      await (await _local()).applyRemote(remote);
+      return _operation(remote);
+    } on SupabaseRevisionConflictException catch (error) {
+      throw SyncRevisionConflictException(
+        _operation(AppointmentDto.fromSupabaseRow(error.remoteRow)),
+      );
+    }
+  }
+
   @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async =>
       (await _remote.pull(
@@ -99,6 +121,7 @@ class AppointmentSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: dto.syncMetadata.userId ?? _userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: {
       'title': dto.title,
       'date': dto.date.toIso8601String(),

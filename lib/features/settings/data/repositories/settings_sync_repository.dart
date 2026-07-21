@@ -91,6 +91,7 @@ class SettingsSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: {
       ...dto.toSupabase(userId),
       'createdAt': dto.syncMetadata.createdAt.toIso8601String(),

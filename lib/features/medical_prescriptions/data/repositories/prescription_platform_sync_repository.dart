@@ -7,7 +7,10 @@ import '../../../../core/supabase/database/supabase_database.dart';
 import '../../../../core/sync/sync.dart';
 
 class PrescriptionPlatformSyncRepository
-    implements SyncableRepository, AppendOnlySyncRepository {
+    implements
+        SyncableRepository,
+        AppendOnlySyncRepository,
+        PagedPullSyncRepository {
   const PrescriptionPlatformSyncRepository({
     required this.database,
     required this.remote,
@@ -125,27 +128,28 @@ class PrescriptionPlatformSyncRepository
 
   @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async {
-    final result = <SyncOperation>[];
+    return [
+      await for (final page in pullPages(updatedAfter: updatedAfter)) ...page,
+    ];
+  }
+
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) async* {
     for (final table in _tables) {
-      final rows = await remote.run(
-        operation: 'select',
+      await for (final rows in remote.pullUpdatedPages(
         table: table,
-        request: (query) async {
-          var request = query.select().eq('user_id', userId);
-          if (updatedAfter != null) {
-            request = request.gte(
-              'updated_at',
-              updatedAfter.toUtc().toIso8601String(),
-            );
-          }
-          return request.order('updated_at');
-        },
-      );
-      result.addAll(
-        rows.map((row) => _operation(table, Map<String, Object?>.from(row))),
-      );
+        userId: userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )) {
+        yield rows
+            .map((row) => _operation(table, Map<String, Object?>.from(row)))
+            .toList(growable: false);
+      }
     }
-    return result;
   }
 
   @override

@@ -84,6 +84,7 @@ class MedicalExamSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: dto.syncMetadata.userId ?? _userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: {
       'exam': dto.toSupabaseRow(userId: dto.syncMetadata.userId ?? _userId),
       'results': dto.results

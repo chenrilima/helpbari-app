@@ -73,6 +73,9 @@ void main() {
           syncAppVersionProvider.overrideWithValue('test'),
           syncUserIdProvider.overrideWithValue('user-1'),
           syncSessionRegistryProvider.overrideWithValue(sessions),
+          syncServerNowProvider.overrideWithValue(
+            () async => DateTime.utc(2026, 7, 9, 15),
+          ),
           syncDataRefreshProvider.overrideWithValue((_) async {}),
         ],
       );
@@ -369,36 +372,46 @@ void main() {
       expect(repository.failedIds, isEmpty);
     });
 
-    test('resolves conflicts with latest updatedAt winning', () async {
-      final local = _operation(
-        recordId: 'conflict-1',
-        updatedAt: DateTime(2026, 7, 9, 11),
-        payload: const {'source': 'local'},
-      );
-      final remote = _operation(
-        recordId: 'conflict-1',
-        updatedAt: DateTime(2026, 7, 9, 10),
-        payload: const {'source': 'remote'},
-      );
-      final repository = _FakeSyncableRepository(
-        localById: {'conflict-1': local},
-        remote: [remote],
-      );
-      final engine = SyncEngine(
-        stateRepository: _FakeSyncStateRepository(),
-        clock: const _FixedClock(),
-      );
+    test(
+      'reports an explicit conflict when the server revision advanced',
+      () async {
+        final local = _operation(
+          recordId: 'conflict-1',
+          updatedAt: DateTime(2026, 7, 9, 11),
+          payload: const {'source': 'local'},
+        );
+        final remote = _operation(
+          recordId: 'conflict-1',
+          updatedAt: DateTime(2026, 7, 9, 10),
+          serverRevision: 2,
+          payload: const {'source': 'remote'},
+        );
+        final repository = _FakeVersionedRepository(
+          pending: [local],
+          localById: {'conflict-1': local},
+          remote: [remote],
+        );
+        final versions = _FakeSyncVersionStore()
+          ..values['user-1|fake|conflict-1'] = 1;
+        final engine = SyncEngine(
+          stateRepository: _FakeSyncStateRepository(),
+          clock: const _FixedClock(),
+          versionStore: versions,
+        );
 
-      final result = await engine.sync(
-        repositories: [repository],
-        appVersion: '1.0.0',
-        userId: 'user-1',
-      );
+        final result = await engine.sync(
+          repositories: [repository],
+          appVersion: '1.0.0',
+          userId: 'user-1',
+        );
 
-      expect(result.conflicts, hasLength(1));
-      expect(result.conflicts.single.localWon, isTrue);
-      expect(repository.appliedRemote, isEmpty);
-    });
+        expect(result.conflicts, hasLength(1));
+        expect(result.conflicts.single.localWon, isTrue);
+        expect(repository.appliedRemote, isEmpty);
+        expect(repository.versionedPushes, isEmpty);
+        expect(result.isSuccess, isFalse);
+      },
+    );
 
     test('pulls every page and deduplicates the same remote version', () async {
       final first = _operation(
@@ -434,7 +447,7 @@ void main() {
         'page-1',
         'page-2',
       ]);
-      expect(repository.savedCursor, DateTime(2026, 7, 9, 12));
+      expect(repository.savedCursor, DateTime.utc(2026, 7, 9, 15));
     });
 
     test('does not advance repository cursor after a page failure', () async {
@@ -515,7 +528,7 @@ void main() {
     );
 
     test(
-      'applies remote conflict winner when remote updatedAt is newer',
+      'pushes with the stored revision when the pulled base is unchanged',
       () async {
         final local = _operation(
           recordId: 'conflict-2',
@@ -525,15 +538,21 @@ void main() {
         final remote = _operation(
           recordId: 'conflict-2',
           updatedAt: DateTime(2026, 7, 9, 11),
+          serverRevision: 7,
           payload: const {'source': 'remote'},
         );
-        final repository = _FakeSyncableRepository(
+        final repository = _FakeVersionedRepository(
+          pending: [local],
           localById: {'conflict-2': local},
           remote: [remote],
+          confirmedRevision: 8,
         );
+        final versions = _FakeSyncVersionStore()
+          ..values['user-1|fake|conflict-2'] = 7;
         final engine = SyncEngine(
           stateRepository: _FakeSyncStateRepository(),
           clock: const _FixedClock(),
+          versionStore: versions,
         );
 
         final result = await engine.sync(
@@ -542,10 +561,10 @@ void main() {
           userId: 'user-1',
         );
 
-        expect(result.conflicts.single.remoteWon, isTrue);
-        expect(repository.appliedRemote.map((operation) => operation.payload), [
-          {'source': 'remote'},
-        ]);
+        expect(result.conflicts, isEmpty);
+        expect(repository.appliedRemote, isEmpty);
+        expect(repository.versionedPushes.single.$2, 7);
+        expect(versions.values['user-1|fake|conflict-2'], 8);
       },
     );
   });
@@ -557,6 +576,7 @@ SyncOperation _operation({
   Map<String, dynamic> payload = const {},
   SyncOperationType type = SyncOperationType.update,
   DateTime? deletedAt,
+  int? serverRevision,
 }) {
   return SyncOperation(
     repositoryKey: 'fake',
@@ -564,8 +584,34 @@ SyncOperation _operation({
     type: type,
     updatedAt: updatedAt,
     deletedAt: deletedAt,
+    userId: 'user-1',
+    serverRevision: serverRevision,
     payload: payload,
   );
+}
+
+class _FakeSyncVersionStore implements SyncVersionStore {
+  final values = <String, int>{};
+
+  String _key(String userId, String repositoryKey, String recordId) =>
+      '$userId|$repositoryKey|$recordId';
+
+  @override
+  Future<int?> read({
+    required String userId,
+    required String repositoryKey,
+    required String recordId,
+  }) async => values[_key(userId, repositoryKey, recordId)];
+
+  @override
+  Future<void> write({
+    required String userId,
+    required String repositoryKey,
+    required String recordId,
+    required int serverRevision,
+  }) async {
+    values[_key(userId, repositoryKey, recordId)] = serverRevision;
+  }
 }
 
 class _FakeSyncableRepository implements SyncableRepository {
@@ -652,6 +698,28 @@ class _FakeSyncableRepository implements SyncableRepository {
   @override
   Future<void> markFailed(String recordId, SyncError error) async {
     failedIds.add(recordId);
+  }
+}
+
+class _FakeVersionedRepository extends _FakeSyncableRepository
+    implements VersionedPushSyncRepository {
+  _FakeVersionedRepository({
+    super.pending,
+    super.remote,
+    super.localById,
+    this.confirmedRevision = 2,
+  });
+
+  final int confirmedRevision;
+  final versionedPushes = <(SyncOperation, int?)>[];
+
+  @override
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  }) async {
+    versionedPushes.add((operation, baseRevision));
+    return operation.copyWith(serverRevision: confirmedRevision);
   }
 }
 

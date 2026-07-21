@@ -1,4 +1,5 @@
 BEGIN;
+SELECT plan(1);
 
 INSERT INTO auth.users (id, aud, role, email, created_at, updated_at)
 VALUES
@@ -38,17 +39,17 @@ END $$;
 RESET ROLE;
 
 INSERT INTO public.routine_plans
-  (id,user_id,routine_id,revision,mode,duration_type,effective_from,created_at,updated_at)
+  (id,user_id,routine_id,revision,category,mode,duration_type,effective_from,created_at,updated_at)
 VALUES
-  ('30000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000001','20000000-0000-4000-8000-000000000001',1,'scheduled','continuous','2026-07-20',now(),now());
+  ('30000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000001','20000000-0000-4000-8000-000000000001',1,'vitamin','scheduled','continuous','2026-07-20',now(),now());
 
 DO $$
 BEGIN
   BEGIN
     INSERT INTO public.routine_plans
-      (id,user_id,routine_id,revision,mode,duration_type,effective_from,created_at,updated_at)
+      (id,user_id,routine_id,revision,category,mode,duration_type,effective_from,created_at,updated_at)
     VALUES
-      ('30000000-0000-4000-8000-000000000002','10000000-0000-4000-8000-000000000001','20000000-0000-4000-8000-000000000002',1,'scheduled','continuous','2026-07-20',now(),now());
+      ('30000000-0000-4000-8000-000000000002','10000000-0000-4000-8000-000000000001','20000000-0000-4000-8000-000000000002',1,'vitamin','scheduled','continuous','2026-07-20',now(),now());
     RAISE EXCEPTION 'cross-owner FK unexpectedly succeeded';
   EXCEPTION WHEN foreign_key_violation THEN NULL;
   END;
@@ -91,5 +92,7 @@ BEGIN
   EXCEPTION WHEN raise_exception THEN NULL;
   END;
 END $$;
+
+SELECT pass('smart routines RLS, ownership and immutability checks passed');
 
 ROLLBACK;

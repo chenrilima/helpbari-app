@@ -168,6 +168,7 @@ class DocumentProcessingSyncRepository
         updatedAt: dto.syncMetadata.updatedAt,
         deletedAt: dto.syncMetadata.deletedAt,
         userId: dto.userId,
+        serverRevision: dto.syncMetadata.serverRevision,
         payload: {
           'documentId': dto.documentId,
           'document': dto.document,

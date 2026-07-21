@@ -75,6 +75,7 @@ final class OnboardingProgressDto {
         updatedAt: updatedAt,
         deletedAt: optionalDate('deleted_at'),
         syncStatus: SyncStatus.synced,
+        serverRevision: row['server_revision'] as int?,
       ),
     );
   }

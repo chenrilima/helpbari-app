@@ -11,6 +11,7 @@ class SyncOperation {
     required this.payload,
     this.deletedAt,
     this.userId,
+    this.serverRevision,
     this.attempts = 0,
   });
 
@@ -20,6 +21,7 @@ class SyncOperation {
   final DateTime updatedAt;
   final DateTime? deletedAt;
   final String? userId;
+  final int? serverRevision;
   final Map<String, dynamic> payload;
   final int attempts;
 
@@ -40,6 +42,7 @@ class SyncOperation {
     DateTime? updatedAt,
     DateTime? deletedAt,
     String? userId,
+    int? serverRevision,
     Map<String, dynamic>? payload,
     int? attempts,
   }) {
@@ -50,6 +53,7 @@ class SyncOperation {
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
       userId: userId ?? this.userId,
+      serverRevision: serverRevision ?? this.serverRevision,
       payload: payload ?? this.payload,
       attempts: attempts ?? this.attempts,
     );
@@ -63,6 +67,7 @@ class SyncOperation {
       'updatedAt': updatedAt.toIso8601String(),
       'deletedAt': deletedAt?.toIso8601String(),
       'userId': userId,
+      'serverRevision': serverRevision,
       'payload': payload,
       'attempts': attempts,
     };
@@ -82,6 +87,7 @@ class SyncOperation {
         _ => null,
       },
       userId: json['userId'] as String?,
+      serverRevision: json['serverRevision'] as int?,
       payload: Map<String, dynamic>.from(json['payload'] as Map? ?? {}),
       attempts: json['attempts'] as int? ?? 0,
     );

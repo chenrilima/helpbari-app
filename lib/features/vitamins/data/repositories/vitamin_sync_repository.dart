@@ -77,6 +77,7 @@ class VitaminSyncRepository
     updatedAt: d.syncMetadata.updatedAt,
     deletedAt: d.syncMetadata.deletedAt,
     userId: d.syncMetadata.userId ?? _userId,
+    serverRevision: d.syncMetadata.serverRevision,
     payload: {
       'name': d.name,
       'hour': d.hour,

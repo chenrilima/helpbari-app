@@ -21,6 +21,7 @@ import 'daos/smart_routine_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
 import 'tables/sync_cursors.dart';
+import 'tables/sync_record_versions.dart';
 import 'tables/sync_devices.dart';
 import 'tables/water_records.dart';
 import 'tables/water_cutovers.dart';
@@ -58,6 +59,7 @@ part 'app_database.g.dart';
   tables: [
     WaterRecords,
     SyncCursors,
+    SyncRecordVersions,
     SyncDevices,
     LocalMigrations,
     WaterCutovers,
@@ -132,7 +134,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 22;
+  int get schemaVersion => 23;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -284,6 +286,12 @@ class AppDatabase extends _$AppDatabase {
           settingsRecords,
           settingsRecords.notificationPreferencesJson,
         );
+      }
+      if (from < 23) {
+        await migrator.createTable(syncRecordVersions);
+        // Older cursors used device time and cannot safely bound server-owned
+        // revisions. A full pull repopulates versions without deleting data.
+        await delete(syncCursors).go();
       }
     },
     beforeOpen: (details) async {

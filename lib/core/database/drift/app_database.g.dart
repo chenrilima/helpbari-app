@@ -1177,6 +1177,336 @@ class SyncCursorsCompanion extends UpdateCompanion<SyncCursor> {
   }
 }
 
+class $SyncRecordVersionsTable extends SyncRecordVersions
+    with TableInfo<$SyncRecordVersionsTable, SyncRecordVersion> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncRecordVersionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _repositoryKeyMeta = const VerificationMeta(
+    'repositoryKey',
+  );
+  @override
+  late final GeneratedColumn<String> repositoryKey = GeneratedColumn<String>(
+    'repository_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordIdMeta = const VerificationMeta(
+    'recordId',
+  );
+  @override
+  late final GeneratedColumn<String> recordId = GeneratedColumn<String>(
+    'record_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverRevisionMeta = const VerificationMeta(
+    'serverRevision',
+  );
+  @override
+  late final GeneratedColumn<int> serverRevision = GeneratedColumn<int>(
+    'server_revision',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    userId,
+    repositoryKey,
+    recordId,
+    serverRevision,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_record_versions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncRecordVersion> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('repository_key')) {
+      context.handle(
+        _repositoryKeyMeta,
+        repositoryKey.isAcceptableOrUnknown(
+          data['repository_key']!,
+          _repositoryKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_repositoryKeyMeta);
+    }
+    if (data.containsKey('record_id')) {
+      context.handle(
+        _recordIdMeta,
+        recordId.isAcceptableOrUnknown(data['record_id']!, _recordIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordIdMeta);
+    }
+    if (data.containsKey('server_revision')) {
+      context.handle(
+        _serverRevisionMeta,
+        serverRevision.isAcceptableOrUnknown(
+          data['server_revision']!,
+          _serverRevisionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_serverRevisionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, repositoryKey, recordId};
+  @override
+  SyncRecordVersion map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncRecordVersion(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      repositoryKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}repository_key'],
+      )!,
+      recordId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}record_id'],
+      )!,
+      serverRevision: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_revision'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncRecordVersionsTable createAlias(String alias) {
+    return $SyncRecordVersionsTable(attachedDatabase, alias);
+  }
+}
+
+class SyncRecordVersion extends DataClass
+    implements Insertable<SyncRecordVersion> {
+  final String userId;
+  final String repositoryKey;
+  final String recordId;
+  final int serverRevision;
+  const SyncRecordVersion({
+    required this.userId,
+    required this.repositoryKey,
+    required this.recordId,
+    required this.serverRevision,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['repository_key'] = Variable<String>(repositoryKey);
+    map['record_id'] = Variable<String>(recordId);
+    map['server_revision'] = Variable<int>(serverRevision);
+    return map;
+  }
+
+  SyncRecordVersionsCompanion toCompanion(bool nullToAbsent) {
+    return SyncRecordVersionsCompanion(
+      userId: Value(userId),
+      repositoryKey: Value(repositoryKey),
+      recordId: Value(recordId),
+      serverRevision: Value(serverRevision),
+    );
+  }
+
+  factory SyncRecordVersion.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncRecordVersion(
+      userId: serializer.fromJson<String>(json['userId']),
+      repositoryKey: serializer.fromJson<String>(json['repositoryKey']),
+      recordId: serializer.fromJson<String>(json['recordId']),
+      serverRevision: serializer.fromJson<int>(json['serverRevision']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'repositoryKey': serializer.toJson<String>(repositoryKey),
+      'recordId': serializer.toJson<String>(recordId),
+      'serverRevision': serializer.toJson<int>(serverRevision),
+    };
+  }
+
+  SyncRecordVersion copyWith({
+    String? userId,
+    String? repositoryKey,
+    String? recordId,
+    int? serverRevision,
+  }) => SyncRecordVersion(
+    userId: userId ?? this.userId,
+    repositoryKey: repositoryKey ?? this.repositoryKey,
+    recordId: recordId ?? this.recordId,
+    serverRevision: serverRevision ?? this.serverRevision,
+  );
+  SyncRecordVersion copyWithCompanion(SyncRecordVersionsCompanion data) {
+    return SyncRecordVersion(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      repositoryKey: data.repositoryKey.present
+          ? data.repositoryKey.value
+          : this.repositoryKey,
+      recordId: data.recordId.present ? data.recordId.value : this.recordId,
+      serverRevision: data.serverRevision.present
+          ? data.serverRevision.value
+          : this.serverRevision,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncRecordVersion(')
+          ..write('userId: $userId, ')
+          ..write('repositoryKey: $repositoryKey, ')
+          ..write('recordId: $recordId, ')
+          ..write('serverRevision: $serverRevision')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(userId, repositoryKey, recordId, serverRevision);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncRecordVersion &&
+          other.userId == this.userId &&
+          other.repositoryKey == this.repositoryKey &&
+          other.recordId == this.recordId &&
+          other.serverRevision == this.serverRevision);
+}
+
+class SyncRecordVersionsCompanion extends UpdateCompanion<SyncRecordVersion> {
+  final Value<String> userId;
+  final Value<String> repositoryKey;
+  final Value<String> recordId;
+  final Value<int> serverRevision;
+  final Value<int> rowid;
+  const SyncRecordVersionsCompanion({
+    this.userId = const Value.absent(),
+    this.repositoryKey = const Value.absent(),
+    this.recordId = const Value.absent(),
+    this.serverRevision = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncRecordVersionsCompanion.insert({
+    required String userId,
+    required String repositoryKey,
+    required String recordId,
+    required int serverRevision,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       repositoryKey = Value(repositoryKey),
+       recordId = Value(recordId),
+       serverRevision = Value(serverRevision);
+  static Insertable<SyncRecordVersion> custom({
+    Expression<String>? userId,
+    Expression<String>? repositoryKey,
+    Expression<String>? recordId,
+    Expression<int>? serverRevision,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (repositoryKey != null) 'repository_key': repositoryKey,
+      if (recordId != null) 'record_id': recordId,
+      if (serverRevision != null) 'server_revision': serverRevision,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncRecordVersionsCompanion copyWith({
+    Value<String>? userId,
+    Value<String>? repositoryKey,
+    Value<String>? recordId,
+    Value<int>? serverRevision,
+    Value<int>? rowid,
+  }) {
+    return SyncRecordVersionsCompanion(
+      userId: userId ?? this.userId,
+      repositoryKey: repositoryKey ?? this.repositoryKey,
+      recordId: recordId ?? this.recordId,
+      serverRevision: serverRevision ?? this.serverRevision,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (repositoryKey.present) {
+      map['repository_key'] = Variable<String>(repositoryKey.value);
+    }
+    if (recordId.present) {
+      map['record_id'] = Variable<String>(recordId.value);
+    }
+    if (serverRevision.present) {
+      map['server_revision'] = Variable<int>(serverRevision.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncRecordVersionsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('repositoryKey: $repositoryKey, ')
+          ..write('recordId: $recordId, ')
+          ..write('serverRevision: $serverRevision, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SyncDevicesTable extends SyncDevices
     with TableInfo<$SyncDevicesTable, SyncDevice> {
   @override
@@ -43312,6 +43642,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $WaterRecordsTable waterRecords = $WaterRecordsTable(this);
   late final $SyncCursorsTable syncCursors = $SyncCursorsTable(this);
+  late final $SyncRecordVersionsTable syncRecordVersions =
+      $SyncRecordVersionsTable(this);
   late final $SyncDevicesTable syncDevices = $SyncDevicesTable(this);
   late final $LocalMigrationsTable localMigrations = $LocalMigrationsTable(
     this,
@@ -43751,6 +44083,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     waterRecords,
     syncCursors,
+    syncRecordVersions,
     syncDevices,
     localMigrations,
     waterCutovers,
@@ -44448,6 +44781,204 @@ typedef $$SyncCursorsTableProcessedTableManager =
         BaseReferences<_$AppDatabase, $SyncCursorsTable, SyncCursor>,
       ),
       SyncCursor,
+      PrefetchHooks Function()
+    >;
+typedef $$SyncRecordVersionsTableCreateCompanionBuilder =
+    SyncRecordVersionsCompanion Function({
+      required String userId,
+      required String repositoryKey,
+      required String recordId,
+      required int serverRevision,
+      Value<int> rowid,
+    });
+typedef $$SyncRecordVersionsTableUpdateCompanionBuilder =
+    SyncRecordVersionsCompanion Function({
+      Value<String> userId,
+      Value<String> repositoryKey,
+      Value<String> recordId,
+      Value<int> serverRevision,
+      Value<int> rowid,
+    });
+
+class $$SyncRecordVersionsTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncRecordVersionsTable> {
+  $$SyncRecordVersionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get repositoryKey => $composableBuilder(
+    column: $table.repositoryKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recordId => $composableBuilder(
+    column: $table.recordId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverRevision => $composableBuilder(
+    column: $table.serverRevision,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SyncRecordVersionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncRecordVersionsTable> {
+  $$SyncRecordVersionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get repositoryKey => $composableBuilder(
+    column: $table.repositoryKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recordId => $composableBuilder(
+    column: $table.recordId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverRevision => $composableBuilder(
+    column: $table.serverRevision,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncRecordVersionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncRecordVersionsTable> {
+  $$SyncRecordVersionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get repositoryKey => $composableBuilder(
+    column: $table.repositoryKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get recordId =>
+      $composableBuilder(column: $table.recordId, builder: (column) => column);
+
+  GeneratedColumn<int> get serverRevision => $composableBuilder(
+    column: $table.serverRevision,
+    builder: (column) => column,
+  );
+}
+
+class $$SyncRecordVersionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncRecordVersionsTable,
+          SyncRecordVersion,
+          $$SyncRecordVersionsTableFilterComposer,
+          $$SyncRecordVersionsTableOrderingComposer,
+          $$SyncRecordVersionsTableAnnotationComposer,
+          $$SyncRecordVersionsTableCreateCompanionBuilder,
+          $$SyncRecordVersionsTableUpdateCompanionBuilder,
+          (
+            SyncRecordVersion,
+            BaseReferences<
+              _$AppDatabase,
+              $SyncRecordVersionsTable,
+              SyncRecordVersion
+            >,
+          ),
+          SyncRecordVersion,
+          PrefetchHooks Function()
+        > {
+  $$SyncRecordVersionsTableTableManager(
+    _$AppDatabase db,
+    $SyncRecordVersionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncRecordVersionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncRecordVersionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncRecordVersionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<String> repositoryKey = const Value.absent(),
+                Value<String> recordId = const Value.absent(),
+                Value<int> serverRevision = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncRecordVersionsCompanion(
+                userId: userId,
+                repositoryKey: repositoryKey,
+                recordId: recordId,
+                serverRevision: serverRevision,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required String repositoryKey,
+                required String recordId,
+                required int serverRevision,
+                Value<int> rowid = const Value.absent(),
+              }) => SyncRecordVersionsCompanion.insert(
+                userId: userId,
+                repositoryKey: repositoryKey,
+                recordId: recordId,
+                serverRevision: serverRevision,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SyncRecordVersionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncRecordVersionsTable,
+      SyncRecordVersion,
+      $$SyncRecordVersionsTableFilterComposer,
+      $$SyncRecordVersionsTableOrderingComposer,
+      $$SyncRecordVersionsTableAnnotationComposer,
+      $$SyncRecordVersionsTableCreateCompanionBuilder,
+      $$SyncRecordVersionsTableUpdateCompanionBuilder,
+      (
+        SyncRecordVersion,
+        BaseReferences<
+          _$AppDatabase,
+          $SyncRecordVersionsTable,
+          SyncRecordVersion
+        >,
+      ),
+      SyncRecordVersion,
       PrefetchHooks Function()
     >;
 typedef $$SyncDevicesTableCreateCompanionBuilder =
@@ -63949,6 +64480,8 @@ class $AppDatabaseManager {
       $$WaterRecordsTableTableManager(_db, _db.waterRecords);
   $$SyncCursorsTableTableManager get syncCursors =>
       $$SyncCursorsTableTableManager(_db, _db.syncCursors);
+  $$SyncRecordVersionsTableTableManager get syncRecordVersions =>
+      $$SyncRecordVersionsTableTableManager(_db, _db.syncRecordVersions);
   $$SyncDevicesTableTableManager get syncDevices =>
       $$SyncDevicesTableTableManager(_db, _db.syncDevices);
   $$LocalMigrationsTableTableManager get localMigrations =>

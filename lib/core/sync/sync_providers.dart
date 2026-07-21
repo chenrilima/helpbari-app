@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../services/service_providers.dart';
 import '../database/drift/drift_database_providers.dart';
+import '../database/drift/drift_sync_version_store.dart';
 import '../supabase/database/supabase_database_provider.dart';
 import '../supabase/supabase_client_provider.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
@@ -310,10 +311,18 @@ final syncStateRepositoryProvider = Provider<SyncStateRepository>((ref) {
   );
 });
 
+final syncServerNowProvider = Provider<Future<DateTime> Function()>((ref) {
+  return () => ref.read(supabaseDatabaseProvider).serverNow();
+});
+
 final syncEngineProvider = Provider<SyncEngine>((ref) {
   return SyncEngine(
     stateRepository: ref.watch(syncStateRepositoryProvider),
     clock: ref.watch(clockServiceProvider),
+    versionStore: DriftSyncVersionStore(
+      () => ref.read(appDatabaseProvider.future),
+    ),
+    serverNow: ref.watch(syncServerNowProvider),
   );
 });
 

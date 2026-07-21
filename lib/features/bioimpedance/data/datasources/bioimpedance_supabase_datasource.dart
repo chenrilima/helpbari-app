@@ -1,10 +1,27 @@
 import '../../../../core/supabase/database/supabase_database.dart';
+import '../../../../core/supabase/database/versioned_remote_datasource.dart';
 import '../dtos/bioimpedance_record_dto.dart';
 
-class BioimpedanceSupabaseDatasource {
+class BioimpedanceSupabaseDatasource
+    implements VersionedRemoteDatasource<BioimpedanceRecordDto> {
   const BioimpedanceSupabaseDatasource(this._database);
   static const table = 'bioimpedance_records';
   final SupabaseDatabase _database;
+
+  @override
+  Future<BioimpedanceRecordDto> upsertVersioned(
+    BioimpedanceRecordDto value, {
+    required String userId,
+    required int? baseRevision,
+  }) async => BioimpedanceRecordDto.fromSupabaseRow(
+    await _database.versionedUpsert(
+      table: table,
+      userId: userId,
+      recordId: value.record.id,
+      row: value.toSupabaseRow(userId: userId),
+      baseRevision: baseRevision,
+    ),
+  );
 
   Future<BioimpedanceRecordDto> upsert(
     BioimpedanceRecordDto record, {

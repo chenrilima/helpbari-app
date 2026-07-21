@@ -71,6 +71,7 @@ class VitaminLogSyncRepository
     updatedAt: d.syncMetadata.updatedAt,
     deletedAt: d.syncMetadata.deletedAt,
     userId: d.syncMetadata.userId ?? _userId,
+    serverRevision: d.syncMetadata.serverRevision,
     payload: {
       'vitaminId': d.vitaminId,
       'date': d.date.toIso8601String(),

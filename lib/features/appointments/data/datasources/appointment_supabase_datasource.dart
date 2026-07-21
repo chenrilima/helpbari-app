@@ -1,10 +1,26 @@
 import '../../../../core/supabase/database/supabase_database.dart';
+import '../../../../core/supabase/database/versioned_remote_datasource.dart';
 import '../dtos/appointment_dto.dart';
 
-class AppointmentSupabaseDatasource {
+class AppointmentSupabaseDatasource
+    implements VersionedRemoteDatasource<AppointmentDto> {
   const AppointmentSupabaseDatasource(this._database);
   static const table = 'appointments';
   final SupabaseDatabase _database;
+  @override
+  Future<AppointmentDto> upsertVersioned(
+    AppointmentDto value, {
+    required String userId,
+    required int? baseRevision,
+  }) async => AppointmentDto.fromSupabaseRow(
+    await _database.versionedUpsert(
+      table: table,
+      userId: userId,
+      recordId: value.id,
+      row: value.toSupabaseRow(userId: userId),
+      baseRevision: baseRevision,
+    ),
+  );
   Future<AppointmentDto> upsert(
     AppointmentDto value, {
     required String userId,

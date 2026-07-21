@@ -115,7 +115,8 @@ class ExamDto {
       deletedAt: row['deleted_at'] == null
           ? null
           : DateTime.parse(row['deleted_at'] as String),
-      syncStatus: SyncStatus.synced,
+        syncStatus: SyncStatus.synced,
+        serverRevision: row['server_revision'] as int?,
     ),
   );
 

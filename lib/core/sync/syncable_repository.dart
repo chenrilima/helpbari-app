@@ -38,6 +38,24 @@ abstract interface class AtomicRemoteSyncRepository {
   });
 }
 
+/// Mutable repositories use the last server-confirmed row revision as the
+/// optimistic base. A mismatch must throw [SyncRevisionConflictException].
+abstract interface class VersionedPushSyncRepository {
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  });
+}
+
+final class SyncRevisionConflictException implements Exception {
+  const SyncRevisionConflictException(this.remote);
+
+  final SyncOperation remote;
+
+  @override
+  String toString() => 'Remote record revision advanced.';
+}
+
 /// Opts a repository out of destructive `updatedAt` conflict resolution.
 /// Same-id payload equality/conflict remains the repository's responsibility.
 abstract interface class AppendOnlySyncRepository {

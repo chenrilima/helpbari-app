@@ -2,29 +2,29 @@
 
 Data: 21/07/2026  
 Escopo: Flutter/Android, arquitetura, Drift, Supabase/RLS, offline-first, Sync Engine, autenticação/multiusuário, notificações, Smart Routines, Unified Treatment, Home Intelligence, LGPD e testes.  
-Método: leitura do código e documentação, todas as migrations SQL, análise estática, 531 testes Flutter, CLI Supabase somente leitura e lint remoto. Não houve teste em dispositivo, Supabase runtime com dois JWTs, upgrade de APK nem build novo.
+Método: leitura do código e documentação, todas as migrations SQL, análise estática, 532 testes Flutter, recriação integral do Supabase local e testes runtime PostgreSQL/RLS com dois usuários autenticados. Não houve teste em dispositivo, upgrade de APK nem build novo. A CLI vinculada foi usada somente para inspeção; nenhuma escrita remota foi realizada.
 
 ## Veredito
 
 **❌ Não pronto para gerar novo APK de testes.**
 
-O isolamento de sessão e o gatilho por conectividade foram resolvidos com testes determinísticos. A paginação keyset existe apenas em seis dos dezenove repositórios sincronizáveis. Registros mutáveis ainda resolvem concorrência por `updatedAt` do dispositivo, sem versão base/servidor. Esses dois itens violam gates obrigatórios fornecidos para esta rodada. Por isso nenhum APK foi gerado, mesmo com analyze e suíte verdes.
+O protocolo de revisão monotônica do servidor foi implementado no core e nos seis domínios simples já paginados; a Prescription Platform passou a usar paginação keyset. A migration foi validada do zero no Supabase local e RLS foi exercitada com dois usuários. Entretanto, a migration não foi aplicada remotamente porque o alvo não está formalmente identificado como staging/produção e não há evidência de backup. Além disso, agregados de Document Intelligence, Medical Exams, Medical Prescriptions, Smart Routines e os repositórios singleton ainda não possuem escrita CAS atômica completa. Por isso nenhum APK foi gerado.
 
 ## Scores
 
 | Área | Score | Evidência e limite principal |
 |---|---:|---|
-| Geral | **70/100** | Base sólida e 531 testes; conflito, paginação transversal e validações externas bloqueiam release |
+| Geral | **72/100** | Base sólida e 532 testes; CAS parcial, paginação de agregados e backend remoto bloqueiam release |
 | Arquitetura | **86/100** | Clean Architecture/feature-first preservadas; um único engine e Drift como fonte local |
-| Sync | **70/100** | Sessão, timeout, retry, conectividade e páginas no core; clock e cobertura de entidades incompletos |
+| Sync | **75/100** | Revisão server-owned no core e seis domínios; agregados ainda sem CAS completo |
 | Offline | **76/100** | Escrita local e fila preservadas; sem worker e sem ensaio real offline→online |
 | UX | **80/100** | UI não bloqueia por sync; resolução clínica explícita; alguns erros técnicos ainda são transversais |
-| Segurança | **63/100** | RLS/PKCE/logs/manifest; SQLite clínico em texto claro e RLS sem runtime |
+| Segurança | **67/100** | RLS A/B validada localmente; SQLite clínico em texto claro e remoto não validado após migration |
 | Performance | **77/100** | Home limitada e rebuilds controlados; agregados remotos ainda podem exceder limite |
 | Android | **64/100** | Manifest endurecido; assinatura, upgrade real, minify/shrink e artefato candidato ausentes |
-| Supabase | **73/100** | Lint remoto limpo; duas migrations pendentes e RLS não exercitada com usuários reais |
+| Supabase | **78/100** | Reset/migrations/RLS locais verdes; três migrations continuam pendentes no projeto remoto |
 | LGPD | **77/100** | Exportação/exclusão amplas; storage/DB não são transação única e export não é criptografado |
-| Testes | **72/100** | 531 verdes e novos testes críticos; cobertura global baixa e faltam integração/dispositivo/upgrade |
+| Testes | **75/100** | 532 Flutter + 2 runtime SQL verdes; cobertura global baixa e faltam dispositivo/upgrade/remoto |
 
 ## Achados confirmados
 
@@ -52,13 +52,14 @@ O isolamento de sessão e o gatilho por conectividade foram resolvidos com teste
 - **Arquivos:** bootstrap de sync e configuração Android.
 - **Correção recomendada:** worker com constraints que reutilize engine/sessão e seja validado em dispositivo; Android não garante horário exato. Não criar autoridade paralela.
 
-### A-04 — conflito de mutáveis depende exclusivamente do relógio local
+### A-04 — protocolo de revisão do servidor ainda é parcial
 
-- **Gravidade:** crítica para multi-device. **Status:** aberto; bloqueia APK.
-- **Impacto:** dispositivo adiantado domina alterações; empate pode divergir; delete/update concorrentes podem escolher vencedor incorreto.
-- **Reprodução:** editar mesma base em dois aparelhos com clock skew e sincronizar em ordens opostas.
-- **Arquivos:** `sync_engine.dart`, DTOs/datasources e triggers `*_latest_updated_at_wins`.
-- **Correção recomendada:** migration aditiva com revisão monotônica do servidor, versão-base no cliente, update condicional atômico e retorno do estado confirmado; conflito remoto avançado deve ir à UX explícita. Não foi criada RPC genérica/destrutiva.
+- **Gravidade:** crítica para multi-device. **Status:** parcialmente corrigido; bloqueia APK.
+- **Impacto:** Water, Weight, Meals, Appointments, Exams e Bioimpedance usam CAS com versão-base; agregados e singletons ainda podem sobrescrever estado concorrente por upsert sem precondição.
+- **Reprodução:** editar a mesma entidade agregada em dois aparelhos a partir da mesma base e sincronizar em ordens opostas.
+- **Arquivos:** `sync_engine.dart`, `sync_record_versions.dart`, `supabase_database.dart`, seis datasources/repositórios versionados e migration `20260724000000_sync_server_revisions.sql`.
+- **Correção aplicada:** `server_revision` monotônica, `updated_at` do PostgreSQL, store Drift por usuário/repositório/registro, update condicional, conflito explícito sem retry e cursor superior obtido do servidor.
+- **Correção restante:** desenhar RPCs específicas e transacionais por agregado para raiz/filhos e adaptar Smart Routines/singletons. Não usar uma RPC genérica que aceite tabela ou SQL arbitrário.
 
 ### A-05 — paginação do pull é parcial
 
@@ -67,7 +68,7 @@ O isolamento de sessão e o gatilho por conectividade foram resolvidos com teste
 - **Reprodução:** mais de 1.000 documentos, logs, prescrições, ocorrências ou eventos e cursor antigo.
 - **Arquivos:** `supabase_database.dart`, `syncable_repository.dart`, seis datasources/repositórios de Water/Weight/Meals/Appointments/Exams/Bioimpedance.
 - **Correção aplicada:** keyset `(updated_at,id)`, `user_id`, páginas, tombstones, deduplicação por id/versão, sessão por página e cursor após passe completo.
-- **Correção restante:** adaptar Medication/Vitamin logs, Document Intelligence, Medical Exams/Prescriptions, Prescription Platform e Smart Routines preservando agregados pai/filho e evitando N+1.
+- **Correção restante:** Prescription Platform foi adaptada. Ainda faltam Document Intelligence, Medical Exams/Prescriptions e os pulls agregados de Smart Routines, preservando pai/filho e evitando N+1. Medication/Vitamin legados não estão registrados no engine atual.
 
 ### A-06 — tombstones não têm acknowledgement/compactação
 
@@ -85,14 +86,14 @@ O isolamento de sessão e o gatilho por conectividade foram resolvidos com teste
 - **Arquivos:** conexão Drift e `docs/LOCAL_DATABASE_SECURITY.md`.
 - **Correção recomendada:** SQLCipher/driver maduro, Keystore, migração atômica, integridade, rollback e matriz de upgrade. Não implementado sem essas garantias. Backup está desabilitado, cleartext bloqueado e logs sanitizados.
 
-### A-08 — migrations remotas fora de paridade e RLS sem teste runtime
+### A-08 — migrations remotas fora de paridade
 
 - **Gravidade:** crítica para backend. **Status:** aberto/externo.
-- **Impacto:** onboarding/notification preferences podem não existir no remoto; inspeção SQL não prova isolamento.
-- **Reprodução:** `supabase migration list` mostra `20260722` e `20260723` sem versão remota; testes atuais leem SQL.
+- **Impacto:** onboarding, preferências de notificação e revisão de sync podem não existir no remoto; o app versionado falharia até o backend estar compatível.
+- **Reprodução:** `supabase migration list` mostra `20260722`, `20260723` e a nova `20260724` sem versão remota.
 - **Arquivos:** `supabase/migrations/*`, `test/supabase/*`, `docs/SUPABASE_INTEGRATION_TESTS.md`.
-- **Evidência:** conexão read-only funcionou; `supabase db lint --linked` retornou zero erros. `supabase status` falhou sem Docker/Colima.
-- **Correção recomendada:** confirmar alvo e backup, aplicar apenas pendentes, testar A/B/anônimo com JWT authenticated, Storage, tombstones e RPC LGPD. Nenhuma migration foi aplicada sem autorização operacional suficiente.
+- **Evidência:** Supabase local foi recriado do zero com todas as migrations; dois testes SQL runtime passaram, incluindo A não ler/alterar B, insert estrangeiro recusado, CAS stale recusado e tombstone incrementando revisão.
+- **Correção recomendada:** identificar formalmente o projeto vinculado e ambiente, confirmar backup/PITR, aplicar somente as três pendentes e repetir smoke RLS/PostgREST no alvo. Nenhuma migration remota foi aplicada sem essas garantias.
 
 ### A-09 — pipeline Android não está fechado
 
@@ -111,7 +112,7 @@ O isolamento de sessão e o gatilho por conectividade foram resolvidos com teste
 - **Correção aplicada:** nove testes líquidos adicionais: revogação em pull/push/retry/páginas, paginação/deduplicação/falha de cursor e conectividade.
 - **Correção restante:** integração RLS, >1.000 linhas via PostgREST real, upgrade representativo e smoke físico.
 
-Cobertura medida por `lcov`: **36,4%** global (21.669/59.534), contra 36,3% anterior. Recortes de risco: core sync 42,9%, Drift 30,3%, Privacy 35,3%, Smart Routines 72,3% e Onboarding 60,9%. O aumento pequeno é esperado: os testes foram orientados a corridas críticas, não a inflar linhas triviais.
+Cobertura medida por `lcov`: **36,3%** global (21.743/59.973). Foram adicionadas provas de conflito por revisão, base inalterada, paginação da Prescription Platform, migration SQL e RLS runtime. A cobertura continua insuficiente como único argumento de produção; os testes foram orientados a risco.
 
 ### A-11 — exclusão LGPD não é atômica entre Storage e banco
 
@@ -146,13 +147,13 @@ Cobertura medida por `lcov`: **36,4%** global (21.669/59.534), contra 36,3% ante
 - Suíte Flutter: aprovada.
 - Sessão: aprovada em testes determinísticos.
 - Conectividade foreground: aprovada em testes unitários.
-- Paginação de todas as entidades: reprovada.
-- Conflito sem autoridade exclusiva do clock: reprovado.
+- Paginação de todas as entidades: reprovada; melhorou na Prescription Platform.
+- Conflito sem autoridade exclusiva do clock: aprovado apenas no core e seis domínios simples; reprovado transversalmente.
 - Upgrade automatizado representativo: evidência insuficiente.
-- Supabase/RLS real: reprovado por migrations pendentes e ausência de runtime A/B.
+- Supabase/RLS local: aprovado com reset integral e runtime A/B; remoto reprovado por migrations pendentes.
 - SQLite: aceitável apenas como risco explícito para teste controlado, não beta.
 - Android/APK: não executado porque gates anteriores falharam.
 
 ## Classificação honesta
 
-**❌ Não pronto.** Mais precisamente: não pronto para gerar o próximo APK de testes. A base compila/analyze e todos os testes passam, mas o pedido definiu paginação transversal e conflito não baseado exclusivamente no clock como gates obrigatórios. O backend também não pode ser chamado pronto até migrations/RLS reais serem validadas. A classificação anterior “pronto apenas para testes internos via APK” aplicava-se ao artefato anterior, não a um novo candidato deste worktree.
+**❌ Não pronto.** Mais precisamente: não pronto para gerar o próximo APK de testes. A base compila, os 532 testes Flutter e os 2 testes SQL passam, e o relógio do dispositivo deixou de ser autoridade nos seis domínios simples. Ainda assim, paginação e CAS não são transversais, três migrations estão pendentes no remoto e não há validação de upgrade/dispositivo. A classificação anterior “pronto apenas para testes internos via APK” aplicava-se ao artefato anterior, não a um novo candidato deste worktree.

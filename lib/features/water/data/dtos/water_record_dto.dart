@@ -111,6 +111,7 @@ class WaterRecordDto {
         updatedAt: _dateTime(row['updated_at']),
         deletedAt: _nullableDateTime(row['deleted_at']),
         syncStatus: SyncStatus.synced,
+        serverRevision: row['server_revision'] as int?,
       ),
     );
   }

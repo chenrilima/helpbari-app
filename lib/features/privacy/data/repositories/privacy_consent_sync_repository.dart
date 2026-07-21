@@ -74,6 +74,7 @@ class PrivacyConsentSyncRepository
     type: SyncOperationType.create,
     updatedAt: dto.syncMetadata.updatedAt,
     userId: userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: dto.toSupabase(),
   );
 

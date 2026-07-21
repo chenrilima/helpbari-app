@@ -1,3 +1,4 @@
+import '../../../../core/supabase/database/supabase_database.dart';
 import '../../../../core/sync/sync.dart';
 import '../datasources/drift_weight_local_datasource.dart';
 import '../datasources/weight_supabase_datasource.dart';
@@ -8,7 +9,8 @@ class WeightSyncRepository
         SyncableRepository,
         PagedPullSyncRepository,
         RepositorySyncCursor,
-        AtomicRemoteSyncRepository {
+        AtomicRemoteSyncRepository,
+        VersionedPushSyncRepository {
   const WeightSyncRepository({
     required Future<DriftWeightLocalDatasource> Function() local,
     required WeightSupabaseDatasource remote,
@@ -42,6 +44,26 @@ class WeightSyncRepository
     // persists tombstones without relying on the remote row being present.
     final remote = await _remote.upsert(dto, userId: _userId);
     await (await _local()).applyRemote(remote);
+  }
+
+  @override
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  }) async {
+    try {
+      final remote = await _remote.upsertVersioned(
+        _dto(operation),
+        userId: _userId,
+        baseRevision: baseRevision,
+      );
+      await (await _local()).applyRemote(remote);
+      return _operation(remote);
+    } on SupabaseRevisionConflictException catch (error) {
+      throw SyncRevisionConflictException(
+        _operation(WeightRecordDto.fromSupabaseRow(error.remoteRow)),
+      );
+    }
   }
 
   @override
@@ -91,6 +113,7 @@ class WeightSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: dto.syncMetadata.userId ?? _userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: {
       'weight': dto.weight,
       'recordedAt': dto.recordedAt.toIso8601String(),

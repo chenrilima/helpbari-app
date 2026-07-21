@@ -1,10 +1,27 @@
 import '../../../../core/supabase/database/supabase_database.dart';
+import '../../../../core/supabase/database/versioned_remote_datasource.dart';
 import '../dtos/weight_record_dto.dart';
 
-class WeightSupabaseDatasource {
+class WeightSupabaseDatasource
+    implements VersionedRemoteDatasource<WeightRecordDto> {
   const WeightSupabaseDatasource(this._database);
   static const table = 'weight_records';
   final SupabaseDatabase _database;
+
+  @override
+  Future<WeightRecordDto> upsertVersioned(
+    WeightRecordDto record, {
+    required String userId,
+    required int? baseRevision,
+  }) async => WeightRecordDto.fromSupabaseRow(
+    await _database.versionedUpsert(
+      table: table,
+      userId: userId,
+      recordId: record.id,
+      row: record.toSupabaseInsert(userId: userId),
+      baseRevision: baseRevision,
+    ),
+  );
 
   Future<WeightRecordDto> upsert(
     WeightRecordDto record, {

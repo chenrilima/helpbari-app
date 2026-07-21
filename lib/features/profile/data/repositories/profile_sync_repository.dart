@@ -75,6 +75,7 @@ class ProfileSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: dto.toSupabase(userId),
   );
   ProfileDto _dto(SyncOperation operation) => ProfileDto.fromSupabase({

@@ -79,6 +79,7 @@ final class OnboardingProgressSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: dto.toSupabase(),
   );
 

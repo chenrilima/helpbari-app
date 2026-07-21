@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Macro 2 sync keeps parent order and inclusive tied cursor', () {
+  test('Macro 2 sync keeps parent order and delegates keyset pagination', () {
     final source = File(
       'lib/features/medical_prescriptions/data/repositories/'
       'prescription_platform_sync_repository.dart',
@@ -17,8 +17,8 @@ void main() {
       source.indexOf("'prescription_reviews'"),
       lessThan(source.indexOf("'treatment_proposals'")),
     );
-    expect(source, contains('request.gte('));
-    expect(source, isNot(contains('request.gt(')));
+    expect(source, contains('remote.pullUpdatedPages('));
+    expect(source, contains('pageSize: pageSize'));
     expect(source, contains('if (await _dependenciesSynced(table, row.data))'));
   });
 

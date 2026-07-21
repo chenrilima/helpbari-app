@@ -68,7 +68,8 @@ class SyncResult {
   int get remoteChanges => pulled;
   int get localPromotions => pushed;
 
-  bool get isSuccess => repositoriesProcessed > 0 && errors.isEmpty;
+  bool get isSuccess =>
+      repositoriesProcessed > 0 && errors.isEmpty && conflicts.isEmpty;
   bool get hasConflicts => conflicts.isNotEmpty;
   bool belongsTo(String? currentUserId) =>
       userId != null && userId == currentUserId;
