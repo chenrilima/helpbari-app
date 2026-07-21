@@ -101,22 +101,45 @@ void main() {
     expect(await cutover.isCompleted('user-2'), isFalse);
     expect(storage.legacy, original);
   });
+
+  test('range query is ordered and end-exclusive', () async {
+    final local = DriftAppointmentLocalDatasource(
+      dao: database.appointmentDao,
+      clock: _Clock(now),
+      userId: 'user-1',
+    );
+    await local.save(_dto(now, id: 'later', date: DateTime(2026, 8, 2)));
+    await local.save(_dto(now, id: 'first', date: DateTime(2026, 8, 1)));
+    await local.save(_dto(now, id: 'end', date: DateTime(2026, 8, 3)));
+
+    final values = await local.getByPeriod(
+      DateTime(2026, 8, 1),
+      DateTime(2026, 8, 3),
+      limit: 10,
+    );
+
+    expect(values.map((value) => value.id), ['first', 'later']);
+  });
 }
 
-AppointmentDto _dto(DateTime updatedAt, {String title = 'Consulta'}) =>
-    AppointmentDto(
-      id: 'appointment-1',
-      title: title,
-      date: DateTime.utc(2026, 8, 1),
-      status: AppointmentStatus.scheduled,
-      syncMetadata: SyncMetadata(
-        id: 'appointment-1',
-        userId: 'user-1',
-        createdAt: DateTime.utc(2026, 7, 1),
-        updatedAt: updatedAt,
-        syncStatus: SyncStatus.pendingCreate,
-      ),
-    );
+AppointmentDto _dto(
+  DateTime updatedAt, {
+  String title = 'Consulta',
+  String id = 'appointment-1',
+  DateTime? date,
+}) => AppointmentDto(
+  id: id,
+  title: title,
+  date: date ?? DateTime.utc(2026, 8, 1),
+  status: AppointmentStatus.scheduled,
+  syncMetadata: SyncMetadata(
+    id: id,
+    userId: 'user-1',
+    createdAt: DateTime.utc(2026, 7, 1),
+    updatedAt: updatedAt,
+    syncStatus: SyncStatus.pendingCreate,
+  ),
+);
 
 class _Clock implements ClockService {
   const _Clock(this.value);

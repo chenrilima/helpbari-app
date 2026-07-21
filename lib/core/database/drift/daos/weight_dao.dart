@@ -15,6 +15,31 @@ class WeightDao extends DatabaseAccessor<AppDatabase> with _$WeightDaoMixin {
             ..orderBy([(row) => OrderingTerm.desc(row.recordedAt)]))
           .get();
 
+  Future<List<WeightRecord>> getActiveByUserInRange(
+    String userId,
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) =>
+      (select(weightRecords)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.deletedAt.isNull() &
+                  row.recordedAt.isBiggerOrEqualValue(startInclusive) &
+                  row.recordedAt.isSmallerThanValue(endExclusive),
+            )
+            ..orderBy([(row) => OrderingTerm.desc(row.recordedAt)])
+            ..limit(limit))
+          .get();
+
+  Future<WeightRecord?> getLatestActiveByUser(String userId) =>
+      (select(weightRecords)
+            ..where((row) => row.userId.equals(userId) & row.deletedAt.isNull())
+            ..orderBy([(row) => OrderingTerm.desc(row.recordedAt)])
+            ..limit(1))
+          .getSingleOrNull();
+
   Future<WeightRecord?> getByUserAndId(String userId, String id) =>
       (select(weightRecords)
             ..where((row) => row.userId.equals(userId) & row.id.equals(id)))

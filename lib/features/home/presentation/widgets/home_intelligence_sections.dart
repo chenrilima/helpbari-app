@@ -272,7 +272,7 @@ class IntelligentQuickActionsSection extends StatelessWidget {
               QuickActionCard(
                 icon: _icon(actions[index].id),
                 title: actions[index].title,
-                subtitle: index < model.fixed.length ? 'Registrar' : 'Resolver',
+                subtitle: index < model.fixed.length ? 'Abrir' : 'Resolver',
                 onTap: () => onAction(actions[index]),
               ),
               if (index != actions.length - 1) const HBGap.md(),

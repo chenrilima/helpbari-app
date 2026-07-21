@@ -56,4 +56,33 @@ void main() {
       );
     });
   });
+
+  group('session request guard', () {
+    const guard = HomeSessionRequestGuard();
+
+    test('accepts only the session that started the request', () {
+      expect(
+        () => guard.ensureCurrent(
+          expectedUserId: 'user-a',
+          currentUserId: 'user-a',
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('discards completion after logout or account switch', () {
+      expect(
+        () =>
+            guard.ensureCurrent(expectedUserId: 'user-a', currentUserId: null),
+        throwsStateError,
+      );
+      expect(
+        () => guard.ensureCurrent(
+          expectedUserId: 'user-a',
+          currentUserId: 'user-b',
+        ),
+        throwsStateError,
+      );
+    });
+  });
 }

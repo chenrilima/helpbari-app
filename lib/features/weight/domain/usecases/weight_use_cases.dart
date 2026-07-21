@@ -11,6 +11,30 @@ class WeightUseCases {
     return _repository.getHistory();
   }
 
+  Future<List<WeightRecord>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    int limit = 500,
+  }) {
+    final repository = _repository;
+    if (repository is! WeightRangeRepository) {
+      throw StateError('Consulta de peso por intervalo indisponível.');
+    }
+    return (repository as WeightRangeRepository).getByPeriod(
+      startInclusive,
+      endExclusive,
+      limit: limit,
+    );
+  }
+
+  Future<WeightRecord?> getLatest() {
+    final repository = _repository;
+    if (repository is! WeightRangeRepository) {
+      throw StateError('Consulta do peso mais recente indisponível.');
+    }
+    return (repository as WeightRangeRepository).getLatest();
+  }
+
   Future<void> register(WeightRecord record) {
     return _repository.register(record);
   }

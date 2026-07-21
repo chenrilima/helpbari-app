@@ -105,17 +105,41 @@ void main() {
       expect(storage.value, original);
     },
   );
+
+  test('range query filters in Drift and respects limit', () async {
+    final local = DriftMealLocalDatasource(
+      dao: database.mealDao,
+      clock: _Clock(now),
+      userId: 'user-1',
+    );
+    await local.save(_dto(now, id: 'one', mealDate: DateTime(2026, 7, 1)));
+    await local.save(_dto(now, id: 'two', mealDate: DateTime(2026, 7, 2)));
+    await local.save(_dto(now, id: 'end', mealDate: DateTime(2026, 7, 3)));
+
+    final values = await local.getByPeriod(
+      DateTime(2026, 7, 1),
+      DateTime(2026, 7, 3),
+      limit: 1,
+    );
+
+    expect(values.single.id, 'two');
+  });
 }
 
-MealDto _dto(DateTime updatedAt, {String name = 'Almoço'}) => MealDto(
-  id: 'meal-1',
+MealDto _dto(
+  DateTime updatedAt, {
+  String name = 'Almoço',
+  String id = 'meal-1',
+  DateTime? mealDate,
+}) => MealDto(
+  id: id,
   name: name,
   type: MealType.lunch,
-  mealDate: DateTime.utc(2026, 7, 12),
+  mealDate: mealDate ?? DateTime.utc(2026, 7, 12),
   notes: 'Teste',
   proteinGrams: 25,
   syncMetadata: SyncMetadata(
-    id: 'meal-1',
+    id: id,
     userId: 'user-1',
     createdAt: DateTime.utc(2026, 7, 1),
     updatedAt: updatedAt,

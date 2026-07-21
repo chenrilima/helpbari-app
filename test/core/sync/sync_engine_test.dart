@@ -71,7 +71,7 @@ void main() {
           syncStateRepositoryProvider.overrideWithValue(stateRepository),
           syncAppVersionProvider.overrideWithValue('test'),
           syncUserIdProvider.overrideWithValue('user-1'),
-          syncDataRefreshProvider.overrideWithValue(() async {}),
+          syncDataRefreshProvider.overrideWithValue((_) async {}),
         ],
       );
       addTearDown(container.dispose);
@@ -144,6 +144,30 @@ void main() {
         'remote-1',
       ]);
       expect(stateRepository.state.lastPullAt, DateTime(2026, 7, 9, 12));
+    });
+
+    test('reports only the domain that actually changed', () async {
+      final repository = _FakeSyncableRepository(
+        syncKey: 'water',
+        remote: [
+          _operation(recordId: 'water-1', updatedAt: DateTime(2026, 7, 9, 9)),
+        ],
+      );
+      final engine = SyncEngine(
+        stateRepository: _FakeSyncStateRepository(),
+        clock: const _FixedClock(),
+      );
+
+      final result = await engine.sync(
+        repositories: [repository],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.domainsChanged, {SyncDomain.water});
+      expect(result.fullRefreshRequired, isFalse);
+      expect(result.remoteChanges, 1);
+      expect(result.userId, 'user-1');
     });
 
     test('retries push failures before marking operation as failed', () async {
@@ -315,6 +339,7 @@ class _FakeSyncableRepository implements SyncableRepository {
     this.pushFailuresBeforeSuccess = 0,
     this.throwOnPull = false,
     this.pullGate,
+    this.syncKey = 'fake',
   }) : _pending = List.of(pending),
        _remote = List.of(remote),
        _localById = Map.of(localById);
@@ -325,6 +350,8 @@ class _FakeSyncableRepository implements SyncableRepository {
   final int pushFailuresBeforeSuccess;
   final bool throwOnPull;
   final Completer<void>? pullGate;
+  @override
+  final String syncKey;
 
   final pushed = <SyncOperation>[];
   final appliedRemote = <SyncOperation>[];
@@ -333,9 +360,6 @@ class _FakeSyncableRepository implements SyncableRepository {
   int pushAttempts = 0;
   DateTime? lastPullUpdatedAfter;
   int pullCalls = 0;
-
-  @override
-  String get syncKey => 'fake';
 
   @override
   Future<List<SyncOperation>> pendingOperations() async {

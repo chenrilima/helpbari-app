@@ -74,7 +74,7 @@ class SyncManager extends Notifier<SyncState> {
 
     // A pull may have committed local data even when another repository failed.
     // Always reload Drift consumers after a completed engine pass.
-    await ref.read(syncDataRefreshProvider)();
+    await ref.read(syncDataRefreshProvider)(result);
 
     if (result.isSuccess) {
       AppLogger.info(

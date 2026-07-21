@@ -20,4 +20,17 @@ void main() {
     expect(source, contains('request.gte('));
     expect(source, isNot(contains('request.gt(')));
   });
+
+  test('platform sync runs after repositories referenced by foreign keys', () {
+    final source = File('lib/core/sync/sync_providers.dart').readAsStringSync();
+
+    expect(
+      source.indexOf('DocumentProcessingSyncRepository('),
+      lessThan(source.indexOf('PrescriptionPlatformSyncRepository(')),
+    );
+    expect(
+      source.indexOf('SmartRoutinesSyncRepository('),
+      lessThan(source.indexOf('PrescriptionPlatformSyncRepository(')),
+    );
+  });
 }

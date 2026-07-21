@@ -3,7 +3,9 @@ import '../../domain/repositories/repositories.dart';
 import '../datasources/drift_medical_prescription_local_datasource.dart';
 
 class DriftMedicalPrescriptionRepository
-    implements MedicalPrescriptionRepository {
+    implements
+        MedicalPrescriptionRepository,
+        MedicalPrescriptionProjectionRepository {
   const DriftMedicalPrescriptionRepository(this._local);
   final Future<DriftMedicalPrescriptionLocalDatasource> Function() _local;
 
@@ -14,6 +16,14 @@ class DriftMedicalPrescriptionRepository
 
   @override
   Future<List<MedicalPrescription>> getAll() async => (await _local()).getAll();
+
+  @override
+  Future<int> countRequiringReview() async =>
+      (await _local()).countRequiringReview();
+
+  @override
+  Future<List<MedicalPrescription>> getLimited({required int limit}) async =>
+      (await _local()).getLimited(limit: limit);
   @override
   Future<MedicalPrescription?> getById(String id) async =>
       (await _local()).getById(id);

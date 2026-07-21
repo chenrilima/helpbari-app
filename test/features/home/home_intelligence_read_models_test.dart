@@ -30,6 +30,7 @@ void main() {
           reason: 'Razão',
           priority: HomeActionPriority.medium,
           source: 'test',
+          deepLink: '/home',
           validUntil: now.add(const Duration(days: 1)),
           accessibilityLabel: 'Ação $index',
         ),
@@ -47,6 +48,38 @@ void main() {
     );
     expect(coverage.rate, isNull);
     expect(coverage.hasSufficientData, isFalse);
+  });
+
+  test('semantic equality includes immutable collection contents', () {
+    final first = AgendaReadModel(
+      start: now,
+      end: now.add(const Duration(days: 1)),
+      items: [_item('a', now)],
+      status: status,
+    );
+    final second = AgendaReadModel(
+      start: now,
+      end: now.add(const Duration(days: 1)),
+      items: [_item('a', now)],
+      status: HomeSectionStatus(
+        state: HomeSectionState.ready,
+        freshness: FreshnessReadModel(generatedAt: now),
+      ),
+    );
+
+    expect(first, second);
+    expect(first.hashCode, second.hashCode);
+  });
+
+  test('rejects contradictory coverage and stale freshness', () {
+    expect(
+      () => CoverageReadModel(state: CoverageState.sufficient),
+      throwsAssertionError,
+    );
+    expect(
+      () => FreshnessReadModel(generatedAt: now, isStale: true),
+      throwsAssertionError,
+    );
   });
 }
 

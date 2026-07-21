@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/bootstrap/sync_bootstrap_provider.dart';
 import '../../../../app/router/app_routes.dart';
@@ -13,13 +14,13 @@ import '../../../auth/presentation/states/auth_state.dart';
 import '../../../auth/presentation/viewmodels/auth_providers.dart';
 import '../../../smart_routines/application/notification_platform.dart';
 import '../../../smart_routines/presentation/providers/unified_treatment_providers.dart';
-import '../../../water/presentation/providers/water_view_model_provider.dart';
 import '../../domain/models/home_intelligence_models.dart';
 import '../../application/home_runtime_guard.dart';
 import '../providers/home_view_model_provider.dart';
 import '../widgets/health_score_overview_section.dart';
 import '../widgets/home_header.dart';
 import '../widgets/home_intelligence_sections.dart';
+import '../widgets/quick_actions_section.dart';
 import '../widgets/today_task_card.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -109,6 +110,11 @@ class _HomePageState extends ConsumerState<HomePage>
     await context.pushAndRefresh(route, onRefresh: _retry);
   }
 
+  Future<void> _openFeature(String route) async {
+    if (route == AppRoutes.home || !mounted) return;
+    await context.push(route);
+  }
+
   Future<void> _runNextAction(NextActionReadModel action) async {
     if (action.command != HomeActionKind.treatmentCommand) {
       return _openRoute(action.deepLink);
@@ -124,44 +130,6 @@ class _HomePageState extends ConsumerState<HomePage>
       return;
     }
     await _openRoute(item.deepLink);
-  }
-
-  Future<void> _runQuickAction(QuickActionReadModel action) async {
-    final guardKey = 'quick:${action.id}';
-    if (!_runtimeGuard.begin(guardKey)) return;
-    try {
-      if (action.kind == HomeActionKind.quickWater) {
-        final expectedUserId = ref.read(authSessionProvider)?.id;
-        if (expectedUserId == null) return;
-        final saved = await ref
-            .read(waterViewModelProvider.notifier)
-            .registerWater(200);
-        if (!mounted || ref.read(authSessionProvider)?.id != expectedUserId) {
-          return;
-        }
-        if (saved) {
-          HBSnackBar.success(
-            context,
-            message: '200 ml registrados no aparelho.',
-          );
-          ref.invalidate(todayDashboardProvider);
-        } else {
-          HBSnackBar.error(
-            context,
-            message: 'Não foi possível registrar a água.',
-          );
-        }
-        return;
-      }
-      if (action.kind == HomeActionKind.treatmentCommand &&
-          action.sourceId != null) {
-        await _recordOccurrence(action.sourceId!);
-        return;
-      }
-      await _openRoute(action.deepLink);
-    } finally {
-      _runtimeGuard.complete(guardKey);
-    }
   }
 
   Future<void> _recordOccurrence(String occurrenceId) async {
@@ -246,6 +214,8 @@ class _HomePageState extends ConsumerState<HomePage>
       isLoading: authState is AuthLoading,
       message: 'Saindo...',
       child: dashboard.when(
+        skipLoadingOnRefresh: true,
+        skipLoadingOnReload: true,
         loading: () => const HBPage(
           children: [HBLoading(message: 'Carregando dados do aparelho...')],
         ),
@@ -299,7 +269,7 @@ class _HomePageState extends ConsumerState<HomePage>
         const HBGap.xl(),
         _InsightsConsumer(onOpen: (value) => _openRoute(value.deepLink)),
         const HBGap.xl(),
-        _QuickActionsConsumer(onAction: _runQuickAction),
+        QuickActionsSection(onOpen: _openFeature),
         const HBGap.xl(),
         _AgendaConsumer(todayOnly: false, onItem: _runAgendaItem),
         if (model.healthScore?.hasData == true) ...[
@@ -389,21 +359,6 @@ class _InsightsConsumer extends ConsumerWidget {
       .when(
         data: (value) => HomeInsightSection(model: value, onOpen: onOpen),
         loading: () => const HBLoading(message: 'Analisando dados locais...'),
-        error: (_, _) => const SizedBox.shrink(),
-      );
-}
-
-class _QuickActionsConsumer extends ConsumerWidget {
-  const _QuickActionsConsumer({required this.onAction});
-  final ValueChanged<QuickActionReadModel> onAction;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) => ref
-      .watch(quickActionsProvider)
-      .when(
-        data: (value) =>
-            IntelligentQuickActionsSection(model: value, onAction: onAction),
-        loading: () => const HBLoading(message: 'Carregando ações...'),
         error: (_, _) => const SizedBox.shrink(),
       );
 }

@@ -34,6 +34,30 @@ class DriftMedicalExamLocalDatasource {
     return items;
   }
 
+  Future<List<MedicalExam>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async {
+    final exams = await _dao.getActiveExamsByUserInRange(
+      userId,
+      startInclusive,
+      endExclusive,
+      limit: limit,
+    );
+    final results = await _dao.getActiveResultsByExamIds(
+      userId,
+      exams.map((exam) => exam.id),
+    );
+    final byExam = <String, List<db.MedicalExamResult>>{};
+    for (final result in results) {
+      byExam.putIfAbsent(result.medicalExamId, () => []).add(result);
+    }
+    return [
+      for (final exam in exams) _fromDrift(exam, byExam[exam.id] ?? const []),
+    ];
+  }
+
   Future<MedicalExam?> getById(String id) async {
     final exam = await _dao.getExamByUserAndId(userId, id);
     if (exam == null || exam.deletedAt != null) return null;

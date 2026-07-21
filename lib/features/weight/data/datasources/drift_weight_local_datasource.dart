@@ -22,6 +22,21 @@ class DriftWeightLocalDatasource {
 
   Future<List<WeightRecordDto>> getHistory() async =>
       (await _dao.getActiveByUser(userId)).map(_fromDrift).toList();
+  Future<List<WeightRecordDto>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => (await _dao.getActiveByUserInRange(
+    userId,
+    startInclusive,
+    endExclusive,
+    limit: limit,
+  )).map(_fromDrift).toList();
+  Future<WeightRecordDto?> getLatest() async {
+    final row = await _dao.getLatestActiveByUser(userId);
+    return row == null ? null : _fromDrift(row);
+  }
+
   Future<WeightRecordDto?> getById(String id) async {
     final row = await _dao.getByUserAndId(userId, id);
     return row == null ? null : _fromDrift(row);

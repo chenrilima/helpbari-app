@@ -25,7 +25,7 @@ enum AgendaItemState {
   unavailable,
 }
 
-enum HomeActionKind { route, treatmentCommand, quickWater }
+enum HomeActionKind { route, treatmentCommand }
 
 enum HomeActionPriority { critical, high, medium, low }
 
@@ -33,27 +33,90 @@ enum ProgressMetricState { available, awaitingData, unavailable, notApplicable }
 
 enum InsightPriority { critical, high, medium, low }
 
-class FreshnessReadModel {
+abstract class HomeValueReadModel {
+  const HomeValueReadModel();
+  List<Object?> get props;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other.runtimeType == runtimeType &&
+          other is HomeValueReadModel &&
+          _deepEquals(props, other.props);
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _deepHash(props));
+}
+
+bool _deepEquals(Object? left, Object? right) {
+  if (identical(left, right)) return true;
+  if (left is Map && right is Map) {
+    if (left.length != right.length) return false;
+    return left.entries.every(
+      (entry) =>
+          right.containsKey(entry.key) &&
+          _deepEquals(entry.value, right[entry.key]),
+    );
+  }
+  if (left is Set && right is Set) {
+    if (left.length != right.length) return false;
+    return left.every(
+      (item) => right.any((candidate) => _deepEquals(item, candidate)),
+    );
+  }
+  if (left is Iterable && right is Iterable) {
+    final a = left.iterator;
+    final b = right.iterator;
+    while (true) {
+      final hasA = a.moveNext();
+      final hasB = b.moveNext();
+      if (hasA != hasB) return false;
+      if (!hasA) return true;
+      if (!_deepEquals(a.current, b.current)) return false;
+    }
+  }
+  return left == right;
+}
+
+int _deepHash(Object? value) {
+  if (value is Map) {
+    return Object.hashAllUnordered(
+      value.entries.map(
+        (entry) => Object.hash(_deepHash(entry.key), _deepHash(entry.value)),
+      ),
+    );
+  }
+  if (value is Set) return Object.hashAllUnordered(value.map(_deepHash));
+  if (value is Iterable) return Object.hashAll(value.map(_deepHash));
+  return value.hashCode;
+}
+
+class FreshnessReadModel extends HomeValueReadModel {
   const FreshnessReadModel({
     required this.generatedAt,
     this.sourceUpdatedAt,
     this.isStale = false,
     this.reason,
-  });
+  }) : assert(!isStale || sourceUpdatedAt != null);
 
   final DateTime generatedAt;
   final DateTime? sourceUpdatedAt;
   final bool isStale;
   final String? reason;
+
+  @override
+  List<Object?> get props => [generatedAt, sourceUpdatedAt, isStale, reason];
 }
 
-class CoverageReadModel {
+class CoverageReadModel extends HomeValueReadModel {
   const CoverageReadModel({
     required this.state,
     this.rate,
     this.reason,
     this.formulaVersion,
-  });
+  }) : assert(rate == null || (rate >= 0 && rate <= 1)),
+       assert(state != CoverageState.sufficient || rate != null),
+       assert(state == CoverageState.sufficient || rate != 1);
 
   final CoverageState state;
   final double? rate;
@@ -61,9 +124,12 @@ class CoverageReadModel {
   final String? formulaVersion;
 
   bool get hasSufficientData => state == CoverageState.sufficient;
+
+  @override
+  List<Object?> get props => [state, rate, reason, formulaVersion];
 }
 
-class HomeSectionStatus {
+class HomeSectionStatus extends HomeValueReadModel {
   const HomeSectionStatus({
     required this.state,
     required this.freshness,
@@ -77,9 +143,18 @@ class HomeSectionStatus {
   final CoverageReadModel? coverage;
   final String? message;
   final bool hasPendingSync;
+
+  @override
+  List<Object?> get props => [
+    state,
+    freshness,
+    coverage,
+    message,
+    hasPendingSync,
+  ];
 }
 
-class AgendaItemReadModel {
+class AgendaItemReadModel extends HomeValueReadModel {
   AgendaItemReadModel({
     required this.id,
     required this.sourceId,
@@ -94,7 +169,8 @@ class AgendaItemReadModel {
     this.deepLink,
     Iterable<HomeActionKind> allowedActions = const <HomeActionKind>{},
     this.hasIncompleteData = false,
-  }) : allowedActions = Set.unmodifiable(allowedActions);
+  }) : assert(id != '' && sourceId != '' && timeZone != ''),
+       allowedActions = Set.unmodifiable(allowedActions);
 
   final String id;
   final String sourceId;
@@ -116,9 +192,26 @@ class AgendaItemReadModel {
     AgendaItemState.missed,
     AgendaItemState.requiresReview,
   }.contains(state);
+
+  @override
+  List<Object?> get props => [
+    id,
+    sourceId,
+    type,
+    title,
+    effectiveAt,
+    originalAt,
+    timeZone,
+    state,
+    source,
+    deepLink,
+    allowedActions,
+    hasIncompleteData,
+    accessibilityLabel,
+  ];
 }
 
-class AgendaReadModel {
+class AgendaReadModel extends HomeValueReadModel {
   AgendaReadModel({
     required this.start,
     required this.end,
@@ -147,9 +240,12 @@ class AgendaReadModel {
     };
     return Map.unmodifiable(immutable);
   }
+
+  @override
+  List<Object?> get props => [start, end, items, status];
 }
 
-class TreatmentSummaryReadModel {
+class TreatmentSummaryReadModel extends HomeValueReadModel {
   TreatmentSummaryReadModel({
     required this.due,
     required this.open,
@@ -177,9 +273,25 @@ class TreatmentSummaryReadModel {
   final String formulaVersion;
   final Map<RoutineCategory, double?> adherenceByCategory;
   final HomeSectionStatus status;
+
+  @override
+  List<Object?> get props => [
+    due,
+    open,
+    resolved,
+    missed,
+    requiresReview,
+    adherence,
+    onTimeAdherence,
+    coverage,
+    origin,
+    formulaVersion,
+    adherenceByCategory,
+    status,
+  ];
 }
 
-class NextActionReadModel {
+class NextActionReadModel extends HomeValueReadModel {
   const NextActionReadModel({
     required this.id,
     required this.title,
@@ -191,7 +303,7 @@ class NextActionReadModel {
     this.dueAt,
     this.deepLink,
     this.command,
-  });
+  }) : assert(deepLink != null || command != null);
 
   final String id;
   final String title;
@@ -203,9 +315,23 @@ class NextActionReadModel {
   final HomeActionKind? command;
   final DateTime validUntil;
   final String accessibilityLabel;
+
+  @override
+  List<Object?> get props => [
+    id,
+    title,
+    reason,
+    priority,
+    dueAt,
+    source,
+    deepLink,
+    command,
+    validUntil,
+    accessibilityLabel,
+  ];
 }
 
-class NextActionsReadModel {
+class NextActionsReadModel extends HomeValueReadModel {
   NextActionsReadModel({
     required Iterable<NextActionReadModel> actions,
     required this.status,
@@ -213,9 +339,12 @@ class NextActionsReadModel {
 
   final List<NextActionReadModel> actions;
   final HomeSectionStatus status;
+
+  @override
+  List<Object?> get props => [actions, status];
 }
 
-class ProgressMetricReadModel {
+class ProgressMetricReadModel extends HomeValueReadModel {
   const ProgressMetricReadModel({
     required this.id,
     required this.label,
@@ -226,7 +355,8 @@ class ProgressMetricReadModel {
     this.unit,
     this.progress,
     this.accessibilityLabel,
-  });
+  }) : assert(state != ProgressMetricState.available || value != null),
+       assert(target == null || target > 0);
 
   final String id;
   final String label;
@@ -237,9 +367,22 @@ class ProgressMetricReadModel {
   final double? progress;
   final CoverageReadModel coverage;
   final String? accessibilityLabel;
+
+  @override
+  List<Object?> get props => [
+    id,
+    label,
+    state,
+    value,
+    target,
+    unit,
+    progress,
+    coverage,
+    accessibilityLabel,
+  ];
 }
 
-class ProgressSummaryReadModel {
+class ProgressSummaryReadModel extends HomeValueReadModel {
   const ProgressSummaryReadModel({
     required this.routine,
     required this.water,
@@ -257,9 +400,20 @@ class ProgressSummaryReadModel {
   final ProgressMetricReadModel healthScore;
   final ProgressMetricReadModel streak;
   final HomeSectionStatus status;
+
+  @override
+  List<Object?> get props => [
+    routine,
+    water,
+    protein,
+    weight,
+    healthScore,
+    streak,
+    status,
+  ];
 }
 
-class QuickStatsReadModel {
+class QuickStatsReadModel extends HomeValueReadModel {
   const QuickStatsReadModel({
     required this.waterLabel,
     required this.proteinLabel,
@@ -275,9 +429,19 @@ class QuickStatsReadModel {
   final String? nextAppointmentLabel;
   final int? healthScore;
   final HomeSectionStatus status;
+
+  @override
+  List<Object?> get props => [
+    waterLabel,
+    proteinLabel,
+    routineLabel,
+    nextAppointmentLabel,
+    healthScore,
+    status,
+  ];
 }
 
-class QuickActionReadModel {
+class QuickActionReadModel extends HomeValueReadModel {
   const QuickActionReadModel({
     required this.id,
     required this.title,
@@ -285,7 +449,7 @@ class QuickActionReadModel {
     required this.accessibilityLabel,
     this.deepLink,
     this.sourceId,
-  });
+  }) : assert(deepLink != null || sourceId != null);
 
   final String id;
   final String title;
@@ -293,9 +457,19 @@ class QuickActionReadModel {
   final String? deepLink;
   final String? sourceId;
   final String accessibilityLabel;
+
+  @override
+  List<Object?> get props => [
+    id,
+    title,
+    kind,
+    deepLink,
+    sourceId,
+    accessibilityLabel,
+  ];
 }
 
-class QuickActionsReadModel {
+class QuickActionsReadModel extends HomeValueReadModel {
   QuickActionsReadModel({
     required Iterable<QuickActionReadModel> fixed,
     required Iterable<QuickActionReadModel> dynamic,
@@ -306,24 +480,27 @@ class QuickActionsReadModel {
   final List<QuickActionReadModel> fixed;
   final List<QuickActionReadModel> dynamic;
   final HomeSectionStatus status;
+
+  @override
+  List<Object?> get props => [fixed, dynamic, status];
 }
 
-class DeterministicInsightReadModel {
-  const DeterministicInsightReadModel({
+class DeterministicInsightReadModel extends HomeValueReadModel {
+  DeterministicInsightReadModel({
     required this.id,
     required this.ruleId,
     required this.ruleVersion,
     required this.title,
     required this.message,
     required this.priority,
-    required this.sources,
+    required List<String> sources,
     required this.deduplicationKey,
     required this.expiresAt,
     required this.cooldown,
     required this.coverage,
     required this.disclaimer,
     this.deepLink,
-  });
+  }) : sources = List.unmodifiable(sources);
 
   final String id;
   final String ruleId;
@@ -338,9 +515,26 @@ class DeterministicInsightReadModel {
   final CoverageReadModel coverage;
   final String disclaimer;
   final String? deepLink;
+
+  @override
+  List<Object?> get props => [
+    id,
+    ruleId,
+    ruleVersion,
+    title,
+    message,
+    priority,
+    sources,
+    deduplicationKey,
+    expiresAt,
+    cooldown,
+    coverage,
+    disclaimer,
+    deepLink,
+  ];
 }
 
-class InsightFeedReadModel {
+class InsightFeedReadModel extends HomeValueReadModel {
   InsightFeedReadModel({
     required Iterable<DeterministicInsightReadModel> insights,
     required this.status,
@@ -348,15 +542,21 @@ class InsightFeedReadModel {
 
   final List<DeterministicInsightReadModel> insights;
   final HomeSectionStatus status;
+
+  @override
+  List<Object?> get props => [insights, status];
 }
 
-class ProgressTrendPointReadModel {
+class ProgressTrendPointReadModel extends HomeValueReadModel {
   const ProgressTrendPointReadModel({required this.date, required this.value});
   final DateTime date;
   final double value;
+
+  @override
+  List<Object?> get props => [date, value];
 }
 
-class ProgressTrendReadModel {
+class ProgressTrendReadModel extends HomeValueReadModel {
   ProgressTrendReadModel({
     required this.start,
     required this.end,
@@ -370,9 +570,12 @@ class ProgressTrendReadModel {
   final List<ProgressTrendPointReadModel> points;
   final CoverageReadModel coverage;
   final HomeSectionStatus status;
+
+  @override
+  List<Object?> get props => [start, end, points, coverage, status];
 }
 
-class TodayDashboardReadModel {
+class TodayDashboardReadModel extends HomeValueReadModel {
   const TodayDashboardReadModel({
     required this.userId,
     required this.clinicalDate,
@@ -402,4 +605,30 @@ class TodayDashboardReadModel {
   final InsightFeedReadModel insights;
   final HealthScoreResult? healthScore;
   final HomeSectionStatus status;
+
+  @override
+  List<Object?> get props => [
+    userId,
+    clinicalDate,
+    timeZone,
+    userName,
+    nextActions,
+    agenda,
+    treatment,
+    progress,
+    quickStats,
+    quickActions,
+    insights,
+    if (healthScore case final score?) ...[
+      score.score,
+      score.hydrationScore,
+      score.proteinScore,
+      score.vitaminsScore,
+      score.medicationsScore,
+      score.mealsScore,
+      score.weightProgressScore,
+      score.availableWeight,
+    ],
+    status,
+  ];
 }

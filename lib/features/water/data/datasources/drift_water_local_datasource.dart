@@ -24,6 +24,17 @@ class DriftWaterLocalDatasource {
   Future<List<WaterRecordDto>> getHistory() async =>
       (await _dao.getActiveByUser(userId)).map(_fromDrift).toList();
 
+  Future<List<WaterRecordDto>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => (await _dao.getActiveByUserInRange(
+    userId,
+    startInclusive,
+    endExclusive,
+    limit: limit,
+  )).map(_fromDrift).toList();
+
   Future<WaterRecordDto?> getById(String id) async {
     final row = await _dao.getByUserAndId(userId, id);
     return row == null ? null : _fromDrift(row);

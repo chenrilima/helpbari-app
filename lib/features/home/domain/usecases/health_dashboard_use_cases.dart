@@ -48,9 +48,11 @@ class HealthDashboardUseCases {
   Future<HealthDashboardAggregate> load({
     required DateTime start,
     required DateTime end,
+    Map<String, TodayTreatmentReadModel>? treatmentDaysOverride,
   }) async {
     final from = _day(start);
     final to = _day(end);
+    final endExclusive = DateTime(to.year, to.month, to.day + 1);
     final unavailable = <HealthDataSection>{};
     final results = await Future.wait<dynamic>([
       _read(
@@ -58,20 +60,37 @@ class HealthDashboardUseCases {
         HealthDataSection.profile,
         unavailable,
       ),
-      _read(() => _weight.getHistory(), HealthDataSection.weight, unavailable),
-      _read(() => _water.getHistory(), HealthDataSection.water, unavailable),
-      _read(() => _meals.getAll(), HealthDataSection.meals, unavailable),
       _read(
-        () => _appointments.getAll(),
+        () => _weight.getByPeriod(from, endExclusive),
+        HealthDataSection.weight,
+        unavailable,
+      ),
+      _read(
+        () => _water.getByPeriod(from, endExclusive),
+        HealthDataSection.water,
+        unavailable,
+      ),
+      _read(
+        () => _meals.getByPeriod(from, endExclusive),
+        HealthDataSection.meals,
+        unavailable,
+      ),
+      _read(
+        () => _appointments.getByPeriod(from, endExclusive),
         HealthDataSection.appointments,
         unavailable,
       ),
-      _read(() => _exams.getHistory(), HealthDataSection.exams, unavailable),
+      _read(
+        () => _exams.getByPeriod(from, endExclusive),
+        HealthDataSection.exams,
+        unavailable,
+      ),
       _read(
         () => _settings.getSettings(),
         HealthDataSection.settings,
         unavailable,
       ),
+      _read(_weight.getLatest, HealthDataSection.weight, unavailable),
     ]);
     final profile = results[0] as Profile?;
     final weights = (results[1] as List<WeightRecord>?) ?? const [];
@@ -80,8 +99,9 @@ class HealthDashboardUseCases {
     final appointments = (results[4] as List<Appointment>?) ?? const [];
     final exams = (results[5] as List<MedicalExam>?) ?? const [];
     final settings = results[6] as AppSettings?;
-    final treatment = await _treatment();
-    final treatmentDays = await treatment.days(from, to);
+    final latestWeight = results[7] as WeightRecord?;
+    final treatmentDays =
+        treatmentDaysOverride ?? await (await _treatment()).days(from, to);
     final waterByDay = <String, List<WaterRecord>>{};
     for (final record in water) {
       waterByDay
@@ -190,7 +210,7 @@ class HealthDashboardUseCases {
       days: List.unmodifiable(days),
       unavailableSections: Set.unmodifiable(unavailable),
       profile: profile,
-      latestWeight: weights.firstOrNull,
+      latestWeight: latestWeight,
       nextAppointment: upcoming.firstOrNull,
       latestExam: exams.firstOrNull,
     );

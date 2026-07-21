@@ -10,7 +10,8 @@ typedef HasMealCutoverMirror = bool Function();
 Future<void> _noop() async {}
 bool _noMirror() => false;
 
-class DriftPrimaryMealRepository implements MealRepository {
+class DriftPrimaryMealRepository
+    implements MealRepository, MealRangeRepository {
   const DriftPrimaryMealRepository({
     required Future<DriftMealLocalDatasource> Function() drift,
     required LocalMealDatasource fallback,
@@ -52,6 +53,17 @@ class DriftPrimaryMealRepository implements MealRepository {
       return (await _fallback.getAll()).map((dto) => dto.toEntity()).toList();
     }
   }
+
+  @override
+  Future<List<Meal>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => (await (await _resolve()).getByPeriod(
+    startInclusive,
+    endExclusive,
+    limit: limit,
+  )).map((dto) => dto.toEntity()).toList();
 
   Future<void> _save(Meal meal) async =>
       (await _resolve()).save(MealDto.fromEntity(meal, now: DateTime.now()));

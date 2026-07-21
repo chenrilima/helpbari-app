@@ -37,6 +37,7 @@ class SyncEngine {
     var repositoriesProcessed = 0;
     final conflicts = <SyncConflict>[];
     final errors = <SyncError>[];
+    final domainsChanged = <SyncDomain>{};
 
     if (userId == null || userId.isEmpty) {
       errors.add(
@@ -80,6 +81,9 @@ class SyncEngine {
         deleted += pullResult.deleted;
         conflicts.addAll(pullResult.conflicts);
         errors.addAll(pullResult.errors);
+        if (pullResult.pulled > 0 || pullResult.deleted > 0) {
+          domainsChanged.add(SyncDomain.fromRepositoryKey(repository.syncKey));
+        }
       } catch (error, stackTrace) {
         errors.add(
           SyncError(
@@ -97,6 +101,9 @@ class SyncEngine {
         pushed += pushResult.pushed;
         deleted += pushResult.deleted;
         errors.addAll(pushResult.errors);
+        if (pushResult.pushed > 0 || pushResult.deleted > 0) {
+          domainsChanged.add(SyncDomain.fromRepositoryKey(repository.syncKey));
+        }
       } catch (error, stackTrace) {
         errors.add(
           SyncError(
@@ -126,6 +133,9 @@ class SyncEngine {
       deleted: deleted,
       conflicts: List.unmodifiable(conflicts),
       errors: List.unmodifiable(errors),
+      userId: userId,
+      domainsChanged: Set.unmodifiable(domainsChanged),
+      fullRefreshRequired: domainsChanged.contains(SyncDomain.unknown),
     );
 
     await _stateRepository.saveState(

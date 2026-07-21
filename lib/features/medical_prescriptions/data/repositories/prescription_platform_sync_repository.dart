@@ -49,7 +49,13 @@ class PrescriptionPlatformSyncRepository
           .get();
       result.addAll(rows.map((row) => _operation(table, row.data)));
     }
-    result.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
+    result.sort((a, b) {
+      final dependencyOrder = _tables
+          .indexOf(a.payload['table'] as String)
+          .compareTo(_tables.indexOf(b.payload['table'] as String));
+      if (dependencyOrder != 0) return dependencyOrder;
+      return a.updatedAt.compareTo(b.updatedAt);
+    });
     return result;
   }
 
@@ -252,6 +258,9 @@ class PrescriptionPlatformSyncRepository
   };
 
   Object? _remoteFieldValue(String key, Object? value) {
+    if (_dateFields.contains(key)) {
+      return _date(value)?.toIso8601String();
+    }
     if ({'snapshot_json', 'field_decisions_json', 'draft_json'}.contains(key) &&
         value is String) {
       return jsonDecode(value);
@@ -271,6 +280,14 @@ class PrescriptionPlatformSyncRepository
     _ => value,
   };
 
+  static const _dateFields = <String>{
+    'submitted_at',
+    'confirmed_at',
+    'created_at',
+    'updated_at',
+    'deleted_at',
+  };
+
   String _localTable(String remoteTable) => switch (remoteTable) {
     'prescription_versions' => 'prescription_version_records',
     'prescription_reviews' => 'prescription_review_records',
@@ -284,11 +301,20 @@ class PrescriptionPlatformSyncRepository
     (match) => '_${match.group(0)!.toLowerCase()}',
   );
 
-  DateTime? _date(Object? value) => value == null
-      ? null
-      : value is DateTime
-      ? value.toUtc()
-      : DateTime.parse(value as String).toUtc();
+  DateTime? _date(Object? value) => switch (value) {
+    null => null,
+    final DateTime date => date.toUtc(),
+    // Drift exposes DateTime columns as Unix seconds in untyped customSelect
+    // rows. Supabase, on the other hand, returns ISO-8601 strings.
+    final int seconds => DateTime.fromMillisecondsSinceEpoch(
+      seconds * Duration.millisecondsPerSecond,
+      isUtc: true,
+    ),
+    final String raw => DateTime.parse(raw).toUtc(),
+    _ => throw FormatException(
+      'Unsupported prescription platform date value: ${value.runtimeType}',
+    ),
+  };
 
   String _json(Object? value) => value is String
       ? value

@@ -15,6 +15,24 @@ class MealDao extends DatabaseAccessor<AppDatabase> with _$MealDaoMixin {
             ..orderBy([(row) => OrderingTerm.desc(row.mealDate)]))
           .get();
 
+  Future<List<MealRecord>> getActiveByUserInRange(
+    String userId,
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) =>
+      (select(mealRecords)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.deletedAt.isNull() &
+                  row.mealDate.isBiggerOrEqualValue(startInclusive) &
+                  row.mealDate.isSmallerThanValue(endExclusive),
+            )
+            ..orderBy([(row) => OrderingTerm.desc(row.mealDate)])
+            ..limit(limit))
+          .get();
+
   Future<MealRecord?> getByUserAndId(String userId, String id) =>
       (select(mealRecords)
             ..where((row) => row.userId.equals(userId) & row.id.equals(id)))

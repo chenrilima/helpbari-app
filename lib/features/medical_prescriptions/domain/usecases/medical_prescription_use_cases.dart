@@ -10,6 +10,25 @@ class MedicalPrescriptionUseCases {
   Stream<List<MedicalPrescription>> watchPrescriptions() =>
       _repository.watchAll();
   Future<List<MedicalPrescription>> getAll() => _repository.getAll();
+  Future<int> countRequiringReview() {
+    final repository = _repository;
+    if (repository is! MedicalPrescriptionProjectionRepository) {
+      throw StateError('Projeção de revisão de prescrição indisponível.');
+    }
+    return (repository as MedicalPrescriptionProjectionRepository)
+        .countRequiringReview();
+  }
+
+  Future<List<MedicalPrescription>> getForReport({int limit = 500}) {
+    final repository = _repository;
+    if (repository is! MedicalPrescriptionProjectionRepository) {
+      throw StateError('Projeção limitada de prescrições indisponível.');
+    }
+    return (repository as MedicalPrescriptionProjectionRepository).getLimited(
+      limit: limit,
+    );
+  }
+
   Future<MedicalPrescription?> getById(String id) => _repository.getById(id);
   Future<void> create(MedicalPrescription value) => _repository.save(value);
   Future<void> update(MedicalPrescription value) => _repository.save(value);

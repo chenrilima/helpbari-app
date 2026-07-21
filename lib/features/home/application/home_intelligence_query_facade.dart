@@ -81,7 +81,7 @@ class HomeIntelligenceQueryFacade {
     final values = await Future.wait<Object?>([
       _safe(() => dashboard.load(start: date, end: date)),
       _safe(() async => (await treatment()).days(date, end)),
-      _safe(appointments.getAll),
+      _safe(() => appointments.getByPeriod(date, end)),
       _safe(prescriptions.getAll),
     ]);
     final health = values[0] as HealthDashboardAggregate?;
@@ -102,7 +102,7 @@ class HomeIntelligenceQueryFacade {
           now.difference(sync.lastSyncAt!).inHours >= 24,
       reason: sync.lastSyncAt == null ? 'Ainda não sincronizado' : null,
     );
-    final agenda = _agenda(
+    final agenda = composeAgenda(
       now: now,
       start: date,
       end: end,
@@ -112,7 +112,7 @@ class HomeIntelligenceQueryFacade {
       pendingSync: pendingSync,
     );
     final todayTreatment = treatmentDays[_dateKey(date)];
-    final treatmentSummary = _treatmentSummary(
+    final treatmentSummary = composeTreatmentSummary(
       todayTreatment,
       freshness,
       pendingSync,
@@ -125,7 +125,7 @@ class HomeIntelligenceQueryFacade {
         : ProteinCalculator.goalForWeightKg(
             currentWeight ?? profile.initialWeight.value,
           );
-    final progress = _progress(
+    final progress = composeProgress(
       health: health,
       treatment: treatmentSummary,
       proteinGoal: proteinGoal,
@@ -135,33 +135,27 @@ class HomeIntelligenceQueryFacade {
     final awaitingReview = prescriptionValues
         .where((value) => value.requiresReview)
         .length;
-    final nextActions = _nextActions(
+    final nextActions = composeNextActions(
       now: now,
       agenda: agenda,
       prescriptionsAwaitingReview: awaitingReview,
       freshness: freshness,
       pendingSync: pendingSync,
     );
-    final quickActions = _quickActions(
+    final quickActions = composeQuickActions(
       agenda: agenda,
       prescriptionsAwaitingReview: awaitingReview,
       freshness: freshness,
       pendingSync: pendingSync,
     );
-    final insights = insightEngine.generate(
-      DeterministicInsightInput(
-        now: now,
-        timeZone: timeZone(),
-        waterMl: todayHealth?.waterMl,
-        waterGoalMl: todayHealth?.waterGoalMl,
-        proteinGrams: todayHealth?.proteinGrams,
-        proteinGoalGrams: proteinGoal,
-        treatment: treatmentSummary,
-        agenda: agenda,
-        prescriptionsAwaitingReview: awaitingReview,
-        pendingSync: pendingSync,
-        lastWeightAt: health?.latestWeight?.recordedAt.value,
-      ),
+    final insights = composeInsights(
+      now: now,
+      health: health,
+      treatment: treatmentSummary,
+      agenda: agenda,
+      prescriptionsAwaitingReview: awaitingReview,
+      freshness: freshness,
+      pendingSync: pendingSync,
     );
     final hasAnySource = values.any((value) => value != null);
     final status = HomeSectionStatus(
@@ -185,7 +179,12 @@ class HomeIntelligenceQueryFacade {
       agenda: agenda,
       treatment: treatmentSummary,
       progress: progress,
-      quickStats: _quickStats(health, treatmentSummary, freshness, pendingSync),
+      quickStats: composeQuickStats(
+        health,
+        treatmentSummary,
+        freshness,
+        pendingSync,
+      ),
       quickActions: quickActions,
       insights: insights,
       healthScore: todayHealth?.healthScore,
@@ -193,7 +192,7 @@ class HomeIntelligenceQueryFacade {
     );
   }
 
-  AgendaReadModel _agenda({
+  AgendaReadModel composeAgenda({
     required DateTime now,
     required DateTime start,
     required DateTime end,
@@ -264,7 +263,7 @@ class HomeIntelligenceQueryFacade {
     );
   }
 
-  TreatmentSummaryReadModel _treatmentSummary(
+  TreatmentSummaryReadModel composeTreatmentSummary(
     TodayTreatmentReadModel? model,
     FreshnessReadModel freshness,
     bool pendingSync,
@@ -337,7 +336,7 @@ class HomeIntelligenceQueryFacade {
     );
   }
 
-  ProgressSummaryReadModel _progress({
+  ProgressSummaryReadModel composeProgress({
     required HealthDashboardAggregate? health,
     required TreatmentSummaryReadModel treatment,
     required int? proteinGoal,
@@ -460,7 +459,7 @@ class HomeIntelligenceQueryFacade {
     );
   }
 
-  NextActionsReadModel _nextActions({
+  NextActionsReadModel composeNextActions({
     required DateTime now,
     required AgendaReadModel agenda,
     required int prescriptionsAwaitingReview,
@@ -518,7 +517,7 @@ class HomeIntelligenceQueryFacade {
     );
   }
 
-  QuickActionsReadModel _quickActions({
+  QuickActionsReadModel composeQuickActions({
     required AgendaReadModel agenda,
     required int prescriptionsAwaitingReview,
     required FreshnessReadModel freshness,
@@ -556,9 +555,9 @@ class HomeIntelligenceQueryFacade {
         QuickActionReadModel(
           id: 'quick:water',
           title: 'Água',
-          kind: HomeActionKind.quickWater,
+          kind: HomeActionKind.route,
           deepLink: '/water',
-          accessibilityLabel: 'Registrar água',
+          accessibilityLabel: 'Abrir acompanhamento de água',
         ),
         QuickActionReadModel(
           id: 'quick:meal',
@@ -591,7 +590,7 @@ class HomeIntelligenceQueryFacade {
     );
   }
 
-  QuickStatsReadModel _quickStats(
+  QuickStatsReadModel composeQuickStats(
     HealthDashboardAggregate? health,
     TreatmentSummaryReadModel treatment,
     FreshnessReadModel freshness,
@@ -614,6 +613,40 @@ class HomeIntelligenceQueryFacade {
             : HomeSectionState.ready,
         freshness: freshness,
         hasPendingSync: pendingSync,
+      ),
+    );
+  }
+
+  InsightFeedReadModel composeInsights({
+    required DateTime now,
+    required HealthDashboardAggregate? health,
+    required TreatmentSummaryReadModel treatment,
+    required AgendaReadModel agenda,
+    required int prescriptionsAwaitingReview,
+    required FreshnessReadModel freshness,
+    required bool pendingSync,
+  }) {
+    final day = health?.days.firstOrNull;
+    final profile = health?.profile;
+    final currentWeight = health?.latestWeight?.weight.value;
+    final proteinGoal = profile == null
+        ? null
+        : ProteinCalculator.goalForWeightKg(
+            currentWeight ?? profile.initialWeight.value,
+          );
+    return insightEngine.generate(
+      DeterministicInsightInput(
+        now: now,
+        timeZone: timeZone(),
+        waterMl: day?.waterMl,
+        waterGoalMl: day?.waterGoalMl,
+        proteinGrams: day?.proteinGrams,
+        proteinGoalGrams: proteinGoal,
+        treatment: treatment,
+        agenda: agenda,
+        prescriptionsAwaitingReview: prescriptionsAwaitingReview,
+        pendingSync: pendingSync,
+        lastWeightAt: health?.latestWeight?.recordedAt.value,
       ),
     );
   }

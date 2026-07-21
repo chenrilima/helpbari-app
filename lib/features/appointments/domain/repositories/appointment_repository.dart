@@ -9,3 +9,11 @@ abstract interface class AppointmentRepository {
 
   Future<void> delete(String id);
 }
+
+abstract interface class AppointmentRangeRepository {
+  Future<List<Appointment>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  });
+}

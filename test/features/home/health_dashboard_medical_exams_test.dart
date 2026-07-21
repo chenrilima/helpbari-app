@@ -2,9 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/services/clock_service.dart';
 import 'package:helpbari/core/sync/sync.dart';
 import 'package:helpbari/features/appointments/domain/repositories/repositories.dart';
+import 'package:helpbari/features/appointments/domain/entities/entities.dart';
 import 'package:helpbari/features/appointments/domain/usecases/appointment_use_cases.dart';
 import 'package:helpbari/features/home/domain/usecases/health_dashboard_use_cases.dart';
 import 'package:helpbari/features/meals/domain/repositories/repositories.dart';
+import 'package:helpbari/features/meals/domain/entities/entities.dart';
 import 'package:helpbari/features/meals/domain/usecases/use_cases.dart';
 import 'package:helpbari/features/medical_exams/domain/entities/entities.dart';
 import 'package:helpbari/features/medical_exams/domain/repositories/medical_exam_repository.dart';
@@ -21,8 +23,10 @@ import 'package:helpbari/features/settings/domain/usecases/setting_use_cases.dar
 import 'package:helpbari/features/smart_routines/domain/enums/routine_enums.dart';
 import 'package:helpbari/features/smart_routines/domain/services/treatment_query_models.dart';
 import 'package:helpbari/features/water/domain/repositories/water_repository.dart';
+import 'package:helpbari/features/water/domain/entities/entities.dart';
 import 'package:helpbari/features/water/domain/usecases/water_use_cases.dart';
 import 'package:helpbari/features/weight/domain/repositories/weight_repository.dart';
+import 'package:helpbari/features/weight/domain/entities/entities.dart';
 import 'package:helpbari/features/weight/domain/usecases/weight_use_cases.dart';
 
 void main() {
@@ -32,7 +36,7 @@ void main() {
       final latest = MedicalExam(
         id: 'medical-exam-1',
         userId: 'user-a',
-        performedAt: DateTime.utc(2026, 7, 18),
+        performedAt: DateTime(2026, 7, 18, 12),
         title: 'Hemograma completo',
         laboratoryName: 'Lab Vida',
         source: MedicalExamSource.imported,
@@ -82,35 +86,68 @@ class _ProfileRepository implements ProfileRepository {
   }
 }
 
-class _WeightRepository implements WeightRepository {
+class _WeightRepository implements WeightRepository, WeightRangeRepository {
+  @override
+  Future<List<WeightRecord>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => const [];
+
+  @override
+  Future<WeightRecord?> getLatest() async => null;
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
     return Future.value(const []);
   }
 }
 
-class _WaterRepository implements WaterRepository {
+class _WaterRepository implements WaterRepository, WaterRangeRepository {
+  @override
+  Future<List<WaterRecord>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => const [];
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
     return Future.value(const []);
   }
 }
 
-class _MealRepository implements MealRepository {
+class _MealRepository implements MealRepository, MealRangeRepository {
+  @override
+  Future<List<Meal>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => const [];
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
     return Future.value(const []);
   }
 }
 
-class _AppointmentRepository implements AppointmentRepository {
+class _AppointmentRepository
+    implements AppointmentRepository, AppointmentRangeRepository {
+  @override
+  Future<List<Appointment>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => const [];
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
     return Future.value(const []);
   }
 }
 
-class _MedicalExamRepository implements MedicalExamRepository {
+class _MedicalExamRepository
+    implements MedicalExamRepository, MedicalExamRangeRepository {
   const _MedicalExamRepository(this.items);
 
   final List<MedicalExam> items;
@@ -124,6 +161,20 @@ class _MedicalExamRepository implements MedicalExamRepository {
 
   @override
   Future<List<MedicalExam>> getHistory() async => items;
+
+  @override
+  Future<List<MedicalExam>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => items
+      .where(
+        (item) =>
+            !item.performedAt.isBefore(startInclusive) &&
+            item.performedAt.isBefore(endExclusive),
+      )
+      .take(limit)
+      .toList();
 
   @override
   Future<void> save(MedicalExam exam) async {}

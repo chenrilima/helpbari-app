@@ -24,6 +24,59 @@ class MedicalPrescriptionDao extends DatabaseAccessor<AppDatabase>
             ..orderBy([(row) => OrderingTerm.desc(row.prescribedAt)]))
           .get();
 
+  Future<List<MedicalPrescriptionRecord>> getActiveLimited(
+    String userId, {
+    required int limit,
+  }) =>
+      (select(medicalPrescriptionRecords)
+            ..where((row) => row.userId.equals(userId) & row.deletedAt.isNull())
+            ..orderBy([(row) => OrderingTerm.desc(row.prescribedAt)])
+            ..limit(limit))
+          .get();
+
+  Future<List<MedicalPrescriptionItemRecord>> getActiveItemsForPrescriptions(
+    String userId,
+    Iterable<String> prescriptionIds,
+  ) {
+    final ids = prescriptionIds.toList(growable: false);
+    if (ids.isEmpty) return Future.value(const []);
+    return (select(medicalPrescriptionItemRecords)
+          ..where(
+            (row) =>
+                row.userId.equals(userId) &
+                row.prescriptionId.isIn(ids) &
+                row.deletedAt.isNull(),
+          )
+          ..orderBy([(row) => OrderingTerm.asc(row.createdAt)]))
+        .get();
+  }
+
+  Future<int> countRequiringReview(String userId) async {
+    final prescriptionQuery = selectOnly(medicalPrescriptionRecords)
+      ..addColumns([medicalPrescriptionRecords.id])
+      ..where(
+        medicalPrescriptionRecords.userId.equals(userId) &
+            medicalPrescriptionRecords.deletedAt.isNull() &
+            medicalPrescriptionRecords.status.equals('requiresReview'),
+      );
+    final itemQuery = selectOnly(medicalPrescriptionItemRecords)
+      ..addColumns([medicalPrescriptionItemRecords.prescriptionId])
+      ..where(
+        medicalPrescriptionItemRecords.userId.equals(userId) &
+            medicalPrescriptionItemRecords.deletedAt.isNull() &
+            medicalPrescriptionItemRecords.reviewStatus.equals('pending'),
+      );
+    final ids = <String>{
+      for (final row in await prescriptionQuery.get())
+        if (row.read(medicalPrescriptionRecords.id) case final String id) id,
+      for (final row in await itemQuery.get())
+        if (row.read(medicalPrescriptionItemRecords.prescriptionId)
+            case final String id)
+          id,
+    };
+    return ids.length;
+  }
+
   Future<MedicalPrescriptionRecord?> getById(String userId, String id) =>
       (select(medicalPrescriptionRecords)
             ..where((row) => row.userId.equals(userId) & row.id.equals(id)))

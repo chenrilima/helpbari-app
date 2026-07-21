@@ -11,6 +11,22 @@ class MealUseCases {
     return _repository.getAll();
   }
 
+  Future<List<Meal>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    int limit = 5000,
+  }) {
+    final repository = _repository;
+    if (repository is! MealRangeRepository) {
+      throw StateError('Consulta de refeições por intervalo indisponível.');
+    }
+    return (repository as MealRangeRepository).getByPeriod(
+      startInclusive,
+      endExclusive,
+      limit: limit,
+    );
+  }
+
   Future<void> save(Meal meal) {
     return _repository.save(meal);
   }

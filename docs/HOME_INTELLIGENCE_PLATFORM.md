@@ -98,7 +98,8 @@ e a possibilidade de double tap em quick actions. Também removeu o
 `HomeViewModel` legado e transformou `BariaInsightEngine` em adapter do feed
 canônico, sem regras paralelas.
 
-Permanecem bloqueadores para aprovação:
+O gate registrou os seguintes bloqueadores, posteriormente tratados na seção
+de preparação para nova auditoria:
 
 - `HealthDashboardUseCases` ainda usa APIs amplas `getAll/getHistory`, que
   carregam históricos sem limite antes de filtrar o intervalo;
@@ -112,8 +113,53 @@ Permanecem bloqueadores para aprovação:
 - não existem testes suficientes de corrida entre troca de usuário e Futures
   em andamento, snapshot local preservado durante refresh e volume/N+1.
 
-Enquanto esses itens existirem, a Macro 3 não deve ser considerada encerrada e
-a Macro 4 não deve começar.
+A Macro 3 continua sem aprovação formal até que uma nova auditoria independente
+valide as correções; a Macro 4 não deve começar antes disso.
+
+## Preparação posterior para novo gate
+
+Os bloqueadores registrados acima foram tratados em uma etapa posterior, ainda
+sem executar ou antecipar o novo Architecture Gate:
+
+- Water, Weight, Meals, Appointments e Medical Exams possuem queries Drift com
+  `userId`, tombstone, intervalo `[startInclusive, endExclusive)`, ordenação e
+  limite. O peso mais recente usa query própria com `LIMIT 1`;
+- resultados de Medical Exams são carregados em batch para o conjunto de exames
+  selecionado, sem query individual por card;
+- Reports usa as mesmas leituras por intervalo para sua janela longitudinal de
+  30 dias, sem reutilizar o snapshot diário como histórico;
+- o grafo Riverpod segue `fontes → blocos → todayDashboardProvider`. Agenda,
+  progresso, tratamento, próximas ações e insights não observam o dashboard;
+- as fontes compartilhadas têm orçamento de uma materialização por intervalo:
+  uma leitura de saúde diária, uma janela de tratamento de sete dias, uma
+  janela de appointments e uma projeção mínima de prescrições em revisão;
+- `SyncResult` informa `userId`, `domainsChanged`, alterações remotas,
+  promoções locais e `fullRefreshRequired`. Domínios conhecidos usam a matriz
+  de invalidação seletiva; full refresh ocorre somente para domínio desconhecido;
+- os read models têm igualdade profunda, hashCode compatível, coleções
+  imutáveis e invariantes para freshness, coverage, ações e progresso;
+- a composição final revalida a sessão que iniciou a consulta. Riverpod separa
+  o cache pela sessão observada e a UI preserva o valor anterior durante
+  refresh, descartando conclusões de logout ou troca de conta;
+- a Home possui uma única seção `Ações rápidas`. Água é somente navegação para
+  sua feature e não registra volume na Home.
+
+### Matriz de invalidação da Home
+
+| Domínio | Fontes/blocos afetados | Não afetados |
+| --- | --- | --- |
+| Water | saúde diária, progresso, insights, dashboard | agenda, prescriptions |
+| Weight | saúde diária, progresso, insights, dashboard | agenda, appointments |
+| Meals | saúde diária, progresso, insights, dashboard | agenda, prescriptions |
+| Appointments | fonte de appointments, agenda, próximas ações | hidratação, tratamento |
+| Treatment | tratamento, agenda, progresso, próximas ações, insights | prescriptions |
+| Prescriptions | projeção de revisão, próximas ações, insights | hidratação, peso |
+
+Os testes de arquitetura impedem o retorno de `getAll/getHistory` ao bootstrap,
+dependência descendente do dashboard e comando oculto de água. Testes Drift
+cobrem limites, ordenação, isolamento, intervalo end-exclusive e volume
+limitado. A recomendação é submeter este estado a uma auditoria independente;
+esta seção não declara aprovação da Macro 3.
 
 ### Operação remota
 

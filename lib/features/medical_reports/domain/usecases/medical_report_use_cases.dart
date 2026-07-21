@@ -18,6 +18,7 @@ import '../../../vitamins/domain/entities/vitamin_log.dart';
 import '../../../water/domain/entities/entities.dart';
 import '../../../water/domain/usecases/use_cases.dart';
 import '../../../weight/domain/usecases/use_cases.dart';
+import '../../../weight/domain/entities/entities.dart';
 import '../../../home/domain/models/models.dart';
 import '../../../home/domain/usecases/use_cases.dart';
 import '../entities/entities.dart';
@@ -95,28 +96,30 @@ class MedicalReportUseCases {
     final now = _clock.now();
     final periodStart = DateTime(now.year, now.month, now.day - 29);
     final periodEnd = DateTime(now.year, now.month, now.day);
+    final periodEndExclusive = DateTime(now.year, now.month, now.day + 1);
     final dashboardFuture =
         _dashboardUseCases == null || _homeIntelligence != null
         ? Future<HealthDashboardAggregate?>.value(null)
         : _dashboardUseCases.load(start: periodStart, end: periodEnd);
     final results = await Future.wait<dynamic>([
       _profileUseCases.getProfile(),
-      _weightUseCases.getHistory(),
-      _waterUseCases.getHistory(),
+      _weightUseCases.getByPeriod(periodStart, periodEndExclusive),
+      _waterUseCases.getByPeriod(periodStart, periodEndExclusive),
       _vitaminUseCases.getAll(),
       _medicationUseCases.getAll(),
-      _mealUseCases.getAll(),
-      _appointmentUseCases.getAll(),
-      _examUseCases.getHistory(),
+      _mealUseCases.getByPeriod(periodStart, periodEndExclusive),
+      _appointmentUseCases.getByPeriod(periodStart, periodEndExclusive),
+      _examUseCases.getByPeriod(periodStart, periodEndExclusive),
       _settingsUseCases.getSettings(),
       _vitaminUseCases.getLogs(periodStart, periodEnd),
       _medicationUseCases.getLogs(periodStart, periodEnd),
       dashboardFuture,
-      _prescriptionUseCases?.getAll() ??
+      _prescriptionUseCases?.getForReport() ??
           Future<List<MedicalPrescription>>.value(const []),
       _homeIntelligence == null
           ? Future<TodayDashboardReadModel?>.value(null)
           : _homeIntelligence(),
+      _weightUseCases.getLatest(),
     ]);
 
     final profile = results[0] as Profile?;
@@ -133,6 +136,7 @@ class MedicalReportUseCases {
     final dashboard = results[11] as HealthDashboardAggregate?;
     final prescriptions = results[12] as List<MedicalPrescription>;
     final homeIntelligence = results[13] as TodayDashboardReadModel?;
+    final latestWeight = results[14] as WeightRecord?;
     final treatmentService = await _treatment();
     final treatmentAdherence = await treatmentService.summary(
       periodStart,
@@ -145,9 +149,7 @@ class MedicalReportUseCases {
     final fallbackPendingMedications = dashboard == null
         ? await _medicationUseCases.getPendingCount(date: now)
         : null;
-    final currentWeight = weightHistory.isEmpty
-        ? null
-        : weightHistory.first.weight.value as double;
+    final currentWeight = latestWeight?.weight.value;
     final referenceWeight = currentWeight ?? profile?.initialWeight.value;
     final targetWeight = profile?.targetWeight?.value;
     final proteinGoal = referenceWeight == null

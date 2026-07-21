@@ -8,6 +8,19 @@ class HomeRuntimeGuard {
   bool isInFlight(String key) => _inFlight.contains(key);
 }
 
+class HomeSessionRequestGuard {
+  const HomeSessionRequestGuard();
+
+  void ensureCurrent({
+    required String expectedUserId,
+    required String? currentUserId,
+  }) {
+    if (currentUserId == null || currentUserId != expectedUserId) {
+      throw StateError('Home request belongs to an expired session.');
+    }
+  }
+}
+
 class ClinicalDayRefreshPolicy {
   const ClinicalDayRefreshPolicy();
 
