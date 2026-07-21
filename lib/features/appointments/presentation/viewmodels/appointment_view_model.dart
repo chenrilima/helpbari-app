@@ -137,7 +137,7 @@ class AppointmentViewModel extends Notifier<AppointmentState> {
 
   void _invalidate() {
     ref.invalidate(appointmentUseCasesProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);

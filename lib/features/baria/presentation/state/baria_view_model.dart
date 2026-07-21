@@ -21,8 +21,8 @@ class BariaViewModel extends Notifier<BariaState> {
 
   @override
   BariaState build() {
-    ref.listen(homeViewModelProvider, (previous, next) {
-      if (previous != null && previous != next && !next.isLoading) {
+    ref.listen(todayDashboardProvider, (previous, next) {
+      if (previous != null && previous != next && next.hasValue) {
         unawaited(loadDailyInsight());
       }
     });
@@ -33,6 +33,7 @@ class BariaViewModel extends Notifier<BariaState> {
     });
     ref.listen(authSessionProvider, (previous, next) {
       if (previous?.id != next?.id) {
+        _insightRequest++;
         state = const BariaState();
         if (next != null) unawaited(loadDailyInsight());
       }
@@ -42,6 +43,8 @@ class BariaViewModel extends Notifier<BariaState> {
 
   Future<void> loadDailyInsight() async {
     final request = ++_insightRequest;
+    final expectedUserId = ref.read(authSessionProvider)?.id;
+    if (expectedUserId == null) return;
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final values = await Future.wait<Object>([
@@ -53,7 +56,10 @@ class BariaViewModel extends Notifier<BariaState> {
       final insight = insights.isEmpty
           ? await _bariaUseCases.getDailyInsight()
           : insights.first;
-      if (request != _insightRequest) return;
+      if (!_isCurrent(request, expectedUserId) ||
+          context.userId != expectedUserId) {
+        return;
+      }
       state = state.copyWith(
         dailyInsight: insight,
         context: context,
@@ -61,21 +67,27 @@ class BariaViewModel extends Notifier<BariaState> {
         isLoading: false,
       );
     } catch (e) {
-      if (request != _insightRequest) return;
+      if (!_isCurrent(request, expectedUserId)) return;
       state = state.copyWith(error: e.toString(), isLoading: false);
     }
   }
 
   Future<void> loadConversationHistory() async {
+    final expectedUserId = ref.read(authSessionProvider)?.id;
+    if (expectedUserId == null) return;
     try {
       final messages = await _bariaUseCases.getConversationHistory();
+      if (ref.read(authSessionProvider)?.id != expectedUserId) return;
       state = state.copyWith(conversationMessages: messages);
     } catch (e) {
+      if (ref.read(authSessionProvider)?.id != expectedUserId) return;
       state = state.copyWith(error: e.toString());
     }
   }
 
   Future<void> sendMessage(String userMessage) async {
+    final expectedUserId = ref.read(authSessionProvider)?.id;
+    if (expectedUserId == null) return;
     try {
       state = state.copyWith(clearError: true);
       // Save user message
@@ -86,6 +98,7 @@ class BariaViewModel extends Notifier<BariaState> {
         isFromUser: true,
       );
       await _bariaUseCases.saveMessage(userMsg);
+      if (ref.read(authSessionProvider)?.id != expectedUserId) return;
 
       // Update state with user message
       final updatedMessages = [...state.conversationMessages, userMsg];
@@ -96,6 +109,7 @@ class BariaViewModel extends Notifier<BariaState> {
 
       // Generate and save response
       final response = await _bariaUseCases.generateResponse(userMessage);
+      if (ref.read(authSessionProvider)?.id != expectedUserId) return;
       final responseMsg = BariaMessage(
         id: _uuid.generate(),
         content: response,
@@ -104,6 +118,7 @@ class BariaViewModel extends Notifier<BariaState> {
         action: _knowledgeAction(userMessage),
       );
       await _bariaUseCases.saveMessage(responseMsg);
+      if (ref.read(authSessionProvider)?.id != expectedUserId) return;
 
       // Update state with response
       final finalMessages = [...updatedMessages, responseMsg];
@@ -112,6 +127,7 @@ class BariaViewModel extends Notifier<BariaState> {
         isLoading: false,
       );
     } catch (e) {
+      if (ref.read(authSessionProvider)?.id != expectedUserId) return;
       state = state.copyWith(error: e.toString(), isLoading: false);
     }
   }
@@ -153,4 +169,7 @@ class BariaViewModel extends Notifier<BariaState> {
     }
     return null;
   }
+
+  bool _isCurrent(int request, String userId) =>
+      request == _insightRequest && ref.read(authSessionProvider)?.id == userId;
 }

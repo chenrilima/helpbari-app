@@ -12,6 +12,24 @@ class AppointmentDao extends DatabaseAccessor<AppDatabase>
             ..where((r) => r.userId.equals(userId) & r.deletedAt.isNull())
             ..orderBy([(r) => OrderingTerm.asc(r.appointmentAt)]))
           .get();
+
+  Future<List<AppointmentRecord>> getActiveByUserInRange(
+    String userId,
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) =>
+      (select(appointmentRecords)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.deletedAt.isNull() &
+                  row.appointmentAt.isBiggerOrEqualValue(startInclusive) &
+                  row.appointmentAt.isSmallerThanValue(endExclusive),
+            )
+            ..orderBy([(row) => OrderingTerm.asc(row.appointmentAt)])
+            ..limit(limit))
+          .get();
   Future<AppointmentRecord?> getByUserAndId(String userId, String id) =>
       (select(appointmentRecords)
             ..where((r) => r.userId.equals(userId) & r.id.equals(id)))

@@ -1,6 +1,7 @@
 import '../../../../core/formatters/formatters.dart';
 import '../../application/baria_service.dart';
 import '../../../home/domain/models/models.dart';
+import '../../../smart_routines/domain/enums/routine_enums.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/baria_repository.dart';
 import '../../domain/services/baria_insight_engine.dart';
@@ -106,6 +107,12 @@ class ContextualBariaRepository implements BariaRepository {
   }
 
   String _water(BariaContext context) {
+    final metric = context.intelligence?.progress.water;
+    if (metric?.value != null && metric?.target != null) {
+      final current = metric!.value!.round();
+      final goal = metric.target!.round();
+      return 'Você registrou $current ml de uma meta de $goal ml hoje. $_notice';
+    }
     final day = context.todayData;
     final current = day?.waterMl;
     final goal = day?.waterGoalMl;
@@ -169,6 +176,13 @@ class ContextualBariaRepository implements BariaRepository {
   }
 
   String _vitamins(BariaContext context) {
+    final canonical = context
+        .intelligence
+        ?.treatment
+        .adherenceByCategory[RoutineCategory.vitamin];
+    if (canonical != null) {
+      return 'A adesão disponível para vitaminas hoje é ${(canonical * 100).round()}%. $_notice';
+    }
     final pending = context.todayData?.pendingVitamins;
     if (pending == null) return _missing('vitaminas de hoje');
     return pending == 0
@@ -177,6 +191,13 @@ class ContextualBariaRepository implements BariaRepository {
   }
 
   String _medications(BariaContext context) {
+    final canonical = context
+        .intelligence
+        ?.treatment
+        .adherenceByCategory[RoutineCategory.medication];
+    if (canonical != null) {
+      return 'A adesão disponível para medicamentos hoje é ${(canonical * 100).round()}%. $_notice';
+    }
     final pending = context.todayData?.pendingMedications;
     if (pending == null) return _missing('medicamentos de hoje');
     return pending == 0
@@ -185,6 +206,12 @@ class ContextualBariaRepository implements BariaRepository {
   }
 
   String _pending(BariaContext context) {
+    final intelligence = context.intelligence;
+    if (intelligence != null) {
+      return intelligence.status.hasPendingSync
+          ? 'Há atualizações locais aguardando sincronização. $_notice'
+          : 'Os dados locais não indicam atualização pendente. $_notice';
+    }
     final count = context.pendingOfflineOperations;
     if (count == null) return _missing('estado da última sincronização');
     final last = context.lastSyncAt;
@@ -197,6 +224,12 @@ class ContextualBariaRepository implements BariaRepository {
   }
 
   String _appointment(BariaContext context) {
+    final canonical = context.intelligence?.agenda.items
+        .where((item) => item.type == AgendaItemType.appointment)
+        .firstOrNull;
+    if (canonical != null) {
+      return 'Sua próxima consulta registrada está na agenda. $_notice';
+    }
     final appointment = context.today?.nextAppointment;
     if (appointment == null) return _missing('próxima consulta');
     return 'Sua próxima consulta é ${appointment.title}, em ${appointment.formattedDate}. $_notice';
@@ -231,6 +264,10 @@ class ContextualBariaRepository implements BariaRepository {
   }
 
   String _meals(BariaContext context) {
+    final metric = context.intelligence?.progress.protein;
+    if (metric?.value != null) {
+      return 'Hoje há ${metric!.value!.round()} g de proteína registrados. $_notice';
+    }
     final count = context.todayData?.mealsCount;
     final protein = context.todayData?.proteinGrams;
     if (count == null) return _missing('refeições de hoje');
@@ -238,6 +275,10 @@ class ContextualBariaRepository implements BariaRepository {
   }
 
   String _score(BariaContext context) {
+    final canonical = context.intelligence?.healthScore;
+    if (canonical?.hasData == true) {
+      return 'Seu Health Score de acompanhamento hoje é ${canonical!.score}/100. ${canonical.compositionExplanation} $_notice';
+    }
     final score = context.todayData?.healthScore;
     if (score == null || !score.hasData) {
       return _missing('Health Score de hoje');

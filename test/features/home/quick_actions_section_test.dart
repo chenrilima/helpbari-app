@@ -1,43 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:helpbari/app/router/app_routes.dart';
 import 'package:helpbari/features/home/presentation/widgets/quick_actions_section.dart';
 
 void main() {
-  testWidgets('Academy card is accessible and opens the existing route', (
+  const expectedRoutes = <String, String>{
+    'Água': AppRoutes.water,
+    'Medicamentos': AppRoutes.medications,
+    'Vitaminas': AppRoutes.vitamins,
+    'Prescrições': AppRoutes.prescriptions,
+    'Academia': AppRoutes.academy,
+    'Configurações': AppRoutes.settings,
+    'Peso': AppRoutes.weight,
+    'Refeições': AppRoutes.meals,
+    'Consultas': AppRoutes.appointments,
+    'Exames': AppRoutes.exams,
+    'Relatórios': AppRoutes.medicalReports,
+    'Documentos': AppRoutes.documentCenter,
+  };
+
+  for (final entry in expectedRoutes.entries) {
+    testWidgets('${entry.key} opens the official route', (tester) async {
+      String? openedRoute;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: QuickActionsSection(onOpen: (route) => openedRoute = route),
+          ),
+        ),
+      );
+
+      final target = find.text(entry.key);
+      await tester.scrollUntilVisible(
+        target,
+        300,
+        scrollable: find.byType(Scrollable),
+      );
+      await tester.tap(target);
+
+      expect(openedRoute, entry.value);
+    });
+  }
+
+  testWidgets('water is navigation only and has no hidden increment action', (
     tester,
   ) async {
-    final router = GoRouter(
-      initialLocation: AppRoutes.home,
-      routes: [
-        GoRoute(
-          path: AppRoutes.home,
-          builder: (_, _) => const Scaffold(body: QuickActionsSection()),
+    String? openedRoute;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: QuickActionsSection(onOpen: (route) => openedRoute = route),
         ),
-        GoRoute(
-          path: AppRoutes.academy,
-          builder: (_, _) => const Scaffold(body: Text('Academia aberta')),
+      ),
+    );
+
+    await tester.tap(find.text('Água'));
+
+    expect(openedRoute, AppRoutes.water);
+    expect(find.text('+200 ml'), findsNothing);
+  });
+
+  testWidgets('single section supports enlarged text without overflow', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+          child: Scaffold(
+            body: SingleChildScrollView(
+              child: QuickActionsSection(onOpen: (_) {}),
+            ),
+          ),
         ),
-      ],
+      ),
     );
-    addTearDown(router.dispose);
 
-    await tester.pumpWidget(MaterialApp.router(routerConfig: router));
-    await tester.pumpAndSettle();
-
-    expect(
-      find.bySemanticsLabel('Academia. Artigos e orientações'),
-      findsOneWidget,
-    );
-    await tester.drag(
-      find.byType(SingleChildScrollView),
-      const Offset(-1400, 0),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Academia'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Academia aberta'), findsOneWidget);
+    expect(find.text('Ações rápidas'), findsOneWidget);
+    expect(find.text('Minhas ferramentas'), findsNothing);
+    expect(tester.takeException(), isNull);
   });
 }

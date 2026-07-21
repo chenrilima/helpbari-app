@@ -13,7 +13,8 @@ typedef HasWaterCutoverMirror = bool Function();
 Future<void> _noCutoverAction() async {}
 bool _noCutoverMirror() => false;
 
-class DriftPrimaryWaterRepository implements WaterRepository {
+class DriftPrimaryWaterRepository
+    implements WaterRepository, WaterRangeRepository {
   const DriftPrimaryWaterRepository({
     required DriftWaterDatasourceFactory driftDatasource,
     required LocalWaterDatasource fallbackDatasource,
@@ -50,6 +51,17 @@ class DriftPrimaryWaterRepository implements WaterRepository {
           .toList();
     }
   }
+
+  @override
+  Future<List<WaterRecord>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => (await (await _resolveDrift()).getByPeriod(
+    startInclusive,
+    endExclusive,
+    limit: limit,
+  )).map((dto) => dto.toEntity()).toList();
 
   @override
   Future<void> create(WaterRecord record) => _write(record);

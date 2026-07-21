@@ -125,7 +125,7 @@ class MealViewModel extends Notifier<MealState> {
 
   void _invalidateConsumers() {
     ref.invalidate(mealUseCasesProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(medicalReportUseCasesProvider);

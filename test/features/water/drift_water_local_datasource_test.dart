@@ -142,6 +142,48 @@ void main() {
 
     expect(history.map((record) => record.id), ['drift-only']);
   });
+
+  test('range query enforces user, boundaries, order and limit', () async {
+    final first = _datasource(database, 'user-a');
+    final second = _datasource(database, 'user-b');
+    await first.save(_dto(id: 'before', recordedAt: DateTime(2026, 7, 1)));
+    await first.save(_dto(id: 'start', recordedAt: DateTime(2026, 7, 2)));
+    await first.save(_dto(id: 'middle', recordedAt: DateTime(2026, 7, 3)));
+    await first.save(_dto(id: 'end', recordedAt: DateTime(2026, 7, 4)));
+    await second.save(_dto(id: 'other', recordedAt: DateTime(2026, 7, 3)));
+
+    final records = await first.getByPeriod(
+      DateTime(2026, 7, 2),
+      DateTime(2026, 7, 4),
+      limit: 2,
+    );
+
+    expect(records.map((value) => value.id), ['middle', 'start']);
+  });
+
+  test('thousands of records remain bounded by the requested limit', () async {
+    final start = DateTime(2026, 1, 1);
+    await database.waterDao.upsertAll([
+      for (var index = 0; index < 2000; index++)
+        WaterRecordsCompanion.insert(
+          id: 'volume-$index',
+          userId: 'user-a',
+          amountMl: 200,
+          recordedAt: start.add(Duration(minutes: index)),
+          createdAt: start,
+          updatedAt: start,
+          syncStatus: 'synced',
+        ),
+    ]);
+
+    final values = await _datasource(
+      database,
+      'user-a',
+    ).getByPeriod(start, start.add(const Duration(days: 30)), limit: 31);
+
+    expect(values, hasLength(31));
+    expect(values.first.id, 'volume-1999');
+  });
 }
 
 DriftWaterLocalDatasource _datasource(AppDatabase database, String userId) =>
@@ -151,12 +193,16 @@ DriftWaterLocalDatasource _datasource(AppDatabase database, String userId) =>
       userId: userId,
     );
 
-WaterRecordDto _dto({required String id, int amount = 250}) {
+WaterRecordDto _dto({
+  required String id,
+  int amount = 250,
+  DateTime? recordedAt,
+}) {
   final now = DateTime.utc(2026, 7, 9, 12);
   return WaterRecordDto(
     id: id,
     amountInMl: amount,
-    recordedAt: now,
+    recordedAt: recordedAt ?? now,
     syncMetadata: SyncMetadata(
       id: id,
       userId: 'ignored-by-local-datasource',

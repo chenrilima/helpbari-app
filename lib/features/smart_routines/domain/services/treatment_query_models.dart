@@ -2,6 +2,16 @@ import '../enums/routine_enums.dart';
 
 enum TreatmentDataOrigin { legacy, smartRoutines, mixed }
 
+enum TreatmentOccurrenceState {
+  future,
+  due,
+  open,
+  resolved,
+  missed,
+  canceled,
+  requiresReview,
+}
+
 class TreatmentAdherenceSummary {
   const TreatmentAdherenceSummary({
     required this.eligible,
@@ -12,6 +22,7 @@ class TreatmentAdherenceSummary {
     required this.coverage,
     required this.coverageState,
     required this.origin,
+    this.byCategory = const <RoutineCategory, TreatmentAdherenceSummary>{},
     this.formulaVersion = 'treatment-adherence-v1',
   });
   final int eligible;
@@ -22,6 +33,7 @@ class TreatmentAdherenceSummary {
   final double coverage;
   final AdherenceCoverageState coverageState;
   final TreatmentDataOrigin origin;
+  final Map<RoutineCategory, TreatmentAdherenceSummary> byCategory;
   final String formulaVersion;
   double? get adherence => eligible == 0 ? null : taken / eligible;
   double? get onTimeAdherence => eligible == 0 ? null : takenOnTime / eligible;
@@ -36,6 +48,8 @@ class TodayTreatmentOccurrence {
     required this.scheduledFor,
     required this.windowEndsAt,
     required this.state,
+    required this.operationalState,
+    this.originalScheduledFor,
   });
   final String id;
   final String routineId;
@@ -44,6 +58,8 @@ class TodayTreatmentOccurrence {
   final DateTime scheduledFor;
   final DateTime windowEndsAt;
   final OccurrenceAdherenceState state;
+  final TreatmentOccurrenceState operationalState;
+  final DateTime? originalScheduledFor;
 }
 
 class TodayTreatmentReadModel {
@@ -60,6 +76,8 @@ class TodayTreatmentReadModel {
       .toList(growable: false);
   int pendingFor(RoutineCategory category) =>
       open.where((value) => value.category == category).length;
+  TreatmentAdherenceSummary? adherenceFor(RoutineCategory category) =>
+      adherence.byCategory[category];
 }
 
 abstract interface class TreatmentAdherenceQueryService {

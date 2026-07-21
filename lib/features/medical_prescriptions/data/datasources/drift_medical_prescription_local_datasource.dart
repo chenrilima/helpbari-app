@@ -27,6 +27,11 @@ class DriftMedicalPrescriptionLocalDatasource {
   Future<List<MedicalPrescription>> getAll() async =>
       _fromRows(await _dao.getActive(userId));
 
+  Future<List<MedicalPrescription>> getLimited({required int limit}) async =>
+      _fromRows(await _dao.getActiveLimited(userId, limit: limit));
+
+  Future<int> countRequiringReview() => _dao.countRequiringReview(userId);
+
   Future<MedicalPrescription?> getById(String id) async {
     final row = await _dao.getById(userId, id);
     if (row == null || row.deletedAt != null) return null;
@@ -182,11 +187,17 @@ class DriftMedicalPrescriptionLocalDatasource {
   Future<List<MedicalPrescription>> _fromRows(
     List<db.MedicalPrescriptionRecord> rows,
   ) async {
-    final values = <MedicalPrescription>[];
-    for (final row in rows) {
-      values.add(_fromRow(row, await _dao.getItems(userId, row.id)));
+    final items = await _dao.getActiveItemsForPrescriptions(
+      userId,
+      rows.map((row) => row.id),
+    );
+    final byPrescription = <String, List<db.MedicalPrescriptionItemRecord>>{};
+    for (final item in items) {
+      byPrescription.putIfAbsent(item.prescriptionId, () => []).add(item);
     }
-    return values;
+    return [
+      for (final row in rows) _fromRow(row, byPrescription[row.id] ?? const []),
+    ];
   }
 
   Future<List<MedicalPrescriptionDto>> _dtos(

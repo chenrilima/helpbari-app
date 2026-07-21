@@ -1,6 +1,42 @@
 import 'sync_conflict.dart';
 import 'sync_error.dart';
 
+enum SyncDomain {
+  water,
+  weight,
+  meals,
+  appointments,
+  exams,
+  treatment,
+  prescriptions,
+  settings,
+  profile,
+  vitamins,
+  medications,
+  bioimpedance,
+  documents,
+  privacy,
+  unknown;
+
+  static SyncDomain fromRepositoryKey(String key) => switch (key) {
+    'water' => water,
+    'weight' => weight,
+    'meals' => meals,
+    'appointments' => appointments,
+    'exams' || 'medical_exams' => exams,
+    'smart_routines' || 'vitamin_logs' || 'medication_logs' => treatment,
+    'medical_prescriptions' || 'prescription_platform' => prescriptions,
+    'settings' => settings,
+    'profile' => profile,
+    'vitamins' => vitamins,
+    'medications' => medications,
+    'bioimpedance' => bioimpedance,
+    'document_processings' => documents,
+    'privacy_consents' => privacy,
+    _ => unknown,
+  };
+}
+
 class SyncResult {
   const SyncResult({
     required this.startedAt,
@@ -11,6 +47,9 @@ class SyncResult {
     required this.deleted,
     required this.conflicts,
     required this.errors,
+    this.userId,
+    this.domainsChanged = const {},
+    this.fullRefreshRequired = false,
   });
 
   final DateTime startedAt;
@@ -21,9 +60,16 @@ class SyncResult {
   final int deleted;
   final List<SyncConflict> conflicts;
   final List<SyncError> errors;
+  final String? userId;
+  final Set<SyncDomain> domainsChanged;
+  final bool fullRefreshRequired;
+  int get remoteChanges => pulled;
+  int get localPromotions => pushed;
 
   bool get isSuccess => repositoriesProcessed > 0 && errors.isEmpty;
   bool get hasConflicts => conflicts.isNotEmpty;
+  bool belongsTo(String? currentUserId) =>
+      userId != null && userId == currentUserId;
 
   SyncResult copyWith({
     DateTime? completedAt,
@@ -33,6 +79,8 @@ class SyncResult {
     int? deleted,
     List<SyncConflict>? conflicts,
     List<SyncError>? errors,
+    Set<SyncDomain>? domainsChanged,
+    bool? fullRefreshRequired,
   }) {
     return SyncResult(
       startedAt: startedAt,
@@ -44,6 +92,9 @@ class SyncResult {
       deleted: deleted ?? this.deleted,
       conflicts: conflicts ?? this.conflicts,
       errors: errors ?? this.errors,
+      userId: userId,
+      domainsChanged: domainsChanged ?? this.domainsChanged,
+      fullRefreshRequired: fullRefreshRequired ?? this.fullRefreshRequired,
     );
   }
 
@@ -57,6 +108,7 @@ class SyncResult {
       deleted: 0,
       conflicts: const [],
       errors: const [],
+      domainsChanged: const {},
     );
   }
 }

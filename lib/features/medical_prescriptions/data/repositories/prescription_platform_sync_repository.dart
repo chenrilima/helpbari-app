@@ -47,10 +47,55 @@ class PrescriptionPlatformSyncRepository
             ],
           )
           .get();
-      result.addAll(rows.map((row) => _operation(table, row.data)));
+      for (final row in rows) {
+        if (await _dependenciesSynced(table, row.data)) {
+          result.add(_operation(table, row.data));
+        }
+      }
     }
-    result.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
+    result.sort((a, b) {
+      final dependencyOrder = _tables
+          .indexOf(a.payload['table'] as String)
+          .compareTo(_tables.indexOf(b.payload['table'] as String));
+      if (dependencyOrder != 0) return dependencyOrder;
+      return a.updatedAt.compareTo(b.updatedAt);
+    });
     return result;
+  }
+
+  Future<bool> _dependenciesSynced(
+    String table,
+    Map<String, Object?> row,
+  ) async {
+    if (table == 'treatment_proposals') {
+      final routineId = row['target_routine_id'] as String?;
+      final planId = row['resulting_plan_id'] as String?;
+      return (routineId == null || await _routineSynced(routineId)) &&
+          (planId == null || await _planSynced(planId));
+    }
+    if (table == 'prescription_routine_links') {
+      return await _routineSynced(row['routine_id'] as String) &&
+          await _planSynced(row['plan_id'] as String);
+    }
+    return true;
+  }
+
+  Future<bool> _routineSynced(String id) async {
+    final row =
+        await (database.select(database.smartRoutineRecords)..where(
+              (record) => record.userId.equals(userId) & record.id.equals(id),
+            ))
+            .getSingleOrNull();
+    return row?.syncStatus == 'synced';
+  }
+
+  Future<bool> _planSynced(String id) async {
+    final row =
+        await (database.select(database.routinePlanRecords)..where(
+              (record) => record.userId.equals(userId) & record.id.equals(id),
+            ))
+            .getSingleOrNull();
+    return row?.syncStatus == 'synced';
   }
 
   @override
@@ -73,7 +118,8 @@ class PrescriptionPlatformSyncRepository
     await remote.run(
       operation: 'upsert',
       table: table,
-      request: (query) => query.upsert(row),
+      request: (query) =>
+          query.upsert(row, ignoreDuplicates: isAppendOnly(operation)),
     );
   }
 
@@ -118,27 +164,7 @@ class PrescriptionPlatformSyncRepository
         : row['sync_status'] as String? ?? 'synced';
     switch (table) {
       case 'prescription_versions':
-        await database
-            .into(database.prescriptionVersionRecords)
-            .insertOnConflictUpdate(
-              PrescriptionVersionRecordsCompanion.insert(
-                id: row['id'] as String,
-                userId: userId,
-                prescriptionId: row['prescription_id'] as String,
-                revision: row['revision'] as int,
-                status: row['status'] as String,
-                snapshotJson: _json(row['snapshot']),
-                sourceProcessingId: Value(
-                  row['source_processing_id'] as String?,
-                ),
-                submittedAt: Value(_date(row['submitted_at'])),
-                confirmedAt: Value(_date(row['confirmed_at'])),
-                createdAt: _date(row['created_at'])!,
-                updatedAt: _date(row['updated_at'])!,
-                deletedAt: Value(_date(row['deleted_at'])),
-                syncStatus: status,
-              ),
-            );
+        await _applyVersion(row, status);
         return;
       case 'prescription_reviews':
         await database
@@ -206,6 +232,86 @@ class PrescriptionPlatformSyncRepository
     }
   }
 
+  Future<void> _applyVersion(Map<String, dynamic> row, String status) async {
+    final id = row['id'] as String;
+    final incomingSnapshot = _json(row['snapshot']);
+    final existing =
+        await (database.select(database.prescriptionVersionRecords)..where(
+              (record) => record.userId.equals(userId) & record.id.equals(id),
+            ))
+            .getSingleOrNull();
+    final incomingStatus = row['status'] as String;
+    if (existing != null &&
+        (existing.status == 'confirmed' || existing.status == 'archived')) {
+      final statusAllowed =
+          existing.status == incomingStatus ||
+          (existing.status == 'confirmed' && incomingStatus == 'archived');
+      final sameClinicalValue =
+          statusAllowed &&
+          existing.prescriptionId == row['prescription_id'] &&
+          existing.revision == row['revision'] &&
+          _jsonEquals(existing.snapshotJson, incomingSnapshot) &&
+          existing.sourceProcessingId == row['source_processing_id'] &&
+          _sameInstant(existing.submittedAt, _date(row['submitted_at'])) &&
+          _sameInstant(existing.confirmedAt, _date(row['confirmed_at'])) &&
+          _sameInstant(existing.createdAt, _date(row['created_at'])) &&
+          _sameInstant(existing.deletedAt, _date(row['deleted_at']));
+      if (!sameClinicalValue) {
+        throw StateError('Conflicting immutable prescription version.');
+      }
+      await (database.update(database.prescriptionVersionRecords)..where(
+            (record) =>
+                record.userId.equals(userId) & record.id.equals(existing.id),
+          ))
+          .write(
+            PrescriptionVersionRecordsCompanion(
+              status: Value(incomingStatus),
+              updatedAt: Value(_date(row['updated_at'])!),
+              syncStatus: Value(status),
+            ),
+          );
+      return;
+    }
+    await database
+        .into(database.prescriptionVersionRecords)
+        .insertOnConflictUpdate(
+          PrescriptionVersionRecordsCompanion.insert(
+            id: id,
+            userId: userId,
+            prescriptionId: row['prescription_id'] as String,
+            revision: row['revision'] as int,
+            status: incomingStatus,
+            snapshotJson: incomingSnapshot,
+            sourceProcessingId: Value(row['source_processing_id'] as String?),
+            submittedAt: Value(_date(row['submitted_at'])),
+            confirmedAt: Value(_date(row['confirmed_at'])),
+            createdAt: _date(row['created_at'])!,
+            updatedAt: _date(row['updated_at'])!,
+            deletedAt: Value(_date(row['deleted_at'])),
+            syncStatus: status,
+          ),
+        );
+  }
+
+  bool _jsonEquals(String left, String right) =>
+      jsonEncode(_canonicalJson(jsonDecode(left))) ==
+      jsonEncode(_canonicalJson(jsonDecode(right)));
+
+  Object? _canonicalJson(Object? value) => switch (value) {
+    final Map<Object?, Object?> map => <String, Object?>{
+      for (final key in map.keys.map((key) => key.toString()).toList()..sort())
+        key: _canonicalJson(map[key]),
+    },
+    final List<Object?> list => list.map(_canonicalJson).toList(),
+    _ => value,
+  };
+
+  bool _sameInstant(DateTime? left, DateTime? right) =>
+      left == null || right == null
+      ? left == right
+      : left.toUtc().millisecondsSinceEpoch ~/ 1000 ==
+            right.toUtc().millisecondsSinceEpoch ~/ 1000;
+
   @override
   Future<void> markSynced(String recordId, {required DateTime syncedAt}) =>
       _mark(recordId, 'synced');
@@ -252,6 +358,9 @@ class PrescriptionPlatformSyncRepository
   };
 
   Object? _remoteFieldValue(String key, Object? value) {
+    if (_dateFields.contains(key)) {
+      return _date(value)?.toIso8601String();
+    }
     if ({'snapshot_json', 'field_decisions_json', 'draft_json'}.contains(key) &&
         value is String) {
       return jsonDecode(value);
@@ -271,6 +380,14 @@ class PrescriptionPlatformSyncRepository
     _ => value,
   };
 
+  static const _dateFields = <String>{
+    'submitted_at',
+    'confirmed_at',
+    'created_at',
+    'updated_at',
+    'deleted_at',
+  };
+
   String _localTable(String remoteTable) => switch (remoteTable) {
     'prescription_versions' => 'prescription_version_records',
     'prescription_reviews' => 'prescription_review_records',
@@ -284,11 +401,20 @@ class PrescriptionPlatformSyncRepository
     (match) => '_${match.group(0)!.toLowerCase()}',
   );
 
-  DateTime? _date(Object? value) => value == null
-      ? null
-      : value is DateTime
-      ? value.toUtc()
-      : DateTime.parse(value as String).toUtc();
+  DateTime? _date(Object? value) => switch (value) {
+    null => null,
+    final DateTime date => date.toUtc(),
+    // Drift exposes DateTime columns as Unix seconds in untyped customSelect
+    // rows. Supabase, on the other hand, returns ISO-8601 strings.
+    final int seconds => DateTime.fromMillisecondsSinceEpoch(
+      seconds * Duration.millisecondsPerSecond,
+      isUtc: true,
+    ),
+    final String raw => DateTime.parse(raw).toUtc(),
+    _ => throw FormatException(
+      'Unsupported prescription platform date value: ${value.runtimeType}',
+    ),
+  };
 
   String _json(Object? value) => value is String
       ? value

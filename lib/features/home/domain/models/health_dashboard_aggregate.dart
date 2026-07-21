@@ -14,6 +14,7 @@ enum HealthDataSection {
   medications,
   appointments,
   exams,
+  treatment,
 }
 
 class DailyHealthAggregate {

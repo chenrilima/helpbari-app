@@ -10,7 +10,8 @@ typedef HasAppointmentCutoverMirror = bool Function();
 Future<void> _noop() async {}
 bool _noMirror() => false;
 
-class DriftPrimaryAppointmentRepository implements AppointmentRepository {
+class DriftPrimaryAppointmentRepository
+    implements AppointmentRepository, AppointmentRangeRepository {
   const DriftPrimaryAppointmentRepository({
     required Future<DriftAppointmentLocalDatasource> Function() drift,
     required LocalAppointmentDatasource fallback,
@@ -49,6 +50,17 @@ class DriftPrimaryAppointmentRepository implements AppointmentRepository {
       return (await _fallback.getAll()).map((e) => e.toEntity()).toList();
     }
   }
+
+  @override
+  Future<List<Appointment>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => (await (await _resolve()).getByPeriod(
+    startInclusive,
+    endExclusive,
+    limit: limit,
+  )).map((dto) => dto.toEntity()).toList();
 
   Future<void> _save(Appointment value) async => (await _resolve()).save(
     AppointmentDto.fromEntity(value, now: DateTime.now()),

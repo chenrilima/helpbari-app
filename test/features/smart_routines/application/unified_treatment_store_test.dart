@@ -127,6 +127,36 @@ void main() {
     );
   });
 
+  test('active catalog returns only the latest plan revision', () async {
+    const treatmentId = '51111111-1111-4111-8111-111111111111';
+    await store.save(
+      kind: TreatmentSpecialization.medication,
+      value: const TreatmentProjection(
+        id: treatmentId,
+        name: 'Medication A',
+        hour: 8,
+        minute: 0,
+        dosage: '10 mg',
+      ),
+    );
+    await store.save(
+      kind: TreatmentSpecialization.medication,
+      value: const TreatmentProjection(
+        id: treatmentId,
+        name: 'Medication A',
+        hour: 9,
+        minute: 0,
+        dosage: '20 mg',
+      ),
+    );
+
+    final catalog = await store.list(TreatmentSpecialization.medication);
+
+    expect(catalog, hasLength(1));
+    expect(catalog.single.hour, 9);
+    expect(catalog.single.dosage, '20 mg');
+  });
+
   test(
     'clinical date lookup is timezone-safe and pause blocks an event',
     () async {

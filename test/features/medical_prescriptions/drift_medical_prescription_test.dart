@@ -46,6 +46,32 @@ void main() {
       contains('medical_prescriptions_user_date_idx'),
     );
   });
+
+  test(
+    'review projection counts distinct prescriptions and isolates user',
+    () async {
+      final userA = _local(database, 'user-a');
+      final userB = _local(database, 'user-b');
+      final pending = _value('user-a').copyWith(
+        status: MedicalPrescriptionStatus.requiresReview,
+        items: [
+          _value('user-a').items.single.copyWith(
+            reviewStatus: PrescriptionReviewStatus.pending,
+          ),
+        ],
+      );
+      await userA.save(pending);
+      await userB.save(
+        _value(
+          'user-b',
+        ).copyWith(status: MedicalPrescriptionStatus.requiresReview),
+      );
+
+      expect(await userA.countRequiringReview(), 1);
+      expect(await userB.countRequiringReview(), 1);
+      expect(await userA.getLimited(limit: 1), hasLength(1));
+    },
+  );
 }
 
 DriftMedicalPrescriptionLocalDatasource _local(AppDatabase db, String user) =>

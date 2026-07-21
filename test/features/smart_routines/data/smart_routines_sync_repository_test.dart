@@ -74,43 +74,39 @@ void main() {
     expect(remote.upserted, isEmpty);
   });
 
-  test('push never overwrites a divergent remote schedule revision', () async {
-    final timestamp = DateTime.utc(2026, 7, 20, 12);
-    final local = _FakeLocal([
-      SmartRoutineLocalRecord('routine_schedules', {
-        ..._remoteRow('s1', userId, timestamp, routineId: 'r1'),
-        'plan_id': 'p1',
-        'rule': const {'schemaVersion': 1, 'type': 'dailyAtTimes'},
-        'sync_status': 'pendingUpdate',
-      }),
-    ]);
-    final remote = _FakeRemote()
-      ..pages['routine_schedules'] = [
-        {
-          ..._remoteRow(
-            's1',
-            userId,
-            timestamp.subtract(const Duration(hours: 1)),
-            routineId: 'r1',
-          ),
+  test(
+    'push reconciles without overwriting a remote schedule revision',
+    () async {
+      final timestamp = DateTime.utc(2026, 7, 20, 12);
+      final local = _FakeLocal([
+        SmartRoutineLocalRecord('routine_schedules', {
+          ..._remoteRow('s1', userId, timestamp, routineId: 'r1'),
           'plan_id': 'p1',
-          'rule': const {'schemaVersion': 1, 'type': 'asNeeded'},
-        },
-      ];
-    final repository = _repository(local, remote, userId);
+          'rule': const {'schemaVersion': 1, 'type': 'dailyAtTimes'},
+          'sync_status': 'pendingUpdate',
+        }),
+      ]);
+      final remote = _FakeRemote()
+        ..pages['routine_schedules'] = [
+          {
+            ..._remoteRow(
+              's1',
+              userId,
+              timestamp.subtract(const Duration(hours: 1)),
+              routineId: 'r1',
+            ),
+            'plan_id': 'p1',
+            'rule': const {'schemaVersion': 1, 'type': 'asNeeded'},
+          },
+        ];
+      final repository = _repository(local, remote, userId);
 
-    await expectLater(
-      repository.push((await repository.pendingOperations()).single),
-      throwsA(
-        isA<StateError>().having(
-          (error) => error.message,
-          'message',
-          'routine_schedules_payload_conflict',
-        ),
-      ),
-    );
-    expect(remote.upserted, isEmpty);
-  });
+      await repository.push((await repository.pendingOperations()).single);
+
+      expect(remote.upserted, isEmpty);
+      expect(remote.upserted, isEmpty);
+    },
+  );
 
   test(
     'pull paginates equal timestamps and applies one ordered batch',
@@ -146,7 +142,7 @@ void main() {
     },
   );
 
-  test('does not overwrite a divergent pending local payload', () async {
+  test('pull preserves a divergent pending local payload', () async {
     final timestamp = DateTime.utc(2026, 7, 20, 12);
     final local = _FakeLocal([
       SmartRoutineLocalRecord('smart_routines', {
@@ -161,9 +157,42 @@ void main() {
       ];
     final repository = _repository(local, remote, userId);
 
-    await expectLater(repository.pull(), throwsA(isA<StateError>()));
+    expect(await repository.pull(), isEmpty);
     expect(local.applyCalls, 0);
   });
+
+  test(
+    'timestamp precision alone does not conflict with pending local data',
+    () async {
+      final localTime = DateTime.utc(2026, 7, 20, 12);
+      final remoteTime = localTime.add(const Duration(microseconds: 123456));
+      final local = _FakeLocal([
+        SmartRoutineLocalRecord('smart_routines', {
+          ..._remoteRow('r1', userId, localTime),
+          'category': 'medication',
+          'display_name': 'Remédio',
+          'status': 'active',
+          'source': 'manual',
+          'sync_status': 'pendingUpdate',
+        }),
+      ]);
+      final remote = _FakeRemote()
+        ..pages['smart_routines'] = [
+          {
+            ..._remoteRow('r1', userId, remoteTime),
+            'category': 'medication',
+            'display_name': 'Remédio',
+            'status': 'active',
+            'source': 'manual',
+          },
+        ];
+      final repository = _repository(local, remote, userId);
+
+      final operations = await repository.pull();
+
+      expect(operations, hasLength(1));
+    },
+  );
 
   test('real Drift applies rows and cursor in the same transaction', () async {
     final database = AppDatabase(NativeDatabase.memory());
@@ -174,6 +203,7 @@ void main() {
     );
     final timestamp = DateTime.utc(2026, 7, 20, 12);
     const routineId = '20000000-0000-4000-8000-000000000001';
+    const planId = '30000000-0000-4000-8000-000000000001';
 
     await datasource.applyRemoteBatch(
       [
@@ -192,14 +222,44 @@ void main() {
           'updated_at': timestamp.toIso8601String(),
           'deleted_at': null,
         }),
+        SmartRoutineLocalRecord('routine_plans', {
+          'id': planId,
+          'user_id': userId,
+          'routine_id': routineId,
+          'revision': 1,
+          'category': 'vitamin',
+          'mode': 'scheduled',
+          'duration_type': 'continuous',
+          'effective_from': '2026-07-20',
+          'effective_until': null,
+          'dose_value': '',
+          'dose_unit': '',
+          'dose_original_text': '',
+          'route': null,
+          'clinical_instructions': null,
+          'activated_at': null,
+          'replaced_at': null,
+          'previous_plan_id': null,
+          'provenance_origin': 'manual',
+          'validation_status': 'confirmed',
+          'provenance_prescription_id': null,
+          'provenance_prescription_item_id': null,
+          'provenance_document_id': null,
+          'provenance_professional_reference': null,
+          'temporal_precision': 'exact',
+          'created_at': timestamp.toIso8601String(),
+          'updated_at': timestamp.toIso8601String(),
+          'deleted_at': null,
+        }),
       ],
-      {'smart_routines': timestamp},
+      {'smart_routines': timestamp, 'routine_plans': timestamp},
     );
 
     expect(
       await database.smartRoutineDao.getRoutine(userId, routineId),
       isNotNull,
     );
+    expect(await database.smartRoutineDao.getPlan(userId, planId), isNotNull);
     expect(
       (await database.smartRoutineDao.getSyncCursor(
         userId,
@@ -207,6 +267,37 @@ void main() {
       ))?.toUtc(),
       timestamp,
     );
+  });
+
+  test('real Drift pending rows serialize Unix millisecond dates', () async {
+    final database = AppDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final timestamp = DateTime.utc(2026, 7, 20, 12);
+    const routineId = '20000000-0000-4000-8000-000000000003';
+    await database
+        .into(database.smartRoutineRecords)
+        .insert(
+          SmartRoutineRecordsCompanion.insert(
+            id: routineId,
+            userId: userId,
+            createdAt: timestamp,
+            updatedAt: timestamp,
+            syncStatus: 'pendingCreate',
+            category: 'medication',
+            displayName: 'Remédio',
+            status: 'active',
+            source: 'prescription',
+          ),
+        );
+    final datasource = DriftSmartRoutineDatasource(
+      dao: database.smartRoutineDao,
+      userId: userId,
+    );
+
+    final pending = await datasource.pendingSync();
+
+    expect(pending.single.row['created_at'], timestamp.toIso8601String());
+    expect(pending.single.row['updated_at'], timestamp.toIso8601String());
   });
 
   test(

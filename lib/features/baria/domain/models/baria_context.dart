@@ -25,6 +25,7 @@ class BariaContext {
     this.relevantNotifications = const <String>[],
     this.homeInsights = const <String>[],
     this.treatment,
+    this.intelligence,
   });
 
   final String userId;
@@ -38,14 +39,21 @@ class BariaContext {
   final List<String> relevantNotifications;
   final List<String> homeInsights;
   final BariaTreatmentContext? treatment;
+  final TodayDashboardReadModel? intelligence;
 
   bool get hasAnyData =>
-      today != null || week != null || month != null || report != null;
+      intelligence != null ||
+      today != null ||
+      week != null ||
+      month != null ||
+      report != null;
   DailyHealthAggregate? get todayData => today?.today;
   DateTime? get lastSyncAt => syncState.lastSyncAt;
   int? get pendingOfflineOperations => syncState.lastResult?.errors.length;
   String? get userName => today?.profile?.name ?? report?.profile?.name;
-  int? get healthScore => todayData?.healthScore.hasData == true
+  int? get healthScore => intelligence?.healthScore?.hasData == true
+      ? intelligence?.healthScore?.score
+      : todayData?.healthScore.hasData == true
       ? todayData?.healthScore.score
       : null;
   Profile? get userSummary => today?.profile ?? report?.profile;

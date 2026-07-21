@@ -105,7 +105,7 @@ class SettingsViewModel extends Notifier<SettingsState> {
 
   void _invalidateConsumers() {
     ref.invalidate(dailyWaterGoalProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(waterChartSeriesProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(medicalReportUseCasesProvider);

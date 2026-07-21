@@ -216,7 +216,7 @@ class ExamViewModel extends Notifier<ExamState> {
 
   void _afterCommit() {
     ref.invalidate(examUseCasesProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);

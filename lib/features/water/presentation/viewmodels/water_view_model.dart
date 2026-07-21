@@ -92,7 +92,7 @@ class WaterViewModel extends Notifier<WaterState> {
       _logger.info(log);
       await loadHistory();
       ref.invalidate(waterUseCasesProvider);
-      ref.invalidate(homeViewModelProvider);
+      ref.invalidate(todayDashboardProvider);
       ref.invalidate(waterChartSeriesProvider);
       ref.invalidate(healthScoreChartSeriesProvider);
       ref.invalidate(healthPeriodAggregateProvider);

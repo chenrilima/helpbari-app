@@ -46,6 +46,35 @@ void main() {
   );
 
   test(
+    'range query is end-exclusive and latest is independently limited',
+    () async {
+      final datasource = DriftWeightLocalDatasource(
+        dao: database.weightDao,
+        clock: _FixedClock(now),
+        userId: 'user-1',
+      );
+      await datasource.save(
+        _dto(now, id: 'start', recordedAt: DateTime(2026, 7, 1)),
+      );
+      await datasource.save(
+        _dto(now, id: 'middle', recordedAt: DateTime(2026, 7, 2)),
+      );
+      await datasource.save(
+        _dto(now, id: 'end', recordedAt: DateTime(2026, 7, 3)),
+      );
+
+      final values = await datasource.getByPeriod(
+        DateTime(2026, 7, 1),
+        DateTime(2026, 7, 3),
+        limit: 10,
+      );
+
+      expect(values.map((value) => value.id), ['middle', 'start']);
+      expect((await datasource.getLatest())?.id, 'end');
+    },
+  );
+
+  test(
     'latest updatedAt wins and remote application is transactional',
     () async {
       final datasource = DriftWeightLocalDatasource(
@@ -67,20 +96,24 @@ void main() {
   );
 }
 
-WeightRecordDto _dto(DateTime updatedAt, {double weight = 90}) =>
-    WeightRecordDto(
-      id: 'weight-1',
-      weight: weight,
-      recordedAt: DateTime.utc(2026, 7, 12),
-      notes: 'ok',
-      syncMetadata: SyncMetadata(
-        id: 'weight-1',
-        userId: 'user-1',
-        createdAt: DateTime.utc(2026, 7, 1),
-        updatedAt: updatedAt,
-        syncStatus: SyncStatus.pendingCreate,
-      ),
-    );
+WeightRecordDto _dto(
+  DateTime updatedAt, {
+  double weight = 90,
+  String id = 'weight-1',
+  DateTime? recordedAt,
+}) => WeightRecordDto(
+  id: id,
+  weight: weight,
+  recordedAt: recordedAt ?? DateTime.utc(2026, 7, 12),
+  notes: 'ok',
+  syncMetadata: SyncMetadata(
+    id: id,
+    userId: 'user-1',
+    createdAt: DateTime.utc(2026, 7, 1),
+    updatedAt: updatedAt,
+    syncStatus: SyncStatus.pendingCreate,
+  ),
+);
 
 class _FixedClock implements ClockService {
   const _FixedClock(this.value);

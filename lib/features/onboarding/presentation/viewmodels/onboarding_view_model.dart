@@ -35,6 +35,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       if (disposed != null && !disposed.isCompleted) disposed.complete();
     });
     final user = ref.watch(authSessionProvider);
+    final completed = user != null && _useCases.hasCompletedForUser(user.id);
     final consumed = user != null && _useCases.hasConsumedDraft(user.id);
     final resume = _useCases
         .getResumeStep(user?.id)
@@ -45,7 +46,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
     if (user != null) Future.microtask(refreshForSession);
     return OnboardingState(
       introductionCompleted: _useCases.hasCompletedIntroduction(),
-      userCompleted: false,
+      userCompleted: completed,
       isAuthenticated: user != null,
       draft: consumed
           ? const OnboardingProfileDraft()
@@ -70,8 +71,10 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       return;
     }
     final userId = user.id;
+    final locallyCompleted = _useCases.hasCompletedForUser(userId);
     state = state.copyWith(
       isAuthenticated: true,
+      userCompleted: locallyCompleted,
       isResolvingSession: true,
       resolutionFailed: false,
       clearError: true,
@@ -89,7 +92,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       final hasConsent = await ref
           .read(privacyUseCasesProvider)
           .hasCurrentConsent();
-      if (profile != null && hasConsent) {
+      if ((profile != null || locallyCompleted) && hasConsent) {
         await _useCases.completeForUser(userId);
         await _useCases.markDraftConsumed(userId);
         await _useCases.clearDraft(userId);
@@ -129,14 +132,14 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         isAuthenticated: true,
         userCompleted: false,
         isResolvingSession: false,
-        hasProfile: profile != null,
+        hasProfile: profile != null || locallyCompleted,
         hasCurrentLegalConsent: hasConsent,
         resolutionFailed: false,
         draft: draft.copyWith(
           termsAccepted: false,
           privacyPolicyAccepted: false,
         ),
-        currentStep: profile != null && !hasConsent
+        currentStep: (profile != null || locallyCompleted) && !hasConsent
             ? OnboardingStep.documents
             : OnboardingStep.values[resume],
       );
@@ -145,7 +148,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       if (ref.read(authSessionProvider)?.id != userId) return;
       state = state.copyWith(
         isAuthenticated: true,
-        userCompleted: false,
+        userCompleted: locallyCompleted,
         isResolvingSession: false,
         resolutionFailed: true,
         errorMessage: PresentationErrorMapper.message(
@@ -284,7 +287,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
     ref.invalidate(dailyWaterGoalProvider);
     ref.invalidate(profileViewModelProvider);
     ref.invalidate(settingsViewModelProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(waterViewModelProvider);
     ref.invalidate(weightUseCasesProvider);
     ref.invalidate(weightViewModelProvider);

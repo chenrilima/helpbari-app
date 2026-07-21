@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/services/service_providers.dart';
 import '../../../appointments/presentation/providers/appointment_use_cases_provider.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../meals/presentation/providers/meal_use_cases_provider.dart';
 import '../../../medications/presentation/providers/medication_use_cases_provider.dart';
 import '../../../medical_exams/presentation/providers/medical_exam_use_cases_provider.dart';
@@ -26,6 +27,10 @@ final medicalReportRepositoryProvider = Provider<MedicalReportRepository>((
 });
 
 final medicalReportUseCasesProvider = Provider<MedicalReportUseCases>((ref) {
+  final userId = ref.watch(authSessionProvider)?.id;
+  if (userId == null) {
+    throw StateError('Authenticated user is required for Medical Reports.');
+  }
   return MedicalReportUseCases(
     repository: ref.read(medicalReportRepositoryProvider),
     profileUseCases: ref.read(profileUseCasesProvider),
@@ -41,6 +46,7 @@ final medicalReportUseCasesProvider = Provider<MedicalReportUseCases>((ref) {
     dashboardUseCases: ref.read(healthDashboardUseCasesProvider),
     prescriptionUseCases: ref.read(medicalPrescriptionUseCasesProvider),
     treatment: () => ref.read(treatmentAdherenceQueryServiceProvider.future),
+    homeIntelligence: () => ref.read(todayDashboardProvider.future),
   );
 });
 

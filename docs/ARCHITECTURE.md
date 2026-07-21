@@ -208,3 +208,18 @@ lógico anterior a novas escritas.
 O rollout usa flags persistidas e cutover por usuário. Sync remoto de Smart
 Routines permanece independente do cutover local e começa desabilitado até a
 migration remota ser confirmada. Consulte `docs/UNIFIED_TREATMENT_ENGINE.md`.
+
+## Home Intelligence Platform
+
+A Home é uma projeção local, read-only e reconstruível. Ela compõe read models
+canônicos por meio de `HomeIntelligenceQueryFacade`, sem criar nova fonte
+clínica, tabela remota ou mecanismo de sync. Smart Routines permanece a
+autoridade de tratamento; Notifications são projeções e não são fonte da
+agenda.
+
+Home, Reports, Health Score e BarIA compartilham coverage, freshness, origem e
+fórmulas versionadas. BarIA recebe contexto minimizado e o motor de insights é
+determinístico, com linguagem não prescritiva. Consulte
+`docs/HOME_INTELLIGENCE_PLATFORM.md`.
+
+Feature Flags não fazem parte da Macro 3 e permanecem reservadas à Macro 6.

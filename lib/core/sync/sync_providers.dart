@@ -7,6 +7,7 @@ import '../supabase/supabase_client_provider.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/charts/presentation/providers/chart_series_providers.dart';
 import '../../features/home/presentation/providers/home_view_model_provider.dart';
+import '../../features/home/application/home_sync_invalidation_policy.dart';
 import '../../features/settings/data/datasources/drift_settings_local_datasource.dart';
 import '../../features/settings/data/datasources/settings_supabase_datasource.dart';
 import '../../features/settings/data/repositories/settings_sync_repository.dart';
@@ -66,10 +67,10 @@ import '../../features/medical_prescriptions/data/repositories/prescription_plat
 import '../../features/smart_routines/data/datasources/drift_smart_routine_datasource.dart';
 import '../../features/smart_routines/data/datasources/smart_routine_supabase_datasource.dart';
 import '../../features/smart_routines/data/repositories/smart_routines_sync_repository.dart';
-import '../../features/smart_routines/presentation/providers/unified_treatment_providers.dart';
 import '../../features/progress/presentation/providers/progress_view_model_provider.dart';
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
+import 'sync_result.dart';
 import 'sync_manager.dart';
 import 'sync_state.dart';
 import 'sync_state_repository.dart';
@@ -206,11 +207,6 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       ),
       userId: user.id,
     ),
-    PrescriptionPlatformSyncRepository(
-      database: database,
-      remote: ref.watch(supabaseDatabaseProvider),
-      userId: user.id,
-    ),
     BioimpedanceSyncRepository(
       local: () async => DriftBioimpedanceLocalDatasource(
         dao: (await ref.read(appDatabaseProvider.future)).bioimpedanceDao,
@@ -230,17 +226,21 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       ),
       userId: user.id,
     ),
-    if (ref.watch(unifiedTreatmentRemoteSyncEnabledProvider).value ?? false)
-      SmartRoutinesSyncRepository(
-        local: () async => DriftSmartRoutineDatasource(
-          dao: (await ref.read(appDatabaseProvider.future)).smartRoutineDao,
-          userId: user.id,
-        ),
-        remote: SmartRoutineSupabaseDatasource(
-          ref.watch(supabaseDatabaseProvider),
-        ),
+    SmartRoutinesSyncRepository(
+      local: () async => DriftSmartRoutineDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).smartRoutineDao,
         userId: user.id,
       ),
+      remote: SmartRoutineSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+    ),
+    PrescriptionPlatformSyncRepository(
+      database: database,
+      remote: ref.watch(supabaseDatabaseProvider),
+      userId: user.id,
+    ),
     SettingsSyncRepository(
       local: () async {
         if (!ref.read(driftAvailableProvider)) {
@@ -286,11 +286,108 @@ final syncEngineProvider = Provider<SyncEngine>((ref) {
   );
 });
 
-final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
-  return () async {
+final syncDataRefreshProvider = Provider<Future<void> Function(SyncResult)>((
+  ref,
+) {
+  return (result) async {
+    final currentUserId = ref.read(authSessionProvider)?.id;
+    if (!result.belongsTo(currentUserId)) return;
+    final domains = result.domainsChanged;
+    final homeAreas = const HomeSyncInvalidationPolicy().areasFor(domains);
+    if (domains.isEmpty && !result.fullRefreshRequired) return;
+    if (!result.fullRefreshRequired) {
+      if (domains.contains(SyncDomain.water)) {
+        if (homeAreas.contains(HomeRefreshArea.healthSource)) {
+          ref.invalidate(homeHealthBaseSourceProvider);
+        }
+        ref.invalidate(waterViewModelProvider);
+        ref.invalidate(waterChartSeriesProvider);
+        ref.invalidate(dailyProgressProvider);
+        ref.invalidate(homeInsightsProvider);
+      }
+      if (domains.contains(SyncDomain.weight)) {
+        if (homeAreas.contains(HomeRefreshArea.healthSource)) {
+          ref.invalidate(homeHealthBaseSourceProvider);
+        }
+        ref.invalidate(weightViewModelProvider);
+        ref.invalidate(weightChartSeriesProvider);
+        ref.invalidate(progressTrendProvider);
+        ref.invalidate(dailyProgressProvider);
+        ref.invalidate(homeInsightsProvider);
+      }
+      if (domains.contains(SyncDomain.meals)) {
+        if (homeAreas.contains(HomeRefreshArea.healthSource)) {
+          ref.invalidate(homeHealthBaseSourceProvider);
+        }
+        ref.invalidate(mealViewModelProvider);
+        ref.invalidate(dailyProgressProvider);
+        ref.invalidate(homeInsightsProvider);
+      }
+      if (domains.contains(SyncDomain.appointments)) {
+        if (homeAreas.contains(HomeRefreshArea.appointmentSource)) {
+          ref.invalidate(homeAppointmentSourceProvider);
+        }
+        ref.invalidate(appointmentViewModelProvider);
+        ref.invalidate(todayAgendaProvider);
+        ref.invalidate(nextActionsProvider);
+      }
+      if (domains.contains(SyncDomain.exams)) {
+        ref.invalidate(examViewModelProvider);
+      }
+      if (domains.contains(SyncDomain.treatment)) {
+        if (homeAreas.contains(HomeRefreshArea.treatmentSource)) {
+          ref.invalidate(homeTreatmentSourceProvider);
+        }
+        ref.invalidate(treatmentSummaryProvider);
+        ref.invalidate(todayAgendaProvider);
+        ref.invalidate(nextActionsProvider);
+        ref.invalidate(dailyProgressProvider);
+        ref.invalidate(homeInsightsProvider);
+      }
+      if (domains.contains(SyncDomain.prescriptions)) {
+        if (homeAreas.contains(HomeRefreshArea.prescriptionSource)) {
+          ref.invalidate(homePrescriptionReviewCountProvider);
+        }
+        ref.invalidate(nextActionsProvider);
+        ref.invalidate(homeInsightsProvider);
+      }
+      if (domains.contains(SyncDomain.settings)) {
+        if (homeAreas.contains(HomeRefreshArea.healthSource)) {
+          ref.invalidate(homeHealthBaseSourceProvider);
+        }
+        ref.invalidate(settingsUseCasesProvider);
+        ref.invalidate(settingsViewModelProvider);
+        ref.invalidate(dailyWaterGoalProvider);
+      }
+      if (domains.contains(SyncDomain.profile)) {
+        if (homeAreas.contains(HomeRefreshArea.healthSource)) {
+          ref.invalidate(homeHealthBaseSourceProvider);
+        }
+        ref.invalidate(profileViewModelProvider);
+      }
+      if (domains.contains(SyncDomain.vitamins)) {
+        ref.invalidate(vitaminViewModelProvider);
+      }
+      if (domains.contains(SyncDomain.medications)) {
+        ref.invalidate(medicationViewModelProvider);
+      }
+      if (domains.contains(SyncDomain.bioimpedance)) {
+        ref.invalidate(bioimpedanceViewModelProvider);
+      }
+      if (domains.contains(SyncDomain.documents)) {
+        ref.invalidate(medicalReportViewModelProvider);
+      }
+      if (domains.contains(SyncDomain.privacy)) {
+        ref.invalidate(privacyViewModelProvider);
+      }
+      if (homeAreas.contains(HomeRefreshArea.dashboard)) {
+        ref.invalidate(todayDashboardProvider);
+      }
+      return;
+    }
     ref.invalidate(settingsUseCasesProvider);
     ref.invalidate(dailyWaterGoalProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(healthDashboardUseCasesProvider);
     ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(waterViewModelProvider);
@@ -332,7 +429,6 @@ final syncDataRefreshProvider = Provider<Future<void> Function()>((ref) {
       ref.read(vitaminViewModelProvider.notifier).loadVitamins(),
       ref.read(medicationViewModelProvider.notifier).loadMedications(),
       ref.read(bioimpedanceViewModelProvider.notifier).loadHistory(),
-      ref.read(homeViewModelProvider.notifier).loadHome(),
       ref.read(bariaViewModelProvider.notifier).loadDailyInsight(),
       ref.read(profileViewModelProvider.notifier).loadProfile(),
     ]);

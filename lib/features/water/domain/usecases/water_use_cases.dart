@@ -24,6 +24,22 @@ class WaterUseCases {
     return _repository.getHistory();
   }
 
+  Future<List<WaterRecord>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    int limit = 5000,
+  }) {
+    final repository = _repository;
+    if (repository is! WaterRangeRepository) {
+      throw StateError('Consulta de água por intervalo indisponível.');
+    }
+    return (repository as WaterRangeRepository).getByPeriod(
+      startInclusive,
+      endExclusive,
+      limit: limit,
+    );
+  }
+
   Future<int> getTodayTotalInMl() async {
     final history = await _repository.getHistory();
 

@@ -10,7 +10,8 @@ typedef HasWeightCutoverMirror = bool Function();
 Future<void> _noop() async {}
 bool _noMirror() => false;
 
-class DriftPrimaryWeightRepository implements WeightRepository {
+class DriftPrimaryWeightRepository
+    implements WeightRepository, WeightRangeRepository {
   const DriftPrimaryWeightRepository({
     required Future<DriftWeightLocalDatasource> Function() drift,
     required LocalWeightDatasource fallback,
@@ -51,6 +52,21 @@ class DriftPrimaryWeightRepository implements WeightRepository {
       return (await _fallback.getHistory()).map((e) => e.toEntity()).toList();
     }
   }
+
+  @override
+  Future<List<WeightRecord>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => (await (await _resolve()).getByPeriod(
+    startInclusive,
+    endExclusive,
+    limit: limit,
+  )).map((dto) => dto.toEntity()).toList();
+
+  @override
+  Future<WeightRecord?> getLatest() async =>
+      (await (await _resolve()).getLatest())?.toEntity();
 
   Future<void> _save(WeightRecord record) async => (await _resolve()).save(
     WeightRecordDto.fromEntity(record, now: DateTime.now()),

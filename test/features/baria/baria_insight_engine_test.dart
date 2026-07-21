@@ -1,120 +1,127 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:helpbari/app/router/app_routes.dart';
-import 'package:helpbari/core/health/health.dart';
 import 'package:helpbari/core/sync/sync.dart';
-import 'package:helpbari/features/academy/domain/entities/entities.dart';
 import 'package:helpbari/features/baria/domain/models/models.dart';
 import 'package:helpbari/features/baria/domain/services/baria_insight_engine.dart';
-import 'package:helpbari/features/home/domain/models/models.dart';
+import 'package:helpbari/features/home/domain/models/home_intelligence_models.dart';
+import 'package:helpbari/features/smart_routines/domain/services/treatment_query_models.dart';
 
 void main() {
   const engine = BariaInsightEngine();
 
-  test('generates stable ordered insights with priorities and categories', () {
-    final context = _context(
-      water: 500,
-      goal: 2000,
-      vitamins: 1,
-      medications: 1,
-    );
+  test('adapts canonical insights without recalculating rules', () {
+    final context = _context('user-a');
+    final insights = engine.generate(context);
 
-    final first = engine.generate(context);
-    final second = engine.generate(context);
-
-    expect(
-      first.map((item) => item.id),
-      orderedEquals(second.map((item) => item.id)),
-    );
-    expect(first.first.priority, BariaInsightPriority.critical);
-    expect(first.first.category, BariaInsightCategory.medications);
-    expect(
-      first.map((item) => item.category),
-      containsAll(<BariaInsightCategory>[
-        BariaInsightCategory.water,
-        BariaInsightCategory.vitamins,
-        BariaInsightCategory.medications,
-      ]),
-    );
+    expect(insights, hasLength(1));
+    expect(insights.single.id, 'water:2026-07-21:v1');
+    expect(insights.single.priority, BariaInsightPriority.high);
+    expect(insights.single.category, BariaInsightCategory.water);
+    expect(insights.single.action.destination, '/water');
   });
 
-  test('academy insight exposes the existing article route', () {
-    final insight = engine.generate(_context(article: _article)).single;
-
-    expect(insight.category, BariaInsightCategory.academy);
-    expect(insight.action.label, 'Ler artigo');
-    expect(
-      insight.action.destination,
-      AppRoutes.academyArticlePath('water-basics'),
+  test('rejects a snapshot from another user', () {
+    final original = _context('user-a');
+    final mismatched = BariaContext(
+      userId: 'user-b',
+      generatedAt: original.generatedAt,
+      today: null,
+      week: null,
+      month: null,
+      report: null,
+      syncState: const SyncState(),
+      intelligence: original.intelligence,
     );
-    expect(insight.source, 'Academia Bariátrica');
+
+    expect(engine.generate(mismatched), isEmpty);
   });
 }
 
-BariaContext _context({
-  int? water,
-  int? goal,
-  int? vitamins,
-  int? medications,
-  KnowledgeArticle? article,
-}) {
-  final now = DateTime(2026, 7, 16, 10);
-  return BariaContext(
-    userId: 'user-a',
-    generatedAt: now,
-    today: HealthDashboardAggregate(
-      periodStart: now,
-      periodEnd: now,
-      days: <DailyHealthAggregate>[
-        DailyHealthAggregate(
-          date: now,
-          waterMl: water,
-          waterGoalMl: goal,
-          mealsCount: null,
-          proteinGrams: null,
-          vitaminAdherence: null,
-          medicationAdherence: null,
-          weightKg: null,
-          healthScore: const HealthScoreResult(
-            score: 0,
-            hydrationScore: 0,
-            proteinScore: 0,
-            vitaminsScore: 0,
-            medicationsScore: 0,
-            mealsScore: 0,
-            weightProgressScore: 0,
-            availableWeight: 0,
-          ),
-          pendingVitamins: vitamins,
-          pendingMedications: medications,
-        ),
-      ],
-      unavailableSections: const <HealthDataSection>{},
+BariaContext _context(String userId) {
+  final now = DateTime(2026, 7, 21, 18);
+  final freshness = FreshnessReadModel(generatedAt: now);
+  final status = HomeSectionStatus(
+    state: HomeSectionState.ready,
+    freshness: freshness,
+  );
+  const coverage = CoverageReadModel(state: CoverageState.sufficient, rate: 1);
+  final insight = DeterministicInsightReadModel(
+    id: 'water:2026-07-21:v1',
+    ruleId: 'hydration-pace',
+    ruleVersion: '1',
+    title: 'Hidratação em progresso',
+    message: 'Os registros estão abaixo da progressão da meta.',
+    priority: InsightPriority.high,
+    sources: const ['water'],
+    deduplicationKey: 'water:2026-07-21',
+    expiresAt: DateTime(2026, 7, 22),
+    cooldown: const Duration(hours: 4),
+    coverage: coverage,
+    disclaimer: 'Informação de acompanhamento.',
+    deepLink: '/water',
+  );
+  final treatment = TreatmentSummaryReadModel(
+    due: 0,
+    open: 0,
+    resolved: 0,
+    missed: 0,
+    requiresReview: 0,
+    adherence: null,
+    onTimeAdherence: null,
+    coverage: coverage,
+    origin: TreatmentDataOrigin.smartRoutines,
+    formulaVersion: 'v1',
+    adherenceByCategory: const {},
+    status: status,
+  );
+  final unavailableMetric = ProgressMetricReadModel(
+    id: 'unavailable',
+    label: 'Indisponível',
+    state: ProgressMetricState.unavailable,
+    coverage: const CoverageReadModel(state: CoverageState.unavailable),
+  );
+  final dashboard = TodayDashboardReadModel(
+    userId: userId,
+    clinicalDate: DateTime(2026, 7, 21),
+    timeZone: 'America/Sao_Paulo',
+    nextActions: NextActionsReadModel(actions: const [], status: status),
+    agenda: AgendaReadModel(
+      start: DateTime(2026, 7, 21),
+      end: DateTime(2026, 7, 28),
+      items: const [],
+      status: status,
     ),
+    treatment: treatment,
+    progress: ProgressSummaryReadModel(
+      routine: unavailableMetric,
+      water: unavailableMetric,
+      protein: unavailableMetric,
+      weight: unavailableMetric,
+      healthScore: unavailableMetric,
+      streak: unavailableMetric,
+      status: status,
+    ),
+    quickStats: QuickStatsReadModel(
+      waterLabel: '—',
+      proteinLabel: '—',
+      routineLabel: '—',
+      status: status,
+    ),
+    quickActions: QuickActionsReadModel(
+      fixed: const [],
+      dynamic: const [],
+      status: status,
+    ),
+    insights: InsightFeedReadModel(insights: [insight], status: status),
+    status: status,
+  );
+  return BariaContext(
+    userId: userId,
+    generatedAt: now,
+    today: null,
     week: null,
     month: null,
     report: null,
     syncState: const SyncState(),
-    recommendedArticles: article == null
-        ? const <KnowledgeArticle>[]
-        : <KnowledgeArticle>[article],
+    intelligence: dashboard,
   );
 }
-
-final _article = KnowledgeArticle(
-  id: 'water-basics',
-  title: 'Hidratação após bariátrica',
-  subtitle: '',
-  summary: '',
-  blocks: const <KnowledgeBlock>[],
-  faq: const <KnowledgeFaq>[],
-  tags: const <String>['água'],
-  categoryId: 'water',
-  bariatricPhases: const <String>[],
-  surgeryTypes: const <String>[],
-  readingTimeMinutes: 2,
-  relatedArticleIds: const <String>[],
-  sources: const <KnowledgeReference>[],
-  evidenceLevel: KnowledgeEvidenceLevel.consensus,
-  lastReviewedAt: DateTime(2026),
-  medicalDisclaimer: '',
-);

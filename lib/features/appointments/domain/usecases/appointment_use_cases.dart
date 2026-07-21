@@ -12,6 +12,22 @@ class AppointmentUseCases {
     return _repository.getAll();
   }
 
+  Future<List<Appointment>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    int limit = 500,
+  }) {
+    final repository = _repository;
+    if (repository is! AppointmentRangeRepository) {
+      throw StateError('Consulta de consultas por intervalo indisponível.');
+    }
+    return (repository as AppointmentRangeRepository).getByPeriod(
+      startInclusive,
+      endExclusive,
+      limit: limit,
+    );
+  }
+
   Future<void> save(Appointment appointment) {
     return _repository.save(appointment);
   }

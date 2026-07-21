@@ -17,6 +17,39 @@ class MedicalExamDao extends DatabaseAccessor<AppDatabase>
             ..orderBy([(row) => OrderingTerm.desc(row.performedAt)]))
           .get();
 
+  Future<List<MedicalExam>> getActiveExamsByUserInRange(
+    String userId,
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) =>
+      (select(medicalExams)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.deletedAt.isNull() &
+                  row.performedAt.isBiggerOrEqualValue(startInclusive) &
+                  row.performedAt.isSmallerThanValue(endExclusive),
+            )
+            ..orderBy([(row) => OrderingTerm.desc(row.performedAt)])
+            ..limit(limit))
+          .get();
+
+  Future<List<MedicalExamResult>> getActiveResultsByExamIds(
+    String userId,
+    Iterable<String> examIds,
+  ) {
+    final ids = examIds.toList(growable: false);
+    if (ids.isEmpty) return Future.value(const []);
+    return (select(medicalExamResults)..where(
+          (row) =>
+              row.userId.equals(userId) &
+              row.medicalExamId.isIn(ids) &
+              row.deletedAt.isNull(),
+        ))
+        .get();
+  }
+
   Future<MedicalExam?> getExamByUserAndId(String userId, String id) =>
       (select(medicalExams)
             ..where((row) => row.userId.equals(userId) & row.id.equals(id)))

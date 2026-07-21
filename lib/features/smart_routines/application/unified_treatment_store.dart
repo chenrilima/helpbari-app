@@ -61,33 +61,65 @@ final class UnifiedTreatmentStore {
 
   Future<List<TreatmentProjection>> list(TreatmentSpecialization kind) async {
     await _prepare(requireWrite: false);
-    final routines =
-        await (database.select(database.smartRoutineRecords)..where(
+    final latestPlanIdRows = await database
+        .customSelect(
+          '''
+      SELECT plan.id
+      FROM routine_plan_records AS plan
+      INNER JOIN (
+        SELECT routine_id, MAX(revision) AS revision
+        FROM routine_plan_records
+        WHERE user_id = ? AND category = ? AND deleted_at IS NULL
+        GROUP BY routine_id
+      ) AS latest
+        ON latest.routine_id = plan.routine_id
+       AND latest.revision = plan.revision
+      WHERE plan.user_id = ? AND plan.category = ? AND plan.deleted_at IS NULL
+      ORDER BY plan.routine_id ASC
+      ''',
+          variables: [
+            Variable<String>(userId),
+            Variable<String>(kind.name),
+            Variable<String>(userId),
+            Variable<String>(kind.name),
+          ],
+          readsFrom: {database.routinePlanRecords},
+        )
+        .get();
+    final latestPlanIds = latestPlanIdRows
+        .map((row) => row.read<String>('id'))
+        .toList(growable: false);
+    if (latestPlanIds.isEmpty) return const [];
+    final plans =
+        await (database.select(database.routinePlanRecords)..where(
               (row) =>
                   row.userId.equals(userId) &
-                  row.deletedAt.isNull() &
-                  row.status.isNotValue('archived'),
+                  row.id.isIn(latestPlanIds) &
+                  row.deletedAt.isNull(),
             ))
             .get();
-    if (routines.isEmpty) return const [];
-    final plans =
-        await (database.select(database.routinePlanRecords)
+    final latestPlanByRoutine = {
+      for (final plan in plans) plan.routineId: plan,
+    };
+    final routineIds = latestPlanByRoutine.keys.toList(growable: false);
+    final routines =
+        await (database.select(database.smartRoutineRecords)
               ..where(
                 (row) =>
                     row.userId.equals(userId) &
-                    row.routineId.isIn(routines.map((value) => value.id)) &
-                    row.category.equals(kind.name) &
-                    row.deletedAt.isNull(),
+                    row.id.isIn(routineIds) &
+                    row.deletedAt.isNull() &
+                    row.status.isNotValue('archived'),
               )
-              ..orderBy([(row) => OrderingTerm.desc(row.revision)]))
+              ..orderBy([
+                (row) => OrderingTerm.asc(row.displayName),
+                (row) => OrderingTerm.asc(row.id),
+              ]))
             .get();
-    final latestPlanByRoutine = <String, RoutinePlanRecord>{};
-    for (final plan in plans) {
-      latestPlanByRoutine.putIfAbsent(plan.routineId, () => plan);
-    }
+    if (routines.isEmpty) return const [];
     final planIds = latestPlanByRoutine.values
         .map((value) => value.id)
-        .toList();
+        .toList(growable: false);
     if (planIds.isEmpty) return const [];
     final schedules =
         await (database.select(database.routineScheduleRecords)

@@ -20,6 +20,16 @@ class DriftAppointmentLocalDatasource {
   bool get canSync => userId != anonymousAppointmentUserId;
   Future<List<AppointmentDto>> getAll() async =>
       (await _dao.getActiveByUser(userId)).map(_fromDrift).toList();
+  Future<List<AppointmentDto>> getByPeriod(
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) async => (await _dao.getActiveByUserInRange(
+    userId,
+    startInclusive,
+    endExclusive,
+    limit: limit,
+  )).map(_fromDrift).toList();
   Future<AppointmentDto?> getById(String id) async {
     final row = await _dao.getByUserAndId(userId, id);
     return row == null ? null : _fromDrift(row);

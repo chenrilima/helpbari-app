@@ -59,7 +59,7 @@ class BioimpedanceViewModel extends Notifier<BioimpedanceState> {
 
   Future<void> _refresh() async {
     ref.invalidate(bioimpedanceUseCasesProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(medicalReportUseCasesProvider);
     ref.invalidate(medicalReportViewModelProvider);
     ref.invalidate(bariaViewModelProvider);

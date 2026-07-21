@@ -127,7 +127,7 @@ class MedicationViewModel extends Notifier<MedicationState> {
 
   void _invalidate() {
     ref.invalidate(medicationUseCasesProvider);
-    ref.invalidate(homeViewModelProvider);
+    ref.invalidate(todayDashboardProvider);
     ref.invalidate(healthScoreChartSeriesProvider);
     ref.invalidate(healthPeriodAggregateProvider);
     ref.invalidate(medicationAdherenceChartSeriesProvider);

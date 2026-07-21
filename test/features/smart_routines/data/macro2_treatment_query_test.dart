@@ -7,19 +7,21 @@ import 'package:helpbari/features/smart_routines/application/notification_platfo
 import 'package:helpbari/features/smart_routines/data/repositories/drift_notification_platform_repository.dart';
 import 'package:helpbari/features/smart_routines/data/repositories/drift_treatment_query_service.dart';
 import 'package:helpbari/features/smart_routines/domain/enums/routine_enums.dart';
+import 'package:helpbari/features/smart_routines/domain/services/treatment_query_models.dart';
 
 void main() {
   late AppDatabase database;
   late DriftTreatmentAdherenceQueryService queries;
-  final now = DateTime.now().toUtc();
+  final now = DateTime.utc(2026, 7, 21, 8);
 
   setUp(() async {
     database = AppDatabase(NativeDatabase.memory());
     queries = DriftTreatmentAdherenceQueryService(
       database: database,
       userId: 'user-a',
-      clock: _Clock(now),
+      clock: _Clock(now.add(const Duration(hours: 1))),
     );
+    await _insertRoutine(database, now);
     await _insertOccurrence(database, now);
   });
 
@@ -62,8 +64,37 @@ void main() {
         today.occurrences.single.state,
         OccurrenceAdherenceState.inconsistent,
       );
+      expect(
+        today.occurrences.single.operationalState,
+        TreatmentOccurrenceState.requiresReview,
+      );
     },
   );
+
+  test('taken late counts as taken and is aggregated by category', () async {
+    await _event(
+      database,
+      '71111111-1111-4111-8111-111111111111',
+      'taken',
+      now.add(const Duration(minutes: 45)),
+    );
+
+    final summary = await queries.summary(now, now);
+    final vitamin = summary.byCategory[RoutineCategory.vitamin];
+
+    expect(summary.taken, 1);
+    expect(summary.adherence, 1);
+    expect(vitamin?.taken, 1);
+    expect(vitamin?.adherence, 1);
+  });
+
+  test('open occurrence has explicit operational state', () async {
+    final today = await queries.today(now);
+    expect(
+      today.occurrences.single.operationalState,
+      TreatmentOccurrenceState.open,
+    );
+  });
 
   test(
     'notification command is idempotent and promotes occurrence for sync atomically',
@@ -163,6 +194,22 @@ const _occurrenceId = '11111111-1111-4111-8111-111111111111';
 const _routineId = '21111111-1111-4111-8111-111111111111';
 const _planId = '31111111-1111-4111-8111-111111111111';
 const _scheduleId = '41111111-1111-4111-8111-111111111111';
+
+Future<void> _insertRoutine(AppDatabase database, DateTime now) => database
+    .into(database.smartRoutineRecords)
+    .insert(
+      SmartRoutineRecordsCompanion.insert(
+        id: _routineId,
+        userId: 'user-a',
+        category: RoutineCategory.vitamin.name,
+        displayName: 'Vitamina',
+        status: RoutineStatus.active.name,
+        source: RoutineSource.manual.name,
+        createdAt: now,
+        updatedAt: now,
+        syncStatus: 'synced',
+      ),
+    );
 
 class _Clock implements ClockService {
   const _Clock(this.value);

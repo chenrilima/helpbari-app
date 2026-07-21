@@ -68,13 +68,15 @@ class SyncManager extends Notifier<SyncState> {
     state = persisted.copyWith(
       phase: phase,
       lastResult: result,
-      errorMessage: result.isSuccess ? null : result.errors.first.message,
+      errorMessage: result.isSuccess
+          ? null
+          : 'Não foi possível sincronizar todos os dados.',
       clearError: result.isSuccess,
     );
 
     // A pull may have committed local data even when another repository failed.
     // Always reload Drift consumers after a completed engine pass.
-    await ref.read(syncDataRefreshProvider)();
+    await ref.read(syncDataRefreshProvider)(result);
 
     if (result.isSuccess) {
       AppLogger.info(
@@ -84,8 +86,8 @@ class SyncManager extends Notifier<SyncState> {
     } else {
       for (final error in result.errors) {
         AppLogger.error(
-          'Sync ${error.repositoryKey}/${error.operation}: ${error.message}',
-          error: error.cause,
+          'Sync ${error.repositoryKey}/${error.operation} falhou '
+          '(${error.cause.runtimeType}).',
           stackTrace: error.stackTrace,
         );
       }

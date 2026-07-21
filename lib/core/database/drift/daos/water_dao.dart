@@ -16,6 +16,24 @@ class WaterDao extends DatabaseAccessor<AppDatabase> with _$WaterDaoMixin {
         .get();
   }
 
+  Future<List<WaterRecord>> getActiveByUserInRange(
+    String userId,
+    DateTime startInclusive,
+    DateTime endExclusive, {
+    required int limit,
+  }) =>
+      (select(waterRecords)
+            ..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.deletedAt.isNull() &
+                  row.recordedAt.isBiggerOrEqualValue(startInclusive) &
+                  row.recordedAt.isSmallerThanValue(endExclusive),
+            )
+            ..orderBy([(row) => OrderingTerm.desc(row.recordedAt)])
+            ..limit(limit))
+          .get();
+
   Future<WaterRecord?> getByUserAndId(String userId, String id) {
     return (select(waterRecords)
           ..where((row) => row.userId.equals(userId) & row.id.equals(id)))
