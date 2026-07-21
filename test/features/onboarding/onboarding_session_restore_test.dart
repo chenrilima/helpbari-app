@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/app/bootstrap/sync_bootstrap_provider.dart';
@@ -112,6 +114,24 @@ void main() {
     expect(fixture.state.entryStatus, AppEntryStatus.failure);
     expect(fixture.state.userCompleted, isFalse);
   });
+
+  test(
+    'pending local restoration leaves splash with recoverable failure',
+    () async {
+      final fixture = _Fixture(
+        user: user,
+        profile: null,
+        consent: false,
+        hangProfileRead: true,
+        sessionReadTimeout: const Duration(milliseconds: 10),
+      );
+      await fixture.resolve();
+
+      expect(fixture.state.entryStatus, AppEntryStatus.failure);
+      expect(fixture.state.isResolvingSession, isFalse);
+      expect(fixture.state.userCompleted, isFalse);
+    },
+  );
 }
 
 class _Fixture {
@@ -120,9 +140,12 @@ class _Fixture {
     required Profile? profile,
     required bool consent,
     bool failProfileRead = false,
+    bool hangProfileRead = false,
+    Duration? sessionReadTimeout,
   }) : _profileRepository = _ProfileRepository(
          profile,
          failRead: failProfileRead,
+         hangRead: hangProfileRead,
        ),
        _privacyRepository = _PrivacyRepository(consent),
        repository = LocalOnboardingRepository(_Storage()) {
@@ -130,6 +153,10 @@ class _Fixture {
       overrides: [
         authSessionProvider.overrideWithValue(user),
         syncBootstrapProvider.overrideWithValue(_SyncBootstrap()),
+        if (sessionReadTimeout != null)
+          onboardingSessionReadTimeoutProvider.overrideWithValue(
+            sessionReadTimeout,
+          ),
         onboardingUseCasesProvider.overrideWithValue(
           OnboardingUseCases(repository),
         ),
@@ -221,14 +248,20 @@ class _Storage implements LocalStorageService {
 }
 
 class _ProfileRepository implements ProfileRepository {
-  _ProfileRepository(this.value, {this.failRead = false});
+  _ProfileRepository(
+    this.value, {
+    this.failRead = false,
+    this.hangRead = false,
+  });
   Profile? value;
   final bool failRead;
+  final bool hangRead;
   @override
   Future<void> deleteProfile(Profile profile) async => value = null;
   @override
   Future<Profile?> getProfile() async {
     if (failRead) throw StateError('database unavailable');
+    if (hangRead) return Completer<Profile?>().future;
     return value;
   }
 

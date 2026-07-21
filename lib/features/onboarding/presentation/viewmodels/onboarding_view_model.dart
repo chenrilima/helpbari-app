@@ -80,7 +80,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       clearError: true,
     );
     try {
-      await _useCases.claimPreAuthDraft(userId);
+      await _withSessionReadTimeout(_useCases.claimPreAuthDraft(userId));
       if (waitForRemote) {
         await ref
             .read(syncBootstrapProvider)
@@ -88,14 +88,18 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       }
       if (!ref.mounted) return;
       if (ref.read(authSessionProvider)?.id != userId) return;
-      final profile = await ref.read(profileUseCasesProvider).getProfile();
-      final hasConsent = await ref
-          .read(privacyUseCasesProvider)
-          .hasCurrentConsent();
-      final progressService = await ref.read(
-        onboardingProgressServiceProvider.future,
+      final profile = await _withSessionReadTimeout(
+        ref.read(profileUseCasesProvider).getProfile(),
       );
-      final progress = await progressService.resolve(userId);
+      final hasConsent = await _withSessionReadTimeout(
+        ref.read(privacyUseCasesProvider).hasCurrentConsent(),
+      );
+      final progressService = await _withSessionReadTimeout(
+        ref.read(onboardingProgressServiceProvider.future),
+      );
+      final progress = await _withSessionReadTimeout(
+        progressService.resolve(userId),
+      );
       if (progress.isCurrentCompleted && profile != null && hasConsent) {
         await _useCases.completeForUser(userId);
         await _useCases.markDraftConsumed(userId);
@@ -117,7 +121,9 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       var draft = consumed
           ? const OnboardingProfileDraft()
           : _useCases.getDraft(userId);
-      final settings = await ref.read(settingsUseCasesProvider).getSettings();
+      final settings = await _withSessionReadTimeout(
+        ref.read(settingsUseCasesProvider).getSettings(),
+      );
       draft = draft.copyWith(
         waterGoal: draft.waterGoal.isEmpty
             ? settings.dailyWaterGoalMl.toString()
@@ -164,6 +170,10 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         ),
       );
     }
+  }
+
+  Future<T> _withSessionReadTimeout<T>(Future<T> operation) {
+    return operation.timeout(ref.read(onboardingSessionReadTimeoutProvider));
   }
 
   Future<bool> next() async {

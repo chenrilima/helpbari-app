@@ -70,6 +70,11 @@ class NotificationBootstrapCoordinator {
     if (userId != null) _enqueue(() => _restore(userId));
   }
 
+  void reconcileTreatmentChange() {
+    final userId = _ref.read(authSessionProvider)?.id;
+    if (userId != null) _enqueue(() => _restore(userId));
+  }
+
   Future<void> _restore(String userId) async {
     if (_ref.read(authSessionProvider)?.id != userId) return;
     await _ref.read(syncBootstrapProvider).waitForInitialSync(userId);

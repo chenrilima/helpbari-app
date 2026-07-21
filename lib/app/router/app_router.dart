@@ -28,6 +28,9 @@ import '../../features/medical_exams/presentation/pages/register_medical_exam_pa
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/more/presentation/pages/more_page.dart';
 import '../../features/treatment/presentation/pages/treatment_page.dart';
+import '../../features/treatment/presentation/pages/register_treatment_page.dart';
+import '../../features/treatment/presentation/pages/treatment_detail_page.dart';
+import '../../features/smart_routines/application/unified_treatment_store.dart';
 import '../../features/meals/presentation/pages/register_meal_page.dart';
 import '../../features/medical_reports/presentation/pages/medical_reports_page.dart';
 import '../../features/medical_prescriptions/domain/entities/entities.dart';
@@ -206,6 +209,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.registerTreatment,
+        builder: (_, state) => RegisterTreatmentPage(
+          item: state.extra is TreatmentItemSnapshot
+              ? state.extra! as TreatmentItemSnapshot
+              : null,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.treatmentDetail,
+        builder: (_, state) =>
+            TreatmentDetailPage(item: state.extra! as TreatmentItemSnapshot),
       ),
       GoRoute(
         path: AppRoutes.signUp,

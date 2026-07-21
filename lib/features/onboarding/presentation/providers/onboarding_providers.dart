@@ -17,6 +17,10 @@ import '../../domain/usecases/use_cases.dart';
 import '../states/onboarding_state.dart';
 import '../viewmodels/onboarding_view_model.dart';
 
+final onboardingSessionReadTimeoutProvider = Provider<Duration>(
+  (ref) => const Duration(seconds: 8),
+);
+
 final onboardingRepositoryProvider = Provider<OnboardingRepository>((ref) {
   return LocalOnboardingRepository(ref.watch(localStorageServiceProvider));
 });

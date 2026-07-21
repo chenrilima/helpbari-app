@@ -209,6 +209,13 @@ O rollout usa flags persistidas e cutover por usuário. Sync remoto de Smart
 Routines permanece independente do cutover local e começa desabilitado até a
 migration remota ser confirmada. Consulte `docs/UNIFIED_TREATMENT_ENGINE.md`.
 
+A experiência V1 escreve por uma única intenção de aplicação,
+`TreatmentWriteCommand`. O comando cria ou revisa o agregado canônico e nunca
+expõe tabelas à apresentação. Mudanças de programação geram revisão futura;
+pausa, retomada, conclusão e tombstone preservam planos, ocorrências e eventos
+anteriores. As fachadas Medication/Vitamin permanecem apenas como
+compatibilidade.
+
 ## Home Intelligence Platform
 
 A Home é uma projeção local, read-only e reconstruível. Ela compõe read models
@@ -241,3 +248,10 @@ locais ao dispositivo. Smart Routines fornece exclusivamente as projeções de
 Tratamento; Appointments e horários explicitamente configurados fornecem as
 demais categorias. Um único reconciliador deduplica, atualiza e cancela as
 notificações concretas. Consulte `docs/NOTIFICATIONS_V1.md`.
+
+## Fechamento de Tratamento V1
+
+Detalhe, registro PRN e revisão de conflitos reutilizam
+`UnifiedTreatmentStore`. PRN cria occurrence `adHocAsNeeded` e event append-only
+sem schedule recorrente. Conflitos preservam os events e só são resolvidos por
+corrections explícitas que invalidam a versão rejeitada.

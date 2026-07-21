@@ -1,4 +1,4 @@
-package com.example.helpbari
+package io.helpbari.app
 
 import io.flutter.embedding.android.FlutterActivity
 

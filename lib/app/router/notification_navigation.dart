@@ -9,7 +9,7 @@ String? notificationLocation(LocalNotificationPayload payload) {
     NotificationSource.weight => AppRoutes.weight,
     NotificationSource.vitamin => AppRoutes.treatment,
     NotificationSource.medication => AppRoutes.treatment,
-    NotificationSource.smartRoutineOccurrence => AppRoutes.home,
+    NotificationSource.smartRoutineOccurrence => AppRoutes.treatment,
     NotificationSource.push => null,
   };
   if (route == null) return null;

@@ -41,6 +41,11 @@ Notificações nunca materializam nova recorrência de Medication/Vitamin e nunc
 se tornam fonte de adesão. Ações em background são persistidas no inbox antes
 da conversão em eventos canônicos.
 
+O formulário unificado cria um schedule por horário para que a preferência de
+cada horário permaneça endereçável. Criação, revisão futura, pausa, retomada,
+conclusão e exclusão solicitam reconciliação após o commit local. PRN continua
+sem projeção recorrente.
+
 ## Projeção e reconciliação
 
 O bootstrap reconcilia após login, sync concluído, foreground/resume e troca

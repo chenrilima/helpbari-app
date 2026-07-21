@@ -7,6 +7,7 @@ void main() {
     NotificationSource.appointment: '/appointments',
     NotificationSource.vitamin: '/treatment',
     NotificationSource.medication: '/treatment',
+    NotificationSource.smartRoutineOccurrence: '/treatment',
   }.entries) {
     test('routes ${entry.key.name} payload to its entity list', () {
       final location = notificationLocation(

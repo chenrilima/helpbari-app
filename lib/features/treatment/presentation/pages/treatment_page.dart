@@ -5,13 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
-import '../../../medications/presentation/providers/medication_view_model_provider.dart';
-import '../../../medications/presentation/widgets/medication_tile.dart';
+import '../../../smart_routines/application/unified_treatment_store.dart';
 import '../../../smart_routines/domain/enums/routine_enums.dart';
 import '../../../smart_routines/domain/services/treatment_query_models.dart';
 import '../../../smart_routines/presentation/providers/unified_treatment_providers.dart';
-import '../../../vitamins/presentation/providers/vitamin_view_model_provider.dart';
-import '../../../vitamins/presentation/widgets/vitamin_tile.dart';
+import '../providers/treatment_providers.dart';
 
 class TreatmentPage extends ConsumerStatefulWidget {
   const TreatmentPage({super.key});
@@ -27,7 +25,9 @@ class _TreatmentPageState extends ConsumerState<TreatmentPage> {
   void initState() {
     super.initState();
     _today = _loadToday();
-    Future<void>.microtask(_loadItems);
+    Future<void>.microtask(
+      () => ref.read(treatmentViewModelProvider.notifier).load(),
+    );
   }
 
   Future<TodayTreatmentReadModel> _loadToday() async {
@@ -37,52 +37,26 @@ class _TreatmentPageState extends ConsumerState<TreatmentPage> {
     return service.today(DateTime.now());
   }
 
-  Future<void> _loadItems() async {
-    await ref.read(medicationViewModelProvider.notifier).loadMedications();
-    await ref.read(vitaminViewModelProvider.notifier).loadVitamins();
-  }
-
   Future<void> _refresh() async {
-    await _loadItems();
+    await ref.read(treatmentViewModelProvider.notifier).load();
     if (!mounted) return;
     setState(() => _today = _loadToday());
   }
 
   Future<void> _addItem() async {
-    final route = await HBBottomSheet.show<String>(
-      context,
-      title: 'Adicionar ao tratamento',
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.medication_outlined),
-            title: const HBText('Medicamento'),
-            subtitle: const HBText('Cadastre nome, horário e orientações.'),
-            onTap: () => context.pop(AppRoutes.registerMedication),
-          ),
-          ListTile(
-            leading: const Icon(Icons.local_pharmacy_outlined),
-            title: const HBText('Vitamina ou suplemento'),
-            subtitle: const HBText('Cadastre um item da suplementação.'),
-            onTap: () => context.pop(AppRoutes.registerVitamin),
-          ),
-        ],
-      ),
+    await context.pushAndRefresh<bool>(
+      AppRoutes.registerTreatment,
+      onRefresh: _refresh,
     );
-    if (!mounted || route == null) return;
-    await context.pushAndRefresh<bool>(route, onRefresh: _refresh);
   }
 
   @override
   Widget build(BuildContext context) {
-    final medications = ref.watch(medicationViewModelProvider);
-    final vitamins = ref.watch(vitaminViewModelProvider);
-    final loading = medications.isLoading || vitamins.isLoading;
+    final treatment = ref.watch(treatmentViewModelProvider);
+    final loading = treatment.isLoading;
 
     return HBLoadingOverlay(
-      isLoading:
-          loading && (medications.hasMedications || vitamins.hasVitamins),
+      isLoading: loading && treatment.items.isNotEmpty,
       message: 'Atualizando tratamento...',
       child: HBPage(
         appBar: const HBAppBar(
@@ -122,9 +96,17 @@ class _TreatmentPageState extends ConsumerState<TreatmentPage> {
             ],
           ),
           const HBGap.sm(),
-          if (loading && !medications.hasMedications && !vitamins.hasVitamins)
+          if (loading && treatment.items.isEmpty)
             const HBLoading(message: 'Carregando seus itens...')
-          else if (!medications.hasMedications && !vitamins.hasVitamins)
+          else if (treatment.errorMessage != null && treatment.items.isEmpty)
+            HBEmptyState(
+              title: 'Não foi possível carregar os itens',
+              description: treatment.errorMessage!,
+              icon: Icons.sync_problem_outlined,
+              actionLabel: 'Tentar novamente',
+              onActionPressed: _refresh,
+            )
+          else if (treatment.items.isEmpty)
             HBEmptyState(
               title: 'Nenhum item cadastrado',
               description:
@@ -134,51 +116,27 @@ class _TreatmentPageState extends ConsumerState<TreatmentPage> {
               onActionPressed: _addItem,
             )
           else ...[
-            for (final medication in medications.medications) ...[
-              Semantics(
-                label: 'Medicamento',
-                child: MedicationTile(
-                  medication: medication,
-                  status: medications.statusFor(medication.id),
-                  onTaken: () => ref
-                      .read(medicationViewModelProvider.notifier)
-                      .markAsTaken(medication.id),
-                  onSkipped: () => ref
-                      .read(medicationViewModelProvider.notifier)
-                      .markAsSkipped(medication.id),
-                  onEdit: () async {
-                    await context.push<bool>(
-                      AppRoutes.registerMedication,
-                      extra: medication,
-                    );
-                    await _refresh();
-                  },
-                  onDelete: () => _confirmMedicationDelete(medication.id),
-                ),
-              ),
-              const HBGap.md(),
-            ],
-            for (final vitamin in vitamins.vitamins) ...[
-              Semantics(
-                label: 'Vitamina ou suplemento',
-                child: VitaminTile(
-                  vitamin: vitamin,
-                  status: vitamins.statusFor(vitamin.id),
-                  onTaken: () => ref
-                      .read(vitaminViewModelProvider.notifier)
-                      .markAsTaken(vitamin.id),
-                  onSkipped: () => ref
-                      .read(vitaminViewModelProvider.notifier)
-                      .markAsSkipped(vitamin.id),
-                  onEdit: () async {
-                    await context.push<bool>(
-                      AppRoutes.registerVitamin,
-                      extra: vitamin,
-                    );
-                    await _refresh();
-                  },
-                  onDelete: () => _confirmVitaminDelete(vitamin.id),
-                ),
+            for (final item in treatment.items) ...[
+              _TreatmentItemCard(
+                item: item,
+                onOpen: () async {
+                  await context.push<bool>(
+                    AppRoutes.treatmentDetail,
+                    extra: item,
+                  );
+                  await _refresh();
+                },
+                onEdit: () async {
+                  await context.push<bool>(
+                    AppRoutes.registerTreatment,
+                    extra: item,
+                  );
+                  await _refresh();
+                },
+                onPause: () => _confirmLifecycle(item, _Lifecycle.pause),
+                onResume: () => _confirmLifecycle(item, _Lifecycle.resume),
+                onComplete: () => _confirmLifecycle(item, _Lifecycle.complete),
+                onDelete: () => _confirmLifecycle(item, _Lifecycle.delete),
               ),
               const HBGap.md(),
             ],
@@ -199,29 +157,192 @@ class _TreatmentPageState extends ConsumerState<TreatmentPage> {
     );
   }
 
-  Future<void> _confirmMedicationDelete(String id) async {
+  Future<void> _confirmLifecycle(
+    TreatmentItemSnapshot item,
+    _Lifecycle action,
+  ) async {
+    final (title, message) = switch (action) {
+      _Lifecycle.pause => (
+        'Pausar item?',
+        'As próximas programações serão interrompidas até você retomar. O histórico será preservado.',
+      ),
+      _Lifecycle.resume => (
+        'Retomar item?',
+        'As próximas programações voltarão a aparecer. O período de pausa será preservado.',
+      ),
+      _Lifecycle.complete => (
+        'Concluir item?',
+        'Não serão criadas novas programações. O histórico será preservado.',
+      ),
+      _Lifecycle.delete => (
+        'Excluir item?',
+        'O item será removido da lista. O histórico clínico permanece preservado.',
+      ),
+    };
     final confirmed = await HBDialog.confirm(
       context,
-      title: 'Excluir item?',
-      message:
-          'O item será removido da lista. O histórico clínico permanece preservado.',
+      title: title,
+      message: message,
     );
     if (confirmed != true) return;
-    await ref.read(medicationViewModelProvider.notifier).deleteMedication(id);
+    final notifier = ref.read(treatmentViewModelProvider.notifier);
+    final success = switch (action) {
+      _Lifecycle.pause => await notifier.pause(item.id),
+      _Lifecycle.resume => await notifier.resume(item.id),
+      _Lifecycle.complete => await notifier.complete(item.id),
+      _Lifecycle.delete => await notifier.delete(item.id),
+    };
+    if (!mounted) return;
+    if (!success) {
+      HBSnackBar.error(
+        context,
+        message:
+            ref.read(treatmentViewModelProvider).errorMessage ??
+            'Não foi possível atualizar o item.',
+      );
+    }
     await _refresh();
+  }
+}
+
+enum _Lifecycle { pause, resume, complete, delete }
+
+class _TreatmentItemCard extends StatelessWidget {
+  const _TreatmentItemCard({
+    required this.item,
+    required this.onOpen,
+    required this.onEdit,
+    required this.onPause,
+    required this.onResume,
+    required this.onComplete,
+    required this.onDelete,
+  });
+
+  final TreatmentItemSnapshot item;
+  final VoidCallback onOpen;
+  final VoidCallback onEdit;
+  final VoidCallback onPause;
+  final VoidCallback onResume;
+  final VoidCallback onComplete;
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    container: true,
+    label: '${_category(item.category)}: ${item.name}',
+    child: HBCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            onTap: onOpen,
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(_icon(item.category)),
+            title: HBText(item.name),
+            subtitle: HBText(_summary(item)),
+            trailing: PopupMenuButton<_Lifecycle>(
+              tooltip: 'Ações do item',
+              onSelected: (value) => switch (value) {
+                _Lifecycle.pause => onPause(),
+                _Lifecycle.resume => onResume(),
+                _Lifecycle.complete => onComplete(),
+                _Lifecycle.delete => onDelete(),
+              },
+              itemBuilder: (_) => [
+                if (item.status == RoutineStatus.active)
+                  const PopupMenuItem(
+                    value: _Lifecycle.pause,
+                    child: Text('Pausar'),
+                  ),
+                if (item.status == RoutineStatus.paused)
+                  const PopupMenuItem(
+                    value: _Lifecycle.resume,
+                    child: Text('Retomar'),
+                  ),
+                if (item.status == RoutineStatus.active ||
+                    item.status == RoutineStatus.paused)
+                  const PopupMenuItem(
+                    value: _Lifecycle.complete,
+                    child: Text('Concluir'),
+                  ),
+                const PopupMenuItem(
+                  value: _Lifecycle.delete,
+                  child: Text('Excluir'),
+                ),
+              ],
+            ),
+          ),
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: [
+              Chip(label: Text(_status(item.status))),
+              Chip(label: Text(_duration(item))),
+              if (item.mode == RoutinePlanMode.asNeeded)
+                const Chip(label: Text('Quando necessário')),
+            ],
+          ),
+          const HBGap.sm(),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Wrap(
+              children: [
+                TextButton(
+                  onPressed: onOpen,
+                  child: const Text('Ver detalhes'),
+                ),
+                TextButton.icon(
+                  onPressed: onEdit,
+                  icon: const Icon(Icons.edit_outlined),
+                  label: const Text('Editar'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  static String _summary(TreatmentItemSnapshot item) {
+    if (item.mode == RoutinePlanMode.asNeeded) {
+      return item.dosage ?? 'Uso quando necessário';
+    }
+    final times = item.schedules
+        .map((value) => value.time.toString())
+        .join(', ');
+    return [
+      item.dosage,
+      if (times.isNotEmpty) times,
+    ].whereType<String>().where((value) => value.isNotEmpty).join(' • ');
   }
 
-  Future<void> _confirmVitaminDelete(String id) async {
-    final confirmed = await HBDialog.confirm(
-      context,
-      title: 'Excluir item?',
-      message:
-          'O item será removido da lista. O histórico clínico permanece preservado.',
-    );
-    if (confirmed != true) return;
-    await ref.read(vitaminViewModelProvider.notifier).deleteVitamin(id);
-    await _refresh();
-  }
+  static String _category(RoutineCategory value) => switch (value) {
+    RoutineCategory.medication => 'Medicamento',
+    RoutineCategory.vitamin => 'Vitamina',
+    RoutineCategory.supplement => 'Suplemento',
+    RoutineCategory.other => 'Outro',
+  };
+  static IconData _icon(RoutineCategory value) => switch (value) {
+    RoutineCategory.medication => Icons.medication_outlined,
+    RoutineCategory.vitamin => Icons.local_pharmacy_outlined,
+    RoutineCategory.supplement => Icons.science_outlined,
+    RoutineCategory.other => Icons.more_horiz,
+  };
+  static String _status(RoutineStatus value) => switch (value) {
+    RoutineStatus.active => 'Ativo',
+    RoutineStatus.paused => 'Pausado',
+    RoutineStatus.completed => 'Concluído',
+    RoutineStatus.canceled => 'Cancelado',
+    RoutineStatus.archived => 'Arquivado',
+  };
+  static String _duration(TreatmentItemSnapshot item) =>
+      switch (item.durationType) {
+        PlanDurationType.bounded => 'Período definido',
+        PlanDurationType.continuous => 'Uso contínuo',
+        PlanDurationType.unknown => 'Duração não informada',
+        PlanDurationType.singleDose => 'Uso único',
+      };
 }
 
 class _TodayCard extends StatelessWidget {
