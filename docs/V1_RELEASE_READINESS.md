@@ -142,6 +142,26 @@ fechado**.
   notificações, reboot, câmera e mídia presentes;
 - nenhuma validação foi executada em aparelho físico ou em loja.
 
+### Auditoria de hardening — 21/07/2026
+
+- `flutter analyze`: limpo;
+- `flutter test`: 531 testes aprovados;
+- isolamento de sessão e recuperação de conectividade: implementados e
+  testados deterministicamente;
+- paginação keyset: implementada em seis domínios, ainda incompleta nos
+  agregados clínicos;
+- `supabase migration list`: conexão remota somente leitura bem-sucedida;
+  `20260722` e `20260723` permanecem pendentes;
+- `supabase db lint --linked`: sem erros;
+- RLS runtime: não validada; Docker local indisponível e migrations não foram
+  aplicadas sem confirmação de alvo/backup;
+- conflito ainda depende de `updatedAt` local nos registros mutáveis;
+- novo APK: não gerado, porque os gates obrigatórios de conflito e paginação
+  transversal permanecem abertos.
+
+Classificação desta revisão: **não pronto para gerar novo APK de testes**. O APK
+anterior não constitui evidência para este worktree.
+
 ## Rollback
 
 Não apagar dados. Antes de qualquer escrita nova, o rollout pode voltar à

@@ -60,23 +60,24 @@ class WaterSupabaseDatasource {
   Future<List<WaterRecordDto>> pull({
     required String userId,
     DateTime? updatedAfter,
-  }) {
-    return _database.run(
-      operation: 'select',
-      table: table,
-      request: (query) async {
-        var request = query.select().eq('user_id', userId);
+  }) async => [
+    await for (final page in pullPages(
+      userId: userId,
+      updatedAfter: updatedAfter,
+    ))
+      ...page,
+  ];
 
-        if (updatedAfter != null) {
-          request = request.gt('updated_at', updatedAfter.toIso8601String());
-        }
-
-        final response = await request.order('updated_at');
-
-        return response
-            .map((row) => WaterRecordDto.fromSupabaseRow(row))
-            .toList();
-      },
-    );
-  }
+  Stream<List<WaterRecordDto>> pullPages({
+    required String userId,
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _database
+      .pullUpdatedPages(
+        table: table,
+        userId: userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((rows) => rows.map(WaterRecordDto.fromSupabaseRow).toList());
 }

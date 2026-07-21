@@ -21,19 +21,24 @@ class ExamSupabaseDatasource {
   Future<List<ExamDto>> pull({
     required String userId,
     DateTime? updatedAfter,
-  }) => _database.run(
-    operation: 'select',
-    table: table,
-    request: (query) async {
-      var request = query.select().eq('user_id', userId);
-      if (updatedAfter != null) {
-        request = request.gt(
-          'updated_at',
-          updatedAfter.toUtc().toIso8601String(),
-        );
-      }
-      final rows = await request.order('updated_at');
-      return rows.map(ExamDto.fromSupabaseRow).toList();
-    },
-  );
+  }) async => [
+    await for (final page in pullPages(
+      userId: userId,
+      updatedAfter: updatedAfter,
+    ))
+      ...page,
+  ];
+
+  Stream<List<ExamDto>> pullPages({
+    required String userId,
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _database
+      .pullUpdatedPages(
+        table: table,
+        userId: userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((rows) => rows.map(ExamDto.fromSupabaseRow).toList());
 }

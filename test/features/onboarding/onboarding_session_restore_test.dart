@@ -222,7 +222,11 @@ Profile _profile() => Profile(
 
 class _SyncBootstrap implements SyncBootstrapCoordinator {
   @override
+  Future<void> dispose() async {}
+  @override
   void initialize() {}
+  @override
+  void onBackgrounded() {}
   @override
   void onResumed() {}
   @override

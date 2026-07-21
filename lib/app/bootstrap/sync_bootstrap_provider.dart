@@ -9,6 +9,7 @@ import '../../features/auth/presentation/providers/auth_providers.dart';
 final syncBootstrapProvider = Provider<SyncBootstrapCoordinator>((ref) {
   final coordinator = SyncBootstrapCoordinator(ref);
   coordinator.initialize();
+  ref.onDispose(coordinator.dispose);
   return coordinator;
 });
 
@@ -17,11 +18,14 @@ class SyncBootstrapCoordinator {
 
   final Ref _ref;
   final Map<String, Future<void>> _initialSyncs = {};
+  late final SyncConnectivityTrigger _connectivity;
   bool _initialized = false;
 
   void initialize() {
     if (_initialized) return;
     _initialized = true;
+    _connectivity = SyncConnectivityTrigger(onRecovered: retry)
+      ..listen(_ref.read(syncConnectivityChangesProvider));
 
     _ref.listen(authSessionProvider, (previous, next) {
       if (next == null) {
@@ -87,7 +91,12 @@ class SyncBootstrapCoordinator {
   }
 
   void onResumed() {
+    _connectivity.setForeground(true);
     final userId = _ref.read(authSessionProvider)?.id;
     if (userId != null) unawaited(retry());
   }
+
+  void onBackgrounded() => _connectivity.setForeground(false);
+
+  Future<void> dispose() => _connectivity.dispose();
 }

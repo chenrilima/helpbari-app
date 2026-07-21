@@ -10,6 +10,7 @@ typedef AppointmentAfterRemoteCommit =
 class AppointmentSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
         AtomicRemoteSyncRepository {
   const AppointmentSyncRepository({
@@ -49,6 +50,17 @@ class AppointmentSyncRepository
         userId: _userId,
         updatedAfter: updatedAfter,
       )).map(_operation).toList();
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _remote
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_operation).toList(growable: false));
   @override
   Future<void> applyRemote(SyncOperation operation) async {
     final dto = _dto(operation);

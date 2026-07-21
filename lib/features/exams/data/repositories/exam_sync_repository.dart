@@ -6,6 +6,7 @@ import '../dtos/exam_dto.dart';
 class ExamSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
         AtomicRemoteSyncRepository {
   const ExamSyncRepository({
@@ -43,6 +44,17 @@ class ExamSyncRepository
         userId: _userId,
         updatedAfter: updatedAfter,
       )).map(_operation).toList();
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _remote
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_operation).toList(growable: false));
   @override
   Future<void> applyRemote(SyncOperation o) async =>
       (await _local()).applyRemote(_dto(o));

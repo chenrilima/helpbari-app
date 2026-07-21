@@ -6,6 +6,7 @@ import '../dtos/water_record_dto.dart';
 class WaterSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
         AtomicRemoteSyncRepository {
   const WaterSyncRepository({
@@ -73,6 +74,18 @@ class WaterSyncRepository
 
     return records.map(_operationFromDto).toList();
   }
+
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _supabaseDatasource
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_operationFromDto).toList(growable: false));
 
   @override
   Future<void> applyRemote(SyncOperation operation) async {

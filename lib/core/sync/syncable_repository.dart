@@ -24,6 +24,13 @@ abstract interface class RepositorySyncCursor {
   Future<void> saveSuccessfulSync(DateTime completedAt);
 }
 
+abstract interface class PagedPullSyncRepository {
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  });
+}
+
 abstract interface class AtomicRemoteSyncRepository {
   Future<void> applyRemoteAndMarkSynced(
     SyncOperation operation, {

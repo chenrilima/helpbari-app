@@ -99,3 +99,22 @@ ambiente, usuário de teste, data e resultado. Não usar dados pessoais reais.
 
 Zero crash, bloqueio, vazamento, perda local, resolução destrutiva automática,
 notificação órfã/duplicada ou divergência do Product Freeze.
+
+## Cenários obrigatórios adicionados pelo hardening
+
+1. Inicie pull da conta A, faça logout/login B antes da resposta e confirme que
+   nenhuma linha, cursor, erro ou refresh de A é aplicado em B.
+2. Repita a troca durante push e durante backoff; A não pode ser marcada como
+   sincronizada/falha depois da revogação.
+3. Grave offline, restaure a rede mantendo o app em foreground e confirme um
+   único sync após debounce; evento de transporte sem internet deve apenas
+   falhar pelo timeout normal e preservar a fila.
+4. Com mais de 1.000 linhas e timestamps empatados, valide todas as páginas,
+   tombstones, falha intermediária e retomada sem avanço prematuro do cursor.
+5. Execute A→B→A com anexos, manifestos de notificação, Home/BarIA, onboarding e
+   sync state. Nenhum snapshot ou arquivo de outra conta pode aparecer.
+6. Upgrade offline de banco antigo com dados legacy/new/mixed, tombstones e
+   pendências; reconecte e confirme convergência sem reset ou duplicata.
+
+Esses cenários de dispositivo/integração ainda não foram executados nesta
+auditoria; testes unitários não os substituem.

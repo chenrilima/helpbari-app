@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../services/service_providers.dart';
 import '../database/drift/drift_database_providers.dart';
@@ -74,10 +75,17 @@ import '../../features/progress/presentation/providers/progress_view_model_provi
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
 import 'sync_result.dart';
+import 'sync_session.dart';
 import 'sync_manager.dart';
 import 'sync_state.dart';
 import 'sync_state_repository.dart';
 import 'syncable_repository.dart';
+
+final syncConnectivityChangesProvider = Provider<Stream<bool>>((ref) {
+  return Connectivity().onConnectivityChanged.map(
+    (results) => results.any((result) => result != ConnectivityResult.none),
+  );
+});
 
 final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
   final user = ref.watch(authSessionProvider);
@@ -283,6 +291,16 @@ final syncAppVersionProvider = Provider<String>((ref) {
 
 final syncUserIdProvider = Provider<String?>((ref) {
   return ref.watch(authSessionProvider)?.id;
+});
+
+final syncSessionRegistryProvider = Provider<SyncSessionRegistry>((ref) {
+  final registry = SyncSessionRegistry();
+  ref.listen(
+    authSessionProvider,
+    (previous, next) => registry.activate(next?.id),
+    fireImmediately: true,
+  );
+  return registry;
 });
 
 final syncStateRepositoryProvider = Provider<SyncStateRepository>((ref) {

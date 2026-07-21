@@ -7,6 +7,7 @@ import '../../domain/value_objects/value_objects.dart';
 class MealSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
         AtomicRemoteSyncRepository {
   const MealSyncRepository({
@@ -43,6 +44,17 @@ class MealSyncRepository
         userId: _userId,
         updatedAfter: updatedAfter,
       )).map(_operation).toList();
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _remote
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_operation).toList(growable: false));
   @override
   Future<void> applyRemote(SyncOperation operation) async =>
       (await _local()).applyRemote(_dto(operation));

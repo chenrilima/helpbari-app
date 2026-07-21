@@ -255,3 +255,20 @@ Detalhe, registro PRN e revisão de conflitos reutilizam
 `UnifiedTreatmentStore`. PRN cria occurrence `adHocAsNeeded` e event append-only
 sem schedule recorrente. Conflitos preservam os events e só são resolvidos por
 corrections explícitas que invalidam a versão rejeitada.
+
+## Confiabilidade do Sync — auditoria de 21/07/2026
+
+`SyncManager` captura uma geração de sessão por execução. `SyncEngine` verifica
+essa geração antes e depois de cada efeito relevante; respostas, retries e
+cursores da conta revogada tornam-se inofensivos. Um novo usuário recebe um
+passe serializado próprio, sem compartilhar o Future antigo.
+
+Recuperação de transporte em foreground é um gatilho com debounce, não prova de
+internet. Timeout, retry e backoff continuam centralizados no mesmo engine.
+Water, Weight, Meals, Appointments, Exams e Bioimpedance usam pull keyset
+`(updated_at,id)` em páginas. Os agregados restantes ainda precisam aderir ao
+contrato; consulte `docs/SYNC_RELIABILITY_V1.md`.
+
+Não há worker Android periódico nem versão monotônica confirmada pelo servidor.
+Esses limites são explícitos e impedem promover o candidato enquanto conflito
+por clock e paginação transversal não forem concluídos.
