@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/database/drift/app_database.dart';
+import 'package:helpbari/core/services/notifications/app_local_notification_service.dart';
+import 'package:helpbari/core/services/notifications/local_notification_payload.dart';
 import 'package:helpbari/features/privacy/data/services/privacy_local_cleanup_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +24,21 @@ void main() {
       ]),
     });
     preferences = await SharedPreferences.getInstance();
+    final actionStore = BackgroundNotificationActionStore(preferences);
+    for (final userId in ['user-a', 'user-b']) {
+      await actionStore.enqueue(
+        BackgroundNotificationAction(
+          actionId: 'action-$userId',
+          payload: LocalNotificationPayload(
+            source: NotificationSource.smartRoutineOccurrence,
+            entityId: 'occurrence-$userId',
+            userId: userId,
+            action: 'taken',
+          ),
+          receivedAtUtc: DateTime.utc(2026),
+        ),
+      );
+    }
     database = AppDatabase(NativeDatabase.memory());
     await database.customInsert(
       "INSERT INTO privacy_consent_records "
@@ -58,6 +75,9 @@ void main() {
     expect(preferences.getBool('onboarding.user.v2.user-b.completed'), isTrue);
     expect(preferences.containsKey('onboarding.profileDraft.v1'), isFalse);
     expect(preferences.containsKey('core.sync.state'), isFalse);
+    final actionStore = BackgroundNotificationActionStore(preferences);
+    expect(actionStore.forUser('user-a'), isEmpty);
+    expect(actionStore.forUser('user-b'), hasLength(1));
     final legacy =
         jsonDecode(
               preferences.getString('local_database.collection.water_records')!,

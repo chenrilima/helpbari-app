@@ -62,6 +62,7 @@ import '../../features/medical_exams/data/repositories/medical_exam_sync_reposit
 import '../../features/medical_prescriptions/data/datasources/drift_medical_prescription_local_datasource.dart';
 import '../../features/medical_prescriptions/data/datasources/medical_prescription_supabase_datasource.dart';
 import '../../features/medical_prescriptions/data/repositories/medical_prescription_sync_repository.dart';
+import '../../features/medical_prescriptions/data/repositories/prescription_platform_sync_repository.dart';
 import '../../features/smart_routines/data/datasources/drift_smart_routine_datasource.dart';
 import '../../features/smart_routines/data/datasources/smart_routine_supabase_datasource.dart';
 import '../../features/smart_routines/data/repositories/smart_routines_sync_repository.dart';
@@ -77,8 +78,14 @@ import 'syncable_repository.dart';
 final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
   final user = ref.watch(authSessionProvider);
   final supabaseClient = ref.watch(supabaseClientProvider);
+  final database = ref.watch(appDatabaseProvider).value;
 
-  if (user == null || supabaseClient == null) return const [];
+  if (user == null || supabaseClient == null) {
+    return const [];
+  }
+  if (database == null) {
+    return const [];
+  }
 
   return [
     PrivacyConsentSyncRepository(
@@ -197,6 +204,11 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
       remote: MedicalPrescriptionSupabaseDatasource(
         ref.watch(supabaseDatabaseProvider),
       ),
+      userId: user.id,
+    ),
+    PrescriptionPlatformSyncRepository(
+      database: database,
+      remote: ref.watch(supabaseDatabaseProvider),
       userId: user.id,
     ),
     BioimpedanceSyncRepository(

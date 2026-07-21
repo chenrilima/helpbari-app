@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as timezone_data;
 import 'package:timezone/timezone.dart' as timezone;
 
@@ -14,8 +17,114 @@ import 'local_notification_service.dart';
 import 'notification_schedules.dart';
 
 @pragma('vm:entry-point')
-void localNotificationTapBackground(NotificationResponse response) {
-  LocalNotificationPayload.decode(response.payload);
+Future<void> localNotificationTapBackground(
+  NotificationResponse response,
+) async {
+  DartPluginRegistrant.ensureInitialized();
+  final payload = LocalNotificationPayload.decode(response.payload);
+  final action = response.actionId;
+  if (payload == null ||
+      payload.source != NotificationSource.smartRoutineOccurrence ||
+      action == null ||
+      action.isEmpty ||
+      action == 'open') {
+    return;
+  }
+  final preferences = await SharedPreferences.getInstance();
+  await BackgroundNotificationActionStore(preferences).enqueue(
+    BackgroundNotificationAction(
+      actionId: notificationActionId(payload, action, response.id),
+      payload: payload.copyWith(action: action),
+      receivedAtUtc: DateTime.now().toUtc(),
+    ),
+  );
+}
+
+String notificationActionId(
+  LocalNotificationPayload payload,
+  String action,
+  int? notificationId,
+) => '${payload.userId}:${payload.entityId}:$action:${notificationId ?? 0}';
+
+class BackgroundNotificationAction {
+  const BackgroundNotificationAction({
+    required this.actionId,
+    required this.payload,
+    required this.receivedAtUtc,
+  });
+
+  final String actionId;
+  final LocalNotificationPayload payload;
+  final DateTime receivedAtUtc;
+
+  Map<String, Object?> toJson() => {
+    'actionId': actionId,
+    'payload': payload.encode(),
+    'receivedAtUtc': receivedAtUtc.toIso8601String(),
+  };
+
+  static BackgroundNotificationAction? fromJson(Object? value) {
+    if (value is! Map<String, Object?>) return null;
+    final actionId = value['actionId'];
+    final payload = LocalNotificationPayload.decode(
+      value['payload'] as String?,
+    );
+    final receivedAt = DateTime.tryParse(
+      value['receivedAtUtc'] as String? ?? '',
+    );
+    if (actionId is! String || payload == null || receivedAt == null) {
+      return null;
+    }
+    return BackgroundNotificationAction(
+      actionId: actionId,
+      payload: payload,
+      receivedAtUtc: receivedAt.toUtc(),
+    );
+  }
+}
+
+class BackgroundNotificationActionStore {
+  const BackgroundNotificationActionStore(this.preferences);
+
+  static const storageKeyPrefix = 'notifications.v2.background_action.';
+  final SharedPreferences preferences;
+
+  Future<void> enqueue(BackgroundNotificationAction action) async {
+    final key = _key(action.actionId);
+    if (preferences.containsKey(key)) return;
+    await preferences.setString(key, jsonEncode(action.toJson()));
+  }
+
+  List<BackgroundNotificationAction> forUser(String userId) =>
+      _read().where((value) => value.payload.userId == userId).toList();
+
+  Future<void> remove(Iterable<String> actionIds) async {
+    for (final actionId in actionIds.toSet()) {
+      await preferences.remove(_key(actionId));
+    }
+  }
+
+  List<BackgroundNotificationAction> _read() {
+    final result = <BackgroundNotificationAction>[];
+    for (final key in preferences.getKeys().where(
+      (value) => value.startsWith(storageKeyPrefix),
+    )) {
+      final encoded = preferences.getString(key);
+      if (encoded == null) continue;
+      try {
+        final action = BackgroundNotificationAction.fromJson(
+          jsonDecode(encoded),
+        );
+        if (action != null) result.add(action);
+      } on FormatException {
+        continue;
+      }
+    }
+    return result;
+  }
+
+  String _key(String actionId) =>
+      '$storageKeyPrefix${base64Url.encode(utf8.encode(actionId)).replaceAll('=', '')}';
 }
 
 class AppLocalNotificationService implements LocalNotificationService {
@@ -57,12 +166,22 @@ class AppLocalNotificationService implements LocalNotificationService {
     const androidSettings = AndroidInitializationSettings(
       '@mipmap/ic_launcher',
     );
-    const darwinSettings = DarwinInitializationSettings(
+    final darwinSettings = DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
+      notificationCategories: <DarwinNotificationCategory>[
+        DarwinNotificationCategory(
+          'helpbari_routine_occurrence',
+          actions: <DarwinNotificationAction>[
+            DarwinNotificationAction.plain('taken', 'Tomado'),
+            DarwinNotificationAction.plain('skipped', 'Ignorar'),
+            DarwinNotificationAction.plain('remindLater', 'Lembrar depois'),
+          ],
+        ),
+      ],
     );
-    const settings = InitializationSettings(
+    final settings = InitializationSettings(
       android: androidSettings,
       iOS: darwinSettings,
     );
@@ -246,22 +365,46 @@ class AppLocalNotificationService implements LocalNotificationService {
       channelDescription: _channelDescription,
       importance: Importance.high,
       priority: Priority.high,
+      actions: <AndroidNotificationAction>[
+        AndroidNotificationAction('taken', 'Tomado'),
+        AndroidNotificationAction('skipped', 'Ignorar'),
+        AndroidNotificationAction('remindLater', 'Lembrar depois'),
+      ],
     );
     const iosDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
+      categoryIdentifier: 'helpbari_routine_occurrence',
     );
 
     return const NotificationDetails(android: androidDetails, iOS: iosDetails);
   }
 
   void _handleTap(NotificationResponse response) {
-    _emitPayload(response.payload);
+    _emitPayload(
+      response.payload,
+      action: response.actionId,
+      notificationId: response.id,
+    );
   }
 
-  void _emitPayload(String? encoded, {bool retainForFirstListener = false}) {
-    final payload = LocalNotificationPayload.decode(encoded);
+  void _emitPayload(
+    String? encoded, {
+    bool retainForFirstListener = false,
+    String? action,
+    int? notificationId,
+  }) {
+    final decoded = LocalNotificationPayload.decode(encoded);
+    final payload = decoded == null || action == null || action.isEmpty
+        ? decoded
+        : decoded.copyWith(
+            action: action,
+            data: {
+              ...decoded.data,
+              'actionId': notificationActionId(decoded, action, notificationId),
+            },
+          );
 
     if (payload == null) {
       _logger.warning('Payload de notificacao invalido.');

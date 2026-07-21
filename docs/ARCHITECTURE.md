@@ -149,9 +149,9 @@ pelo plugin é derivado dessa chave e nunca é sincronizado.
 ## Restore, dispositivo e timezone
 
 Após login, sincronização inicial, retorno do app e alteração de configurações,
-o app relê Settings e as entidades atuais, cancela as projeções anteriores e
-reconstrói o conjunto local de forma idempotente. Logout e troca de usuário
-cancelam todas as notificações pendentes antes de ativar a próxima conta. Taps
+o app relê Settings e as entidades atuais e reconcilia incrementalmente o
+manifest local. Logout, troca de usuário e exclusão LGPD são os únicos fluxos
+que cancelam globalmente as notificações antes de ativar a próxima conta. Taps
 são aceitos somente quando o `userId` do payload corresponde à sessão ativa.
 
 Horários recorrentes preservam a hora de parede informada pelo usuário e são
@@ -188,12 +188,14 @@ migration destrutiva aprovada separadamente.
 
 ## Smart Routines e Notifications V2
 
-Smart Routines deverá introduzir `RoutinePlan` e `RoutineSchedule` como regras
+Smart Routines mantém `RoutinePlan` e `RoutineSchedule` como regras clínicas
 sincronizáveis, incluindo múltiplos horários, vigência, pausas, PRN e offsets.
-Notifications V2 deverá projetar localmente uma janela móvel de ocorrências a
-partir desses schedules. Ocorrências, IDs do plugin, permissões e estado do
-sistema operacional continuarão locais. A transição deve substituir os
-projetores por feature gradualmente, sem reativar `notification_reminders`.
+Notifications V2 projeta uma janela móvel limitada por meio do Occurrence
+Engine canônico, mantém manifest e action inbox locais e reconcilia o plugin
+por diff incremental. IDs do plugin, permissões, manifest e estado do sistema
+operacional não entram no sync. Ações são persistidas antes do processamento e
+somente Unified Treatment Commands criam eventos de adesão. A tabela legada
+`notification_reminders` permanece descontinuada.
 
 ## Unified Treatment Engine
 

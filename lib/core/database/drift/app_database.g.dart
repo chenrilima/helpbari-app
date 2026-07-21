@@ -37759,6 +37759,4405 @@ class UnifiedTreatmentCutoverStatesCompanion
   }
 }
 
+class $PrescriptionVersionRecordsTable extends PrescriptionVersionRecords
+    with
+        TableInfo<$PrescriptionVersionRecordsTable, PrescriptionVersionRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PrescriptionVersionRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _prescriptionIdMeta = const VerificationMeta(
+    'prescriptionId',
+  );
+  @override
+  late final GeneratedColumn<String> prescriptionId = GeneratedColumn<String>(
+    'prescription_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _revisionMeta = const VerificationMeta(
+    'revision',
+  );
+  @override
+  late final GeneratedColumn<int> revision = GeneratedColumn<int>(
+    'revision',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _snapshotJsonMeta = const VerificationMeta(
+    'snapshotJson',
+  );
+  @override
+  late final GeneratedColumn<String> snapshotJson = GeneratedColumn<String>(
+    'snapshot_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceProcessingIdMeta =
+      const VerificationMeta('sourceProcessingId');
+  @override
+  late final GeneratedColumn<String> sourceProcessingId =
+      GeneratedColumn<String>(
+        'source_processing_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _submittedAtMeta = const VerificationMeta(
+    'submittedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> submittedAt = GeneratedColumn<DateTime>(
+    'submitted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _confirmedAtMeta = const VerificationMeta(
+    'confirmedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> confirmedAt = GeneratedColumn<DateTime>(
+    'confirmed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    prescriptionId,
+    revision,
+    status,
+    snapshotJson,
+    sourceProcessingId,
+    submittedAt,
+    confirmedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'prescription_version_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PrescriptionVersionRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('prescription_id')) {
+      context.handle(
+        _prescriptionIdMeta,
+        prescriptionId.isAcceptableOrUnknown(
+          data['prescription_id']!,
+          _prescriptionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_prescriptionIdMeta);
+    }
+    if (data.containsKey('revision')) {
+      context.handle(
+        _revisionMeta,
+        revision.isAcceptableOrUnknown(data['revision']!, _revisionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_revisionMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('snapshot_json')) {
+      context.handle(
+        _snapshotJsonMeta,
+        snapshotJson.isAcceptableOrUnknown(
+          data['snapshot_json']!,
+          _snapshotJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_snapshotJsonMeta);
+    }
+    if (data.containsKey('source_processing_id')) {
+      context.handle(
+        _sourceProcessingIdMeta,
+        sourceProcessingId.isAcceptableOrUnknown(
+          data['source_processing_id']!,
+          _sourceProcessingIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('submitted_at')) {
+      context.handle(
+        _submittedAtMeta,
+        submittedAt.isAcceptableOrUnknown(
+          data['submitted_at']!,
+          _submittedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('confirmed_at')) {
+      context.handle(
+        _confirmedAtMeta,
+        confirmedAt.isAcceptableOrUnknown(
+          data['confirmed_at']!,
+          _confirmedAtMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  PrescriptionVersionRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PrescriptionVersionRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      prescriptionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_id'],
+      )!,
+      revision: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}revision'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      snapshotJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}snapshot_json'],
+      )!,
+      sourceProcessingId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_processing_id'],
+      ),
+      submittedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}submitted_at'],
+      ),
+      confirmedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}confirmed_at'],
+      ),
+    );
+  }
+
+  @override
+  $PrescriptionVersionRecordsTable createAlias(String alias) {
+    return $PrescriptionVersionRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class PrescriptionVersionRecord extends DataClass
+    implements Insertable<PrescriptionVersionRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String prescriptionId;
+  final int revision;
+  final String status;
+  final String snapshotJson;
+  final String? sourceProcessingId;
+  final DateTime? submittedAt;
+  final DateTime? confirmedAt;
+  const PrescriptionVersionRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    required this.prescriptionId,
+    required this.revision,
+    required this.status,
+    required this.snapshotJson,
+    this.sourceProcessingId,
+    this.submittedAt,
+    this.confirmedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['prescription_id'] = Variable<String>(prescriptionId);
+    map['revision'] = Variable<int>(revision);
+    map['status'] = Variable<String>(status);
+    map['snapshot_json'] = Variable<String>(snapshotJson);
+    if (!nullToAbsent || sourceProcessingId != null) {
+      map['source_processing_id'] = Variable<String>(sourceProcessingId);
+    }
+    if (!nullToAbsent || submittedAt != null) {
+      map['submitted_at'] = Variable<DateTime>(submittedAt);
+    }
+    if (!nullToAbsent || confirmedAt != null) {
+      map['confirmed_at'] = Variable<DateTime>(confirmedAt);
+    }
+    return map;
+  }
+
+  PrescriptionVersionRecordsCompanion toCompanion(bool nullToAbsent) {
+    return PrescriptionVersionRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      prescriptionId: Value(prescriptionId),
+      revision: Value(revision),
+      status: Value(status),
+      snapshotJson: Value(snapshotJson),
+      sourceProcessingId: sourceProcessingId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceProcessingId),
+      submittedAt: submittedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(submittedAt),
+      confirmedAt: confirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(confirmedAt),
+    );
+  }
+
+  factory PrescriptionVersionRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PrescriptionVersionRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      prescriptionId: serializer.fromJson<String>(json['prescriptionId']),
+      revision: serializer.fromJson<int>(json['revision']),
+      status: serializer.fromJson<String>(json['status']),
+      snapshotJson: serializer.fromJson<String>(json['snapshotJson']),
+      sourceProcessingId: serializer.fromJson<String?>(
+        json['sourceProcessingId'],
+      ),
+      submittedAt: serializer.fromJson<DateTime?>(json['submittedAt']),
+      confirmedAt: serializer.fromJson<DateTime?>(json['confirmedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'prescriptionId': serializer.toJson<String>(prescriptionId),
+      'revision': serializer.toJson<int>(revision),
+      'status': serializer.toJson<String>(status),
+      'snapshotJson': serializer.toJson<String>(snapshotJson),
+      'sourceProcessingId': serializer.toJson<String?>(sourceProcessingId),
+      'submittedAt': serializer.toJson<DateTime?>(submittedAt),
+      'confirmedAt': serializer.toJson<DateTime?>(confirmedAt),
+    };
+  }
+
+  PrescriptionVersionRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    String? prescriptionId,
+    int? revision,
+    String? status,
+    String? snapshotJson,
+    Value<String?> sourceProcessingId = const Value.absent(),
+    Value<DateTime?> submittedAt = const Value.absent(),
+    Value<DateTime?> confirmedAt = const Value.absent(),
+  }) => PrescriptionVersionRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    prescriptionId: prescriptionId ?? this.prescriptionId,
+    revision: revision ?? this.revision,
+    status: status ?? this.status,
+    snapshotJson: snapshotJson ?? this.snapshotJson,
+    sourceProcessingId: sourceProcessingId.present
+        ? sourceProcessingId.value
+        : this.sourceProcessingId,
+    submittedAt: submittedAt.present ? submittedAt.value : this.submittedAt,
+    confirmedAt: confirmedAt.present ? confirmedAt.value : this.confirmedAt,
+  );
+  PrescriptionVersionRecord copyWithCompanion(
+    PrescriptionVersionRecordsCompanion data,
+  ) {
+    return PrescriptionVersionRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      prescriptionId: data.prescriptionId.present
+          ? data.prescriptionId.value
+          : this.prescriptionId,
+      revision: data.revision.present ? data.revision.value : this.revision,
+      status: data.status.present ? data.status.value : this.status,
+      snapshotJson: data.snapshotJson.present
+          ? data.snapshotJson.value
+          : this.snapshotJson,
+      sourceProcessingId: data.sourceProcessingId.present
+          ? data.sourceProcessingId.value
+          : this.sourceProcessingId,
+      submittedAt: data.submittedAt.present
+          ? data.submittedAt.value
+          : this.submittedAt,
+      confirmedAt: data.confirmedAt.present
+          ? data.confirmedAt.value
+          : this.confirmedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrescriptionVersionRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('revision: $revision, ')
+          ..write('status: $status, ')
+          ..write('snapshotJson: $snapshotJson, ')
+          ..write('sourceProcessingId: $sourceProcessingId, ')
+          ..write('submittedAt: $submittedAt, ')
+          ..write('confirmedAt: $confirmedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    prescriptionId,
+    revision,
+    status,
+    snapshotJson,
+    sourceProcessingId,
+    submittedAt,
+    confirmedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PrescriptionVersionRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.prescriptionId == this.prescriptionId &&
+          other.revision == this.revision &&
+          other.status == this.status &&
+          other.snapshotJson == this.snapshotJson &&
+          other.sourceProcessingId == this.sourceProcessingId &&
+          other.submittedAt == this.submittedAt &&
+          other.confirmedAt == this.confirmedAt);
+}
+
+class PrescriptionVersionRecordsCompanion
+    extends UpdateCompanion<PrescriptionVersionRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String> prescriptionId;
+  final Value<int> revision;
+  final Value<String> status;
+  final Value<String> snapshotJson;
+  final Value<String?> sourceProcessingId;
+  final Value<DateTime?> submittedAt;
+  final Value<DateTime?> confirmedAt;
+  final Value<int> rowid;
+  const PrescriptionVersionRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.prescriptionId = const Value.absent(),
+    this.revision = const Value.absent(),
+    this.status = const Value.absent(),
+    this.snapshotJson = const Value.absent(),
+    this.sourceProcessingId = const Value.absent(),
+    this.submittedAt = const Value.absent(),
+    this.confirmedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PrescriptionVersionRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    required String prescriptionId,
+    required int revision,
+    required String status,
+    required String snapshotJson,
+    this.sourceProcessingId = const Value.absent(),
+    this.submittedAt = const Value.absent(),
+    this.confirmedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       prescriptionId = Value(prescriptionId),
+       revision = Value(revision),
+       status = Value(status),
+       snapshotJson = Value(snapshotJson);
+  static Insertable<PrescriptionVersionRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? prescriptionId,
+    Expression<int>? revision,
+    Expression<String>? status,
+    Expression<String>? snapshotJson,
+    Expression<String>? sourceProcessingId,
+    Expression<DateTime>? submittedAt,
+    Expression<DateTime>? confirmedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (prescriptionId != null) 'prescription_id': prescriptionId,
+      if (revision != null) 'revision': revision,
+      if (status != null) 'status': status,
+      if (snapshotJson != null) 'snapshot_json': snapshotJson,
+      if (sourceProcessingId != null)
+        'source_processing_id': sourceProcessingId,
+      if (submittedAt != null) 'submitted_at': submittedAt,
+      if (confirmedAt != null) 'confirmed_at': confirmedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PrescriptionVersionRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String>? prescriptionId,
+    Value<int>? revision,
+    Value<String>? status,
+    Value<String>? snapshotJson,
+    Value<String?>? sourceProcessingId,
+    Value<DateTime?>? submittedAt,
+    Value<DateTime?>? confirmedAt,
+    Value<int>? rowid,
+  }) {
+    return PrescriptionVersionRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      prescriptionId: prescriptionId ?? this.prescriptionId,
+      revision: revision ?? this.revision,
+      status: status ?? this.status,
+      snapshotJson: snapshotJson ?? this.snapshotJson,
+      sourceProcessingId: sourceProcessingId ?? this.sourceProcessingId,
+      submittedAt: submittedAt ?? this.submittedAt,
+      confirmedAt: confirmedAt ?? this.confirmedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (prescriptionId.present) {
+      map['prescription_id'] = Variable<String>(prescriptionId.value);
+    }
+    if (revision.present) {
+      map['revision'] = Variable<int>(revision.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (snapshotJson.present) {
+      map['snapshot_json'] = Variable<String>(snapshotJson.value);
+    }
+    if (sourceProcessingId.present) {
+      map['source_processing_id'] = Variable<String>(sourceProcessingId.value);
+    }
+    if (submittedAt.present) {
+      map['submitted_at'] = Variable<DateTime>(submittedAt.value);
+    }
+    if (confirmedAt.present) {
+      map['confirmed_at'] = Variable<DateTime>(confirmedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrescriptionVersionRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('revision: $revision, ')
+          ..write('status: $status, ')
+          ..write('snapshotJson: $snapshotJson, ')
+          ..write('sourceProcessingId: $sourceProcessingId, ')
+          ..write('submittedAt: $submittedAt, ')
+          ..write('confirmedAt: $confirmedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PrescriptionReviewRecordsTable extends PrescriptionReviewRecords
+    with TableInfo<$PrescriptionReviewRecordsTable, PrescriptionReviewRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PrescriptionReviewRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _prescriptionIdMeta = const VerificationMeta(
+    'prescriptionId',
+  );
+  @override
+  late final GeneratedColumn<String> prescriptionId = GeneratedColumn<String>(
+    'prescription_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _versionIdMeta = const VerificationMeta(
+    'versionId',
+  );
+  @override
+  late final GeneratedColumn<String> versionId = GeneratedColumn<String>(
+    'version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _decisionMeta = const VerificationMeta(
+    'decision',
+  );
+  @override
+  late final GeneratedColumn<String> decision = GeneratedColumn<String>(
+    'decision',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _actorMeta = const VerificationMeta('actor');
+  @override
+  late final GeneratedColumn<String> actor = GeneratedColumn<String>(
+    'actor',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fieldDecisionsJsonMeta =
+      const VerificationMeta('fieldDecisionsJson');
+  @override
+  late final GeneratedColumn<String> fieldDecisionsJson =
+      GeneratedColumn<String>(
+        'field_decisions_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    prescriptionId,
+    versionId,
+    decision,
+    actor,
+    fieldDecisionsJson,
+    note,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'prescription_review_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PrescriptionReviewRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('prescription_id')) {
+      context.handle(
+        _prescriptionIdMeta,
+        prescriptionId.isAcceptableOrUnknown(
+          data['prescription_id']!,
+          _prescriptionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_prescriptionIdMeta);
+    }
+    if (data.containsKey('version_id')) {
+      context.handle(
+        _versionIdMeta,
+        versionId.isAcceptableOrUnknown(data['version_id']!, _versionIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_versionIdMeta);
+    }
+    if (data.containsKey('decision')) {
+      context.handle(
+        _decisionMeta,
+        decision.isAcceptableOrUnknown(data['decision']!, _decisionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_decisionMeta);
+    }
+    if (data.containsKey('actor')) {
+      context.handle(
+        _actorMeta,
+        actor.isAcceptableOrUnknown(data['actor']!, _actorMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_actorMeta);
+    }
+    if (data.containsKey('field_decisions_json')) {
+      context.handle(
+        _fieldDecisionsJsonMeta,
+        fieldDecisionsJson.isAcceptableOrUnknown(
+          data['field_decisions_json']!,
+          _fieldDecisionsJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_fieldDecisionsJsonMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  PrescriptionReviewRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PrescriptionReviewRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      prescriptionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_id'],
+      )!,
+      versionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}version_id'],
+      )!,
+      decision: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}decision'],
+      )!,
+      actor: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}actor'],
+      )!,
+      fieldDecisionsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}field_decisions_json'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+    );
+  }
+
+  @override
+  $PrescriptionReviewRecordsTable createAlias(String alias) {
+    return $PrescriptionReviewRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class PrescriptionReviewRecord extends DataClass
+    implements Insertable<PrescriptionReviewRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String prescriptionId;
+  final String versionId;
+  final String decision;
+  final String actor;
+  final String fieldDecisionsJson;
+  final String? note;
+  const PrescriptionReviewRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    required this.prescriptionId,
+    required this.versionId,
+    required this.decision,
+    required this.actor,
+    required this.fieldDecisionsJson,
+    this.note,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['prescription_id'] = Variable<String>(prescriptionId);
+    map['version_id'] = Variable<String>(versionId);
+    map['decision'] = Variable<String>(decision);
+    map['actor'] = Variable<String>(actor);
+    map['field_decisions_json'] = Variable<String>(fieldDecisionsJson);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    return map;
+  }
+
+  PrescriptionReviewRecordsCompanion toCompanion(bool nullToAbsent) {
+    return PrescriptionReviewRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      prescriptionId: Value(prescriptionId),
+      versionId: Value(versionId),
+      decision: Value(decision),
+      actor: Value(actor),
+      fieldDecisionsJson: Value(fieldDecisionsJson),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+    );
+  }
+
+  factory PrescriptionReviewRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PrescriptionReviewRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      prescriptionId: serializer.fromJson<String>(json['prescriptionId']),
+      versionId: serializer.fromJson<String>(json['versionId']),
+      decision: serializer.fromJson<String>(json['decision']),
+      actor: serializer.fromJson<String>(json['actor']),
+      fieldDecisionsJson: serializer.fromJson<String>(
+        json['fieldDecisionsJson'],
+      ),
+      note: serializer.fromJson<String?>(json['note']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'prescriptionId': serializer.toJson<String>(prescriptionId),
+      'versionId': serializer.toJson<String>(versionId),
+      'decision': serializer.toJson<String>(decision),
+      'actor': serializer.toJson<String>(actor),
+      'fieldDecisionsJson': serializer.toJson<String>(fieldDecisionsJson),
+      'note': serializer.toJson<String?>(note),
+    };
+  }
+
+  PrescriptionReviewRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    String? prescriptionId,
+    String? versionId,
+    String? decision,
+    String? actor,
+    String? fieldDecisionsJson,
+    Value<String?> note = const Value.absent(),
+  }) => PrescriptionReviewRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    prescriptionId: prescriptionId ?? this.prescriptionId,
+    versionId: versionId ?? this.versionId,
+    decision: decision ?? this.decision,
+    actor: actor ?? this.actor,
+    fieldDecisionsJson: fieldDecisionsJson ?? this.fieldDecisionsJson,
+    note: note.present ? note.value : this.note,
+  );
+  PrescriptionReviewRecord copyWithCompanion(
+    PrescriptionReviewRecordsCompanion data,
+  ) {
+    return PrescriptionReviewRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      prescriptionId: data.prescriptionId.present
+          ? data.prescriptionId.value
+          : this.prescriptionId,
+      versionId: data.versionId.present ? data.versionId.value : this.versionId,
+      decision: data.decision.present ? data.decision.value : this.decision,
+      actor: data.actor.present ? data.actor.value : this.actor,
+      fieldDecisionsJson: data.fieldDecisionsJson.present
+          ? data.fieldDecisionsJson.value
+          : this.fieldDecisionsJson,
+      note: data.note.present ? data.note.value : this.note,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrescriptionReviewRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('versionId: $versionId, ')
+          ..write('decision: $decision, ')
+          ..write('actor: $actor, ')
+          ..write('fieldDecisionsJson: $fieldDecisionsJson, ')
+          ..write('note: $note')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    prescriptionId,
+    versionId,
+    decision,
+    actor,
+    fieldDecisionsJson,
+    note,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PrescriptionReviewRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.prescriptionId == this.prescriptionId &&
+          other.versionId == this.versionId &&
+          other.decision == this.decision &&
+          other.actor == this.actor &&
+          other.fieldDecisionsJson == this.fieldDecisionsJson &&
+          other.note == this.note);
+}
+
+class PrescriptionReviewRecordsCompanion
+    extends UpdateCompanion<PrescriptionReviewRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String> prescriptionId;
+  final Value<String> versionId;
+  final Value<String> decision;
+  final Value<String> actor;
+  final Value<String> fieldDecisionsJson;
+  final Value<String?> note;
+  final Value<int> rowid;
+  const PrescriptionReviewRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.prescriptionId = const Value.absent(),
+    this.versionId = const Value.absent(),
+    this.decision = const Value.absent(),
+    this.actor = const Value.absent(),
+    this.fieldDecisionsJson = const Value.absent(),
+    this.note = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PrescriptionReviewRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    required String prescriptionId,
+    required String versionId,
+    required String decision,
+    required String actor,
+    required String fieldDecisionsJson,
+    this.note = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       prescriptionId = Value(prescriptionId),
+       versionId = Value(versionId),
+       decision = Value(decision),
+       actor = Value(actor),
+       fieldDecisionsJson = Value(fieldDecisionsJson);
+  static Insertable<PrescriptionReviewRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? prescriptionId,
+    Expression<String>? versionId,
+    Expression<String>? decision,
+    Expression<String>? actor,
+    Expression<String>? fieldDecisionsJson,
+    Expression<String>? note,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (prescriptionId != null) 'prescription_id': prescriptionId,
+      if (versionId != null) 'version_id': versionId,
+      if (decision != null) 'decision': decision,
+      if (actor != null) 'actor': actor,
+      if (fieldDecisionsJson != null)
+        'field_decisions_json': fieldDecisionsJson,
+      if (note != null) 'note': note,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PrescriptionReviewRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String>? prescriptionId,
+    Value<String>? versionId,
+    Value<String>? decision,
+    Value<String>? actor,
+    Value<String>? fieldDecisionsJson,
+    Value<String?>? note,
+    Value<int>? rowid,
+  }) {
+    return PrescriptionReviewRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      prescriptionId: prescriptionId ?? this.prescriptionId,
+      versionId: versionId ?? this.versionId,
+      decision: decision ?? this.decision,
+      actor: actor ?? this.actor,
+      fieldDecisionsJson: fieldDecisionsJson ?? this.fieldDecisionsJson,
+      note: note ?? this.note,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (prescriptionId.present) {
+      map['prescription_id'] = Variable<String>(prescriptionId.value);
+    }
+    if (versionId.present) {
+      map['version_id'] = Variable<String>(versionId.value);
+    }
+    if (decision.present) {
+      map['decision'] = Variable<String>(decision.value);
+    }
+    if (actor.present) {
+      map['actor'] = Variable<String>(actor.value);
+    }
+    if (fieldDecisionsJson.present) {
+      map['field_decisions_json'] = Variable<String>(fieldDecisionsJson.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrescriptionReviewRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('versionId: $versionId, ')
+          ..write('decision: $decision, ')
+          ..write('actor: $actor, ')
+          ..write('fieldDecisionsJson: $fieldDecisionsJson, ')
+          ..write('note: $note, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TreatmentProposalRecordsTable extends TreatmentProposalRecords
+    with TableInfo<$TreatmentProposalRecordsTable, TreatmentProposalRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TreatmentProposalRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _prescriptionIdMeta = const VerificationMeta(
+    'prescriptionId',
+  );
+  @override
+  late final GeneratedColumn<String> prescriptionId = GeneratedColumn<String>(
+    'prescription_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _prescriptionVersionIdMeta =
+      const VerificationMeta('prescriptionVersionId');
+  @override
+  late final GeneratedColumn<String> prescriptionVersionId =
+      GeneratedColumn<String>(
+        'prescription_version_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _prescriptionItemIdMeta =
+      const VerificationMeta('prescriptionItemId');
+  @override
+  late final GeneratedColumn<String> prescriptionItemId =
+      GeneratedColumn<String>(
+        'prescription_item_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _decisionMeta = const VerificationMeta(
+    'decision',
+  );
+  @override
+  late final GeneratedColumn<String> decision = GeneratedColumn<String>(
+    'decision',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _draftJsonMeta = const VerificationMeta(
+    'draftJson',
+  );
+  @override
+  late final GeneratedColumn<String> draftJson = GeneratedColumn<String>(
+    'draft_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetRoutineIdMeta = const VerificationMeta(
+    'targetRoutineId',
+  );
+  @override
+  late final GeneratedColumn<String> targetRoutineId = GeneratedColumn<String>(
+    'target_routine_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _resultingPlanIdMeta = const VerificationMeta(
+    'resultingPlanId',
+  );
+  @override
+  late final GeneratedColumn<String> resultingPlanId = GeneratedColumn<String>(
+    'resulting_plan_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _confirmedAtMeta = const VerificationMeta(
+    'confirmedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> confirmedAt = GeneratedColumn<DateTime>(
+    'confirmed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    prescriptionId,
+    prescriptionVersionId,
+    prescriptionItemId,
+    decision,
+    draftJson,
+    targetRoutineId,
+    resultingPlanId,
+    confirmedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'treatment_proposal_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TreatmentProposalRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('prescription_id')) {
+      context.handle(
+        _prescriptionIdMeta,
+        prescriptionId.isAcceptableOrUnknown(
+          data['prescription_id']!,
+          _prescriptionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_prescriptionIdMeta);
+    }
+    if (data.containsKey('prescription_version_id')) {
+      context.handle(
+        _prescriptionVersionIdMeta,
+        prescriptionVersionId.isAcceptableOrUnknown(
+          data['prescription_version_id']!,
+          _prescriptionVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_prescriptionVersionIdMeta);
+    }
+    if (data.containsKey('prescription_item_id')) {
+      context.handle(
+        _prescriptionItemIdMeta,
+        prescriptionItemId.isAcceptableOrUnknown(
+          data['prescription_item_id']!,
+          _prescriptionItemIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_prescriptionItemIdMeta);
+    }
+    if (data.containsKey('decision')) {
+      context.handle(
+        _decisionMeta,
+        decision.isAcceptableOrUnknown(data['decision']!, _decisionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_decisionMeta);
+    }
+    if (data.containsKey('draft_json')) {
+      context.handle(
+        _draftJsonMeta,
+        draftJson.isAcceptableOrUnknown(data['draft_json']!, _draftJsonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_draftJsonMeta);
+    }
+    if (data.containsKey('target_routine_id')) {
+      context.handle(
+        _targetRoutineIdMeta,
+        targetRoutineId.isAcceptableOrUnknown(
+          data['target_routine_id']!,
+          _targetRoutineIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('resulting_plan_id')) {
+      context.handle(
+        _resultingPlanIdMeta,
+        resultingPlanId.isAcceptableOrUnknown(
+          data['resulting_plan_id']!,
+          _resultingPlanIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('confirmed_at')) {
+      context.handle(
+        _confirmedAtMeta,
+        confirmedAt.isAcceptableOrUnknown(
+          data['confirmed_at']!,
+          _confirmedAtMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  TreatmentProposalRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TreatmentProposalRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      prescriptionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_id'],
+      )!,
+      prescriptionVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_version_id'],
+      )!,
+      prescriptionItemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_item_id'],
+      )!,
+      decision: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}decision'],
+      )!,
+      draftJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}draft_json'],
+      )!,
+      targetRoutineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_routine_id'],
+      ),
+      resultingPlanId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}resulting_plan_id'],
+      ),
+      confirmedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}confirmed_at'],
+      ),
+    );
+  }
+
+  @override
+  $TreatmentProposalRecordsTable createAlias(String alias) {
+    return $TreatmentProposalRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class TreatmentProposalRecord extends DataClass
+    implements Insertable<TreatmentProposalRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String prescriptionId;
+  final String prescriptionVersionId;
+  final String prescriptionItemId;
+  final String decision;
+  final String draftJson;
+  final String? targetRoutineId;
+  final String? resultingPlanId;
+  final DateTime? confirmedAt;
+  const TreatmentProposalRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    required this.prescriptionId,
+    required this.prescriptionVersionId,
+    required this.prescriptionItemId,
+    required this.decision,
+    required this.draftJson,
+    this.targetRoutineId,
+    this.resultingPlanId,
+    this.confirmedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['prescription_id'] = Variable<String>(prescriptionId);
+    map['prescription_version_id'] = Variable<String>(prescriptionVersionId);
+    map['prescription_item_id'] = Variable<String>(prescriptionItemId);
+    map['decision'] = Variable<String>(decision);
+    map['draft_json'] = Variable<String>(draftJson);
+    if (!nullToAbsent || targetRoutineId != null) {
+      map['target_routine_id'] = Variable<String>(targetRoutineId);
+    }
+    if (!nullToAbsent || resultingPlanId != null) {
+      map['resulting_plan_id'] = Variable<String>(resultingPlanId);
+    }
+    if (!nullToAbsent || confirmedAt != null) {
+      map['confirmed_at'] = Variable<DateTime>(confirmedAt);
+    }
+    return map;
+  }
+
+  TreatmentProposalRecordsCompanion toCompanion(bool nullToAbsent) {
+    return TreatmentProposalRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      prescriptionId: Value(prescriptionId),
+      prescriptionVersionId: Value(prescriptionVersionId),
+      prescriptionItemId: Value(prescriptionItemId),
+      decision: Value(decision),
+      draftJson: Value(draftJson),
+      targetRoutineId: targetRoutineId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetRoutineId),
+      resultingPlanId: resultingPlanId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(resultingPlanId),
+      confirmedAt: confirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(confirmedAt),
+    );
+  }
+
+  factory TreatmentProposalRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TreatmentProposalRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      prescriptionId: serializer.fromJson<String>(json['prescriptionId']),
+      prescriptionVersionId: serializer.fromJson<String>(
+        json['prescriptionVersionId'],
+      ),
+      prescriptionItemId: serializer.fromJson<String>(
+        json['prescriptionItemId'],
+      ),
+      decision: serializer.fromJson<String>(json['decision']),
+      draftJson: serializer.fromJson<String>(json['draftJson']),
+      targetRoutineId: serializer.fromJson<String?>(json['targetRoutineId']),
+      resultingPlanId: serializer.fromJson<String?>(json['resultingPlanId']),
+      confirmedAt: serializer.fromJson<DateTime?>(json['confirmedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'prescriptionId': serializer.toJson<String>(prescriptionId),
+      'prescriptionVersionId': serializer.toJson<String>(prescriptionVersionId),
+      'prescriptionItemId': serializer.toJson<String>(prescriptionItemId),
+      'decision': serializer.toJson<String>(decision),
+      'draftJson': serializer.toJson<String>(draftJson),
+      'targetRoutineId': serializer.toJson<String?>(targetRoutineId),
+      'resultingPlanId': serializer.toJson<String?>(resultingPlanId),
+      'confirmedAt': serializer.toJson<DateTime?>(confirmedAt),
+    };
+  }
+
+  TreatmentProposalRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    String? prescriptionId,
+    String? prescriptionVersionId,
+    String? prescriptionItemId,
+    String? decision,
+    String? draftJson,
+    Value<String?> targetRoutineId = const Value.absent(),
+    Value<String?> resultingPlanId = const Value.absent(),
+    Value<DateTime?> confirmedAt = const Value.absent(),
+  }) => TreatmentProposalRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    prescriptionId: prescriptionId ?? this.prescriptionId,
+    prescriptionVersionId: prescriptionVersionId ?? this.prescriptionVersionId,
+    prescriptionItemId: prescriptionItemId ?? this.prescriptionItemId,
+    decision: decision ?? this.decision,
+    draftJson: draftJson ?? this.draftJson,
+    targetRoutineId: targetRoutineId.present
+        ? targetRoutineId.value
+        : this.targetRoutineId,
+    resultingPlanId: resultingPlanId.present
+        ? resultingPlanId.value
+        : this.resultingPlanId,
+    confirmedAt: confirmedAt.present ? confirmedAt.value : this.confirmedAt,
+  );
+  TreatmentProposalRecord copyWithCompanion(
+    TreatmentProposalRecordsCompanion data,
+  ) {
+    return TreatmentProposalRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      prescriptionId: data.prescriptionId.present
+          ? data.prescriptionId.value
+          : this.prescriptionId,
+      prescriptionVersionId: data.prescriptionVersionId.present
+          ? data.prescriptionVersionId.value
+          : this.prescriptionVersionId,
+      prescriptionItemId: data.prescriptionItemId.present
+          ? data.prescriptionItemId.value
+          : this.prescriptionItemId,
+      decision: data.decision.present ? data.decision.value : this.decision,
+      draftJson: data.draftJson.present ? data.draftJson.value : this.draftJson,
+      targetRoutineId: data.targetRoutineId.present
+          ? data.targetRoutineId.value
+          : this.targetRoutineId,
+      resultingPlanId: data.resultingPlanId.present
+          ? data.resultingPlanId.value
+          : this.resultingPlanId,
+      confirmedAt: data.confirmedAt.present
+          ? data.confirmedAt.value
+          : this.confirmedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TreatmentProposalRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('prescriptionVersionId: $prescriptionVersionId, ')
+          ..write('prescriptionItemId: $prescriptionItemId, ')
+          ..write('decision: $decision, ')
+          ..write('draftJson: $draftJson, ')
+          ..write('targetRoutineId: $targetRoutineId, ')
+          ..write('resultingPlanId: $resultingPlanId, ')
+          ..write('confirmedAt: $confirmedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    prescriptionId,
+    prescriptionVersionId,
+    prescriptionItemId,
+    decision,
+    draftJson,
+    targetRoutineId,
+    resultingPlanId,
+    confirmedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TreatmentProposalRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.prescriptionId == this.prescriptionId &&
+          other.prescriptionVersionId == this.prescriptionVersionId &&
+          other.prescriptionItemId == this.prescriptionItemId &&
+          other.decision == this.decision &&
+          other.draftJson == this.draftJson &&
+          other.targetRoutineId == this.targetRoutineId &&
+          other.resultingPlanId == this.resultingPlanId &&
+          other.confirmedAt == this.confirmedAt);
+}
+
+class TreatmentProposalRecordsCompanion
+    extends UpdateCompanion<TreatmentProposalRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String> prescriptionId;
+  final Value<String> prescriptionVersionId;
+  final Value<String> prescriptionItemId;
+  final Value<String> decision;
+  final Value<String> draftJson;
+  final Value<String?> targetRoutineId;
+  final Value<String?> resultingPlanId;
+  final Value<DateTime?> confirmedAt;
+  final Value<int> rowid;
+  const TreatmentProposalRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.prescriptionId = const Value.absent(),
+    this.prescriptionVersionId = const Value.absent(),
+    this.prescriptionItemId = const Value.absent(),
+    this.decision = const Value.absent(),
+    this.draftJson = const Value.absent(),
+    this.targetRoutineId = const Value.absent(),
+    this.resultingPlanId = const Value.absent(),
+    this.confirmedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TreatmentProposalRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    required String prescriptionId,
+    required String prescriptionVersionId,
+    required String prescriptionItemId,
+    required String decision,
+    required String draftJson,
+    this.targetRoutineId = const Value.absent(),
+    this.resultingPlanId = const Value.absent(),
+    this.confirmedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       prescriptionId = Value(prescriptionId),
+       prescriptionVersionId = Value(prescriptionVersionId),
+       prescriptionItemId = Value(prescriptionItemId),
+       decision = Value(decision),
+       draftJson = Value(draftJson);
+  static Insertable<TreatmentProposalRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? prescriptionId,
+    Expression<String>? prescriptionVersionId,
+    Expression<String>? prescriptionItemId,
+    Expression<String>? decision,
+    Expression<String>? draftJson,
+    Expression<String>? targetRoutineId,
+    Expression<String>? resultingPlanId,
+    Expression<DateTime>? confirmedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (prescriptionId != null) 'prescription_id': prescriptionId,
+      if (prescriptionVersionId != null)
+        'prescription_version_id': prescriptionVersionId,
+      if (prescriptionItemId != null)
+        'prescription_item_id': prescriptionItemId,
+      if (decision != null) 'decision': decision,
+      if (draftJson != null) 'draft_json': draftJson,
+      if (targetRoutineId != null) 'target_routine_id': targetRoutineId,
+      if (resultingPlanId != null) 'resulting_plan_id': resultingPlanId,
+      if (confirmedAt != null) 'confirmed_at': confirmedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TreatmentProposalRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String>? prescriptionId,
+    Value<String>? prescriptionVersionId,
+    Value<String>? prescriptionItemId,
+    Value<String>? decision,
+    Value<String>? draftJson,
+    Value<String?>? targetRoutineId,
+    Value<String?>? resultingPlanId,
+    Value<DateTime?>? confirmedAt,
+    Value<int>? rowid,
+  }) {
+    return TreatmentProposalRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      prescriptionId: prescriptionId ?? this.prescriptionId,
+      prescriptionVersionId:
+          prescriptionVersionId ?? this.prescriptionVersionId,
+      prescriptionItemId: prescriptionItemId ?? this.prescriptionItemId,
+      decision: decision ?? this.decision,
+      draftJson: draftJson ?? this.draftJson,
+      targetRoutineId: targetRoutineId ?? this.targetRoutineId,
+      resultingPlanId: resultingPlanId ?? this.resultingPlanId,
+      confirmedAt: confirmedAt ?? this.confirmedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (prescriptionId.present) {
+      map['prescription_id'] = Variable<String>(prescriptionId.value);
+    }
+    if (prescriptionVersionId.present) {
+      map['prescription_version_id'] = Variable<String>(
+        prescriptionVersionId.value,
+      );
+    }
+    if (prescriptionItemId.present) {
+      map['prescription_item_id'] = Variable<String>(prescriptionItemId.value);
+    }
+    if (decision.present) {
+      map['decision'] = Variable<String>(decision.value);
+    }
+    if (draftJson.present) {
+      map['draft_json'] = Variable<String>(draftJson.value);
+    }
+    if (targetRoutineId.present) {
+      map['target_routine_id'] = Variable<String>(targetRoutineId.value);
+    }
+    if (resultingPlanId.present) {
+      map['resulting_plan_id'] = Variable<String>(resultingPlanId.value);
+    }
+    if (confirmedAt.present) {
+      map['confirmed_at'] = Variable<DateTime>(confirmedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TreatmentProposalRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('prescriptionVersionId: $prescriptionVersionId, ')
+          ..write('prescriptionItemId: $prescriptionItemId, ')
+          ..write('decision: $decision, ')
+          ..write('draftJson: $draftJson, ')
+          ..write('targetRoutineId: $targetRoutineId, ')
+          ..write('resultingPlanId: $resultingPlanId, ')
+          ..write('confirmedAt: $confirmedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PrescriptionRoutineLinkRecordsTable
+    extends PrescriptionRoutineLinkRecords
+    with
+        TableInfo<
+          $PrescriptionRoutineLinkRecordsTable,
+          PrescriptionRoutineLinkRecord
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PrescriptionRoutineLinkRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _prescriptionIdMeta = const VerificationMeta(
+    'prescriptionId',
+  );
+  @override
+  late final GeneratedColumn<String> prescriptionId = GeneratedColumn<String>(
+    'prescription_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _prescriptionVersionIdMeta =
+      const VerificationMeta('prescriptionVersionId');
+  @override
+  late final GeneratedColumn<String> prescriptionVersionId =
+      GeneratedColumn<String>(
+        'prescription_version_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _prescriptionItemIdMeta =
+      const VerificationMeta('prescriptionItemId');
+  @override
+  late final GeneratedColumn<String> prescriptionItemId =
+      GeneratedColumn<String>(
+        'prescription_item_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _routineIdMeta = const VerificationMeta(
+    'routineId',
+  );
+  @override
+  late final GeneratedColumn<String> routineId = GeneratedColumn<String>(
+    'routine_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _planIdMeta = const VerificationMeta('planId');
+  @override
+  late final GeneratedColumn<String> planId = GeneratedColumn<String>(
+    'plan_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _activeMeta = const VerificationMeta('active');
+  @override
+  late final GeneratedColumn<bool> active = GeneratedColumn<bool>(
+    'active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    prescriptionId,
+    prescriptionVersionId,
+    prescriptionItemId,
+    routineId,
+    planId,
+    active,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'prescription_routine_link_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PrescriptionRoutineLinkRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('prescription_id')) {
+      context.handle(
+        _prescriptionIdMeta,
+        prescriptionId.isAcceptableOrUnknown(
+          data['prescription_id']!,
+          _prescriptionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_prescriptionIdMeta);
+    }
+    if (data.containsKey('prescription_version_id')) {
+      context.handle(
+        _prescriptionVersionIdMeta,
+        prescriptionVersionId.isAcceptableOrUnknown(
+          data['prescription_version_id']!,
+          _prescriptionVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_prescriptionVersionIdMeta);
+    }
+    if (data.containsKey('prescription_item_id')) {
+      context.handle(
+        _prescriptionItemIdMeta,
+        prescriptionItemId.isAcceptableOrUnknown(
+          data['prescription_item_id']!,
+          _prescriptionItemIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_prescriptionItemIdMeta);
+    }
+    if (data.containsKey('routine_id')) {
+      context.handle(
+        _routineIdMeta,
+        routineId.isAcceptableOrUnknown(data['routine_id']!, _routineIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_routineIdMeta);
+    }
+    if (data.containsKey('plan_id')) {
+      context.handle(
+        _planIdMeta,
+        planId.isAcceptableOrUnknown(data['plan_id']!, _planIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_planIdMeta);
+    }
+    if (data.containsKey('active')) {
+      context.handle(
+        _activeMeta,
+        active.isAcceptableOrUnknown(data['active']!, _activeMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  PrescriptionRoutineLinkRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PrescriptionRoutineLinkRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      prescriptionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_id'],
+      )!,
+      prescriptionVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_version_id'],
+      )!,
+      prescriptionItemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prescription_item_id'],
+      )!,
+      routineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_id'],
+      )!,
+      planId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}plan_id'],
+      )!,
+      active: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}active'],
+      )!,
+    );
+  }
+
+  @override
+  $PrescriptionRoutineLinkRecordsTable createAlias(String alias) {
+    return $PrescriptionRoutineLinkRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class PrescriptionRoutineLinkRecord extends DataClass
+    implements Insertable<PrescriptionRoutineLinkRecord> {
+  final String id;
+  final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String prescriptionId;
+  final String prescriptionVersionId;
+  final String prescriptionItemId;
+  final String routineId;
+  final String planId;
+  final bool active;
+  const PrescriptionRoutineLinkRecord({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    required this.prescriptionId,
+    required this.prescriptionVersionId,
+    required this.prescriptionItemId,
+    required this.routineId,
+    required this.planId,
+    required this.active,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    map['prescription_id'] = Variable<String>(prescriptionId);
+    map['prescription_version_id'] = Variable<String>(prescriptionVersionId);
+    map['prescription_item_id'] = Variable<String>(prescriptionItemId);
+    map['routine_id'] = Variable<String>(routineId);
+    map['plan_id'] = Variable<String>(planId);
+    map['active'] = Variable<bool>(active);
+    return map;
+  }
+
+  PrescriptionRoutineLinkRecordsCompanion toCompanion(bool nullToAbsent) {
+    return PrescriptionRoutineLinkRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      prescriptionId: Value(prescriptionId),
+      prescriptionVersionId: Value(prescriptionVersionId),
+      prescriptionItemId: Value(prescriptionItemId),
+      routineId: Value(routineId),
+      planId: Value(planId),
+      active: Value(active),
+    );
+  }
+
+  factory PrescriptionRoutineLinkRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PrescriptionRoutineLinkRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      prescriptionId: serializer.fromJson<String>(json['prescriptionId']),
+      prescriptionVersionId: serializer.fromJson<String>(
+        json['prescriptionVersionId'],
+      ),
+      prescriptionItemId: serializer.fromJson<String>(
+        json['prescriptionItemId'],
+      ),
+      routineId: serializer.fromJson<String>(json['routineId']),
+      planId: serializer.fromJson<String>(json['planId']),
+      active: serializer.fromJson<bool>(json['active']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'prescriptionId': serializer.toJson<String>(prescriptionId),
+      'prescriptionVersionId': serializer.toJson<String>(prescriptionVersionId),
+      'prescriptionItemId': serializer.toJson<String>(prescriptionItemId),
+      'routineId': serializer.toJson<String>(routineId),
+      'planId': serializer.toJson<String>(planId),
+      'active': serializer.toJson<bool>(active),
+    };
+  }
+
+  PrescriptionRoutineLinkRecord copyWith({
+    String? id,
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    String? prescriptionId,
+    String? prescriptionVersionId,
+    String? prescriptionItemId,
+    String? routineId,
+    String? planId,
+    bool? active,
+  }) => PrescriptionRoutineLinkRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    prescriptionId: prescriptionId ?? this.prescriptionId,
+    prescriptionVersionId: prescriptionVersionId ?? this.prescriptionVersionId,
+    prescriptionItemId: prescriptionItemId ?? this.prescriptionItemId,
+    routineId: routineId ?? this.routineId,
+    planId: planId ?? this.planId,
+    active: active ?? this.active,
+  );
+  PrescriptionRoutineLinkRecord copyWithCompanion(
+    PrescriptionRoutineLinkRecordsCompanion data,
+  ) {
+    return PrescriptionRoutineLinkRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      prescriptionId: data.prescriptionId.present
+          ? data.prescriptionId.value
+          : this.prescriptionId,
+      prescriptionVersionId: data.prescriptionVersionId.present
+          ? data.prescriptionVersionId.value
+          : this.prescriptionVersionId,
+      prescriptionItemId: data.prescriptionItemId.present
+          ? data.prescriptionItemId.value
+          : this.prescriptionItemId,
+      routineId: data.routineId.present ? data.routineId.value : this.routineId,
+      planId: data.planId.present ? data.planId.value : this.planId,
+      active: data.active.present ? data.active.value : this.active,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrescriptionRoutineLinkRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('prescriptionVersionId: $prescriptionVersionId, ')
+          ..write('prescriptionItemId: $prescriptionItemId, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('active: $active')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    prescriptionId,
+    prescriptionVersionId,
+    prescriptionItemId,
+    routineId,
+    planId,
+    active,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PrescriptionRoutineLinkRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.prescriptionId == this.prescriptionId &&
+          other.prescriptionVersionId == this.prescriptionVersionId &&
+          other.prescriptionItemId == this.prescriptionItemId &&
+          other.routineId == this.routineId &&
+          other.planId == this.planId &&
+          other.active == this.active);
+}
+
+class PrescriptionRoutineLinkRecordsCompanion
+    extends UpdateCompanion<PrescriptionRoutineLinkRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String> prescriptionId;
+  final Value<String> prescriptionVersionId;
+  final Value<String> prescriptionItemId;
+  final Value<String> routineId;
+  final Value<String> planId;
+  final Value<bool> active;
+  final Value<int> rowid;
+  const PrescriptionRoutineLinkRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.prescriptionId = const Value.absent(),
+    this.prescriptionVersionId = const Value.absent(),
+    this.prescriptionItemId = const Value.absent(),
+    this.routineId = const Value.absent(),
+    this.planId = const Value.absent(),
+    this.active = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PrescriptionRoutineLinkRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    required String prescriptionId,
+    required String prescriptionVersionId,
+    required String prescriptionItemId,
+    required String routineId,
+    required String planId,
+    this.active = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus),
+       prescriptionId = Value(prescriptionId),
+       prescriptionVersionId = Value(prescriptionVersionId),
+       prescriptionItemId = Value(prescriptionItemId),
+       routineId = Value(routineId),
+       planId = Value(planId);
+  static Insertable<PrescriptionRoutineLinkRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? prescriptionId,
+    Expression<String>? prescriptionVersionId,
+    Expression<String>? prescriptionItemId,
+    Expression<String>? routineId,
+    Expression<String>? planId,
+    Expression<bool>? active,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (prescriptionId != null) 'prescription_id': prescriptionId,
+      if (prescriptionVersionId != null)
+        'prescription_version_id': prescriptionVersionId,
+      if (prescriptionItemId != null)
+        'prescription_item_id': prescriptionItemId,
+      if (routineId != null) 'routine_id': routineId,
+      if (planId != null) 'plan_id': planId,
+      if (active != null) 'active': active,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PrescriptionRoutineLinkRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String>? prescriptionId,
+    Value<String>? prescriptionVersionId,
+    Value<String>? prescriptionItemId,
+    Value<String>? routineId,
+    Value<String>? planId,
+    Value<bool>? active,
+    Value<int>? rowid,
+  }) {
+    return PrescriptionRoutineLinkRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      prescriptionId: prescriptionId ?? this.prescriptionId,
+      prescriptionVersionId:
+          prescriptionVersionId ?? this.prescriptionVersionId,
+      prescriptionItemId: prescriptionItemId ?? this.prescriptionItemId,
+      routineId: routineId ?? this.routineId,
+      planId: planId ?? this.planId,
+      active: active ?? this.active,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (prescriptionId.present) {
+      map['prescription_id'] = Variable<String>(prescriptionId.value);
+    }
+    if (prescriptionVersionId.present) {
+      map['prescription_version_id'] = Variable<String>(
+        prescriptionVersionId.value,
+      );
+    }
+    if (prescriptionItemId.present) {
+      map['prescription_item_id'] = Variable<String>(prescriptionItemId.value);
+    }
+    if (routineId.present) {
+      map['routine_id'] = Variable<String>(routineId.value);
+    }
+    if (planId.present) {
+      map['plan_id'] = Variable<String>(planId.value);
+    }
+    if (active.present) {
+      map['active'] = Variable<bool>(active.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrescriptionRoutineLinkRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('prescriptionVersionId: $prescriptionVersionId, ')
+          ..write('prescriptionItemId: $prescriptionItemId, ')
+          ..write('routineId: $routineId, ')
+          ..write('planId: $planId, ')
+          ..write('active: $active, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $NotificationManifestRecordsTable extends NotificationManifestRecords
+    with
+        TableInfo<
+          $NotificationManifestRecordsTable,
+          NotificationManifestRecord
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NotificationManifestRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _keyMeta = const VerificationMeta('key');
+  @override
+  late final GeneratedColumn<String> key = GeneratedColumn<String>(
+    'key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _occurrenceIdMeta = const VerificationMeta(
+    'occurrenceId',
+  );
+  @override
+  late final GeneratedColumn<String> occurrenceId = GeneratedColumn<String>(
+    'occurrence_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _pluginIdMeta = const VerificationMeta(
+    'pluginId',
+  );
+  @override
+  late final GeneratedColumn<int> pluginId = GeneratedColumn<int>(
+    'plugin_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _projectionVersionMeta = const VerificationMeta(
+    'projectionVersion',
+  );
+  @override
+  late final GeneratedColumn<String> projectionVersion =
+      GeneratedColumn<String>(
+        'projection_version',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _scheduledAtUtcMeta = const VerificationMeta(
+    'scheduledAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> scheduledAtUtc =
+      GeneratedColumn<DateTime>(
+        'scheduled_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _payloadJsonMeta = const VerificationMeta(
+    'payloadJson',
+  );
+  @override
+  late final GeneratedColumn<String> payloadJson = GeneratedColumn<String>(
+    'payload_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _retryCountMeta = const VerificationMeta(
+    'retryCount',
+  );
+  @override
+  late final GeneratedColumn<int> retryCount = GeneratedColumn<int>(
+    'retry_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _retryAfterUtcMeta = const VerificationMeta(
+    'retryAfterUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> retryAfterUtc =
+      GeneratedColumn<DateTime>(
+        'retry_after_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    key,
+    userId,
+    occurrenceId,
+    pluginId,
+    projectionVersion,
+    scheduledAtUtc,
+    payloadJson,
+    state,
+    retryCount,
+    retryAfterUtc,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'notification_manifest_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<NotificationManifestRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('key')) {
+      context.handle(
+        _keyMeta,
+        key.isAcceptableOrUnknown(data['key']!, _keyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_keyMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('occurrence_id')) {
+      context.handle(
+        _occurrenceIdMeta,
+        occurrenceId.isAcceptableOrUnknown(
+          data['occurrence_id']!,
+          _occurrenceIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_occurrenceIdMeta);
+    }
+    if (data.containsKey('plugin_id')) {
+      context.handle(
+        _pluginIdMeta,
+        pluginId.isAcceptableOrUnknown(data['plugin_id']!, _pluginIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_pluginIdMeta);
+    }
+    if (data.containsKey('projection_version')) {
+      context.handle(
+        _projectionVersionMeta,
+        projectionVersion.isAcceptableOrUnknown(
+          data['projection_version']!,
+          _projectionVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_projectionVersionMeta);
+    }
+    if (data.containsKey('scheduled_at_utc')) {
+      context.handle(
+        _scheduledAtUtcMeta,
+        scheduledAtUtc.isAcceptableOrUnknown(
+          data['scheduled_at_utc']!,
+          _scheduledAtUtcMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_scheduledAtUtcMeta);
+    }
+    if (data.containsKey('payload_json')) {
+      context.handle(
+        _payloadJsonMeta,
+        payloadJson.isAcceptableOrUnknown(
+          data['payload_json']!,
+          _payloadJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_payloadJsonMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stateMeta);
+    }
+    if (data.containsKey('retry_count')) {
+      context.handle(
+        _retryCountMeta,
+        retryCount.isAcceptableOrUnknown(data['retry_count']!, _retryCountMeta),
+      );
+    }
+    if (data.containsKey('retry_after_utc')) {
+      context.handle(
+        _retryAfterUtcMeta,
+        retryAfterUtc.isAcceptableOrUnknown(
+          data['retry_after_utc']!,
+          _retryAfterUtcMeta,
+        ),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, key};
+  @override
+  NotificationManifestRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NotificationManifestRecord(
+      key: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      occurrenceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}occurrence_id'],
+      )!,
+      pluginId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}plugin_id'],
+      )!,
+      projectionVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}projection_version'],
+      )!,
+      scheduledAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}scheduled_at_utc'],
+      )!,
+      payloadJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payload_json'],
+      )!,
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      )!,
+      retryCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}retry_count'],
+      )!,
+      retryAfterUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}retry_after_utc'],
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $NotificationManifestRecordsTable createAlias(String alias) {
+    return $NotificationManifestRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class NotificationManifestRecord extends DataClass
+    implements Insertable<NotificationManifestRecord> {
+  final String key;
+  final String userId;
+  final String occurrenceId;
+  final int pluginId;
+  final String projectionVersion;
+  final DateTime scheduledAtUtc;
+  final String payloadJson;
+  final String state;
+  final int retryCount;
+  final DateTime? retryAfterUtc;
+  final DateTime updatedAt;
+  const NotificationManifestRecord({
+    required this.key,
+    required this.userId,
+    required this.occurrenceId,
+    required this.pluginId,
+    required this.projectionVersion,
+    required this.scheduledAtUtc,
+    required this.payloadJson,
+    required this.state,
+    required this.retryCount,
+    this.retryAfterUtc,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['key'] = Variable<String>(key);
+    map['user_id'] = Variable<String>(userId);
+    map['occurrence_id'] = Variable<String>(occurrenceId);
+    map['plugin_id'] = Variable<int>(pluginId);
+    map['projection_version'] = Variable<String>(projectionVersion);
+    map['scheduled_at_utc'] = Variable<DateTime>(scheduledAtUtc);
+    map['payload_json'] = Variable<String>(payloadJson);
+    map['state'] = Variable<String>(state);
+    map['retry_count'] = Variable<int>(retryCount);
+    if (!nullToAbsent || retryAfterUtc != null) {
+      map['retry_after_utc'] = Variable<DateTime>(retryAfterUtc);
+    }
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  NotificationManifestRecordsCompanion toCompanion(bool nullToAbsent) {
+    return NotificationManifestRecordsCompanion(
+      key: Value(key),
+      userId: Value(userId),
+      occurrenceId: Value(occurrenceId),
+      pluginId: Value(pluginId),
+      projectionVersion: Value(projectionVersion),
+      scheduledAtUtc: Value(scheduledAtUtc),
+      payloadJson: Value(payloadJson),
+      state: Value(state),
+      retryCount: Value(retryCount),
+      retryAfterUtc: retryAfterUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(retryAfterUtc),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory NotificationManifestRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NotificationManifestRecord(
+      key: serializer.fromJson<String>(json['key']),
+      userId: serializer.fromJson<String>(json['userId']),
+      occurrenceId: serializer.fromJson<String>(json['occurrenceId']),
+      pluginId: serializer.fromJson<int>(json['pluginId']),
+      projectionVersion: serializer.fromJson<String>(json['projectionVersion']),
+      scheduledAtUtc: serializer.fromJson<DateTime>(json['scheduledAtUtc']),
+      payloadJson: serializer.fromJson<String>(json['payloadJson']),
+      state: serializer.fromJson<String>(json['state']),
+      retryCount: serializer.fromJson<int>(json['retryCount']),
+      retryAfterUtc: serializer.fromJson<DateTime?>(json['retryAfterUtc']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'key': serializer.toJson<String>(key),
+      'userId': serializer.toJson<String>(userId),
+      'occurrenceId': serializer.toJson<String>(occurrenceId),
+      'pluginId': serializer.toJson<int>(pluginId),
+      'projectionVersion': serializer.toJson<String>(projectionVersion),
+      'scheduledAtUtc': serializer.toJson<DateTime>(scheduledAtUtc),
+      'payloadJson': serializer.toJson<String>(payloadJson),
+      'state': serializer.toJson<String>(state),
+      'retryCount': serializer.toJson<int>(retryCount),
+      'retryAfterUtc': serializer.toJson<DateTime?>(retryAfterUtc),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  NotificationManifestRecord copyWith({
+    String? key,
+    String? userId,
+    String? occurrenceId,
+    int? pluginId,
+    String? projectionVersion,
+    DateTime? scheduledAtUtc,
+    String? payloadJson,
+    String? state,
+    int? retryCount,
+    Value<DateTime?> retryAfterUtc = const Value.absent(),
+    DateTime? updatedAt,
+  }) => NotificationManifestRecord(
+    key: key ?? this.key,
+    userId: userId ?? this.userId,
+    occurrenceId: occurrenceId ?? this.occurrenceId,
+    pluginId: pluginId ?? this.pluginId,
+    projectionVersion: projectionVersion ?? this.projectionVersion,
+    scheduledAtUtc: scheduledAtUtc ?? this.scheduledAtUtc,
+    payloadJson: payloadJson ?? this.payloadJson,
+    state: state ?? this.state,
+    retryCount: retryCount ?? this.retryCount,
+    retryAfterUtc: retryAfterUtc.present
+        ? retryAfterUtc.value
+        : this.retryAfterUtc,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  NotificationManifestRecord copyWithCompanion(
+    NotificationManifestRecordsCompanion data,
+  ) {
+    return NotificationManifestRecord(
+      key: data.key.present ? data.key.value : this.key,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      occurrenceId: data.occurrenceId.present
+          ? data.occurrenceId.value
+          : this.occurrenceId,
+      pluginId: data.pluginId.present ? data.pluginId.value : this.pluginId,
+      projectionVersion: data.projectionVersion.present
+          ? data.projectionVersion.value
+          : this.projectionVersion,
+      scheduledAtUtc: data.scheduledAtUtc.present
+          ? data.scheduledAtUtc.value
+          : this.scheduledAtUtc,
+      payloadJson: data.payloadJson.present
+          ? data.payloadJson.value
+          : this.payloadJson,
+      state: data.state.present ? data.state.value : this.state,
+      retryCount: data.retryCount.present
+          ? data.retryCount.value
+          : this.retryCount,
+      retryAfterUtc: data.retryAfterUtc.present
+          ? data.retryAfterUtc.value
+          : this.retryAfterUtc,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotificationManifestRecord(')
+          ..write('key: $key, ')
+          ..write('userId: $userId, ')
+          ..write('occurrenceId: $occurrenceId, ')
+          ..write('pluginId: $pluginId, ')
+          ..write('projectionVersion: $projectionVersion, ')
+          ..write('scheduledAtUtc: $scheduledAtUtc, ')
+          ..write('payloadJson: $payloadJson, ')
+          ..write('state: $state, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('retryAfterUtc: $retryAfterUtc, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    key,
+    userId,
+    occurrenceId,
+    pluginId,
+    projectionVersion,
+    scheduledAtUtc,
+    payloadJson,
+    state,
+    retryCount,
+    retryAfterUtc,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NotificationManifestRecord &&
+          other.key == this.key &&
+          other.userId == this.userId &&
+          other.occurrenceId == this.occurrenceId &&
+          other.pluginId == this.pluginId &&
+          other.projectionVersion == this.projectionVersion &&
+          other.scheduledAtUtc == this.scheduledAtUtc &&
+          other.payloadJson == this.payloadJson &&
+          other.state == this.state &&
+          other.retryCount == this.retryCount &&
+          other.retryAfterUtc == this.retryAfterUtc &&
+          other.updatedAt == this.updatedAt);
+}
+
+class NotificationManifestRecordsCompanion
+    extends UpdateCompanion<NotificationManifestRecord> {
+  final Value<String> key;
+  final Value<String> userId;
+  final Value<String> occurrenceId;
+  final Value<int> pluginId;
+  final Value<String> projectionVersion;
+  final Value<DateTime> scheduledAtUtc;
+  final Value<String> payloadJson;
+  final Value<String> state;
+  final Value<int> retryCount;
+  final Value<DateTime?> retryAfterUtc;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const NotificationManifestRecordsCompanion({
+    this.key = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.occurrenceId = const Value.absent(),
+    this.pluginId = const Value.absent(),
+    this.projectionVersion = const Value.absent(),
+    this.scheduledAtUtc = const Value.absent(),
+    this.payloadJson = const Value.absent(),
+    this.state = const Value.absent(),
+    this.retryCount = const Value.absent(),
+    this.retryAfterUtc = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  NotificationManifestRecordsCompanion.insert({
+    required String key,
+    required String userId,
+    required String occurrenceId,
+    required int pluginId,
+    required String projectionVersion,
+    required DateTime scheduledAtUtc,
+    required String payloadJson,
+    required String state,
+    this.retryCount = const Value.absent(),
+    this.retryAfterUtc = const Value.absent(),
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : key = Value(key),
+       userId = Value(userId),
+       occurrenceId = Value(occurrenceId),
+       pluginId = Value(pluginId),
+       projectionVersion = Value(projectionVersion),
+       scheduledAtUtc = Value(scheduledAtUtc),
+       payloadJson = Value(payloadJson),
+       state = Value(state),
+       updatedAt = Value(updatedAt);
+  static Insertable<NotificationManifestRecord> custom({
+    Expression<String>? key,
+    Expression<String>? userId,
+    Expression<String>? occurrenceId,
+    Expression<int>? pluginId,
+    Expression<String>? projectionVersion,
+    Expression<DateTime>? scheduledAtUtc,
+    Expression<String>? payloadJson,
+    Expression<String>? state,
+    Expression<int>? retryCount,
+    Expression<DateTime>? retryAfterUtc,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (key != null) 'key': key,
+      if (userId != null) 'user_id': userId,
+      if (occurrenceId != null) 'occurrence_id': occurrenceId,
+      if (pluginId != null) 'plugin_id': pluginId,
+      if (projectionVersion != null) 'projection_version': projectionVersion,
+      if (scheduledAtUtc != null) 'scheduled_at_utc': scheduledAtUtc,
+      if (payloadJson != null) 'payload_json': payloadJson,
+      if (state != null) 'state': state,
+      if (retryCount != null) 'retry_count': retryCount,
+      if (retryAfterUtc != null) 'retry_after_utc': retryAfterUtc,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  NotificationManifestRecordsCompanion copyWith({
+    Value<String>? key,
+    Value<String>? userId,
+    Value<String>? occurrenceId,
+    Value<int>? pluginId,
+    Value<String>? projectionVersion,
+    Value<DateTime>? scheduledAtUtc,
+    Value<String>? payloadJson,
+    Value<String>? state,
+    Value<int>? retryCount,
+    Value<DateTime?>? retryAfterUtc,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return NotificationManifestRecordsCompanion(
+      key: key ?? this.key,
+      userId: userId ?? this.userId,
+      occurrenceId: occurrenceId ?? this.occurrenceId,
+      pluginId: pluginId ?? this.pluginId,
+      projectionVersion: projectionVersion ?? this.projectionVersion,
+      scheduledAtUtc: scheduledAtUtc ?? this.scheduledAtUtc,
+      payloadJson: payloadJson ?? this.payloadJson,
+      state: state ?? this.state,
+      retryCount: retryCount ?? this.retryCount,
+      retryAfterUtc: retryAfterUtc ?? this.retryAfterUtc,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (key.present) {
+      map['key'] = Variable<String>(key.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (occurrenceId.present) {
+      map['occurrence_id'] = Variable<String>(occurrenceId.value);
+    }
+    if (pluginId.present) {
+      map['plugin_id'] = Variable<int>(pluginId.value);
+    }
+    if (projectionVersion.present) {
+      map['projection_version'] = Variable<String>(projectionVersion.value);
+    }
+    if (scheduledAtUtc.present) {
+      map['scheduled_at_utc'] = Variable<DateTime>(scheduledAtUtc.value);
+    }
+    if (payloadJson.present) {
+      map['payload_json'] = Variable<String>(payloadJson.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (retryCount.present) {
+      map['retry_count'] = Variable<int>(retryCount.value);
+    }
+    if (retryAfterUtc.present) {
+      map['retry_after_utc'] = Variable<DateTime>(retryAfterUtc.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotificationManifestRecordsCompanion(')
+          ..write('key: $key, ')
+          ..write('userId: $userId, ')
+          ..write('occurrenceId: $occurrenceId, ')
+          ..write('pluginId: $pluginId, ')
+          ..write('projectionVersion: $projectionVersion, ')
+          ..write('scheduledAtUtc: $scheduledAtUtc, ')
+          ..write('payloadJson: $payloadJson, ')
+          ..write('state: $state, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('retryAfterUtc: $retryAfterUtc, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $NotificationActionInboxRecordsTable
+    extends NotificationActionInboxRecords
+    with
+        TableInfo<
+          $NotificationActionInboxRecordsTable,
+          NotificationActionInboxRecord
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NotificationActionInboxRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _actionIdMeta = const VerificationMeta(
+    'actionId',
+  );
+  @override
+  late final GeneratedColumn<String> actionId = GeneratedColumn<String>(
+    'action_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _occurrenceIdMeta = const VerificationMeta(
+    'occurrenceId',
+  );
+  @override
+  late final GeneratedColumn<String> occurrenceId = GeneratedColumn<String>(
+    'occurrence_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _actionMeta = const VerificationMeta('action');
+  @override
+  late final GeneratedColumn<String> action = GeneratedColumn<String>(
+    'action',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _occurredAtUtcMeta = const VerificationMeta(
+    'occurredAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> occurredAtUtc =
+      GeneratedColumn<DateTime>(
+        'occurred_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _receivedAtUtcMeta = const VerificationMeta(
+    'receivedAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> receivedAtUtc =
+      GeneratedColumn<DateTime>(
+        'received_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _errorCodeMeta = const VerificationMeta(
+    'errorCode',
+  );
+  @override
+  late final GeneratedColumn<String> errorCode = GeneratedColumn<String>(
+    'error_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _processedAtUtcMeta = const VerificationMeta(
+    'processedAtUtc',
+  );
+  @override
+  late final GeneratedColumn<DateTime> processedAtUtc =
+      GeneratedColumn<DateTime>(
+        'processed_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    actionId,
+    userId,
+    occurrenceId,
+    action,
+    occurredAtUtc,
+    receivedAtUtc,
+    state,
+    errorCode,
+    processedAtUtc,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'notification_action_inbox_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<NotificationActionInboxRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('action_id')) {
+      context.handle(
+        _actionIdMeta,
+        actionId.isAcceptableOrUnknown(data['action_id']!, _actionIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_actionIdMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('occurrence_id')) {
+      context.handle(
+        _occurrenceIdMeta,
+        occurrenceId.isAcceptableOrUnknown(
+          data['occurrence_id']!,
+          _occurrenceIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_occurrenceIdMeta);
+    }
+    if (data.containsKey('action')) {
+      context.handle(
+        _actionMeta,
+        action.isAcceptableOrUnknown(data['action']!, _actionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_actionMeta);
+    }
+    if (data.containsKey('occurred_at_utc')) {
+      context.handle(
+        _occurredAtUtcMeta,
+        occurredAtUtc.isAcceptableOrUnknown(
+          data['occurred_at_utc']!,
+          _occurredAtUtcMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_occurredAtUtcMeta);
+    }
+    if (data.containsKey('received_at_utc')) {
+      context.handle(
+        _receivedAtUtcMeta,
+        receivedAtUtc.isAcceptableOrUnknown(
+          data['received_at_utc']!,
+          _receivedAtUtcMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_receivedAtUtcMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stateMeta);
+    }
+    if (data.containsKey('error_code')) {
+      context.handle(
+        _errorCodeMeta,
+        errorCode.isAcceptableOrUnknown(data['error_code']!, _errorCodeMeta),
+      );
+    }
+    if (data.containsKey('processed_at_utc')) {
+      context.handle(
+        _processedAtUtcMeta,
+        processedAtUtc.isAcceptableOrUnknown(
+          data['processed_at_utc']!,
+          _processedAtUtcMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, actionId};
+  @override
+  NotificationActionInboxRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NotificationActionInboxRecord(
+      actionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}action_id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      occurrenceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}occurrence_id'],
+      )!,
+      action: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}action'],
+      )!,
+      occurredAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}occurred_at_utc'],
+      )!,
+      receivedAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}received_at_utc'],
+      )!,
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      )!,
+      errorCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}error_code'],
+      ),
+      processedAtUtc: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}processed_at_utc'],
+      ),
+    );
+  }
+
+  @override
+  $NotificationActionInboxRecordsTable createAlias(String alias) {
+    return $NotificationActionInboxRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class NotificationActionInboxRecord extends DataClass
+    implements Insertable<NotificationActionInboxRecord> {
+  final String actionId;
+  final String userId;
+  final String occurrenceId;
+  final String action;
+  final DateTime occurredAtUtc;
+  final DateTime receivedAtUtc;
+  final String state;
+  final String? errorCode;
+  final DateTime? processedAtUtc;
+  const NotificationActionInboxRecord({
+    required this.actionId,
+    required this.userId,
+    required this.occurrenceId,
+    required this.action,
+    required this.occurredAtUtc,
+    required this.receivedAtUtc,
+    required this.state,
+    this.errorCode,
+    this.processedAtUtc,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['action_id'] = Variable<String>(actionId);
+    map['user_id'] = Variable<String>(userId);
+    map['occurrence_id'] = Variable<String>(occurrenceId);
+    map['action'] = Variable<String>(action);
+    map['occurred_at_utc'] = Variable<DateTime>(occurredAtUtc);
+    map['received_at_utc'] = Variable<DateTime>(receivedAtUtc);
+    map['state'] = Variable<String>(state);
+    if (!nullToAbsent || errorCode != null) {
+      map['error_code'] = Variable<String>(errorCode);
+    }
+    if (!nullToAbsent || processedAtUtc != null) {
+      map['processed_at_utc'] = Variable<DateTime>(processedAtUtc);
+    }
+    return map;
+  }
+
+  NotificationActionInboxRecordsCompanion toCompanion(bool nullToAbsent) {
+    return NotificationActionInboxRecordsCompanion(
+      actionId: Value(actionId),
+      userId: Value(userId),
+      occurrenceId: Value(occurrenceId),
+      action: Value(action),
+      occurredAtUtc: Value(occurredAtUtc),
+      receivedAtUtc: Value(receivedAtUtc),
+      state: Value(state),
+      errorCode: errorCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(errorCode),
+      processedAtUtc: processedAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(processedAtUtc),
+    );
+  }
+
+  factory NotificationActionInboxRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NotificationActionInboxRecord(
+      actionId: serializer.fromJson<String>(json['actionId']),
+      userId: serializer.fromJson<String>(json['userId']),
+      occurrenceId: serializer.fromJson<String>(json['occurrenceId']),
+      action: serializer.fromJson<String>(json['action']),
+      occurredAtUtc: serializer.fromJson<DateTime>(json['occurredAtUtc']),
+      receivedAtUtc: serializer.fromJson<DateTime>(json['receivedAtUtc']),
+      state: serializer.fromJson<String>(json['state']),
+      errorCode: serializer.fromJson<String?>(json['errorCode']),
+      processedAtUtc: serializer.fromJson<DateTime?>(json['processedAtUtc']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'actionId': serializer.toJson<String>(actionId),
+      'userId': serializer.toJson<String>(userId),
+      'occurrenceId': serializer.toJson<String>(occurrenceId),
+      'action': serializer.toJson<String>(action),
+      'occurredAtUtc': serializer.toJson<DateTime>(occurredAtUtc),
+      'receivedAtUtc': serializer.toJson<DateTime>(receivedAtUtc),
+      'state': serializer.toJson<String>(state),
+      'errorCode': serializer.toJson<String?>(errorCode),
+      'processedAtUtc': serializer.toJson<DateTime?>(processedAtUtc),
+    };
+  }
+
+  NotificationActionInboxRecord copyWith({
+    String? actionId,
+    String? userId,
+    String? occurrenceId,
+    String? action,
+    DateTime? occurredAtUtc,
+    DateTime? receivedAtUtc,
+    String? state,
+    Value<String?> errorCode = const Value.absent(),
+    Value<DateTime?> processedAtUtc = const Value.absent(),
+  }) => NotificationActionInboxRecord(
+    actionId: actionId ?? this.actionId,
+    userId: userId ?? this.userId,
+    occurrenceId: occurrenceId ?? this.occurrenceId,
+    action: action ?? this.action,
+    occurredAtUtc: occurredAtUtc ?? this.occurredAtUtc,
+    receivedAtUtc: receivedAtUtc ?? this.receivedAtUtc,
+    state: state ?? this.state,
+    errorCode: errorCode.present ? errorCode.value : this.errorCode,
+    processedAtUtc: processedAtUtc.present
+        ? processedAtUtc.value
+        : this.processedAtUtc,
+  );
+  NotificationActionInboxRecord copyWithCompanion(
+    NotificationActionInboxRecordsCompanion data,
+  ) {
+    return NotificationActionInboxRecord(
+      actionId: data.actionId.present ? data.actionId.value : this.actionId,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      occurrenceId: data.occurrenceId.present
+          ? data.occurrenceId.value
+          : this.occurrenceId,
+      action: data.action.present ? data.action.value : this.action,
+      occurredAtUtc: data.occurredAtUtc.present
+          ? data.occurredAtUtc.value
+          : this.occurredAtUtc,
+      receivedAtUtc: data.receivedAtUtc.present
+          ? data.receivedAtUtc.value
+          : this.receivedAtUtc,
+      state: data.state.present ? data.state.value : this.state,
+      errorCode: data.errorCode.present ? data.errorCode.value : this.errorCode,
+      processedAtUtc: data.processedAtUtc.present
+          ? data.processedAtUtc.value
+          : this.processedAtUtc,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotificationActionInboxRecord(')
+          ..write('actionId: $actionId, ')
+          ..write('userId: $userId, ')
+          ..write('occurrenceId: $occurrenceId, ')
+          ..write('action: $action, ')
+          ..write('occurredAtUtc: $occurredAtUtc, ')
+          ..write('receivedAtUtc: $receivedAtUtc, ')
+          ..write('state: $state, ')
+          ..write('errorCode: $errorCode, ')
+          ..write('processedAtUtc: $processedAtUtc')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    actionId,
+    userId,
+    occurrenceId,
+    action,
+    occurredAtUtc,
+    receivedAtUtc,
+    state,
+    errorCode,
+    processedAtUtc,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NotificationActionInboxRecord &&
+          other.actionId == this.actionId &&
+          other.userId == this.userId &&
+          other.occurrenceId == this.occurrenceId &&
+          other.action == this.action &&
+          other.occurredAtUtc == this.occurredAtUtc &&
+          other.receivedAtUtc == this.receivedAtUtc &&
+          other.state == this.state &&
+          other.errorCode == this.errorCode &&
+          other.processedAtUtc == this.processedAtUtc);
+}
+
+class NotificationActionInboxRecordsCompanion
+    extends UpdateCompanion<NotificationActionInboxRecord> {
+  final Value<String> actionId;
+  final Value<String> userId;
+  final Value<String> occurrenceId;
+  final Value<String> action;
+  final Value<DateTime> occurredAtUtc;
+  final Value<DateTime> receivedAtUtc;
+  final Value<String> state;
+  final Value<String?> errorCode;
+  final Value<DateTime?> processedAtUtc;
+  final Value<int> rowid;
+  const NotificationActionInboxRecordsCompanion({
+    this.actionId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.occurrenceId = const Value.absent(),
+    this.action = const Value.absent(),
+    this.occurredAtUtc = const Value.absent(),
+    this.receivedAtUtc = const Value.absent(),
+    this.state = const Value.absent(),
+    this.errorCode = const Value.absent(),
+    this.processedAtUtc = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  NotificationActionInboxRecordsCompanion.insert({
+    required String actionId,
+    required String userId,
+    required String occurrenceId,
+    required String action,
+    required DateTime occurredAtUtc,
+    required DateTime receivedAtUtc,
+    required String state,
+    this.errorCode = const Value.absent(),
+    this.processedAtUtc = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : actionId = Value(actionId),
+       userId = Value(userId),
+       occurrenceId = Value(occurrenceId),
+       action = Value(action),
+       occurredAtUtc = Value(occurredAtUtc),
+       receivedAtUtc = Value(receivedAtUtc),
+       state = Value(state);
+  static Insertable<NotificationActionInboxRecord> custom({
+    Expression<String>? actionId,
+    Expression<String>? userId,
+    Expression<String>? occurrenceId,
+    Expression<String>? action,
+    Expression<DateTime>? occurredAtUtc,
+    Expression<DateTime>? receivedAtUtc,
+    Expression<String>? state,
+    Expression<String>? errorCode,
+    Expression<DateTime>? processedAtUtc,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (actionId != null) 'action_id': actionId,
+      if (userId != null) 'user_id': userId,
+      if (occurrenceId != null) 'occurrence_id': occurrenceId,
+      if (action != null) 'action': action,
+      if (occurredAtUtc != null) 'occurred_at_utc': occurredAtUtc,
+      if (receivedAtUtc != null) 'received_at_utc': receivedAtUtc,
+      if (state != null) 'state': state,
+      if (errorCode != null) 'error_code': errorCode,
+      if (processedAtUtc != null) 'processed_at_utc': processedAtUtc,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  NotificationActionInboxRecordsCompanion copyWith({
+    Value<String>? actionId,
+    Value<String>? userId,
+    Value<String>? occurrenceId,
+    Value<String>? action,
+    Value<DateTime>? occurredAtUtc,
+    Value<DateTime>? receivedAtUtc,
+    Value<String>? state,
+    Value<String?>? errorCode,
+    Value<DateTime?>? processedAtUtc,
+    Value<int>? rowid,
+  }) {
+    return NotificationActionInboxRecordsCompanion(
+      actionId: actionId ?? this.actionId,
+      userId: userId ?? this.userId,
+      occurrenceId: occurrenceId ?? this.occurrenceId,
+      action: action ?? this.action,
+      occurredAtUtc: occurredAtUtc ?? this.occurredAtUtc,
+      receivedAtUtc: receivedAtUtc ?? this.receivedAtUtc,
+      state: state ?? this.state,
+      errorCode: errorCode ?? this.errorCode,
+      processedAtUtc: processedAtUtc ?? this.processedAtUtc,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (actionId.present) {
+      map['action_id'] = Variable<String>(actionId.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (occurrenceId.present) {
+      map['occurrence_id'] = Variable<String>(occurrenceId.value);
+    }
+    if (action.present) {
+      map['action'] = Variable<String>(action.value);
+    }
+    if (occurredAtUtc.present) {
+      map['occurred_at_utc'] = Variable<DateTime>(occurredAtUtc.value);
+    }
+    if (receivedAtUtc.present) {
+      map['received_at_utc'] = Variable<DateTime>(receivedAtUtc.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (errorCode.present) {
+      map['error_code'] = Variable<String>(errorCode.value);
+    }
+    if (processedAtUtc.present) {
+      map['processed_at_utc'] = Variable<DateTime>(processedAtUtc.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotificationActionInboxRecordsCompanion(')
+          ..write('actionId: $actionId, ')
+          ..write('userId: $userId, ')
+          ..write('occurrenceId: $occurrenceId, ')
+          ..write('action: $action, ')
+          ..write('occurredAtUtc: $occurredAtUtc, ')
+          ..write('receivedAtUtc: $receivedAtUtc, ')
+          ..write('state: $state, ')
+          ..write('errorCode: $errorCode, ')
+          ..write('processedAtUtc: $processedAtUtc, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -37840,6 +42239,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $UnifiedTreatmentRolloutFlagsTable(this);
   late final $UnifiedTreatmentCutoverStatesTable unifiedTreatmentCutoverStates =
       $UnifiedTreatmentCutoverStatesTable(this);
+  late final $PrescriptionVersionRecordsTable prescriptionVersionRecords =
+      $PrescriptionVersionRecordsTable(this);
+  late final $PrescriptionReviewRecordsTable prescriptionReviewRecords =
+      $PrescriptionReviewRecordsTable(this);
+  late final $TreatmentProposalRecordsTable treatmentProposalRecords =
+      $TreatmentProposalRecordsTable(this);
+  late final $PrescriptionRoutineLinkRecordsTable
+  prescriptionRoutineLinkRecords = $PrescriptionRoutineLinkRecordsTable(this);
+  late final $NotificationManifestRecordsTable notificationManifestRecords =
+      $NotificationManifestRecordsTable(this);
+  late final $NotificationActionInboxRecordsTable
+  notificationActionInboxRecords = $NotificationActionInboxRecordsTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -38112,6 +42523,34 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'unified_treatment_rollout_key_idx',
     'CREATE UNIQUE INDEX unified_treatment_rollout_key_idx ON unified_treatment_rollout_flags ("key")',
   );
+  late final Index prescriptionVersionsParentRevisionIdx = Index(
+    'prescription_versions_parent_revision_idx',
+    'CREATE UNIQUE INDEX prescription_versions_parent_revision_idx ON prescription_version_records (user_id, prescription_id, revision)',
+  );
+  late final Index prescriptionVersionsSourceProcessingIdx = Index(
+    'prescription_versions_source_processing_idx',
+    'CREATE UNIQUE INDEX prescription_versions_source_processing_idx ON prescription_version_records (user_id, source_processing_id)',
+  );
+  late final Index prescriptionReviewsVersionIdx = Index(
+    'prescription_reviews_version_idx',
+    'CREATE INDEX prescription_reviews_version_idx ON prescription_review_records (user_id, version_id, created_at)',
+  );
+  late final Index treatmentProposalsItemVersionIdx = Index(
+    'treatment_proposals_item_version_idx',
+    'CREATE UNIQUE INDEX treatment_proposals_item_version_idx ON treatment_proposal_records (user_id, prescription_item_id, prescription_version_id)',
+  );
+  late final Index prescriptionRoutineLinksItemIdx = Index(
+    'prescription_routine_links_item_idx',
+    'CREATE INDEX prescription_routine_links_item_idx ON prescription_routine_link_records (user_id, prescription_item_id, active)',
+  );
+  late final Index notificationManifestUserScheduleIdx = Index(
+    'notification_manifest_user_schedule_idx',
+    'CREATE INDEX notification_manifest_user_schedule_idx ON notification_manifest_records (user_id, scheduled_at_utc)',
+  );
+  late final Index notificationActionInboxPendingIdx = Index(
+    'notification_action_inbox_pending_idx',
+    'CREATE INDEX notification_action_inbox_pending_idx ON notification_action_inbox_records (user_id, state, received_at_utc)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -38190,6 +42629,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     unifiedTreatmentLegacyLogMappings,
     unifiedTreatmentRolloutFlags,
     unifiedTreatmentCutoverStates,
+    prescriptionVersionRecords,
+    prescriptionReviewRecords,
+    treatmentProposalRecords,
+    prescriptionRoutineLinkRecords,
+    notificationManifestRecords,
+    notificationActionInboxRecords,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -38258,6 +42703,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     unifiedTreatmentTargetRoutineUniqueIdx,
     unifiedTreatmentLegacyLogUniqueIdx,
     unifiedTreatmentRolloutKeyIdx,
+    prescriptionVersionsParentRevisionIdx,
+    prescriptionVersionsSourceProcessingIdx,
+    prescriptionReviewsVersionIdx,
+    treatmentProposalsItemVersionIdx,
+    prescriptionRoutineLinksItemIdx,
+    notificationManifestUserScheduleIdx,
+    notificationActionInboxPendingIdx,
   ];
 }
 
@@ -55660,6 +60112,2159 @@ typedef $$UnifiedTreatmentCutoverStatesTableProcessedTableManager =
       UnifiedTreatmentCutoverState,
       PrefetchHooks Function()
     >;
+typedef $$PrescriptionVersionRecordsTableCreateCompanionBuilder =
+    PrescriptionVersionRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      required String prescriptionId,
+      required int revision,
+      required String status,
+      required String snapshotJson,
+      Value<String?> sourceProcessingId,
+      Value<DateTime?> submittedAt,
+      Value<DateTime?> confirmedAt,
+      Value<int> rowid,
+    });
+typedef $$PrescriptionVersionRecordsTableUpdateCompanionBuilder =
+    PrescriptionVersionRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String> prescriptionId,
+      Value<int> revision,
+      Value<String> status,
+      Value<String> snapshotJson,
+      Value<String?> sourceProcessingId,
+      Value<DateTime?> submittedAt,
+      Value<DateTime?> confirmedAt,
+      Value<int> rowid,
+    });
+
+class $$PrescriptionVersionRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $PrescriptionVersionRecordsTable> {
+  $$PrescriptionVersionRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get revision => $composableBuilder(
+    column: $table.revision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get snapshotJson => $composableBuilder(
+    column: $table.snapshotJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceProcessingId => $composableBuilder(
+    column: $table.sourceProcessingId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get submittedAt => $composableBuilder(
+    column: $table.submittedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PrescriptionVersionRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PrescriptionVersionRecordsTable> {
+  $$PrescriptionVersionRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get revision => $composableBuilder(
+    column: $table.revision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get snapshotJson => $composableBuilder(
+    column: $table.snapshotJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceProcessingId => $composableBuilder(
+    column: $table.sourceProcessingId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get submittedAt => $composableBuilder(
+    column: $table.submittedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PrescriptionVersionRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PrescriptionVersionRecordsTable> {
+  $$PrescriptionVersionRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get revision =>
+      $composableBuilder(column: $table.revision, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get snapshotJson => $composableBuilder(
+    column: $table.snapshotJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceProcessingId => $composableBuilder(
+    column: $table.sourceProcessingId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get submittedAt => $composableBuilder(
+    column: $table.submittedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => column,
+  );
+}
+
+class $$PrescriptionVersionRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PrescriptionVersionRecordsTable,
+          PrescriptionVersionRecord,
+          $$PrescriptionVersionRecordsTableFilterComposer,
+          $$PrescriptionVersionRecordsTableOrderingComposer,
+          $$PrescriptionVersionRecordsTableAnnotationComposer,
+          $$PrescriptionVersionRecordsTableCreateCompanionBuilder,
+          $$PrescriptionVersionRecordsTableUpdateCompanionBuilder,
+          (
+            PrescriptionVersionRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $PrescriptionVersionRecordsTable,
+              PrescriptionVersionRecord
+            >,
+          ),
+          PrescriptionVersionRecord,
+          PrefetchHooks Function()
+        > {
+  $$PrescriptionVersionRecordsTableTableManager(
+    _$AppDatabase db,
+    $PrescriptionVersionRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PrescriptionVersionRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$PrescriptionVersionRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$PrescriptionVersionRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String> prescriptionId = const Value.absent(),
+                Value<int> revision = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> snapshotJson = const Value.absent(),
+                Value<String?> sourceProcessingId = const Value.absent(),
+                Value<DateTime?> submittedAt = const Value.absent(),
+                Value<DateTime?> confirmedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PrescriptionVersionRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                prescriptionId: prescriptionId,
+                revision: revision,
+                status: status,
+                snapshotJson: snapshotJson,
+                sourceProcessingId: sourceProcessingId,
+                submittedAt: submittedAt,
+                confirmedAt: confirmedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                required String prescriptionId,
+                required int revision,
+                required String status,
+                required String snapshotJson,
+                Value<String?> sourceProcessingId = const Value.absent(),
+                Value<DateTime?> submittedAt = const Value.absent(),
+                Value<DateTime?> confirmedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PrescriptionVersionRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                prescriptionId: prescriptionId,
+                revision: revision,
+                status: status,
+                snapshotJson: snapshotJson,
+                sourceProcessingId: sourceProcessingId,
+                submittedAt: submittedAt,
+                confirmedAt: confirmedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PrescriptionVersionRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PrescriptionVersionRecordsTable,
+      PrescriptionVersionRecord,
+      $$PrescriptionVersionRecordsTableFilterComposer,
+      $$PrescriptionVersionRecordsTableOrderingComposer,
+      $$PrescriptionVersionRecordsTableAnnotationComposer,
+      $$PrescriptionVersionRecordsTableCreateCompanionBuilder,
+      $$PrescriptionVersionRecordsTableUpdateCompanionBuilder,
+      (
+        PrescriptionVersionRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $PrescriptionVersionRecordsTable,
+          PrescriptionVersionRecord
+        >,
+      ),
+      PrescriptionVersionRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$PrescriptionReviewRecordsTableCreateCompanionBuilder =
+    PrescriptionReviewRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      required String prescriptionId,
+      required String versionId,
+      required String decision,
+      required String actor,
+      required String fieldDecisionsJson,
+      Value<String?> note,
+      Value<int> rowid,
+    });
+typedef $$PrescriptionReviewRecordsTableUpdateCompanionBuilder =
+    PrescriptionReviewRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String> prescriptionId,
+      Value<String> versionId,
+      Value<String> decision,
+      Value<String> actor,
+      Value<String> fieldDecisionsJson,
+      Value<String?> note,
+      Value<int> rowid,
+    });
+
+class $$PrescriptionReviewRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $PrescriptionReviewRecordsTable> {
+  $$PrescriptionReviewRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get versionId => $composableBuilder(
+    column: $table.versionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get decision => $composableBuilder(
+    column: $table.decision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actor => $composableBuilder(
+    column: $table.actor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fieldDecisionsJson => $composableBuilder(
+    column: $table.fieldDecisionsJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PrescriptionReviewRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PrescriptionReviewRecordsTable> {
+  $$PrescriptionReviewRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get versionId => $composableBuilder(
+    column: $table.versionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get decision => $composableBuilder(
+    column: $table.decision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actor => $composableBuilder(
+    column: $table.actor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fieldDecisionsJson => $composableBuilder(
+    column: $table.fieldDecisionsJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PrescriptionReviewRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PrescriptionReviewRecordsTable> {
+  $$PrescriptionReviewRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get versionId =>
+      $composableBuilder(column: $table.versionId, builder: (column) => column);
+
+  GeneratedColumn<String> get decision =>
+      $composableBuilder(column: $table.decision, builder: (column) => column);
+
+  GeneratedColumn<String> get actor =>
+      $composableBuilder(column: $table.actor, builder: (column) => column);
+
+  GeneratedColumn<String> get fieldDecisionsJson => $composableBuilder(
+    column: $table.fieldDecisionsJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+}
+
+class $$PrescriptionReviewRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PrescriptionReviewRecordsTable,
+          PrescriptionReviewRecord,
+          $$PrescriptionReviewRecordsTableFilterComposer,
+          $$PrescriptionReviewRecordsTableOrderingComposer,
+          $$PrescriptionReviewRecordsTableAnnotationComposer,
+          $$PrescriptionReviewRecordsTableCreateCompanionBuilder,
+          $$PrescriptionReviewRecordsTableUpdateCompanionBuilder,
+          (
+            PrescriptionReviewRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $PrescriptionReviewRecordsTable,
+              PrescriptionReviewRecord
+            >,
+          ),
+          PrescriptionReviewRecord,
+          PrefetchHooks Function()
+        > {
+  $$PrescriptionReviewRecordsTableTableManager(
+    _$AppDatabase db,
+    $PrescriptionReviewRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PrescriptionReviewRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$PrescriptionReviewRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$PrescriptionReviewRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String> prescriptionId = const Value.absent(),
+                Value<String> versionId = const Value.absent(),
+                Value<String> decision = const Value.absent(),
+                Value<String> actor = const Value.absent(),
+                Value<String> fieldDecisionsJson = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PrescriptionReviewRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                prescriptionId: prescriptionId,
+                versionId: versionId,
+                decision: decision,
+                actor: actor,
+                fieldDecisionsJson: fieldDecisionsJson,
+                note: note,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                required String prescriptionId,
+                required String versionId,
+                required String decision,
+                required String actor,
+                required String fieldDecisionsJson,
+                Value<String?> note = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PrescriptionReviewRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                prescriptionId: prescriptionId,
+                versionId: versionId,
+                decision: decision,
+                actor: actor,
+                fieldDecisionsJson: fieldDecisionsJson,
+                note: note,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PrescriptionReviewRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PrescriptionReviewRecordsTable,
+      PrescriptionReviewRecord,
+      $$PrescriptionReviewRecordsTableFilterComposer,
+      $$PrescriptionReviewRecordsTableOrderingComposer,
+      $$PrescriptionReviewRecordsTableAnnotationComposer,
+      $$PrescriptionReviewRecordsTableCreateCompanionBuilder,
+      $$PrescriptionReviewRecordsTableUpdateCompanionBuilder,
+      (
+        PrescriptionReviewRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $PrescriptionReviewRecordsTable,
+          PrescriptionReviewRecord
+        >,
+      ),
+      PrescriptionReviewRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$TreatmentProposalRecordsTableCreateCompanionBuilder =
+    TreatmentProposalRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      required String prescriptionId,
+      required String prescriptionVersionId,
+      required String prescriptionItemId,
+      required String decision,
+      required String draftJson,
+      Value<String?> targetRoutineId,
+      Value<String?> resultingPlanId,
+      Value<DateTime?> confirmedAt,
+      Value<int> rowid,
+    });
+typedef $$TreatmentProposalRecordsTableUpdateCompanionBuilder =
+    TreatmentProposalRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String> prescriptionId,
+      Value<String> prescriptionVersionId,
+      Value<String> prescriptionItemId,
+      Value<String> decision,
+      Value<String> draftJson,
+      Value<String?> targetRoutineId,
+      Value<String?> resultingPlanId,
+      Value<DateTime?> confirmedAt,
+      Value<int> rowid,
+    });
+
+class $$TreatmentProposalRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $TreatmentProposalRecordsTable> {
+  $$TreatmentProposalRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionVersionId => $composableBuilder(
+    column: $table.prescriptionVersionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get decision => $composableBuilder(
+    column: $table.decision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get draftJson => $composableBuilder(
+    column: $table.draftJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetRoutineId => $composableBuilder(
+    column: $table.targetRoutineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get resultingPlanId => $composableBuilder(
+    column: $table.resultingPlanId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TreatmentProposalRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TreatmentProposalRecordsTable> {
+  $$TreatmentProposalRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionVersionId => $composableBuilder(
+    column: $table.prescriptionVersionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get decision => $composableBuilder(
+    column: $table.decision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get draftJson => $composableBuilder(
+    column: $table.draftJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetRoutineId => $composableBuilder(
+    column: $table.targetRoutineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get resultingPlanId => $composableBuilder(
+    column: $table.resultingPlanId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TreatmentProposalRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TreatmentProposalRecordsTable> {
+  $$TreatmentProposalRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionVersionId => $composableBuilder(
+    column: $table.prescriptionVersionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get decision =>
+      $composableBuilder(column: $table.decision, builder: (column) => column);
+
+  GeneratedColumn<String> get draftJson =>
+      $composableBuilder(column: $table.draftJson, builder: (column) => column);
+
+  GeneratedColumn<String> get targetRoutineId => $composableBuilder(
+    column: $table.targetRoutineId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get resultingPlanId => $composableBuilder(
+    column: $table.resultingPlanId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => column,
+  );
+}
+
+class $$TreatmentProposalRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TreatmentProposalRecordsTable,
+          TreatmentProposalRecord,
+          $$TreatmentProposalRecordsTableFilterComposer,
+          $$TreatmentProposalRecordsTableOrderingComposer,
+          $$TreatmentProposalRecordsTableAnnotationComposer,
+          $$TreatmentProposalRecordsTableCreateCompanionBuilder,
+          $$TreatmentProposalRecordsTableUpdateCompanionBuilder,
+          (
+            TreatmentProposalRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $TreatmentProposalRecordsTable,
+              TreatmentProposalRecord
+            >,
+          ),
+          TreatmentProposalRecord,
+          PrefetchHooks Function()
+        > {
+  $$TreatmentProposalRecordsTableTableManager(
+    _$AppDatabase db,
+    $TreatmentProposalRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TreatmentProposalRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$TreatmentProposalRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$TreatmentProposalRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String> prescriptionId = const Value.absent(),
+                Value<String> prescriptionVersionId = const Value.absent(),
+                Value<String> prescriptionItemId = const Value.absent(),
+                Value<String> decision = const Value.absent(),
+                Value<String> draftJson = const Value.absent(),
+                Value<String?> targetRoutineId = const Value.absent(),
+                Value<String?> resultingPlanId = const Value.absent(),
+                Value<DateTime?> confirmedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TreatmentProposalRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                prescriptionId: prescriptionId,
+                prescriptionVersionId: prescriptionVersionId,
+                prescriptionItemId: prescriptionItemId,
+                decision: decision,
+                draftJson: draftJson,
+                targetRoutineId: targetRoutineId,
+                resultingPlanId: resultingPlanId,
+                confirmedAt: confirmedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                required String prescriptionId,
+                required String prescriptionVersionId,
+                required String prescriptionItemId,
+                required String decision,
+                required String draftJson,
+                Value<String?> targetRoutineId = const Value.absent(),
+                Value<String?> resultingPlanId = const Value.absent(),
+                Value<DateTime?> confirmedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TreatmentProposalRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                prescriptionId: prescriptionId,
+                prescriptionVersionId: prescriptionVersionId,
+                prescriptionItemId: prescriptionItemId,
+                decision: decision,
+                draftJson: draftJson,
+                targetRoutineId: targetRoutineId,
+                resultingPlanId: resultingPlanId,
+                confirmedAt: confirmedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TreatmentProposalRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TreatmentProposalRecordsTable,
+      TreatmentProposalRecord,
+      $$TreatmentProposalRecordsTableFilterComposer,
+      $$TreatmentProposalRecordsTableOrderingComposer,
+      $$TreatmentProposalRecordsTableAnnotationComposer,
+      $$TreatmentProposalRecordsTableCreateCompanionBuilder,
+      $$TreatmentProposalRecordsTableUpdateCompanionBuilder,
+      (
+        TreatmentProposalRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $TreatmentProposalRecordsTable,
+          TreatmentProposalRecord
+        >,
+      ),
+      TreatmentProposalRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$PrescriptionRoutineLinkRecordsTableCreateCompanionBuilder =
+    PrescriptionRoutineLinkRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      required String prescriptionId,
+      required String prescriptionVersionId,
+      required String prescriptionItemId,
+      required String routineId,
+      required String planId,
+      Value<bool> active,
+      Value<int> rowid,
+    });
+typedef $$PrescriptionRoutineLinkRecordsTableUpdateCompanionBuilder =
+    PrescriptionRoutineLinkRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String> prescriptionId,
+      Value<String> prescriptionVersionId,
+      Value<String> prescriptionItemId,
+      Value<String> routineId,
+      Value<String> planId,
+      Value<bool> active,
+      Value<int> rowid,
+    });
+
+class $$PrescriptionRoutineLinkRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $PrescriptionRoutineLinkRecordsTable> {
+  $$PrescriptionRoutineLinkRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionVersionId => $composableBuilder(
+    column: $table.prescriptionVersionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get active => $composableBuilder(
+    column: $table.active,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PrescriptionRoutineLinkRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PrescriptionRoutineLinkRecordsTable> {
+  $$PrescriptionRoutineLinkRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionVersionId => $composableBuilder(
+    column: $table.prescriptionVersionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get planId => $composableBuilder(
+    column: $table.planId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get active => $composableBuilder(
+    column: $table.active,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PrescriptionRoutineLinkRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PrescriptionRoutineLinkRecordsTable> {
+  $$PrescriptionRoutineLinkRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionId => $composableBuilder(
+    column: $table.prescriptionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionVersionId => $composableBuilder(
+    column: $table.prescriptionVersionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get prescriptionItemId => $composableBuilder(
+    column: $table.prescriptionItemId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get routineId =>
+      $composableBuilder(column: $table.routineId, builder: (column) => column);
+
+  GeneratedColumn<String> get planId =>
+      $composableBuilder(column: $table.planId, builder: (column) => column);
+
+  GeneratedColumn<bool> get active =>
+      $composableBuilder(column: $table.active, builder: (column) => column);
+}
+
+class $$PrescriptionRoutineLinkRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PrescriptionRoutineLinkRecordsTable,
+          PrescriptionRoutineLinkRecord,
+          $$PrescriptionRoutineLinkRecordsTableFilterComposer,
+          $$PrescriptionRoutineLinkRecordsTableOrderingComposer,
+          $$PrescriptionRoutineLinkRecordsTableAnnotationComposer,
+          $$PrescriptionRoutineLinkRecordsTableCreateCompanionBuilder,
+          $$PrescriptionRoutineLinkRecordsTableUpdateCompanionBuilder,
+          (
+            PrescriptionRoutineLinkRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $PrescriptionRoutineLinkRecordsTable,
+              PrescriptionRoutineLinkRecord
+            >,
+          ),
+          PrescriptionRoutineLinkRecord,
+          PrefetchHooks Function()
+        > {
+  $$PrescriptionRoutineLinkRecordsTableTableManager(
+    _$AppDatabase db,
+    $PrescriptionRoutineLinkRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PrescriptionRoutineLinkRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$PrescriptionRoutineLinkRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$PrescriptionRoutineLinkRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String> prescriptionId = const Value.absent(),
+                Value<String> prescriptionVersionId = const Value.absent(),
+                Value<String> prescriptionItemId = const Value.absent(),
+                Value<String> routineId = const Value.absent(),
+                Value<String> planId = const Value.absent(),
+                Value<bool> active = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PrescriptionRoutineLinkRecordsCompanion(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                prescriptionId: prescriptionId,
+                prescriptionVersionId: prescriptionVersionId,
+                prescriptionItemId: prescriptionItemId,
+                routineId: routineId,
+                planId: planId,
+                active: active,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                required String prescriptionId,
+                required String prescriptionVersionId,
+                required String prescriptionItemId,
+                required String routineId,
+                required String planId,
+                Value<bool> active = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PrescriptionRoutineLinkRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                prescriptionId: prescriptionId,
+                prescriptionVersionId: prescriptionVersionId,
+                prescriptionItemId: prescriptionItemId,
+                routineId: routineId,
+                planId: planId,
+                active: active,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PrescriptionRoutineLinkRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PrescriptionRoutineLinkRecordsTable,
+      PrescriptionRoutineLinkRecord,
+      $$PrescriptionRoutineLinkRecordsTableFilterComposer,
+      $$PrescriptionRoutineLinkRecordsTableOrderingComposer,
+      $$PrescriptionRoutineLinkRecordsTableAnnotationComposer,
+      $$PrescriptionRoutineLinkRecordsTableCreateCompanionBuilder,
+      $$PrescriptionRoutineLinkRecordsTableUpdateCompanionBuilder,
+      (
+        PrescriptionRoutineLinkRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $PrescriptionRoutineLinkRecordsTable,
+          PrescriptionRoutineLinkRecord
+        >,
+      ),
+      PrescriptionRoutineLinkRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$NotificationManifestRecordsTableCreateCompanionBuilder =
+    NotificationManifestRecordsCompanion Function({
+      required String key,
+      required String userId,
+      required String occurrenceId,
+      required int pluginId,
+      required String projectionVersion,
+      required DateTime scheduledAtUtc,
+      required String payloadJson,
+      required String state,
+      Value<int> retryCount,
+      Value<DateTime?> retryAfterUtc,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$NotificationManifestRecordsTableUpdateCompanionBuilder =
+    NotificationManifestRecordsCompanion Function({
+      Value<String> key,
+      Value<String> userId,
+      Value<String> occurrenceId,
+      Value<int> pluginId,
+      Value<String> projectionVersion,
+      Value<DateTime> scheduledAtUtc,
+      Value<String> payloadJson,
+      Value<String> state,
+      Value<int> retryCount,
+      Value<DateTime?> retryAfterUtc,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$NotificationManifestRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $NotificationManifestRecordsTable> {
+  $$NotificationManifestRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get pluginId => $composableBuilder(
+    column: $table.pluginId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get projectionVersion => $composableBuilder(
+    column: $table.projectionVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get scheduledAtUtc => $composableBuilder(
+    column: $table.scheduledAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get payloadJson => $composableBuilder(
+    column: $table.payloadJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get retryAfterUtc => $composableBuilder(
+    column: $table.retryAfterUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$NotificationManifestRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $NotificationManifestRecordsTable> {
+  $$NotificationManifestRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get pluginId => $composableBuilder(
+    column: $table.pluginId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get projectionVersion => $composableBuilder(
+    column: $table.projectionVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get scheduledAtUtc => $composableBuilder(
+    column: $table.scheduledAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get payloadJson => $composableBuilder(
+    column: $table.payloadJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get retryAfterUtc => $composableBuilder(
+    column: $table.retryAfterUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$NotificationManifestRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $NotificationManifestRecordsTable> {
+  $$NotificationManifestRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get key =>
+      $composableBuilder(column: $table.key, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get pluginId =>
+      $composableBuilder(column: $table.pluginId, builder: (column) => column);
+
+  GeneratedColumn<String> get projectionVersion => $composableBuilder(
+    column: $table.projectionVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get scheduledAtUtc => $composableBuilder(
+    column: $table.scheduledAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get payloadJson => $composableBuilder(
+    column: $table.payloadJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get retryAfterUtc => $composableBuilder(
+    column: $table.retryAfterUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$NotificationManifestRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $NotificationManifestRecordsTable,
+          NotificationManifestRecord,
+          $$NotificationManifestRecordsTableFilterComposer,
+          $$NotificationManifestRecordsTableOrderingComposer,
+          $$NotificationManifestRecordsTableAnnotationComposer,
+          $$NotificationManifestRecordsTableCreateCompanionBuilder,
+          $$NotificationManifestRecordsTableUpdateCompanionBuilder,
+          (
+            NotificationManifestRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $NotificationManifestRecordsTable,
+              NotificationManifestRecord
+            >,
+          ),
+          NotificationManifestRecord,
+          PrefetchHooks Function()
+        > {
+  $$NotificationManifestRecordsTableTableManager(
+    _$AppDatabase db,
+    $NotificationManifestRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$NotificationManifestRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$NotificationManifestRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$NotificationManifestRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> key = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> occurrenceId = const Value.absent(),
+                Value<int> pluginId = const Value.absent(),
+                Value<String> projectionVersion = const Value.absent(),
+                Value<DateTime> scheduledAtUtc = const Value.absent(),
+                Value<String> payloadJson = const Value.absent(),
+                Value<String> state = const Value.absent(),
+                Value<int> retryCount = const Value.absent(),
+                Value<DateTime?> retryAfterUtc = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => NotificationManifestRecordsCompanion(
+                key: key,
+                userId: userId,
+                occurrenceId: occurrenceId,
+                pluginId: pluginId,
+                projectionVersion: projectionVersion,
+                scheduledAtUtc: scheduledAtUtc,
+                payloadJson: payloadJson,
+                state: state,
+                retryCount: retryCount,
+                retryAfterUtc: retryAfterUtc,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String key,
+                required String userId,
+                required String occurrenceId,
+                required int pluginId,
+                required String projectionVersion,
+                required DateTime scheduledAtUtc,
+                required String payloadJson,
+                required String state,
+                Value<int> retryCount = const Value.absent(),
+                Value<DateTime?> retryAfterUtc = const Value.absent(),
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => NotificationManifestRecordsCompanion.insert(
+                key: key,
+                userId: userId,
+                occurrenceId: occurrenceId,
+                pluginId: pluginId,
+                projectionVersion: projectionVersion,
+                scheduledAtUtc: scheduledAtUtc,
+                payloadJson: payloadJson,
+                state: state,
+                retryCount: retryCount,
+                retryAfterUtc: retryAfterUtc,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$NotificationManifestRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $NotificationManifestRecordsTable,
+      NotificationManifestRecord,
+      $$NotificationManifestRecordsTableFilterComposer,
+      $$NotificationManifestRecordsTableOrderingComposer,
+      $$NotificationManifestRecordsTableAnnotationComposer,
+      $$NotificationManifestRecordsTableCreateCompanionBuilder,
+      $$NotificationManifestRecordsTableUpdateCompanionBuilder,
+      (
+        NotificationManifestRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $NotificationManifestRecordsTable,
+          NotificationManifestRecord
+        >,
+      ),
+      NotificationManifestRecord,
+      PrefetchHooks Function()
+    >;
+typedef $$NotificationActionInboxRecordsTableCreateCompanionBuilder =
+    NotificationActionInboxRecordsCompanion Function({
+      required String actionId,
+      required String userId,
+      required String occurrenceId,
+      required String action,
+      required DateTime occurredAtUtc,
+      required DateTime receivedAtUtc,
+      required String state,
+      Value<String?> errorCode,
+      Value<DateTime?> processedAtUtc,
+      Value<int> rowid,
+    });
+typedef $$NotificationActionInboxRecordsTableUpdateCompanionBuilder =
+    NotificationActionInboxRecordsCompanion Function({
+      Value<String> actionId,
+      Value<String> userId,
+      Value<String> occurrenceId,
+      Value<String> action,
+      Value<DateTime> occurredAtUtc,
+      Value<DateTime> receivedAtUtc,
+      Value<String> state,
+      Value<String?> errorCode,
+      Value<DateTime?> processedAtUtc,
+      Value<int> rowid,
+    });
+
+class $$NotificationActionInboxRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $NotificationActionInboxRecordsTable> {
+  $$NotificationActionInboxRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get actionId => $composableBuilder(
+    column: $table.actionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get action => $composableBuilder(
+    column: $table.action,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get occurredAtUtc => $composableBuilder(
+    column: $table.occurredAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get receivedAtUtc => $composableBuilder(
+    column: $table.receivedAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get errorCode => $composableBuilder(
+    column: $table.errorCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get processedAtUtc => $composableBuilder(
+    column: $table.processedAtUtc,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$NotificationActionInboxRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $NotificationActionInboxRecordsTable> {
+  $$NotificationActionInboxRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get actionId => $composableBuilder(
+    column: $table.actionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get action => $composableBuilder(
+    column: $table.action,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get occurredAtUtc => $composableBuilder(
+    column: $table.occurredAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get receivedAtUtc => $composableBuilder(
+    column: $table.receivedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get errorCode => $composableBuilder(
+    column: $table.errorCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get processedAtUtc => $composableBuilder(
+    column: $table.processedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$NotificationActionInboxRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $NotificationActionInboxRecordsTable> {
+  $$NotificationActionInboxRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get actionId =>
+      $composableBuilder(column: $table.actionId, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get occurrenceId => $composableBuilder(
+    column: $table.occurrenceId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get action =>
+      $composableBuilder(column: $table.action, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get occurredAtUtc => $composableBuilder(
+    column: $table.occurredAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get receivedAtUtc => $composableBuilder(
+    column: $table.receivedAtUtc,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<String> get errorCode =>
+      $composableBuilder(column: $table.errorCode, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get processedAtUtc => $composableBuilder(
+    column: $table.processedAtUtc,
+    builder: (column) => column,
+  );
+}
+
+class $$NotificationActionInboxRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $NotificationActionInboxRecordsTable,
+          NotificationActionInboxRecord,
+          $$NotificationActionInboxRecordsTableFilterComposer,
+          $$NotificationActionInboxRecordsTableOrderingComposer,
+          $$NotificationActionInboxRecordsTableAnnotationComposer,
+          $$NotificationActionInboxRecordsTableCreateCompanionBuilder,
+          $$NotificationActionInboxRecordsTableUpdateCompanionBuilder,
+          (
+            NotificationActionInboxRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $NotificationActionInboxRecordsTable,
+              NotificationActionInboxRecord
+            >,
+          ),
+          NotificationActionInboxRecord,
+          PrefetchHooks Function()
+        > {
+  $$NotificationActionInboxRecordsTableTableManager(
+    _$AppDatabase db,
+    $NotificationActionInboxRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$NotificationActionInboxRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$NotificationActionInboxRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$NotificationActionInboxRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> actionId = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> occurrenceId = const Value.absent(),
+                Value<String> action = const Value.absent(),
+                Value<DateTime> occurredAtUtc = const Value.absent(),
+                Value<DateTime> receivedAtUtc = const Value.absent(),
+                Value<String> state = const Value.absent(),
+                Value<String?> errorCode = const Value.absent(),
+                Value<DateTime?> processedAtUtc = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => NotificationActionInboxRecordsCompanion(
+                actionId: actionId,
+                userId: userId,
+                occurrenceId: occurrenceId,
+                action: action,
+                occurredAtUtc: occurredAtUtc,
+                receivedAtUtc: receivedAtUtc,
+                state: state,
+                errorCode: errorCode,
+                processedAtUtc: processedAtUtc,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String actionId,
+                required String userId,
+                required String occurrenceId,
+                required String action,
+                required DateTime occurredAtUtc,
+                required DateTime receivedAtUtc,
+                required String state,
+                Value<String?> errorCode = const Value.absent(),
+                Value<DateTime?> processedAtUtc = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => NotificationActionInboxRecordsCompanion.insert(
+                actionId: actionId,
+                userId: userId,
+                occurrenceId: occurrenceId,
+                action: action,
+                occurredAtUtc: occurredAtUtc,
+                receivedAtUtc: receivedAtUtc,
+                state: state,
+                errorCode: errorCode,
+                processedAtUtc: processedAtUtc,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$NotificationActionInboxRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $NotificationActionInboxRecordsTable,
+      NotificationActionInboxRecord,
+      $$NotificationActionInboxRecordsTableFilterComposer,
+      $$NotificationActionInboxRecordsTableOrderingComposer,
+      $$NotificationActionInboxRecordsTableAnnotationComposer,
+      $$NotificationActionInboxRecordsTableCreateCompanionBuilder,
+      $$NotificationActionInboxRecordsTableUpdateCompanionBuilder,
+      (
+        NotificationActionInboxRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $NotificationActionInboxRecordsTable,
+          NotificationActionInboxRecord
+        >,
+      ),
+      NotificationActionInboxRecord,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -55784,5 +62389,39 @@ class $AppDatabaseManager {
       $$UnifiedTreatmentCutoverStatesTableTableManager(
         _db,
         _db.unifiedTreatmentCutoverStates,
+      );
+  $$PrescriptionVersionRecordsTableTableManager
+  get prescriptionVersionRecords =>
+      $$PrescriptionVersionRecordsTableTableManager(
+        _db,
+        _db.prescriptionVersionRecords,
+      );
+  $$PrescriptionReviewRecordsTableTableManager get prescriptionReviewRecords =>
+      $$PrescriptionReviewRecordsTableTableManager(
+        _db,
+        _db.prescriptionReviewRecords,
+      );
+  $$TreatmentProposalRecordsTableTableManager get treatmentProposalRecords =>
+      $$TreatmentProposalRecordsTableTableManager(
+        _db,
+        _db.treatmentProposalRecords,
+      );
+  $$PrescriptionRoutineLinkRecordsTableTableManager
+  get prescriptionRoutineLinkRecords =>
+      $$PrescriptionRoutineLinkRecordsTableTableManager(
+        _db,
+        _db.prescriptionRoutineLinkRecords,
+      );
+  $$NotificationManifestRecordsTableTableManager
+  get notificationManifestRecords =>
+      $$NotificationManifestRecordsTableTableManager(
+        _db,
+        _db.notificationManifestRecords,
+      );
+  $$NotificationActionInboxRecordsTableTableManager
+  get notificationActionInboxRecords =>
+      $$NotificationActionInboxRecordsTableTableManager(
+        _db,
+        _db.notificationActionInboxRecords,
       );
 }

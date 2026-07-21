@@ -5,10 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../design_system/design_system.dart';
-import '../../../medications/presentation/providers/medication_view_model_provider.dart';
-import '../../../medications/presentation/providers/medication_use_cases_provider.dart';
-import '../../../vitamins/presentation/providers/vitamin_view_model_provider.dart';
-import '../../../vitamins/presentation/providers/vitamin_use_cases_provider.dart';
 import '../../domain/entities/entities.dart';
 import '../providers/medical_prescription_providers.dart';
 
@@ -126,77 +122,52 @@ class _AddPrescriptionToRoutinePageState
     }
     setState(() => _saving = true);
     final now = ref.read(clockServiceProvider).now().toUtc();
-    for (final item in selected) {
-      final time = _times[item.id]!;
-      String? linkedMedicationId = item.linkedMedicationId;
-      String? linkedVitaminId = item.linkedVitaminId;
-      if (item.itemType == PrescriptionItemType.medication) {
-        final existing = (await ref.read(medicationUseCasesProvider).getAll())
-            .where(
-              (value) =>
-                  _normalize(value.formattedName) == _normalize(item.name),
-            )
-            .firstOrNull;
-        if (existing != null) {
-          linkedMedicationId = existing.id;
-          final index = _items.indexWhere((value) => value.id == item.id);
-          _items[index] = item.copyWith(
-            linkedMedicationId: linkedMedicationId,
+    final selectedIds = selected.map((item) => item.id).toSet();
+    _items = _items
+        .map((item) {
+          if (!selectedIds.contains(item.id)) return item;
+          final time = _times[item.id]!;
+          return item.copyWith(
+            scheduleTimes: [
+              '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
+            ],
+            reviewStatus: PrescriptionReviewStatus.confirmed,
+            provenance: {
+              ...item.provenance,
+              'reminderPreference': (_reminders[item.id] ?? false)
+                  ? 'enabled'
+                  : 'disabled',
+            },
             updatedAt: now,
           );
-          continue;
-        }
-        final id = ref.read(uuidServiceProvider).generate();
-        final success = await ref
-            .read(medicationViewModelProvider.notifier)
-            .createMedication(
-              id: id,
-              scheduleReminder: _reminders[item.id] ?? false,
-              name: item.name,
-              hour: time.hour,
-              minute: time.minute,
-              dosage: _dosage(item),
-              notes: item.instructions,
-            );
-        if (success) linkedMedicationId = id;
-      } else {
-        final existing = (await ref.read(vitaminUseCasesProvider).getAll())
-            .where(
-              (value) =>
-                  _normalize(value.formattedName) == _normalize(item.name),
-            )
-            .firstOrNull;
-        if (existing != null) {
-          linkedVitaminId = existing.id;
-          final index = _items.indexWhere((value) => value.id == item.id);
-          _items[index] = item.copyWith(
-            linkedVitaminId: linkedVitaminId,
-            updatedAt: now,
-          );
-          continue;
-        }
-        final id = ref.read(uuidServiceProvider).generate();
-        final success = await ref
-            .read(vitaminViewModelProvider.notifier)
-            .createVitamin(
-              id: id,
-              scheduleReminder: _reminders[item.id] ?? false,
-              name: item.name,
-              hour: time.hour,
-              minute: time.minute,
-            );
-        if (success) linkedVitaminId = id;
-      }
-      final index = _items.indexWhere((value) => value.id == item.id);
-      _items[index] = item.copyWith(
-        linkedMedicationId: linkedMedicationId,
-        linkedVitaminId: linkedVitaminId,
-        updatedAt: now,
+        })
+        .toList(growable: false);
+    final snapshot = widget.prescription.copyWith(
+      items: _items,
+      status: MedicalPrescriptionStatus.confirmed,
+      updatedAt: now,
+    );
+    final platform = await ref.read(
+      prescriptionPlatformRepositoryProvider.future,
+    );
+    final draft = await platform.createDraftVersion(snapshot: snapshot);
+    await platform.submitForReview(draft.id);
+    await platform.confirmVersion(
+      versionId: draft.id,
+      actor: 'patient',
+      fieldDecisions: const {'schedule': 'humanConfirmed'},
+    );
+    final proposals = await platform.createProposals(draft.id);
+    for (final proposal in proposals.where(
+      (value) =>
+          value.prescriptionVersionId == draft.id &&
+          selectedIds.contains(value.prescriptionItemId),
+    )) {
+      await platform.confirmProposal(
+        proposalId: proposal.id,
+        decision: TreatmentProposalDecision.createRoutine,
       );
     }
-    await ref
-        .read(medicalPrescriptionViewModelProvider.notifier)
-        .save(widget.prescription.copyWith(items: _items, updatedAt: now));
     if (!mounted) return;
     context.go(AppRoutes.prescriptions);
   }
@@ -209,9 +180,6 @@ class _AddPrescriptionToRoutinePageState
       type == PrescriptionItemType.medication
       ? 'Medicamento'
       : 'Vitamina ou suplemento';
-  String? _dosage(MedicalPrescriptionItem item) => item.dosageValue == null
-      ? null
-      : '${item.dosageValue} ${item.dosageUnit ?? ''}'.trim();
   TimeOfDay? _parseTime(String? value) {
     if (value == null) return null;
     final parts = value.split(':');
@@ -222,10 +190,4 @@ class _AddPrescriptionToRoutinePageState
         ? null
         : TimeOfDay(hour: hour, minute: minute);
   }
-
-  String _normalize(String value) => value
-      .trim()
-      .toLowerCase()
-      .replaceAll(RegExp(r'[^a-z0-9áàâãéêíóôõúç]+'), ' ')
-      .replaceAll(RegExp(r'\s+'), ' ');
 }

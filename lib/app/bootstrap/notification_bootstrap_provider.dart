@@ -4,9 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'sync_bootstrap_provider.dart';
 import '../../core/services/service_providers.dart';
+import '../../core/services/notifications/app_local_notification_service.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/settings/presentation/providers/setting_use_cases_provider.dart';
 import '../../features/settings/presentation/providers/settings_reminder_sync_provider.dart';
+import '../../features/smart_routines/application/notification_platform.dart';
+import '../../features/smart_routines/presentation/providers/unified_treatment_providers.dart';
 
 final notificationBootstrapProvider =
     Provider<NotificationBootstrapCoordinator>((ref) {
@@ -28,10 +31,18 @@ class NotificationBootstrapCoordinator {
       _enqueue(() async {
         final scheduler = _ref.read(notificationSchedulerProvider);
         if (next == null) {
+          if (previous != null) {
+            await (await _ref.read(
+              notificationPlatformRepositoryProvider.future,
+            )).clear(previous.id);
+          }
           await scheduler.clearUser();
           return;
         }
-        if (previous?.id != next.id) {
+        if (previous != null && previous.id != next.id) {
+          await (await _ref.read(
+            notificationPlatformRepositoryProvider.future,
+          )).clear(previous.id);
           await scheduler.clearUser();
         }
         await scheduler.requestPermissions();
@@ -54,9 +65,60 @@ class NotificationBootstrapCoordinator {
     if (_ref.read(authSessionProvider)?.id != userId) return;
     await _ref.read(syncBootstrapProvider).waitForInitialSync(userId);
     if (_ref.read(authSessionProvider)?.id != userId) return;
+    await _importBackgroundActions(userId);
     final settings = await _ref.read(settingsUseCasesProvider).getSettings();
     if (_ref.read(authSessionProvider)?.id != userId) return;
     await _ref.read(settingsReminderSyncServiceProvider).restore(settings);
+    final now = _ref.read(clockServiceProvider).now().toUtc();
+    final occurrenceWindow = await _ref.read(
+      occurrenceWindowServiceProvider.future,
+    );
+    final projections = await occurrenceWindow.materializeAndProject(
+      fromUtc: now.subtract(const Duration(hours: 12)),
+      untilUtc: now.add(const Duration(days: 7)),
+    );
+    await _ref
+        .read(notificationV2ReconcilerProvider.future)
+        .then(
+          (reconciler) => reconciler.reconcile(
+            userId: userId,
+            desired: projections,
+            now: now,
+          ),
+        );
+    await _ref
+        .read(notificationActionHandlerProvider.future)
+        .then((handler) => handler.process(userId));
+  }
+
+  Future<void> _importBackgroundActions(String userId) async {
+    final store = BackgroundNotificationActionStore(
+      _ref.read(sharedPreferencesProvider),
+    );
+    final actions = store.forUser(userId);
+    if (actions.isEmpty) return;
+    final repository = await _ref.read(
+      notificationPlatformRepositoryProvider.future,
+    );
+    final imported = <String>[];
+    for (final action in actions) {
+      final type = RoutineNotificationActionType.values
+          .where((value) => value.name == action.payload.action)
+          .firstOrNull;
+      if (type == null) continue;
+      await repository.receive(
+        NotificationActionEnvelope(
+          actionId: action.actionId,
+          userId: userId,
+          occurrenceId: action.payload.entityId,
+          action: type,
+          occurredAtUtc: action.receivedAtUtc,
+          receivedAtUtc: action.receivedAtUtc,
+        ),
+      );
+      imported.add(action.actionId);
+    }
+    await store.remove(imported);
   }
 
   void _enqueue(Future<void> Function() operation) {

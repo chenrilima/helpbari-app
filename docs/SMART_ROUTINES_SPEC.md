@@ -1,9 +1,8 @@
 # Smart Routines — Contrato funcional e arquitetural
 
-Status: proposta aprovada para orientar implementação incremental.  
-Escopo: contrato de domínio; não representa implementação existente nem
-orientação clínica.  
-Última revisão: 2026-07-20.
+Status: contrato operacional da Macro 2.
+Escopo: contrato de domínio implementado; não representa orientação clínica.
+Última revisão: 2026-07-21.
 
 ## 1. Objetivo e princípios
 

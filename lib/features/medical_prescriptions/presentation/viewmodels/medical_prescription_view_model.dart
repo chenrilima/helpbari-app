@@ -33,10 +33,19 @@ class MedicalPrescriptionViewModel extends Notifier<MedicalPrescriptionState> {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       final useCases = ref.read(medicalPrescriptionUseCasesProvider);
+      await useCases.update(value);
+      final platform = await ref.read(
+        prescriptionPlatformRepositoryProvider.future,
+      );
+      final version = await platform.createDraftVersion(snapshot: value);
       if (confirm) {
-        await useCases.confirm(value, DateTime.now().toUtc());
-      } else {
-        await useCases.update(value);
+        final submitted = await platform.submitForReview(version.id);
+        await platform.confirmVersion(
+          versionId: submitted.id,
+          actor: 'patient',
+          fieldDecisions: const <String, String>{'all': 'humanConfirmed'},
+        );
+        await platform.createProposals(version.id);
       }
       await _refresh();
       return true;

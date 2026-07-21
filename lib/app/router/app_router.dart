@@ -49,6 +49,9 @@ import '../../features/privacy/presentation/pages/privacy_page.dart';
 import '../../features/showcase/presentation/pages/showcase_page.dart';
 import '../../core/supabase/session/session_manager_provider.dart';
 import '../../core/services/service_providers.dart';
+import '../../core/services/notifications/notifications.dart';
+import '../../features/smart_routines/application/notification_platform.dart';
+import '../../features/smart_routines/presentation/providers/unified_treatment_providers.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/reset_password_page.dart';
 import '../../features/auth/presentation/pages/sign_up_page.dart';
@@ -344,9 +347,36 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   final notificationTapSubscription = ref
       .read(notificationSchedulerProvider)
       .taps
-      .listen((payload) {
+      .listen((payload) async {
         final activeUserId = ref.read(authSessionProvider)?.id;
         if (activeUserId == null || payload.userId != activeUserId) return;
+        if (payload.source == NotificationSource.smartRoutineOccurrence &&
+            payload.action != 'open') {
+          final action = RoutineNotificationActionType.values
+              .where((value) => value.name == payload.action)
+              .firstOrNull;
+          if (action != null) {
+            final now = ref.read(clockServiceProvider).now().toUtc();
+            final repository = await ref.read(
+              notificationPlatformRepositoryProvider.future,
+            );
+            await repository.receive(
+              NotificationActionEnvelope(
+                actionId:
+                    payload.data['actionId'] ??
+                    notificationActionId(payload, payload.action, null),
+                userId: payload.userId,
+                occurrenceId: payload.entityId,
+                action: action,
+                occurredAtUtc: now,
+                receivedAtUtc: now,
+              ),
+            );
+            await ref
+                .read(notificationActionHandlerProvider.future)
+                .then((handler) => handler.process(activeUserId));
+          }
+        }
         final location = notificationLocation(payload);
         if (location != null) router.go(location);
       });

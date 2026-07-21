@@ -10,6 +10,7 @@ import '../../../medications/domain/entities/entities.dart';
 import '../../../profile/domain/entities/entities.dart';
 import '../../../vitamins/domain/entities/entities.dart';
 import '../../../weight/domain/entities/entities.dart';
+import '../ports/baria_treatment_context_port.dart';
 
 class BariaContext {
   const BariaContext({
@@ -23,6 +24,7 @@ class BariaContext {
     this.recommendedArticles = const <KnowledgeArticle>[],
     this.relevantNotifications = const <String>[],
     this.homeInsights = const <String>[],
+    this.treatment,
   });
 
   final String userId;
@@ -35,6 +37,7 @@ class BariaContext {
   final List<KnowledgeArticle> recommendedArticles;
   final List<String> relevantNotifications;
   final List<String> homeInsights;
+  final BariaTreatmentContext? treatment;
 
   bool get hasAnyData =>
       today != null || week != null || month != null || report != null;

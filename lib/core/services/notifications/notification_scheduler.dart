@@ -27,8 +27,9 @@ class NotificationScheduler {
 
   NotificationSchedulerState get state => _state;
   Stream<NotificationSchedulerState> get states => _states.stream;
-  Stream<LocalNotificationPayload> get taps =>
-      _notifications.taps.where((payload) => payload.userId == _state.userId);
+  Stream<LocalNotificationPayload> get taps => _notifications.taps.where(
+    (payload) => _state.userId == null || payload.userId == _state.userId,
+  );
 
   Future<bool> requestPermissions() => _notifications.requestPermissions();
 
@@ -44,23 +45,23 @@ class NotificationScheduler {
     await _refreshScheduledCount();
   }
 
+  Future<void> cancelKey(String userId, String key) async {
+    if (userId != _state.userId) return;
+    await _retry(() => _notifications.cancel(key));
+    await _refreshScheduledCount();
+  }
+
   Future<void> restore({
     required String userId,
     required Iterable<LocalNotificationSchedule> schedules,
   }) async {
-    await _notifications.initialize();
-    if (_state.userId != userId) {
-      await _notifications.cancelAll();
-    }
-    final permission = await _notifications.permissionState();
-    final timeZone = await _notifications.localTimeZoneName();
+    await activateUser(userId);
     final unique = <String, LocalNotificationSchedule>{
       for (final schedule in schedules)
         if (schedule.payload.userId == userId) schedule.key: schedule,
     };
-    var failures = 0;
-    await _notifications.cancelAll();
-    if (permission == NotificationPermissionState.granted) {
+    var failures = _state.failures;
+    if (_state.permission == NotificationPermissionState.granted) {
       for (final schedule in unique.values) {
         try {
           await _retry(() => _notifications.update(schedule));
@@ -74,8 +75,24 @@ class NotificationScheduler {
         scheduled: await _notifications.pendingCount(),
         failures: failures,
         lastRestoreAt: _clock.now(),
-        permission: permission,
-        timeZone: timeZone,
+        permission: _state.permission,
+        timeZone: _state.timeZone,
+        userId: userId,
+      ),
+    );
+  }
+
+  Future<void> activateUser(String userId) async {
+    await _notifications.initialize();
+    if (_state.userId != null && _state.userId != userId) {
+      await _notifications.cancelAll();
+    }
+    _setState(
+      NotificationSchedulerState(
+        scheduled: await _notifications.pendingCount(),
+        failures: 0,
+        permission: await _notifications.permissionState(),
+        timeZone: await _notifications.localTimeZoneName(),
         userId: userId,
       ),
     );

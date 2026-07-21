@@ -1,4 +1,5 @@
 import '../domain/entities/routine_occurrence.dart';
+export 'notification_platform.dart';
 
 enum RoutineNotificationAction { taken, skipped, remindLater }
 

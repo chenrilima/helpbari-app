@@ -17,6 +17,7 @@ import '../../domain/usecases/use_cases.dart';
 import '../states/medical_report_state.dart';
 import '../viewmodels/medical_report_view_model.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
+import '../../../smart_routines/presentation/providers/unified_treatment_providers.dart';
 
 final medicalReportRepositoryProvider = Provider<MedicalReportRepository>((
   ref,
@@ -39,6 +40,7 @@ final medicalReportUseCasesProvider = Provider<MedicalReportUseCases>((ref) {
     clock: ref.read(clockServiceProvider),
     dashboardUseCases: ref.read(healthDashboardUseCasesProvider),
     prescriptionUseCases: ref.read(medicalPrescriptionUseCasesProvider),
+    treatment: () => ref.read(treatmentAdherenceQueryServiceProvider.future),
   );
 });
 
