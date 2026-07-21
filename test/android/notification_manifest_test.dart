@@ -14,5 +14,8 @@ void main() {
     expect(manifest, contains('ScheduledNotificationBootReceiver'));
     expect(manifest, contains('android.intent.action.BOOT_COMPLETED'));
     expect(manifest, contains('android.intent.action.MY_PACKAGE_REPLACED'));
+    expect(manifest, contains('android:allowBackup="false"'));
+    expect(manifest, contains('android:fullBackupContent="false"'));
+    expect(manifest, contains('android:usesCleartextTraffic="false"'));
   });
 }

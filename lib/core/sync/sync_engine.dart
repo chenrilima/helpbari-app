@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../services/clock_service.dart';
 import 'sync_conflict.dart';
 import 'sync_error.dart';
@@ -12,13 +14,19 @@ class SyncEngine {
     required SyncStateRepository stateRepository,
     required ClockService clock,
     int maxRetries = 2,
+    Duration operationTimeout = const Duration(seconds: 15),
+    Duration retryBaseDelay = const Duration(milliseconds: 250),
   }) : _stateRepository = stateRepository,
        _clock = clock,
-       _maxRetries = maxRetries;
+       _maxRetries = maxRetries,
+       _operationTimeout = operationTimeout,
+       _retryBaseDelay = retryBaseDelay;
 
   final SyncStateRepository _stateRepository;
   final ClockService _clock;
   final int _maxRetries;
+  final Duration _operationTimeout;
+  final Duration _retryBaseDelay;
 
   Future<SyncResult> sync({
     required Iterable<SyncableRepository> repositories,
@@ -154,7 +162,9 @@ class SyncEngine {
   }
 
   Future<_PushResult> _pushPending(SyncableRepository repository) async {
-    final operations = await repository.pendingOperations();
+    final operations = await repository.pendingOperations().timeout(
+      _operationTimeout,
+    );
     var pushed = 0;
     var deleted = 0;
     final errors = <SyncError>[];
@@ -184,7 +194,9 @@ class SyncEngine {
     SyncableRepository repository, {
     required DateTime? updatedAfter,
   }) async {
-    final remoteOperations = await repository.pull(updatedAfter: updatedAfter);
+    final remoteOperations = await repository
+        .pull(updatedAfter: updatedAfter)
+        .timeout(_operationTimeout);
     var pulled = 0;
     var deleted = 0;
     final conflicts = <SyncConflict>[];
@@ -261,7 +273,7 @@ class SyncEngine {
   }) async {
     for (var attempt = 0; attempt <= _maxRetries; attempt++) {
       try {
-        await callback();
+        await callback().timeout(_operationTimeout);
         return null;
       } catch (error, stackTrace) {
         if (attempt == _maxRetries) {
@@ -274,6 +286,8 @@ class SyncEngine {
             stackTrace: stackTrace,
           );
         }
+        final multiplier = 1 << attempt.clamp(0, 6);
+        await Future<void>.delayed(_retryBaseDelay * multiplier);
       }
     }
 

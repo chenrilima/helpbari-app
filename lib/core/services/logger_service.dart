@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/environment.dart';
+
 abstract interface class LoggerService {
   void info(String message);
 
@@ -25,11 +27,11 @@ class AppLoggerService implements LoggerService {
   void error(String message, {Object? error, StackTrace? stackTrace}) {
     debugPrint('[ERROR] $message');
 
-    if (error != null) {
-      debugPrint('Error: $error');
+    if (Environment.isDev && error != null) {
+      debugPrint('Error: ${error.runtimeType}');
     }
 
-    if (stackTrace != null) {
+    if (Environment.isDev && stackTrace != null) {
       debugPrint('StackTrace: $stackTrace');
     }
   }

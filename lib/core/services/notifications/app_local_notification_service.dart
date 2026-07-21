@@ -148,6 +148,8 @@ class AppLocalNotificationService implements LocalNotificationService {
   String _localTimeZoneName = 'UTC';
   LocalNotificationPayload? _pendingLaunchPayload;
 
+  Future<void> dispose() => _taps.close();
+
   @override
   Stream<LocalNotificationPayload> get taps async* {
     final pending = _pendingLaunchPayload;

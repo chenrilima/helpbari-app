@@ -246,6 +246,36 @@ void main() {
       expect(result.errors.single.operation, 'pull');
     });
 
+    test('times out a stalled pull and continues with local push', () async {
+      final gate = Completer<void>();
+      final repository = _FakeSyncableRepository(
+        pullGate: gate,
+        pending: [
+          _operation(
+            recordId: 'pending-after-timeout',
+            updatedAt: DateTime(2026, 7, 9),
+          ),
+        ],
+      );
+      final engine = SyncEngine(
+        stateRepository: _FakeSyncStateRepository(),
+        clock: const _FixedClock(),
+        operationTimeout: const Duration(milliseconds: 10),
+        retryBaseDelay: Duration.zero,
+      );
+
+      final result = await engine.sync(
+        repositories: [repository],
+        appVersion: '1.0.0',
+        userId: 'user-1',
+      );
+
+      expect(result.isSuccess, isFalse);
+      expect(result.errors.single.cause, isA<TimeoutException>());
+      expect(result.pushed, 1);
+      expect(repository.syncedIds, ['pending-after-timeout']);
+    });
+
     test('resolves conflicts with latest updatedAt winning', () async {
       final local = _operation(
         recordId: 'conflict-1',
