@@ -16,6 +16,7 @@ import 'daos/document_intelligence_dao.dart';
 import 'daos/bioimpedance_dao.dart';
 import 'daos/medical_exam_dao.dart';
 import 'daos/medical_prescription_dao.dart';
+import 'daos/onboarding_state_dao.dart';
 import 'daos/smart_routine_dao.dart';
 import 'database_connection.dart';
 import 'tables/local_migrations.dart';
@@ -47,6 +48,7 @@ import 'tables/bioimpedance_records.dart';
 import 'tables/medical_exams.dart';
 import 'tables/medical_exam_results.dart';
 import 'tables/medical_prescription_records.dart';
+import 'tables/onboarding_state_records.dart';
 import 'tables/smart_routine_records.dart';
 import 'tables/macro2_records.dart';
 
@@ -102,6 +104,7 @@ part 'app_database.g.dart';
     PrescriptionRoutineLinkRecords,
     NotificationManifestRecords,
     NotificationActionInboxRecords,
+    OnboardingStateRecords,
   ],
   daos: [
     WaterDao,
@@ -120,6 +123,7 @@ part 'app_database.g.dart';
     BioimpedanceDao,
     MedicalExamDao,
     MedicalPrescriptionDao,
+    OnboardingStateDao,
     SmartRoutineDao,
   ],
 )
@@ -128,7 +132,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 20;
+  int get schemaVersion => 21;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -259,6 +263,21 @@ class AppDatabase extends _$AppDatabase {
         await migrator.createTable(prescriptionRoutineLinkRecords);
         await migrator.createTable(notificationManifestRecords);
         await migrator.createTable(notificationActionInboxRecords);
+      }
+      if (from < 21) {
+        await migrator.createTable(onboardingStateRecords);
+        await migrator.addColumn(
+          settingsRecords,
+          settingsRecords.treatmentTrackingEnabled,
+        );
+        await migrator.addColumn(
+          settingsRecords,
+          settingsRecords.waterTrackingEnabled,
+        );
+        await migrator.addColumn(
+          settingsRecords,
+          settingsRecords.weightTrackingEnabled,
+        );
       }
     },
     beforeOpen: (details) async {

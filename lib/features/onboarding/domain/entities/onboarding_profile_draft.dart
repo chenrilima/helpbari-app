@@ -19,6 +19,10 @@ final class OnboardingProfileDraft {
     this.termsAccepted = false,
     this.privacyPolicyAccepted = false,
     this.currentWeightRecordId = '',
+    this.trackTreatment = false,
+    this.trackWater = false,
+    this.trackMeals = false,
+    this.trackWeight = false,
   });
 
   factory OnboardingProfileDraft.fromJson(Map<String, Object?> json) {
@@ -49,6 +53,10 @@ final class OnboardingProfileDraft {
           json['documentsAccepted'] as bool? ??
           false,
       currentWeightRecordId: json['currentWeightRecordId'] as String? ?? '',
+      trackTreatment: json['trackTreatment'] as bool? ?? false,
+      trackWater: json['trackWater'] as bool? ?? false,
+      trackMeals: json['trackMeals'] as bool? ?? false,
+      trackWeight: json['trackWeight'] as bool? ?? false,
     );
   }
 
@@ -69,6 +77,10 @@ final class OnboardingProfileDraft {
   final bool termsAccepted;
   final bool privacyPolicyAccepted;
   final String currentWeightRecordId;
+  final bool trackTreatment;
+  final bool trackWater;
+  final bool trackMeals;
+  final bool trackWeight;
 
   bool get documentsAccepted => termsAccepted && privacyPolicyAccepted;
 
@@ -101,6 +113,10 @@ final class OnboardingProfileDraft {
     bool? termsAccepted,
     bool? privacyPolicyAccepted,
     String? currentWeightRecordId,
+    bool? trackTreatment,
+    bool? trackWater,
+    bool? trackMeals,
+    bool? trackWeight,
   }) {
     return OnboardingProfileDraft(
       name: name ?? this.name,
@@ -125,6 +141,10 @@ final class OnboardingProfileDraft {
           privacyPolicyAccepted ?? this.privacyPolicyAccepted,
       currentWeightRecordId:
           currentWeightRecordId ?? this.currentWeightRecordId,
+      trackTreatment: trackTreatment ?? this.trackTreatment,
+      trackWater: trackWater ?? this.trackWater,
+      trackMeals: trackMeals ?? this.trackMeals,
+      trackWeight: trackWeight ?? this.trackWeight,
     );
   }
 
@@ -147,6 +167,10 @@ final class OnboardingProfileDraft {
       'termsAccepted': termsAccepted,
       'privacyPolicyAccepted': privacyPolicyAccepted,
       'currentWeightRecordId': currentWeightRecordId,
+      'trackTreatment': trackTreatment,
+      'trackWater': trackWater,
+      'trackMeals': trackMeals,
+      'trackWeight': trackWeight,
     };
   }
 

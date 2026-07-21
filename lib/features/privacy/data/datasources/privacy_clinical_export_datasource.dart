@@ -13,6 +13,7 @@ class PrivacyClinicalExportDatasource {
     }
 
     return <String, Object?>{
+      'onboardingState': await _rows('onboarding_state_records', userId),
       'documents': await _rows('document_input_records', userId),
       'documentProcessings': await _rows('document_processing_records', userId),
       'extractedDocumentFields': await _rows('extracted_field_records', userId),

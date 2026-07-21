@@ -8,6 +8,9 @@ class AppSettings extends Entity {
     this.medicationRemindersEnabled = true,
     this.appointmentRemindersEnabled = true,
     this.mealTrackingEnabled = true,
+    this.treatmentTrackingEnabled = true,
+    this.waterTrackingEnabled = true,
+    this.weightTrackingEnabled = true,
     this.weightUnit = 'kg',
   });
 
@@ -19,6 +22,9 @@ class AppSettings extends Entity {
   final bool medicationRemindersEnabled;
   final bool appointmentRemindersEnabled;
   final bool mealTrackingEnabled;
+  final bool treatmentTrackingEnabled;
+  final bool waterTrackingEnabled;
+  final bool weightTrackingEnabled;
   final String weightUnit;
 
   AppSettings copyWith({
@@ -27,6 +33,9 @@ class AppSettings extends Entity {
     bool? medicationRemindersEnabled,
     bool? appointmentRemindersEnabled,
     bool? mealTrackingEnabled,
+    bool? treatmentTrackingEnabled,
+    bool? waterTrackingEnabled,
+    bool? weightTrackingEnabled,
     String? weightUnit,
   }) {
     return AppSettings(
@@ -39,6 +48,11 @@ class AppSettings extends Entity {
       appointmentRemindersEnabled:
           appointmentRemindersEnabled ?? this.appointmentRemindersEnabled,
       mealTrackingEnabled: mealTrackingEnabled ?? this.mealTrackingEnabled,
+      treatmentTrackingEnabled:
+          treatmentTrackingEnabled ?? this.treatmentTrackingEnabled,
+      waterTrackingEnabled:
+          waterTrackingEnabled ?? this.waterTrackingEnabled,
+      weightTrackingEnabled: weightTrackingEnabled ?? this.weightTrackingEnabled,
       weightUnit: weightUnit ?? this.weightUnit,
     );
   }

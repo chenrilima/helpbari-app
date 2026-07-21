@@ -51,4 +51,21 @@ class SettingsUseCases {
       current.copyWith(mealTrackingEnabled: enabled),
     );
   }
+
+  Future<void> updateTrackingPreferences({
+    required bool treatment,
+    required bool water,
+    required bool meals,
+    required bool weight,
+  }) async {
+    final current = await _repository.getSettings();
+    await _repository.saveSettings(
+      current.copyWith(
+        treatmentTrackingEnabled: treatment,
+        waterTrackingEnabled: water,
+        mealTrackingEnabled: meals,
+        weightTrackingEnabled: weight,
+      ),
+    );
+  }
 }

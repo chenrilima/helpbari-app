@@ -66,6 +66,22 @@ class SettingsViewModel extends Notifier<SettingsState> {
     );
   }
 
+  Future<void> updateTrackingPreferences({
+    required bool treatment,
+    required bool water,
+    required bool meals,
+    required bool weight,
+  }) async {
+    await _mutate(
+      () => ref.read(settingsUseCasesProvider).updateTrackingPreferences(
+        treatment: treatment,
+        water: water,
+        meals: meals,
+        weight: weight,
+      ),
+    );
+  }
+
   Future<void> _mutate(Future<void> Function() persistLocally) async {
     if (_isMutating) return;
     _isMutating = true;

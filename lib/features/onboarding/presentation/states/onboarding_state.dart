@@ -33,6 +33,7 @@ final class OnboardingState {
     this.hasCurrentLegalConsent = false,
     this.resolutionFailed = false,
     this.errorMessage,
+    this.canonicalProgress,
   });
 
   final bool introductionCompleted;
@@ -46,6 +47,7 @@ final class OnboardingState {
   final bool hasCurrentLegalConsent;
   final bool resolutionFailed;
   final String? errorMessage;
+  final OnboardingProgress? canonicalProgress;
 
   bool get hasCompleted =>
       isAuthenticated ? userCompleted : introductionCompleted;
@@ -81,6 +83,8 @@ final class OnboardingState {
     bool? resolutionFailed,
     String? errorMessage,
     bool clearError = false,
+    OnboardingProgress? canonicalProgress,
+    bool clearCanonicalProgress = false,
   }) => OnboardingState(
     introductionCompleted: introductionCompleted ?? this.introductionCompleted,
     userCompleted: userCompleted ?? this.userCompleted,
@@ -94,5 +98,8 @@ final class OnboardingState {
         hasCurrentLegalConsent ?? this.hasCurrentLegalConsent,
     resolutionFailed: resolutionFailed ?? this.resolutionFailed,
     errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
+    canonicalProgress: clearCanonicalProgress
+        ? null
+        : canonicalProgress ?? this.canonicalProgress,
   );
 }

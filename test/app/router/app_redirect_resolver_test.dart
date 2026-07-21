@@ -69,7 +69,7 @@ void main() {
       );
 
       expect(onboarding.entryStatus, AppEntryStatus.loading);
-      expect(fromHome, isNull);
+      expect(fromHome, AppRoutes.splash);
       expect(fromSplash, isNull);
     },
   );

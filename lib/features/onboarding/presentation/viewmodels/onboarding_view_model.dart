@@ -92,7 +92,11 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       final hasConsent = await ref
           .read(privacyUseCasesProvider)
           .hasCurrentConsent();
-      if ((profile != null || locallyCompleted) && hasConsent) {
+      final progressService = await ref.read(
+        onboardingProgressServiceProvider.future,
+      );
+      final progress = await progressService.resolve(userId);
+      if (progress.isCurrentCompleted && profile != null && hasConsent) {
         await _useCases.completeForUser(userId);
         await _useCases.markDraftConsumed(userId);
         await _useCases.clearDraft(userId);
@@ -104,6 +108,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
           hasCurrentLegalConsent: true,
           resolutionFailed: false,
           currentStep: OnboardingStep.completion,
+          canonicalProgress: progress,
         );
         return;
       }
@@ -141,7 +146,8 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         ),
         currentStep: (profile != null || locallyCompleted) && !hasConsent
             ? OnboardingStep.documents
-            : OnboardingStep.values[resume],
+            : _stepForId(progress.currentStepId, OnboardingStep.values[resume]),
+        canonicalProgress: progress,
       );
     } catch (error) {
       if (!ref.mounted) return;
@@ -162,6 +168,10 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
 
   Future<bool> next() async {
     if (state.isLastStep) return false;
+    if (state.currentStep == OnboardingStep.permissions &&
+        !state.draft.notificationsConfirmed) {
+      await updateDraft(state.draft.copyWith(notificationsConfirmed: true));
+    }
     if (state.currentStep == OnboardingStep.documents) {
       try {
         _useCases.validateLegalAcceptance(state.draft);
@@ -182,6 +192,17 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       ref.read(authSessionProvider)?.id,
       step.index,
     );
+    final progress = state.canonicalProgress;
+    if (progress != null) {
+      final service = await ref.read(onboardingProgressServiceProvider.future);
+      state = state.copyWith(
+        canonicalProgress: await service.saveStep(
+          progress: progress,
+          currentStepId: _stepId(step),
+          completedStepId: _stepId(OnboardingStep.values[state.currentIndex - 1]),
+        ),
+      );
+    }
     return true;
   }
 
@@ -193,6 +214,16 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       ref.read(authSessionProvider)?.id,
       step.index,
     );
+    final progress = state.canonicalProgress;
+    if (progress != null) {
+      final service = await ref.read(onboardingProgressServiceProvider.future);
+      state = state.copyWith(
+        canonicalProgress: await service.saveStep(
+          progress: progress,
+          currentStepId: _stepId(step),
+        ),
+      );
+    }
   }
 
   Future<void> skip() async {
@@ -233,6 +264,12 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       await _useCases.markDraftConsumed(user.id);
       await _useCases.clearDraft(user.id);
       await _useCases.saveResumeStep(user.id, OnboardingStep.completion.index);
+      final currentProgress = state.canonicalProgress ??
+          await (await ref.read(onboardingProgressServiceProvider.future))
+              .resolve(user.id);
+      final completedProgress = await (await ref.read(
+        onboardingProgressServiceProvider.future,
+      )).complete(currentProgress);
       _invalidateConsumers();
       unawaited(
         ref
@@ -247,6 +284,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         hasCurrentLegalConsent: true,
         resolutionFailed: false,
         currentStep: OnboardingStep.completion,
+        canonicalProgress: completedProgress,
       );
       return true;
     } catch (error) {
@@ -269,7 +307,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
   Future<void> setNotificationsEnabled(bool value) => updateDraft(
     state.draft.copyWith(
       notificationsEnabled: value,
-      notificationsConfirmed: false,
+      notificationsConfirmed: true,
     ),
   );
 
@@ -279,6 +317,19 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         ? objectives.remove(objective)
         : objectives.add(objective);
     return updateDraft(state.draft.copyWith(objectives: objectives));
+  }
+
+  Future<void> toggleTracking(String tracking) {
+    final draft = state.draft;
+    return updateDraft(
+      switch (tracking) {
+        'treatment' => draft.copyWith(trackTreatment: !draft.trackTreatment),
+        'water' => draft.copyWith(trackWater: !draft.trackWater),
+        'meals' => draft.copyWith(trackMeals: !draft.trackMeals),
+        'weight' => draft.copyWith(trackWeight: !draft.trackWeight),
+        _ => draft,
+      },
+    );
   }
 
   void _invalidateConsumers() {
@@ -293,4 +344,26 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
     ref.invalidate(weightViewModelProvider);
     ref.invalidate(bariaViewModelProvider);
   }
+
+  String _stepId(OnboardingStep step) => switch (step) {
+    OnboardingStep.splash ||
+    OnboardingStep.welcome ||
+    OnboardingStep.benefits => 'welcome',
+    OnboardingStep.permissions => 'reminderPreference',
+    OnboardingStep.goals => 'trackingPreferences',
+    OnboardingStep.initialData => 'basicProfile',
+    OnboardingStep.documents => 'legalConsents',
+    OnboardingStep.completion => 'completion',
+  };
+
+  OnboardingStep _stepForId(String? id, OnboardingStep fallback) => switch (id) {
+    'welcome' => OnboardingStep.welcome,
+    'reminderPreference' => OnboardingStep.permissions,
+    'trackingPreferences' || 'trackingConfiguration' => OnboardingStep.goals,
+    'basicProfile' || 'bariatricJourney' || 'weightAndGoals' =>
+      OnboardingStep.initialData,
+    'legalConsents' => OnboardingStep.documents,
+    'completion' => OnboardingStep.completion,
+    _ => fallback,
+  };
 }

@@ -6,6 +6,7 @@ import 'package:helpbari/features/auth/domain/entities/auth_user.dart';
 import 'package:helpbari/features/auth/presentation/providers/auth_providers.dart';
 import 'package:helpbari/features/onboarding/data/repositories/local_onboarding_repository.dart';
 import 'package:helpbari/features/onboarding/domain/entities/entities.dart';
+import 'package:helpbari/features/onboarding/domain/repositories/repositories.dart';
 import 'package:helpbari/features/onboarding/domain/usecases/use_cases.dart';
 import 'package:helpbari/features/onboarding/presentation/providers/onboarding_providers.dart';
 import 'package:helpbari/features/onboarding/presentation/states/onboarding_state.dart';
@@ -72,29 +73,32 @@ void main() {
     expect(fixture.state.currentStep, OnboardingStep.documents);
   });
 
-  test(
-    'local completion does not ask profile fields again after login',
-    () async {
-      final fixture = _Fixture(user: user, profile: null, consent: true);
-      await fixture.repository.completeForUser(user.id);
-      await fixture.resolve();
-
-      expect(fixture.state.entryStatus, AppEntryStatus.authenticatedReady);
-      expect(fixture.state.currentStep, OnboardingStep.completion);
-    },
-  );
-
-  test('local completion only asks for renewed legal acceptance', () async {
-    final fixture = _Fixture(user: user, profile: null, consent: false);
+  test('legacy completion without a profile requires profile review', () async {
+    final fixture = _Fixture(user: user, profile: null, consent: true);
     await fixture.repository.completeForUser(user.id);
     await fixture.resolve();
 
     expect(
       fixture.state.entryStatus,
-      AppEntryStatus.authenticatedLegalAcceptancePending,
+      AppEntryStatus.authenticatedOnboardingPending,
     );
-    expect(fixture.state.currentStep, OnboardingStep.documents);
+    expect(fixture.state.currentStep, OnboardingStep.profile);
   });
+
+  test(
+    'legacy completion without profile does not skip required data',
+    () async {
+      final fixture = _Fixture(user: user, profile: null, consent: false);
+      await fixture.repository.completeForUser(user.id);
+      await fixture.resolve();
+
+      expect(
+        fixture.state.entryStatus,
+        AppEntryStatus.authenticatedOnboardingPending,
+      );
+      expect(fixture.state.currentStep, OnboardingStep.profile);
+    },
+  );
 
   test('local restoration failure never manufactures completion', () async {
     final fixture = _Fixture(
@@ -129,6 +133,9 @@ class _Fixture {
         onboardingUseCasesProvider.overrideWithValue(
           OnboardingUseCases(repository),
         ),
+        onboardingProgressRepositoryProvider.overrideWith(
+          (ref) async => _OnboardingProgressRepository(),
+        ),
         profileUseCasesProvider.overrideWithValue(
           ProfileUseCases(
             getProfile: GetProfileUseCase(_profileRepository),
@@ -162,6 +169,16 @@ class _Fixture {
         .read(onboardingViewModelProvider.notifier)
         .refreshForSession();
   }
+}
+
+class _OnboardingProgressRepository implements OnboardingProgressRepository {
+  OnboardingProgress? value;
+
+  @override
+  Future<OnboardingProgress?> getForUser() async => value;
+
+  @override
+  Future<void> save(OnboardingProgress progress) async => value = progress;
 }
 
 Profile _profile() => Profile(

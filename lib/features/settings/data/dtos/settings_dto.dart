@@ -12,6 +12,9 @@ class SettingsDto {
     required this.medicationRemindersEnabled,
     required this.appointmentRemindersEnabled,
     required this.mealTrackingEnabled,
+    required this.treatmentTrackingEnabled,
+    required this.waterTrackingEnabled,
+    required this.weightTrackingEnabled,
     required this.weightUnit,
     required this.syncMetadata,
   });
@@ -22,6 +25,9 @@ class SettingsDto {
   final bool medicationRemindersEnabled;
   final bool appointmentRemindersEnabled;
   final bool mealTrackingEnabled;
+  final bool treatmentTrackingEnabled;
+  final bool waterTrackingEnabled;
+  final bool weightTrackingEnabled;
   final String weightUnit;
   final SyncMetadata syncMetadata;
 
@@ -33,6 +39,9 @@ class SettingsDto {
       medicationRemindersEnabled: medicationRemindersEnabled,
       appointmentRemindersEnabled: appointmentRemindersEnabled,
       mealTrackingEnabled: mealTrackingEnabled,
+      treatmentTrackingEnabled: treatmentTrackingEnabled,
+      waterTrackingEnabled: waterTrackingEnabled,
+      weightTrackingEnabled: weightTrackingEnabled,
       weightUnit: weightUnit,
     );
   }
@@ -46,6 +55,9 @@ class SettingsDto {
         'medicationRemindersEnabled': medicationRemindersEnabled,
         'appointmentRemindersEnabled': appointmentRemindersEnabled,
         'mealTrackingEnabled': mealTrackingEnabled,
+        'treatmentTrackingEnabled': treatmentTrackingEnabled,
+        'waterTrackingEnabled': waterTrackingEnabled,
+        'weightTrackingEnabled': weightTrackingEnabled,
         'weightUnit': weightUnit,
       },
     );
@@ -64,6 +76,9 @@ class SettingsDto {
       medicationRemindersEnabled: settings.medicationRemindersEnabled,
       appointmentRemindersEnabled: settings.appointmentRemindersEnabled,
       mealTrackingEnabled: settings.mealTrackingEnabled,
+      treatmentTrackingEnabled: settings.treatmentTrackingEnabled,
+      waterTrackingEnabled: settings.waterTrackingEnabled,
+      weightTrackingEnabled: settings.weightTrackingEnabled,
       weightUnit: settings.weightUnit,
       syncMetadata: SyncMetadata(
         id: settings.id,
@@ -82,6 +97,9 @@ class SettingsDto {
     medicationRemindersEnabled: row.medicationRemindersEnabled,
     appointmentRemindersEnabled: row.appointmentRemindersEnabled,
     mealTrackingEnabled: row.mealTrackingEnabled,
+    treatmentTrackingEnabled: row.treatmentTrackingEnabled,
+    waterTrackingEnabled: row.waterTrackingEnabled,
+    weightTrackingEnabled: row.weightTrackingEnabled,
     weightUnit: row.weightUnit,
     syncMetadata: SyncMetadata(
       id: row.id,
@@ -102,6 +120,9 @@ class SettingsDto {
         medicationRemindersEnabled: Value(medicationRemindersEnabled),
         appointmentRemindersEnabled: Value(appointmentRemindersEnabled),
         mealTrackingEnabled: Value(mealTrackingEnabled),
+        treatmentTrackingEnabled: Value(treatmentTrackingEnabled),
+        waterTrackingEnabled: Value(waterTrackingEnabled),
+        weightTrackingEnabled: Value(weightTrackingEnabled),
         weightUnit: Value(weightUnit),
         createdAt: syncMetadata.createdAt,
         updatedAt: syncMetadata.updatedAt,
@@ -117,6 +138,9 @@ class SettingsDto {
     'medication_reminders_enabled': medicationRemindersEnabled,
     'appointment_reminders_enabled': appointmentRemindersEnabled,
     'meal_tracking_enabled': mealTrackingEnabled,
+    'treatment_tracking_enabled': treatmentTrackingEnabled,
+    'water_tracking_enabled': waterTrackingEnabled,
+    'weight_tracking_enabled': weightTrackingEnabled,
     'weight_unit': weightUnit,
     'created_at': syncMetadata.createdAt.toIso8601String(),
     'updated_at': syncMetadata.updatedAt.toIso8601String(),
@@ -132,6 +156,10 @@ class SettingsDto {
       medicationRemindersEnabled: row['medication_reminders_enabled'] as bool,
       appointmentRemindersEnabled: row['appointment_reminders_enabled'] as bool,
       mealTrackingEnabled: row['meal_tracking_enabled'] as bool,
+      treatmentTrackingEnabled:
+          row['treatment_tracking_enabled'] as bool? ?? true,
+      waterTrackingEnabled: row['water_tracking_enabled'] as bool? ?? true,
+      weightTrackingEnabled: row['weight_tracking_enabled'] as bool? ?? true,
       weightUnit: row['weight_unit'] as String,
       syncMetadata: SyncMetadata(
         id: row['id'] as String,
@@ -154,6 +182,10 @@ class SettingsDto {
       medicationRemindersEnabled: data['medicationRemindersEnabled'] as bool,
       appointmentRemindersEnabled: data['appointmentRemindersEnabled'] as bool,
       mealTrackingEnabled: data['mealTrackingEnabled'] as bool,
+      treatmentTrackingEnabled:
+          data['treatmentTrackingEnabled'] as bool? ?? true,
+      waterTrackingEnabled: data['waterTrackingEnabled'] as bool? ?? true,
+      weightTrackingEnabled: data['weightTrackingEnabled'] as bool? ?? true,
       weightUnit: data['weightUnit'] as String,
       syncMetadata: record.metadata,
     );

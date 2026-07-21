@@ -16,6 +16,7 @@ enum SyncDomain {
   bioimpedance,
   documents,
   privacy,
+  onboarding,
   unknown;
 
   static SyncDomain fromRepositoryKey(String key) => switch (key) {
@@ -33,6 +34,7 @@ enum SyncDomain {
     'bioimpedance' => bioimpedance,
     'document_processings' => documents,
     'privacy_consents' => privacy,
+    'onboarding_states' => onboarding,
     _ => unknown,
   };
 }

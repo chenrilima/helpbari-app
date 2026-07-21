@@ -45,7 +45,6 @@ class NotificationBootstrapCoordinator {
           )).clear(previous.id);
           await scheduler.clearUser();
         }
-        await scheduler.requestPermissions();
         await _restore(next.id);
       });
     }, fireImmediately: true);

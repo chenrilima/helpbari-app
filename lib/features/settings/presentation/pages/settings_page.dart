@@ -8,6 +8,7 @@ import '../../../../app/bootstrap/sync_bootstrap_provider.dart';
 import '../../../../app/router/app_routes.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../design_system/design_system.dart';
+import '../../domain/entities/entities.dart';
 import '../providers/setting_view_model_provider.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
@@ -167,6 +168,36 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                               .toggleAppointmentReminders(value);
                         },
                 ),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  secondary: const Icon(Icons.medication_outlined),
+                  title: const HBText('Acompanhar tratamento'),
+                  value: settings.treatmentTrackingEnabled,
+                  onChanged: state.isSaving
+                      ? null
+                      : (value) => _updateTracking(
+                          settings,
+                          treatment: value,
+                        ),
+                ),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  secondary: const Icon(AppIcons.water),
+                  title: const HBText('Acompanhar água'),
+                  value: settings.waterTrackingEnabled,
+                  onChanged: state.isSaving
+                      ? null
+                      : (value) => _updateTracking(settings, water: value),
+                ),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  secondary: const Icon(AppIcons.weight),
+                  title: const HBText('Acompanhar peso'),
+                  value: settings.weightTrackingEnabled,
+                  onChanged: state.isSaving
+                      ? null
+                      : (value) => _updateTracking(settings, weight: value),
+                ),
               ],
             ),
           ),
@@ -235,6 +266,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       );
     }
   }
+
+  Future<void> _updateTracking(
+    AppSettings settings, {
+    bool? treatment,
+    bool? water,
+    bool? meals,
+    bool? weight,
+  }) => ref.read(settingsViewModelProvider.notifier).updateTrackingPreferences(
+    treatment: treatment ?? settings.treatmentTrackingEnabled,
+    water: water ?? settings.waterTrackingEnabled,
+    meals: meals ?? settings.mealTrackingEnabled,
+    weight: weight ?? settings.weightTrackingEnabled,
+  );
 }
 
 class _WaterGoalDialogForm extends StatefulWidget {

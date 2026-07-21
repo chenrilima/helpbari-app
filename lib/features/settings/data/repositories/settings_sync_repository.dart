@@ -106,6 +106,12 @@ class SettingsSyncRepository
       appointmentRemindersEnabled:
           payload['appointment_reminders_enabled'] as bool,
       mealTrackingEnabled: payload['meal_tracking_enabled'] as bool,
+      treatmentTrackingEnabled:
+          payload['treatment_tracking_enabled'] as bool? ?? true,
+      waterTrackingEnabled:
+          payload['water_tracking_enabled'] as bool? ?? true,
+      weightTrackingEnabled:
+          payload['weight_tracking_enabled'] as bool? ?? true,
       weightUnit: payload['weight_unit'] as String,
       syncMetadata: SyncMetadata(
         id: operation.recordId,

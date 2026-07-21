@@ -22,6 +22,9 @@ import '../../features/privacy/data/datasources/drift_privacy_consent_datasource
 import '../../features/privacy/data/repositories/privacy_consent_sync_repository.dart';
 import '../../features/privacy/presentation/providers/privacy_providers.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
+import '../../features/onboarding/data/datasources/drift_onboarding_progress_datasource.dart';
+import '../../features/onboarding/data/datasources/onboarding_progress_supabase_datasource.dart';
+import '../../features/onboarding/data/repositories/onboarding_progress_sync_repository.dart';
 import '../../features/medical_reports/presentation/providers/medical_report_providers.dart';
 import '../../features/water/data/datasources/drift_water_local_datasource.dart';
 import '../../features/water/data/datasources/water_supabase_datasource.dart';
@@ -89,6 +92,16 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
   }
 
   return [
+    OnboardingProgressSyncRepository(
+      local: () async => DriftOnboardingProgressDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).onboardingStateDao,
+        userId: user.id,
+      ),
+      remote: OnboardingProgressSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+    ),
     PrivacyConsentSyncRepository(
       local: () async => DriftPrivacyConsentDatasource(
         dao: (await ref.read(appDatabaseProvider.future)).privacyConsentDao,
@@ -380,12 +393,21 @@ final syncDataRefreshProvider = Provider<Future<void> Function(SyncResult)>((
       if (domains.contains(SyncDomain.privacy)) {
         ref.invalidate(privacyViewModelProvider);
       }
+      if (domains.contains(SyncDomain.onboarding)) {
+        ref.invalidate(onboardingProgressRepositoryProvider);
+        ref.invalidate(onboardingProgressServiceProvider);
+        await ref
+            .read(onboardingViewModelProvider.notifier)
+            .refreshForSession(waitForRemote: false);
+      }
       if (homeAreas.contains(HomeRefreshArea.dashboard)) {
         ref.invalidate(todayDashboardProvider);
       }
       return;
     }
     ref.invalidate(settingsUseCasesProvider);
+    ref.invalidate(onboardingProgressRepositoryProvider);
+    ref.invalidate(onboardingProgressServiceProvider);
     ref.invalidate(dailyWaterGoalProvider);
     ref.invalidate(todayDashboardProvider);
     ref.invalidate(healthDashboardUseCasesProvider);

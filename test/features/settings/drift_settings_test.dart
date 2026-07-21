@@ -317,6 +317,9 @@ SettingsDto _dto(
     medicationRemindersEnabled: true,
     appointmentRemindersEnabled: true,
     mealTrackingEnabled: true,
+    treatmentTrackingEnabled: true,
+    waterTrackingEnabled: true,
+    weightTrackingEnabled: true,
     weightUnit: 'kg',
     syncMetadata: SyncMetadata(
       id: userId,

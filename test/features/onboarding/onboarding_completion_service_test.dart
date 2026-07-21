@@ -132,6 +132,7 @@ OnboardingProfileDraft _draft({
   targetWeight: '72',
   surgeryType: 'bypass',
   waterGoal: '2500',
+  trackWater: true,
   notificationsEnabled: false,
   waterGoalConfirmed: true,
   notificationsConfirmed: true,
