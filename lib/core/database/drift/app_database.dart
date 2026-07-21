@@ -309,7 +309,7 @@ class AppDatabase extends _$AppDatabase {
             'unified_treatment_cutover_enabled': true,
             'unified_treatment_read_new_enabled': true,
             'unified_treatment_write_new_enabled': true,
-            'unified_treatment_remote_sync_enabled': false,
+            'unified_treatment_remote_sync_enabled': true,
           }.entries) {
             batch.insert(
               unifiedTreatmentRolloutFlags,
@@ -323,6 +323,19 @@ class AppDatabase extends _$AppDatabase {
             );
           }
         });
+        await (update(unifiedTreatmentRolloutFlags)..where(
+              (row) =>
+                  row.key.equals('unified_treatment_remote_sync_enabled') &
+                  row.enabled.equals(false) &
+                  row.source.equals('schemaDefault'),
+            ))
+            .write(
+              UnifiedTreatmentRolloutFlagsCompanion(
+                enabled: const Value(true),
+                source: const Value('schemaDefaultV2'),
+                updatedAt: Value(DateTime.now().toUtc()),
+              ),
+            );
       }
     },
   );

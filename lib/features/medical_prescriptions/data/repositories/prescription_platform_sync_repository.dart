@@ -47,7 +47,11 @@ class PrescriptionPlatformSyncRepository
             ],
           )
           .get();
-      result.addAll(rows.map((row) => _operation(table, row.data)));
+      for (final row in rows) {
+        if (await _dependenciesSynced(table, row.data)) {
+          result.add(_operation(table, row.data));
+        }
+      }
     }
     result.sort((a, b) {
       final dependencyOrder = _tables
@@ -57,6 +61,41 @@ class PrescriptionPlatformSyncRepository
       return a.updatedAt.compareTo(b.updatedAt);
     });
     return result;
+  }
+
+  Future<bool> _dependenciesSynced(
+    String table,
+    Map<String, Object?> row,
+  ) async {
+    if (table == 'treatment_proposals') {
+      final routineId = row['target_routine_id'] as String?;
+      final planId = row['resulting_plan_id'] as String?;
+      return (routineId == null || await _routineSynced(routineId)) &&
+          (planId == null || await _planSynced(planId));
+    }
+    if (table == 'prescription_routine_links') {
+      return await _routineSynced(row['routine_id'] as String) &&
+          await _planSynced(row['plan_id'] as String);
+    }
+    return true;
+  }
+
+  Future<bool> _routineSynced(String id) async {
+    final row =
+        await (database.select(database.smartRoutineRecords)..where(
+              (record) => record.userId.equals(userId) & record.id.equals(id),
+            ))
+            .getSingleOrNull();
+    return row?.syncStatus == 'synced';
+  }
+
+  Future<bool> _planSynced(String id) async {
+    final row =
+        await (database.select(database.routinePlanRecords)..where(
+              (record) => record.userId.equals(userId) & record.id.equals(id),
+            ))
+            .getSingleOrNull();
+    return row?.syncStatus == 'synced';
   }
 
   @override
@@ -79,7 +118,8 @@ class PrescriptionPlatformSyncRepository
     await remote.run(
       operation: 'upsert',
       table: table,
-      request: (query) => query.upsert(row),
+      request: (query) =>
+          query.upsert(row, ignoreDuplicates: isAppendOnly(operation)),
     );
   }
 

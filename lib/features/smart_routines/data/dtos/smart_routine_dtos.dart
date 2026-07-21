@@ -196,13 +196,11 @@ final class RoutinePlanDto {
   };
   factory RoutinePlanDto.fromRow(Map<String, dynamic> row) {
     final metadata = _metadata(row);
-    final dose = row['dose_value'] == null && row['dose_original_text'] == null
-        ? null
-        : DoseValue(
-            value: row['dose_value'] as String?,
-            unit: row['dose_unit'] as String?,
-            originalText: row['dose_original_text'] as String?,
-          );
+    final dose = _dose(
+      value: row['dose_value'] as String?,
+      unit: row['dose_unit'] as String?,
+      originalText: row['dose_original_text'] as String?,
+    );
     return RoutinePlanDto(
       RoutinePlan(
         planId: RoutinePlanId(row['id'] as String),
@@ -454,15 +452,11 @@ final class RoutineAdherenceEventDto {
             onTimeEndsAt: _utcDateValue(row['rescheduled_on_time_ends_at_utc']),
             windowEndsAt: _utcDateValue(row['rescheduled_window_ends_at_utc']),
           );
-    final actualDose =
-        row['actual_dose_value'] == null &&
-            row['actual_dose_original_text'] == null
-        ? null
-        : DoseValue(
-            value: row['actual_dose_value'] as String?,
-            unit: row['actual_dose_unit'] as String?,
-            originalText: row['actual_dose_original_text'] as String?,
-          );
+    final actualDose = _dose(
+      value: row['actual_dose_value'] as String?,
+      unit: row['actual_dose_unit'] as String?,
+      originalText: row['actual_dose_original_text'] as String?,
+    );
     return RoutineAdherenceEventDto(
       RoutineAdherenceEvent(
         eventId: RoutineAdherenceEventId(row['id'] as String),
@@ -550,3 +544,11 @@ String _utc(DateTime value) {
 }
 
 String? _utcOrNull(DateTime? value) => value == null ? null : _utc(value);
+
+DoseValue? _dose({String? value, String? unit, String? originalText}) {
+  final hasValue = value?.trim().isNotEmpty ?? false;
+  final hasUnit = unit?.trim().isNotEmpty ?? false;
+  final hasOriginalText = originalText?.trim().isNotEmpty ?? false;
+  if (!hasValue && !hasUnit && !hasOriginalText) return null;
+  return DoseValue(value: value, unit: unit, originalText: originalText);
+}

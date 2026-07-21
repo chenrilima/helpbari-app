@@ -19,6 +19,7 @@ void main() {
     );
     expect(source, contains('request.gte('));
     expect(source, isNot(contains('request.gt(')));
+    expect(source, contains('if (await _dependenciesSynced(table, row.data))'));
   });
 
   test('platform sync runs after repositories referenced by foreign keys', () {
@@ -32,5 +33,21 @@ void main() {
       source.indexOf('SmartRoutinesSyncRepository('),
       lessThan(source.indexOf('PrescriptionPlatformSyncRepository(')),
     );
+  });
+
+  test('unified treatment remote sync is enabled without an async gap', () {
+    final database = File(
+      'lib/core/database/drift/app_database.dart',
+    ).readAsStringSync();
+    final providers = File(
+      'lib/core/sync/sync_providers.dart',
+    ).readAsStringSync();
+
+    expect(database, contains("'unified_treatment_remote_sync_enabled': true"));
+    expect(
+      providers,
+      isNot(contains('unifiedTreatmentRemoteSyncEnabledProvider')),
+    );
+    expect(providers, contains('SmartRoutinesSyncRepository('));
   });
 }

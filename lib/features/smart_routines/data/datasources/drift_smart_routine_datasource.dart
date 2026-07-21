@@ -351,8 +351,17 @@ final class DriftSmartRoutineDatasource implements SmartRoutineLocalStore {
     }
   }
 
-  DateTime _date(Object? value) =>
-      value is DateTime ? value : DateTime.parse(value as String);
+  DateTime _date(Object? value) => switch (value) {
+    final DateTime date => date,
+    final int milliseconds => DateTime.fromMillisecondsSinceEpoch(
+      milliseconds,
+      isUtc: true,
+    ),
+    final String raw => DateTime.parse(raw),
+    _ => throw FormatException(
+      'Unsupported smart routine date value: ${value.runtimeType}',
+    ),
+  };
   DateTime? _nullableDate(Object? value) => value == null ? null : _date(value);
 
   Map<String, dynamic> _remoteMap(Map<String, dynamic> json) {

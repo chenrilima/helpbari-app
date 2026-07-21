@@ -14,6 +14,10 @@ void main() {
         1,
       );
       expect(source, contains('if (user == null || supabaseClient == null)'));
+      expect(
+        source,
+        isNot(contains('unifiedTreatmentRemoteSyncEnabledProvider')),
+      );
     },
   );
 }

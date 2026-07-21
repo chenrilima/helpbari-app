@@ -71,7 +71,11 @@ final class SmartRoutinesSyncRepository
           throw StateError('${key.table}_payload_conflict');
         }
         if (key.table == 'routine_plans' || key.table == 'routine_schedules') {
-          throw StateError('${key.table}_payload_conflict');
+          // These records are immutable remotely. An existing row means a
+          // previous push committed before the local sync marker was saved.
+          // Never overwrite the remote clinical revision; completing this
+          // operation lets the engine repair the stale local marker.
+          return;
         }
         final localUpdatedAt = _date(current.row['updated_at']);
         final remoteUpdatedAt = _date(remote['updated_at']);
@@ -114,7 +118,9 @@ final class SmartRoutinesSyncRepository
           if (existing != null &&
               existing.row['sync_status'] != SyncStatus.synced.name &&
               !_samePayload(existing.row, row)) {
-            throw StateError('smart_routine_payload_conflict:$table');
+            // Preserve the pending local command. Its push phase performs the
+            // conflict policy without aborting unrelated remote rows.
+            continue;
           }
           records.add(SmartRoutineLocalRecord(table, row));
         }
@@ -284,13 +290,15 @@ final class SmartRoutinesSyncRepository
   }
 
   Object? _canonicalValue(String key, Object? value) {
-    if (value is DateTime) return value.toUtc().toIso8601String();
+    if (value is DateTime) {
+      return value.toUtc().millisecondsSinceEpoch ~/ 1000;
+    }
     if (value is String &&
         (key.endsWith('_at') ||
             key.endsWith('_for') ||
             key.endsWith('_at_utc') ||
             key.endsWith('_for_utc'))) {
-      return DateTime.parse(value).toUtc().toIso8601String();
+      return DateTime.parse(value).toUtc().millisecondsSinceEpoch ~/ 1000;
     }
     if (value is Map) {
       final map = Map<String, dynamic>.from(value);
