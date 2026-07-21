@@ -37,7 +37,6 @@ import '../../features/medical_prescriptions/presentation/pages/medical_prescrip
 import '../../features/medical_prescriptions/presentation/pages/medical_prescription_route_page.dart';
 import '../../features/medical_prescriptions/presentation/pages/register_medical_prescription_page.dart';
 import '../../features/document_intelligence/presentation/pages/document_center_page.dart';
-import '../../features/medications/presentation/pages/medications_page.dart';
 import '../../features/medications/presentation/pages/register_medication_page.dart';
 import '../../features/medications/domain/entities/medication.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
@@ -60,7 +59,6 @@ import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/vitamins/presentation/pages/register_vitamin_page.dart';
-import '../../features/vitamins/presentation/pages/vitamins_page.dart';
 import '../../features/vitamins/domain/entities/vitamin.dart';
 import '../../features/water/presentation/pages/register_water_page.dart';
 import '../../features/water/presentation/pages/water_page.dart';
@@ -251,7 +249,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.baria, builder: (_, _) => const BariaPage()),
       GoRoute(
         path: AppRoutes.vitamins,
-        builder: (context, state) => const VitaminsPage(),
+        redirect: (_, _) => AppRoutes.treatment,
       ),
       GoRoute(
         path: AppRoutes.registerVitamin,
@@ -288,7 +286,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.medications,
-        builder: (context, state) => const MedicationsPage(),
+        redirect: (_, _) => AppRoutes.treatment,
       ),
       GoRoute(
         path: AppRoutes.registerMedication,

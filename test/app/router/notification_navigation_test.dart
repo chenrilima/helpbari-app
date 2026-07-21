@@ -5,8 +5,8 @@ import 'package:helpbari/core/services/notifications/notifications.dart';
 void main() {
   for (final entry in <NotificationSource, String>{
     NotificationSource.appointment: '/appointments',
-    NotificationSource.vitamin: '/vitamins',
-    NotificationSource.medication: '/medications',
+    NotificationSource.vitamin: '/treatment',
+    NotificationSource.medication: '/treatment',
   }.entries) {
     test('routes ${entry.key.name} payload to its entity list', () {
       final location = notificationLocation(

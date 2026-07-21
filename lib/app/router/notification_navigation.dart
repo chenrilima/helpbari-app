@@ -7,8 +7,8 @@ String? notificationLocation(LocalNotificationPayload payload) {
     NotificationSource.water => AppRoutes.water,
     NotificationSource.meal => AppRoutes.meals,
     NotificationSource.weight => AppRoutes.weight,
-    NotificationSource.vitamin => AppRoutes.vitamins,
-    NotificationSource.medication => AppRoutes.medications,
+    NotificationSource.vitamin => AppRoutes.treatment,
+    NotificationSource.medication => AppRoutes.treatment,
     NotificationSource.smartRoutineOccurrence => AppRoutes.home,
     NotificationSource.push => null,
   };

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/context_navigation_extension.dart';
 import '../../../../design_system/design_system.dart';
 import '../providers/progress_view_model_provider.dart';
 import '../widgets/health_score_chart_widget.dart';
-import '../widgets/progress_metric_card.dart';
 
 class ProgressPage extends ConsumerStatefulWidget {
   const ProgressPage({super.key});
@@ -68,40 +68,88 @@ class _ProgressPageState extends ConsumerState<ProgressPage> {
         subtitle: 'Indicadores da sua jornada',
       ),
       children: [
-        ProgressMetricCard(
-          title: 'Peso atual',
-          value: summary.formattedCurrentWeight,
-          description: summary.formattedWeightLost,
+        _ProgressSection(
+          title: 'Peso',
+          summary:
+              '${summary.formattedCurrentWeight} • ${summary.formattedWeightLost}',
           icon: AppIcons.weight,
+          route: AppRoutes.weight,
         ),
         const HBGap.md(),
-        ProgressMetricCard(
-          title: 'Peso inicial',
-          value: summary.formattedInitialWeight,
-          icon: AppIcons.weight,
+        const _ProgressSection(
+          title: 'Água',
+          summary: 'Acompanhe seus registros e sua meta de hidratação.',
+          icon: Icons.water_drop_outlined,
+          route: AppRoutes.water,
         ),
         const HBGap.md(),
-        ProgressMetricCard(
-          title: 'Meta',
-          value: summary.formattedTargetProgress,
-          description: summary.formattedRemainingToTarget,
-          icon: Icons.flag_outlined,
+        const _ProgressSection(
+          title: 'Alimentação',
+          summary: 'Consulte refeições e proteína registradas.',
+          icon: Icons.restaurant_outlined,
+          route: AppRoutes.meals,
         ),
         const HBGap.md(),
-        ProgressMetricCard(
-          title: 'IMC inicial',
-          value: summary.formattedInitialBmi,
-          icon: Icons.monitor_heart_outlined,
-        ),
-        const HBGap.md(),
-        ProgressMetricCard(
-          title: 'Dias desde a cirurgia',
-          value: '${summary.profile.daysSinceSurgery} dias',
-          icon: Icons.calendar_month_outlined,
+        const _ProgressSection(
+          title: 'Tratamento',
+          summary: 'Veja o acompanhamento e o histórico do tratamento.',
+          icon: Icons.medication_outlined,
+          route: AppRoutes.treatment,
         ),
         const HBGap.xl(),
         const HealthScoreChartWidget(),
+        const HBGap.sm(),
+        const HBCard(
+          child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(Icons.info_outline),
+            title: HBText('Como o Health Score é composto'),
+            subtitle: HBText(
+              'O indicador usa somente componentes com dados disponíveis. A cobertura mostra quanto do período pôde ser avaliado. É um indicador de acompanhamento, não uma avaliação médica.',
+            ),
+          ),
+        ),
+        const HBGap.md(),
+        const _ProgressSection(
+          title: 'Bioimpedância',
+          summary: 'Acompanhe suas medições corporais ao longo do tempo.',
+          icon: Icons.monitor_weight_outlined,
+          route: AppRoutes.bioimpedance,
+        ),
+        const HBGap.md(),
+        const _ProgressSection(
+          title: 'Relatórios',
+          summary: 'Gere e consulte relatórios a partir dos dados autorizados.',
+          icon: Icons.description_outlined,
+          route: AppRoutes.medicalReports,
+        ),
       ],
     );
   }
+}
+
+class _ProgressSection extends StatelessWidget {
+  const _ProgressSection({
+    required this.title,
+    required this.summary,
+    required this.icon,
+    required this.route,
+  });
+
+  final String title;
+  final String summary;
+  final IconData icon;
+  final String route;
+
+  @override
+  Widget build(BuildContext context) => HBCard(
+    onTap: () => context.push(route),
+    child: ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(icon),
+      title: HBText(title),
+      subtitle: HBText(summary),
+      trailing: const Icon(Icons.chevron_right),
+    ),
+  );
 }

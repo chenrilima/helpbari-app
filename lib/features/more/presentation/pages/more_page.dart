@@ -26,6 +26,11 @@ class MorePage extends StatelessWidget {
               Icons.folder_outlined,
               AppRoutes.documentCenter,
             ),
+            _Entry(
+              'Relatórios',
+              Icons.description_outlined,
+              AppRoutes.medicalReports,
+            ),
           ],
         ),
         const HBGap.lg(),
@@ -36,6 +41,16 @@ class MorePage extends StatelessWidget {
               'Academia Bariátrica',
               Icons.menu_book_outlined,
               AppRoutes.academy,
+            ),
+            _Entry(
+              'Favoritos',
+              Icons.favorite_outline,
+              '${AppRoutes.academy}?favorites=true',
+            ),
+            _Entry(
+              'Histórico de leitura',
+              Icons.history,
+              AppRoutes.academyHistory,
             ),
           ],
         ),
@@ -49,13 +64,46 @@ class MorePage extends StatelessWidget {
               Icons.settings_outlined,
               AppRoutes.settings,
             ),
+            _Entry(
+              'Notificações',
+              Icons.notifications_outlined,
+              AppRoutes.settings,
+            ),
           ],
         ),
         const HBGap.lg(),
         _Group(
           title: 'Privacidade e dados',
           entries: [
-            _Entry('Privacidade', Icons.lock_outline, AppRoutes.privacy),
+            _Entry(
+              'Consentimentos',
+              Icons.fact_check_outlined,
+              AppRoutes.privacy,
+            ),
+            _Entry(
+              'Exportar dados',
+              Icons.download_outlined,
+              AppRoutes.privacy,
+            ),
+            _Entry(
+              'Excluir conta',
+              Icons.person_remove_outlined,
+              AppRoutes.privacy,
+            ),
+          ],
+        ),
+        const HBGap.lg(),
+        _Group(
+          title: 'Ajuda',
+          entries: [
+            _Entry('BarIA', Icons.auto_awesome_outlined, AppRoutes.baria),
+            _Entry(
+              'Central de ajuda',
+              Icons.help_outline,
+              AppRoutes.academyFaq,
+            ),
+            _Entry('Termos', Icons.gavel_outlined, AppRoutes.privacy),
+            _Entry('Sobre', Icons.info_outline, AppRoutes.privacy),
           ],
         ),
       ],
