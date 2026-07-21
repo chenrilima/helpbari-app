@@ -8,6 +8,9 @@ import '../../../../core/services/clock_service.dart';
 import '../../../../core/sync/sync.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/repositories/prescription_platform_repository.dart';
+import '../../../smart_routines/domain/services/schedule_instant_resolver.dart';
+import '../../../smart_routines/domain/value_objects/local_date.dart';
+import '../../../smart_routines/domain/value_objects/routine_values.dart';
 import '../datasources/drift_medical_prescription_local_datasource.dart';
 import '../dtos/medical_prescription_dto.dart';
 
@@ -28,6 +31,7 @@ class DriftPrescriptionPlatformRepository
   final String userId;
   final String timeZone;
   final Uuid uuid;
+  static const _proposalNamespace = '6cd43988-8bf5-5ba8-8cb7-c6c76efb2da8';
 
   @override
   Future<PrescriptionVersion> createDraftVersion({
@@ -35,39 +39,70 @@ class DriftPrescriptionPlatformRepository
     String? sourceProcessingId,
   }) async {
     _requireUser(snapshot.userId);
-    final previous = await history(snapshot.id);
+    if (sourceProcessingId != null) {
+      final existing =
+          await (database.select(database.prescriptionVersionRecords)..where(
+                (row) =>
+                    row.userId.equals(userId) &
+                    row.sourceProcessingId.equals(sourceProcessingId) &
+                    row.deletedAt.isNull(),
+              ))
+              .getSingleOrNull();
+      if (existing != null) return _versionFromRow(existing);
+    }
     final now = clock.now().toUtc();
-    final version = PrescriptionVersion(
-      id: uuid.v4(),
-      prescriptionId: snapshot.id,
-      userId: userId,
-      revision: previous.isEmpty ? 1 : previous.first.revision + 1,
-      status: PrescriptionVersionStatus.draft,
-      snapshot: snapshot,
-      sourceProcessingId: sourceProcessingId,
-      createdAt: now,
-      updatedAt: now,
-      syncStatus: SyncStatus.pendingCreate,
-    );
-    await database
-        .into(database.prescriptionVersionRecords)
-        .insert(_versionCompanion(version));
-    return version;
+    return database.transaction(() async {
+      final parent =
+          await (database.select(database.medicalPrescriptionRecords)..where(
+                (row) => row.userId.equals(userId) & row.id.equals(snapshot.id),
+              ))
+              .getSingleOrNull();
+      if (parent == null) await prescriptions.save(snapshot);
+      final previous = await history(snapshot.id);
+      final version = PrescriptionVersion(
+        id: uuid.v4(),
+        prescriptionId: snapshot.id,
+        userId: userId,
+        revision: previous.isEmpty ? 1 : previous.first.revision + 1,
+        status: PrescriptionVersionStatus.draft,
+        snapshot: snapshot,
+        sourceProcessingId: sourceProcessingId,
+        createdAt: now,
+        updatedAt: now,
+        syncStatus: SyncStatus.pendingCreate,
+      );
+      await database
+          .into(database.prescriptionVersionRecords)
+          .insert(_versionCompanion(version));
+      return version;
+    });
   }
 
   @override
-  Future<PrescriptionVersion> submitForReview(String versionId) async {
+  Future<PrescriptionVersion> submitForReview(
+    String versionId, {
+    String actor = 'patient',
+  }) async {
     final current = await _version(versionId);
     if (current.status != PrescriptionVersionStatus.draft) {
       throw StateError('Only a draft prescription version can be submitted.');
     }
     final now = clock.now().toUtc();
-    await _updateVersion(
-      current,
-      status: PrescriptionVersionStatus.requiresReview,
-      submittedAt: now,
-      updatedAt: now,
-    );
+    await database.transaction(() async {
+      await _updateVersion(
+        current,
+        status: PrescriptionVersionStatus.requiresReview,
+        submittedAt: now,
+        updatedAt: now,
+      );
+      await _appendReview(
+        current: current,
+        decision: PrescriptionReviewDecision.submitted,
+        actor: actor,
+        fieldDecisions: const {},
+        now: now,
+      );
+    });
     return _version(versionId);
   }
 
@@ -90,22 +125,13 @@ class DriftPrescriptionPlatformRepository
         confirmedAt: now,
         updatedAt: now,
       );
-      await database
-          .into(database.prescriptionReviewRecords)
-          .insert(
-            PrescriptionReviewRecordsCompanion.insert(
-              id: uuid.v4(),
-              userId: userId,
-              prescriptionId: current.prescriptionId,
-              versionId: current.id,
-              decision: PrescriptionReviewDecision.confirmed.name,
-              actor: actor,
-              fieldDecisionsJson: jsonEncode(fieldDecisions),
-              createdAt: now,
-              updatedAt: now,
-              syncStatus: SyncStatus.pendingCreate.name,
-            ),
-          );
+      await _appendReview(
+        current: current,
+        decision: PrescriptionReviewDecision.confirmed,
+        actor: actor,
+        fieldDecisions: fieldDecisions,
+        now: now,
+      );
       await prescriptions.save(
         current.snapshot.copyWith(
           status: MedicalPrescriptionStatus.confirmed,
@@ -114,6 +140,51 @@ class DriftPrescriptionPlatformRepository
         ),
       );
     });
+    return _version(versionId);
+  }
+
+  @override
+  Future<PrescriptionVersion> rejectVersion({
+    required String versionId,
+    required String actor,
+    required Map<String, String> fieldDecisions,
+    String? note,
+  }) async {
+    final current = await _version(versionId);
+    if (current.status != PrescriptionVersionStatus.requiresReview) {
+      throw StateError('Only a version under review can be rejected.');
+    }
+    final now = clock.now().toUtc();
+    await database.transaction(() async {
+      await _updateVersion(
+        current,
+        status: PrescriptionVersionStatus.archived,
+        updatedAt: now,
+      );
+      await _appendReview(
+        current: current,
+        decision: PrescriptionReviewDecision.rejected,
+        actor: actor,
+        fieldDecisions: fieldDecisions,
+        note: note,
+        now: now,
+      );
+    });
+    return _version(versionId);
+  }
+
+  @override
+  Future<PrescriptionVersion> archiveVersion(String versionId) async {
+    final current = await _version(versionId);
+    if (current.status != PrescriptionVersionStatus.confirmed) {
+      throw StateError('Only a confirmed version can be archived.');
+    }
+    final now = clock.now().toUtc();
+    await _updateVersion(
+      current,
+      status: PrescriptionVersionStatus.archived,
+      updatedAt: now,
+    );
     return _version(versionId);
   }
 
@@ -153,7 +224,10 @@ class DriftPrescriptionPlatformRepository
           .into(database.treatmentProposalRecords)
           .insert(
             TreatmentProposalRecordsCompanion.insert(
-              id: uuid.v4(),
+              id: uuid.v5(
+                _proposalNamespace,
+                'version:${version.id}:item:${item.id}:proposal',
+              ),
               userId: userId,
               prescriptionId: version.prescriptionId,
               prescriptionVersionId: version.id,
@@ -185,6 +259,26 @@ class DriftPrescriptionPlatformRepository
   }
 
   @override
+  Future<void> dismissProposal(String proposalId) async {
+    final now = clock.now().toUtc();
+    final changed =
+        await (database.update(database.treatmentProposalRecords)..where(
+              (row) =>
+                  row.userId.equals(userId) &
+                  row.id.equals(proposalId) &
+                  row.decision.equals(TreatmentProposalDecision.pending.name),
+            ))
+            .write(
+              TreatmentProposalRecordsCompanion(
+                decision: Value(TreatmentProposalDecision.dismissed.name),
+                updatedAt: Value(now),
+                syncStatus: Value(SyncStatus.pendingUpdate.name),
+              ),
+            );
+    if (changed != 1) throw StateError('Treatment proposal is not pending.');
+  }
+
+  @override
   Future<PrescriptionRoutineLink> confirmProposal({
     required String proposalId,
     required TreatmentProposalDecision decision,
@@ -204,9 +298,14 @@ class DriftPrescriptionPlatformRepository
       throw StateError('Treatment proposal is not pending.');
     }
     final draft = Map<String, dynamic>.from(jsonDecode(row.draftJson) as Map);
+    if (draft['activatable'] != true) {
+      throw StateError(
+        'Proposal requires structured reviewed scheduling data.',
+      );
+    }
     final now = clock.now().toUtc();
     final routineId = decision == TreatmentProposalDecision.createRoutine
-        ? uuid.v4()
+        ? uuid.v5(_proposalNamespace, 'proposal:${row.id}:routine')
         : targetRoutineId ?? (throw StateError('Target routine is required.'));
     final existingPlans =
         await (database.select(database.routinePlanRecords)
@@ -227,8 +326,8 @@ class DriftPrescriptionPlatformRepository
         : existingPlans.first.revision + 1;
     final planId = decision == TreatmentProposalDecision.linkExisting
         ? existingPlans.first.id
-        : uuid.v4();
-    final linkId = uuid.v4();
+        : uuid.v5(_proposalNamespace, 'proposal:${row.id}:plan:$planRevision');
+    final linkId = uuid.v5(_proposalNamespace, 'proposal:${row.id}:link');
     await database.transaction(() async {
       if (decision == TreatmentProposalDecision.createRoutine) {
         await database
@@ -300,7 +399,10 @@ class DriftPrescriptionPlatformRepository
               .into(database.routineScheduleRecords)
               .insert(
                 RoutineScheduleRecordsCompanion.insert(
-                  id: uuid.v4(),
+                  id: uuid.v5(
+                    _proposalNamespace,
+                    'proposal:${row.id}:schedule:$index',
+                  ),
                   userId: userId,
                   routineId: routineId,
                   planId: planId,
@@ -369,16 +471,47 @@ class DriftPrescriptionPlatformRepository
     MedicalPrescription prescription,
   ) {
     final rules = <Map<String, Object?>>[];
+    final normalizedTimes = item.scheduleTimes.toSet().toList()..sort();
     if (item.asNeeded) {
       rules.add({'schemaVersion': 1, 'type': 'asNeeded'});
-    } else if (item.scheduleTimes.isNotEmpty) {
+    } else if (item.frequencyType == PrescriptionFrequencyType.everyHours &&
+        item.frequencyValue != null &&
+        normalizedTimes.isNotEmpty) {
+      final start = item.startDate ?? prescription.prescribedAt;
+      final resolved = const ScheduleInstantResolver().resolve(
+        localDate: LocalDate.fromDateTime(start),
+        localTime: TimeOfDayValue.parse(normalizedTimes.first),
+        timeZone: IanaTimeZone(timeZone),
+      );
+      if (resolved.isResolved) {
+        rules.add({
+          'schemaVersion': 1,
+          'type': 'everyNHours',
+          'intervalHours': item.frequencyValue,
+          'anchorAtUtc': resolved.value!.instantUtc.toIso8601String(),
+        });
+      }
+    } else if (normalizedTimes.isNotEmpty) {
+      final start = item.startDate ?? prescription.prescribedAt;
       rules.add({
         'schemaVersion': 1,
-        'type': item.daysOfWeek.isEmpty
+        'type':
+            item.frequencyType == PrescriptionFrequencyType.everyDays &&
+                (item.intervalDays ?? item.frequencyValue) != null
+            ? 'everyNDays'
+            : item.frequencyType == PrescriptionFrequencyType.monthly
+            ? 'monthly'
+            : item.daysOfWeek.isEmpty
             ? 'dailyAtTimes'
             : 'specificWeekdaysAtTimes',
         if (item.daysOfWeek.isNotEmpty) 'weekdays': item.daysOfWeek,
-        'times': item.scheduleTimes,
+        if (item.frequencyType == PrescriptionFrequencyType.everyDays)
+          'intervalDays': item.intervalDays ?? item.frequencyValue,
+        if (item.frequencyType == PrescriptionFrequencyType.everyDays)
+          'anchorDate': _localDate(start),
+        if (item.frequencyType == PrescriptionFrequencyType.monthly)
+          'dayOfMonth': start.day,
+        'times': normalizedTimes,
       });
     } else {
       rules.add({
@@ -386,6 +519,13 @@ class DriftPrescriptionPlatformRepository
         'type': 'freeForm',
         'instructions':
             item.instructions ?? item.frequencyType?.name ?? 'Não estruturado',
+      });
+    }
+    if (rules.isEmpty) {
+      rules.add({
+        'schemaVersion': 1,
+        'type': 'freeForm',
+        'instructions': item.instructions ?? 'Dados temporais incompletos',
       });
     }
     final start = item.startDate ?? prescription.prescribedAt;
@@ -405,7 +545,7 @@ class DriftPrescriptionPlatformRepository
       'instructions': item.instructions,
       'documentId': prescription.sourceDocumentId,
       'scheduleRules': rules,
-      'activatable': item.asNeeded || item.scheduleTimes.isNotEmpty,
+      'activatable': rules.every((rule) => rule['type'] != 'freeForm'),
       'fieldConfidences': item.fieldConfidences,
       'provenance': item.provenance,
       'reminderPreference': item.provenance['reminderPreference'] ?? 'disabled',
@@ -505,19 +645,51 @@ class DriftPrescriptionPlatformRepository
     required DateTime updatedAt,
     DateTime? submittedAt,
     DateTime? confirmedAt,
-  }) =>
-      (database.update(database.prescriptionVersionRecords)..where(
-            (row) => row.userId.equals(userId) & row.id.equals(current.id),
-          ))
-          .write(
-            PrescriptionVersionRecordsCompanion(
-              status: Value(status.name),
-              submittedAt: Value(submittedAt ?? current.submittedAt),
-              confirmedAt: Value(confirmedAt ?? current.confirmedAt),
-              updatedAt: Value(updatedAt),
-              syncStatus: Value(SyncStatus.pendingUpdate.name),
-            ),
-          );
+  }) async {
+    final changed =
+        await (database.update(database.prescriptionVersionRecords)
+              ..where(
+                (row) => row.userId.equals(userId) & row.id.equals(current.id),
+              )
+              ..where((row) => row.status.equals(current.status.name)))
+            .write(
+              PrescriptionVersionRecordsCompanion(
+                status: Value(status.name),
+                submittedAt: Value(submittedAt ?? current.submittedAt),
+                confirmedAt: Value(confirmedAt ?? current.confirmedAt),
+                updatedAt: Value(updatedAt),
+                syncStatus: Value(SyncStatus.pendingUpdate.name),
+              ),
+            );
+    if (changed != 1) {
+      throw StateError('Prescription version changed concurrently.');
+    }
+  }
+
+  Future<void> _appendReview({
+    required PrescriptionVersion current,
+    required PrescriptionReviewDecision decision,
+    required String actor,
+    required Map<String, String> fieldDecisions,
+    required DateTime now,
+    String? note,
+  }) => database
+      .into(database.prescriptionReviewRecords)
+      .insert(
+        PrescriptionReviewRecordsCompanion.insert(
+          id: uuid.v4(),
+          userId: userId,
+          prescriptionId: current.prescriptionId,
+          versionId: current.id,
+          decision: decision.name,
+          actor: actor,
+          fieldDecisionsJson: jsonEncode(fieldDecisions),
+          note: Value(note),
+          createdAt: now,
+          updatedAt: now,
+          syncStatus: SyncStatus.pendingCreate.name,
+        ),
+      );
 
   void _validateForConfirmation(MedicalPrescription value) {
     if (value.activeItems.isEmpty ||

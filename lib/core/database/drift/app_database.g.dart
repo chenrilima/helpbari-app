@@ -42527,6 +42527,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'prescription_versions_parent_revision_idx',
     'CREATE UNIQUE INDEX prescription_versions_parent_revision_idx ON prescription_version_records (user_id, prescription_id, revision)',
   );
+  late final Index prescriptionVersionsSourceProcessingIdx = Index(
+    'prescription_versions_source_processing_idx',
+    'CREATE UNIQUE INDEX prescription_versions_source_processing_idx ON prescription_version_records (user_id, source_processing_id)',
+  );
   late final Index prescriptionReviewsVersionIdx = Index(
     'prescription_reviews_version_idx',
     'CREATE INDEX prescription_reviews_version_idx ON prescription_review_records (user_id, version_id, created_at)',
@@ -42700,6 +42704,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     unifiedTreatmentLegacyLogUniqueIdx,
     unifiedTreatmentRolloutKeyIdx,
     prescriptionVersionsParentRevisionIdx,
+    prescriptionVersionsSourceProcessingIdx,
     prescriptionReviewsVersionIdx,
     treatmentProposalsItemVersionIdx,
     prescriptionRoutineLinksItemIdx,

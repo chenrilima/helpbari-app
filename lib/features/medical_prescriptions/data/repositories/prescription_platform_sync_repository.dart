@@ -87,7 +87,7 @@ class PrescriptionPlatformSyncRepository
         request: (query) async {
           var request = query.select().eq('user_id', userId);
           if (updatedAfter != null) {
-            request = request.gt(
+            request = request.gte(
               'updated_at',
               updatedAfter.toUtc().toIso8601String(),
             );

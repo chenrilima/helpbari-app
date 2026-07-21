@@ -79,9 +79,11 @@ class NotificationProjectionReconciler {
   const NotificationProjectionReconciler({
     required this.manifest,
     required this.scheduler,
+    this.capacity = 48,
   });
   final NotificationManifestRepository manifest;
   final NotificationScheduler scheduler;
+  final int capacity;
   static const projectionVersion = 'routine-v2.1';
 
   Future<void> reconcile({
@@ -93,17 +95,21 @@ class NotificationProjectionReconciler {
       for (final entry in await manifest.entries(userId)) entry.key: entry,
     };
     final wanted = <String, RoutineNotificationProjection>{};
-    for (final projection in desired) {
+    final prioritized = desired.toList()
+      ..sort(
+        (left, right) => left.scheduleAtUtc.compareTo(right.scheduleAtUtc),
+      );
+    for (final projection in prioritized.take(capacity)) {
       if (projection.userId != userId ||
           !projection.scheduleAtUtc.isAfter(now)) {
         continue;
       }
-      wanted[_key(projection)] = projection;
+      wanted[keyFor(projection.userId, projection.occurrenceId)] = projection;
     }
     for (final entry in current.values.where(
       (entry) => !wanted.containsKey(entry.key),
     )) {
-      await scheduler.cancel(entry.payload);
+      await scheduler.cancelKey(userId, entry.key);
       await manifest.remove(userId, entry.key);
     }
     for (final item in wanted.entries) {
@@ -164,8 +170,8 @@ class NotificationProjectionReconciler {
     }
   }
 
-  String _key(RoutineNotificationProjection value) =>
-      '${value.userId}:routineOccurrence:${value.occurrenceId}:primary:$projectionVersion';
+  static String keyFor(String userId, String occurrenceId) =>
+      '$userId:routineOccurrence:$occurrenceId:primary:$projectionVersion';
 }
 
 class NotificationActionHandler {
@@ -173,10 +179,12 @@ class NotificationActionHandler {
     required this.inbox,
     required this.commands,
     required this.scheduler,
+    required this.manifest,
   });
   final NotificationActionInbox inbox;
   final RoutineAdherenceCommandPort commands;
   final NotificationScheduler scheduler;
+  final NotificationManifestRepository manifest;
 
   Future<void> process(String userId) async {
     for (final envelope in await inbox.pending(userId)) {
@@ -207,6 +215,12 @@ class NotificationActionHandler {
             action: envelope.action,
             occurredAtUtc: envelope.occurredAtUtc,
           );
+          final key = NotificationProjectionReconciler.keyFor(
+            userId,
+            envelope.occurrenceId,
+          );
+          await scheduler.cancelKey(userId, key);
+          await manifest.remove(userId, key);
         }
         await inbox.complete(userId, envelope.actionId);
       } catch (_) {

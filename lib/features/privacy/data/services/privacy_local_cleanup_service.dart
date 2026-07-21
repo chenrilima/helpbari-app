@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/database/drift/app_database.dart';
+import '../../../../core/services/notifications/app_local_notification_service.dart';
 import 'privacy_local_file_cleanup_service.dart';
 
 class PrivacyLocalCleanupService {
@@ -53,6 +54,10 @@ class PrivacyLocalCleanupService {
   }
 
   Future<void> _clearPreferences(String userId) async {
+    final backgroundActions = BackgroundNotificationActionStore(_preferences);
+    await backgroundActions.remove(
+      backgroundActions.forUser(userId).map((value) => value.actionId),
+    );
     for (final key in _preferences.getKeys().toList()) {
       if (_isUserScopedKey(key, userId) || key == _onboardingDraftKey) {
         await _preferences.remove(key);

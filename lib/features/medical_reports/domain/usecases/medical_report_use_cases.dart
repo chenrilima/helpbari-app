@@ -124,10 +124,12 @@ class MedicalReportUseCases {
     final medicationLogs = results[10] as List<MedicationLog>;
     final dashboard = results[11] as HealthDashboardAggregate?;
     final prescriptions = results[12] as List<MedicalPrescription>;
-    final treatmentAdherence = await (await _treatment()).summary(
+    final treatmentService = await _treatment();
+    final treatmentAdherence = await treatmentService.summary(
       periodStart,
       periodEnd,
     );
+    final treatmentToday = await treatmentService.today(periodEnd);
     final fallbackPendingVitamins = dashboard == null
         ? await _vitaminUseCases.getPendingCount(date: now)
         : null;
@@ -272,6 +274,7 @@ class MedicalReportUseCases {
       automaticObservations: List.unmodifiable(observations),
       attachments: attachments,
       treatmentAdherence: treatmentAdherence,
+      treatmentToday: treatmentToday,
     );
   }
 

@@ -41,6 +41,9 @@ class SettingsReminderSyncService {
             .map(_appointmentReminders.scheduleFor),
       );
     }
-    await _scheduler.restore(userId: _userId, schedules: schedules);
+    await _scheduler.activateUser(_userId);
+    for (final schedule in schedules) {
+      await _scheduler.schedule(schedule);
+    }
   }
 }

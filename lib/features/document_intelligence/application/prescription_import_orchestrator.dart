@@ -27,6 +27,7 @@ class PrescriptionImportOrchestrator {
 
   final PrescriptionPlatformRepository platform;
   final Uuid uuid;
+  static const _identityNamespace = 'a36a4df4-c02c-55ad-9d9e-c7bb305242d4';
 
   PrescriptionImportPreview preview({
     required String userId,
@@ -58,7 +59,10 @@ class PrescriptionImportOrchestrator {
             .toSet()
             .toList()
           ..sort();
-    final prescriptionId = uuid.v4();
+    final prescriptionId = uuid.v5(
+      _identityNamespace,
+      'prescription-document|$userId|${processing.documentId}',
+    );
     final items = <MedicalPrescriptionItem>[];
     for (final index in indexes) {
       final prefix = 'item_$index';
@@ -80,7 +84,10 @@ class PrescriptionImportOrchestrator {
           const <String>[];
       items.add(
         MedicalPrescriptionItem(
-          id: uuid.v4(),
+          id: uuid.v5(
+            _identityNamespace,
+            'prescription-item|$prescriptionId|$index',
+          ),
           prescriptionId: prescriptionId,
           userId: userId,
           itemType: _itemType(value('$prefix.item_type')),
@@ -106,7 +113,9 @@ class PrescriptionImportOrchestrator {
           },
           provenance: {
             for (final field in itemFields)
-              field.key: '${field.source.name}:${field.id}',
+              field.key:
+                  '${field.source.name}:${field.id}'
+                  '${field.confirmedValue == null ? '' : '|humanConfirmed'}',
           },
           reviewStatus: PrescriptionReviewStatus.pending,
           createdAt: now,

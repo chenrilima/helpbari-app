@@ -81,6 +81,7 @@ class HealthDashboardUseCases {
     final exams = (results[5] as List<MedicalExam>?) ?? const [];
     final settings = results[6] as AppSettings?;
     final treatment = await _treatment();
+    final treatmentDays = await treatment.days(from, to);
 
     final days = <DailyHealthAggregate>[];
     for (
@@ -109,7 +110,7 @@ class HealthDashboardUseCases {
           : ProteinCalculator.goalForWeightKg(
               weightKg ?? profile.initialWeight.value,
             );
-      final treatmentToday = await treatment.today(date);
+      final treatmentToday = treatmentDays[_dateKey(date)]!;
       final treatmentAdherence =
           treatmentToday.adherence.coverageState ==
               AdherenceCoverageState.complete
@@ -195,4 +196,9 @@ class HealthDashboardUseCases {
 
   static DateTime _day(DateTime value) =>
       DateTime(value.year, value.month, value.day);
+
+  static String _dateKey(DateTime value) =>
+      '${value.year.toString().padLeft(4, '0')}-'
+      '${value.month.toString().padLeft(2, '0')}-'
+      '${value.day.toString().padLeft(2, '0')}';
 }

@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/database/drift/app_database.dart';
+import '../../../../core/services/clock_service.dart';
 import '../../../../core/services/notifications/notifications.dart';
 import '../../application/notification_platform.dart';
 
@@ -10,30 +11,46 @@ class DriftNotificationPlatformRepository
         NotificationManifestRepository,
         NotificationActionInbox,
         RoutineAdherenceCommandPort {
-  const DriftNotificationPlatformRepository(this.database);
+  const DriftNotificationPlatformRepository({
+    required this.database,
+    required this.clock,
+  });
   final AppDatabase database;
+  final ClockService clock;
 
   @override
-  Future<List<NotificationManifestEntry>> entries(String userId) async =>
-      (await (database.select(
-            database.notificationManifestRecords,
-          )..where((row) => row.userId.equals(userId))).get())
-          .map(
-            (row) => NotificationManifestEntry(
-              key: row.key,
-              userId: row.userId,
-              occurrenceId: row.occurrenceId,
-              pluginId: row.pluginId,
-              projectionVersion: row.projectionVersion,
-              scheduledAtUtc: row.scheduledAtUtc,
-              payload: LocalNotificationPayload.decode(row.payloadJson)!,
-              state: NotificationManifestState.values.byName(row.state),
-              retryCount: row.retryCount,
-              retryAfterUtc: row.retryAfterUtc,
-              updatedAt: row.updatedAt,
-            ),
-          )
-          .toList(growable: false);
+  Future<List<NotificationManifestEntry>> entries(String userId) async {
+    final rows = await (database.select(
+      database.notificationManifestRecords,
+    )..where((row) => row.userId.equals(userId))).get();
+    final result = <NotificationManifestEntry>[];
+    for (final row in rows) {
+      final payload = LocalNotificationPayload.decode(row.payloadJson);
+      final state = NotificationManifestState.values
+          .where((value) => value.name == row.state)
+          .firstOrNull;
+      if (payload == null || state == null || payload.userId != userId) {
+        await remove(userId, row.key);
+        continue;
+      }
+      result.add(
+        NotificationManifestEntry(
+          key: row.key,
+          userId: row.userId,
+          occurrenceId: row.occurrenceId,
+          pluginId: row.pluginId,
+          projectionVersion: row.projectionVersion,
+          scheduledAtUtc: row.scheduledAtUtc,
+          payload: payload,
+          state: state,
+          retryCount: row.retryCount,
+          retryAfterUtc: row.retryAfterUtc,
+          updatedAt: row.updatedAt,
+        ),
+      );
+    }
+    return result;
+  }
 
   @override
   Future<void> save(NotificationManifestEntry entry) => database
@@ -114,7 +131,7 @@ class DriftNotificationPlatformRepository
       _updateInbox(
         userId,
         actionId,
-        NotificationInboxState.failed,
+        NotificationInboxState.pending,
         errorCode: code,
       );
 
@@ -131,7 +148,9 @@ class DriftNotificationPlatformRepository
             NotificationActionInboxRecordsCompanion(
               state: Value(state.name),
               errorCode: Value(errorCode),
-              processedAtUtc: Value(DateTime.now().toUtc()),
+              processedAtUtc: state == NotificationInboxState.processed
+                  ? Value(clock.now().toUtc())
+                  : const Value.absent(),
             ),
           );
 
@@ -157,25 +176,39 @@ class DriftNotificationPlatformRepository
       'a5ae6e59-1007-5162-8a93-d938467625ac',
       'notification-action|$userId|$actionId',
     );
-    await database
-        .into(database.routineAdherenceEventRecords)
-        .insert(
-          RoutineAdherenceEventRecordsCompanion.insert(
-            id: eventId,
-            userId: userId,
-            occurrenceId: occurrenceId,
-            routineId: occurrence.routineId,
-            planId: occurrence.planId,
-            scheduleId: Value(occurrence.scheduleId),
-            type: action.name,
-            actor: 'user',
-            occurredAtUtc: occurredAtUtc.toUtc(),
-            recordedAtUtc: DateTime.now().toUtc(),
-            createdAt: DateTime.now().toUtc(),
-            updatedAt: DateTime.now().toUtc(),
-            syncStatus: 'pendingCreate',
-          ),
-          mode: InsertMode.insertOrIgnore,
-        );
+    final now = clock.now().toUtc();
+    await database.transaction(() async {
+      if (occurrence.syncStatus == 'synced') {
+        await (database.update(database.routineOccurrenceRecords)..where(
+              (row) => row.userId.equals(userId) & row.id.equals(occurrenceId),
+            ))
+            .write(
+              RoutineOccurrenceRecordsCompanion(
+                updatedAt: Value(now),
+                syncStatus: const Value('pendingCreate'),
+              ),
+            );
+      }
+      await database
+          .into(database.routineAdherenceEventRecords)
+          .insert(
+            RoutineAdherenceEventRecordsCompanion.insert(
+              id: eventId,
+              userId: userId,
+              occurrenceId: occurrenceId,
+              routineId: occurrence.routineId,
+              planId: occurrence.planId,
+              scheduleId: Value(occurrence.scheduleId),
+              type: action.name,
+              actor: 'user',
+              occurredAtUtc: occurredAtUtc.toUtc(),
+              recordedAtUtc: now,
+              createdAt: now,
+              updatedAt: now,
+              syncStatus: 'pendingCreate',
+            ),
+            mode: InsertMode.insertOrIgnore,
+          );
+    });
   }
 }

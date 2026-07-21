@@ -37,6 +37,7 @@ class MedicalReportSnapshot {
     this.attachments = const [],
     this.prescriptions = const [],
     this.treatmentAdherence,
+    this.treatmentToday,
   });
 
   final DateTime generatedAt;
@@ -63,6 +64,7 @@ class MedicalReportSnapshot {
   final List<String> automaticObservations;
   final List<ReportAttachment> attachments;
   final TreatmentAdherenceSummary? treatmentAdherence;
+  final TodayTreatmentReadModel? treatmentToday;
 
   WeightRecord? get latestWeight {
     return weightHistory.isEmpty ? null : weightHistory.first;

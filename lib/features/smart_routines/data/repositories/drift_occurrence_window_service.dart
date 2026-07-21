@@ -2,26 +2,30 @@ import 'dart:convert';
 
 import 'package:drift/drift.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:uuid/uuid.dart';
 
 import '../../../../core/database/drift/app_database.dart';
+import '../../../../core/services/clock_service.dart';
 import '../../application/routine_notification_projection.dart';
 import '../../domain/entities/routine_occurrence.dart';
 import '../../domain/enums/routine_enums.dart';
 import '../../domain/value_objects/local_date.dart';
 import '../../domain/value_objects/routine_values.dart';
 import '../../domain/value_objects/typed_ids.dart';
+import '../../domain/value_objects/occurrence_blueprint.dart';
+import '../../domain/services/routine_occurrence_materializer.dart';
+import '../../domain/services/schedule_instant_resolver.dart';
 
 class DriftOccurrenceWindowService {
   const DriftOccurrenceWindowService({
     required this.database,
     required this.userId,
-    this.uuid = const Uuid(),
+    required this.clock,
+    this.materializer = const RoutineOccurrenceMaterializer(),
   });
   final AppDatabase database;
   final String userId;
-  final Uuid uuid;
-  static const _namespace = 'a5ae6e59-1007-5162-8a93-d938467625ac';
+  final ClockService clock;
+  final RoutineOccurrenceMaterializer materializer;
 
   Future<List<RoutineNotificationProjection>> materializeAndProject({
     required DateTime fromUtc,
@@ -63,13 +67,18 @@ class DriftOccurrenceWindowService {
                     row.userId.equals(userId) &
                     row.planId.isIn(planById.keys) &
                     row.isEnabled.equals(true) &
-                    row.reminderPreference.equals('enabled') &
                     row.deletedAt.isNull(),
               ))
               .get();
     for (final schedule in schedules) {
       final plan = planById[schedule.planId]!;
-      await _materializeSchedule(plan, schedule, pauses, fromUtc, untilUtc);
+      try {
+        await _materializeSchedule(plan, schedule, pauses, fromUtc, untilUtc);
+      } on FormatException {
+        continue;
+      } on tz.LocationNotFoundException {
+        continue;
+      }
     }
     final rows =
         await (database.select(database.routineOccurrenceRecords)..where(
@@ -91,8 +100,16 @@ class DriftOccurrenceWindowService {
               ))
               .get();
     final resolved = events.map((value) => value.occurrenceId).toSet();
+    final reminderScheduleIds = schedules
+        .where((value) => value.reminderPreference == 'enabled')
+        .map((value) => value.id)
+        .toSet();
     return rows
-        .where((row) => !resolved.contains(row.id))
+        .where(
+          (row) =>
+              !resolved.contains(row.id) &&
+              reminderScheduleIds.contains(row.scheduleId),
+        )
         .map(
           (row) => RoutineNotificationProjection.fromOccurrence(
             occurrence: _entity(row),
@@ -112,30 +129,88 @@ class DriftOccurrenceWindowService {
     final rule = Map<String, dynamic>.from(
       jsonDecode(schedule.ruleJson) as Map,
     );
-    final times = (rule['times'] as List? ?? const <Object>[]).cast<String>();
-    if (times.isEmpty ||
-        !{'dailyAtTimes', 'specificWeekdaysAtTimes'}.contains(rule['type'])) {
+    final singleDoseAt = rule['type'] == 'singleDose'
+        ? DateTime.parse(rule['scheduledAt'] as String)
+        : null;
+    final times = singleDoseAt == null
+        ? (rule['times'] as List? ?? const <Object>[]).cast<String>()
+        : <String>[
+            '${singleDoseAt.hour.toString().padLeft(2, '0')}:'
+                '${singleDoseAt.minute.toString().padLeft(2, '0')}',
+          ];
+    final isEveryHours = rule['type'] == 'everyNHours';
+    if ((!isEveryHours && times.isEmpty) ||
+        !{
+          'dailyAtTimes',
+          'specificWeekdaysAtTimes',
+          'everyNDays',
+          'weekly',
+          'monthly',
+          'singleDose',
+          'everyNHours',
+        }.contains(rule['type'])) {
       return;
     }
-    tz.Location location;
-    try {
-      location = tz.getLocation(schedule.timeZone);
-    } catch (_) {
-      location = tz.UTC;
-    }
-    final localFrom = tz.TZDateTime.from(fromUtc, location);
-    final localUntil = tz.TZDateTime.from(untilUtc, location);
-    final first = DateTime(localFrom.year, localFrom.month, localFrom.day);
-    final last = DateTime(localUntil.year, localUntil.month, localUntil.day);
+    final first = DateTime.utc(fromUtc.year, fromUtc.month, fromUtc.day - 1);
+    final last = DateTime.utc(untilUtc.year, untilUtc.month, untilUtc.day + 1);
     final effectiveFrom = DateTime.parse(plan.effectiveFrom);
     final effectiveUntil = plan.effectiveUntil == null
         ? null
         : DateTime.parse(plan.effectiveUntil!);
+    final blueprints = <OccurrenceBlueprint>[];
+    final absolute = <OccurrenceBlueprint, ResolvedLocalScheduleTime>{};
+    if (isEveryHours) {
+      final anchor = DateTime.parse(rule['anchorAtUtc'] as String).toUtc();
+      final interval = Duration(hours: rule['intervalHours'] as int);
+      final location = schedule.timeZone == 'UTC'
+          ? tz.UTC
+          : tz.getLocation(schedule.timeZone);
+      final elapsed = fromUtc.isAfter(anchor)
+          ? fromUtc.difference(anchor).inMicroseconds
+          : 0;
+      var sequence =
+          (elapsed + interval.inMicroseconds - 1) ~/ interval.inMicroseconds;
+      while (true) {
+        final instant = anchor.add(interval * sequence);
+        if (!instant.isBefore(untilUtc)) break;
+        final local = tz.TZDateTime.from(instant, location);
+        final date = LocalDate.fromDateTime(local);
+        final time = TimeOfDayValue(hour: local.hour, minute: local.minute);
+        final blueprint = OccurrenceBlueprint(
+          routineId: RoutineId(plan.routineId),
+          planId: RoutinePlanId(plan.id),
+          scheduleId: RoutineScheduleId(schedule.id),
+          clinicalDate: date,
+          localTime: time,
+          timeZone: IanaTimeZone(schedule.timeZone),
+          expectationKind: ExpectationKind.recurringExpectation,
+          sequence: sequence,
+          originalLocalDate: date,
+          originalLocalTime: time,
+          sourceRuleType: ScheduleFrequencyType.everyNHours,
+          scheduleDisplayOrder: schedule.displayOrder,
+        );
+        blueprints.add(blueprint);
+        absolute[blueprint] = ResolvedLocalScheduleTime(
+          instantUtc: instant,
+          timeZone: blueprint.timeZone,
+          offset: local.timeZoneOffset,
+          state: ScheduleInstantResolutionState.exact,
+          requestedDate: date,
+          requestedTime: time,
+          resolvedDate: date,
+          resolvedTime: time,
+          diagnostic: 'absolute_interval_slot',
+        );
+        sequence++;
+      }
+    }
     for (
       var day = first;
       !day.isAfter(last);
       day = day.add(const Duration(days: 1))
     ) {
+      if (isEveryHours) break;
       if (day.isBefore(effectiveFrom) ||
           (effectiveUntil != null && day.isAfter(effectiveUntil))) {
         continue;
@@ -144,82 +219,147 @@ class DriftOccurrenceWindowService {
           !(rule['weekdays'] as List).cast<int>().contains(day.weekday)) {
         continue;
       }
+      if (rule['type'] == 'weekly' && rule['weekday'] != day.weekday) {
+        continue;
+      }
+      if (rule['type'] == 'monthly' && rule['dayOfMonth'] != day.day) {
+        continue;
+      }
+      if (singleDoseAt != null &&
+          (singleDoseAt.year != day.year ||
+              singleDoseAt.month != day.month ||
+              singleDoseAt.day != day.day)) {
+        continue;
+      }
+      if (rule['type'] == 'everyNDays') {
+        final anchor = DateTime.parse(rule['anchorDate'] as String);
+        final interval = rule['intervalDays'] as int;
+        if (day.difference(anchor).inDays % interval != 0) continue;
+      }
       for (var sequence = 0; sequence < times.length; sequence++) {
         final parts = times[sequence].split(':');
-        final local = tz.TZDateTime(
-          location,
-          day.year,
-          day.month,
-          day.day,
-          int.parse(parts[0]),
-          int.parse(parts[1]),
+        final date = LocalDate.fromDateTime(day);
+        final time = TimeOfDayValue(
+          hour: int.parse(parts[0]),
+          minute: int.parse(parts[1]),
         );
-        final scheduled = local.toUtc();
-        if (scheduled.isBefore(fromUtc) || !scheduled.isBefore(untilUtc)) {
-          continue;
-        }
-        if (pauses.any(
-          (pause) =>
-              pause.routineId == plan.routineId &&
-              (pause.planId == null || pause.planId == plan.id) &&
-              !scheduled.isBefore(pause.startsAt) &&
-              (pause.endsAt == null || scheduled.isBefore(pause.endsAt!)),
-        )) {
-          continue;
-        }
-        final id = uuid.v5(
-          _namespace,
-          'occurrence-v1|$userId|${schedule.id}|${_date(day)}|${times[sequence]}|$sequence',
+        blueprints.add(
+          OccurrenceBlueprint(
+            routineId: RoutineId(plan.routineId),
+            planId: RoutinePlanId(plan.id),
+            scheduleId: RoutineScheduleId(schedule.id),
+            clinicalDate: date,
+            localTime: time,
+            timeZone: IanaTimeZone(schedule.timeZone),
+            expectationKind: singleDoseAt == null
+                ? ExpectationKind.recurringExpectation
+                : ExpectationKind.singleExpectation,
+            sequence: sequence,
+            originalLocalDate: date,
+            originalLocalTime: time,
+            sourceRuleType: switch (rule['type']) {
+              'dailyAtTimes' => ScheduleFrequencyType.dailyAtTimes,
+              'specificWeekdaysAtTimes' =>
+                ScheduleFrequencyType.specificWeekdaysAtTimes,
+              'everyNDays' => ScheduleFrequencyType.everyNDays,
+              'weekly' => ScheduleFrequencyType.weekly,
+              'monthly' => ScheduleFrequencyType.monthly,
+              'singleDose' => ScheduleFrequencyType.singleDose,
+              _ => throw StateError('Unsupported schedule rule.'),
+            },
+            scheduleDisplayOrder: schedule.displayOrder,
+          ),
         );
-        final existing =
-            await (database.select(database.routineOccurrenceRecords)..where(
-                  (row) => row.userId.equals(userId) & row.id.equals(id),
-                ))
-                .getSingleOrNull();
-        if (existing != null) continue;
-        await database
-            .into(database.routineOccurrenceRecords)
-            .insert(
-              RoutineOccurrenceRecordsCompanion.insert(
-                id: id,
-                userId: userId,
-                routineId: plan.routineId,
-                planId: plan.id,
-                scheduleId: Value(schedule.id),
-                origin: 'generated',
-                status: 'expected',
-                originalClinicalDate: _date(day),
-                originalLocalHour: int.parse(parts[0]),
-                originalLocalMinute: int.parse(parts[1]),
-                originalTimeZone: schedule.timeZone,
-                expectationKind: 'recurringExpectation',
-                sequence: sequence,
-                originalScheduledFor: scheduled,
-                originalWindowStartsAt: scheduled.subtract(
-                  Duration(seconds: schedule.earlyToleranceSeconds),
-                ),
-                originalOnTimeEndsAt: scheduled.add(
-                  Duration(seconds: schedule.onTimeToleranceSeconds),
-                ),
-                originalWindowEndsAt: scheduled.add(
-                  Duration(seconds: schedule.lateToleranceSeconds),
-                ),
-                scheduledFor: scheduled,
-                windowStartsAt: scheduled.subtract(
-                  Duration(seconds: schedule.earlyToleranceSeconds),
-                ),
-                onTimeEndsAt: scheduled.add(
-                  Duration(seconds: schedule.onTimeToleranceSeconds),
-                ),
-                windowEndsAt: scheduled.add(
-                  Duration(seconds: schedule.lateToleranceSeconds),
-                ),
-                createdAt: DateTime.now().toUtc(),
-                updatedAt: DateTime.now().toUtc(),
-                syncStatus: 'pendingCreate',
-              ),
-            );
       }
+    }
+    final resolved =
+        blueprints
+            .map(
+              (blueprint) => (
+                blueprint: blueprint,
+                resolution: absolute[blueprint] == null
+                    ? materializer.instantResolver.resolve(
+                        localDate: blueprint.clinicalDate,
+                        localTime: blueprint.localTime,
+                        timeZone: blueprint.timeZone,
+                      )
+                    : ScheduleInstantResolutionResult.resolved(
+                        absolute[blueprint]!,
+                      ),
+              ),
+            )
+            .where((value) => value.resolution.isResolved)
+            .toList()
+          ..sort(
+            (left, right) => left.resolution.value!.instantUtc.compareTo(
+              right.resolution.value!.instantUtc,
+            ),
+          );
+    for (var index = 0; index < resolved.length; index++) {
+      final item = resolved[index];
+      final scheduled = item.resolution.value!.instantUtc;
+      if (scheduled.isBefore(fromUtc) || !scheduled.isBefore(untilUtc)) {
+        continue;
+      }
+      if (pauses.any(
+        (pause) =>
+            pause.routineId == plan.routineId &&
+            (pause.planId == null || pause.planId == plan.id) &&
+            !scheduled.isBefore(pause.startsAt) &&
+            (pause.endsAt == null || scheduled.isBefore(pause.endsAt!)),
+      )) {
+        continue;
+      }
+      final result = materializer.materialize(
+        blueprint: item.blueprint,
+        windowDefinition: OccurrenceWindowDefinition(
+          earlyTolerance: Duration(seconds: schedule.earlyToleranceSeconds),
+          onTimeTolerance: Duration(seconds: schedule.onTimeToleranceSeconds),
+          lateTolerance: Duration(seconds: schedule.lateToleranceSeconds),
+        ),
+        preResolved: item.resolution.value,
+        nextTargetAtUtc: index + 1 < resolved.length
+            ? resolved[index + 1].resolution.value!.instantUtc
+            : null,
+      );
+      if (!result.isMaterialized) continue;
+      final occurrence = result.occurrence!;
+      final id = occurrence.id;
+      final existing =
+          await (database.select(database.routineOccurrenceRecords)
+                ..where((row) => row.userId.equals(userId) & row.id.equals(id)))
+              .getSingleOrNull();
+      if (existing != null) continue;
+      await database
+          .into(database.routineOccurrenceRecords)
+          .insert(
+            RoutineOccurrenceRecordsCompanion.insert(
+              id: id,
+              userId: userId,
+              routineId: occurrence.routineId.value,
+              planId: occurrence.planId.value,
+              scheduleId: Value(occurrence.scheduleId!.value),
+              origin: occurrence.origin.name,
+              status: occurrence.status.name,
+              originalClinicalDate: occurrence.originalClinicalDate.toString(),
+              originalLocalHour: occurrence.originalLocalTime.hour,
+              originalLocalMinute: occurrence.originalLocalTime.minute,
+              originalTimeZone: occurrence.originalTimeZone.value,
+              expectationKind: occurrence.expectationKind.name,
+              sequence: occurrence.sequence,
+              originalScheduledFor: occurrence.originalScheduledFor,
+              originalWindowStartsAt: occurrence.originalWindow.windowStartsAt,
+              originalOnTimeEndsAt: occurrence.originalWindow.onTimeEndsAt,
+              originalWindowEndsAt: occurrence.originalWindow.windowEndsAt,
+              scheduledFor: occurrence.currentScheduledFor,
+              windowStartsAt: occurrence.currentWindow.windowStartsAt,
+              onTimeEndsAt: occurrence.currentWindow.onTimeEndsAt,
+              windowEndsAt: occurrence.currentWindow.windowEndsAt,
+              createdAt: clock.now().toUtc(),
+              updatedAt: clock.now().toUtc(),
+              syncStatus: 'synced',
+            ),
+          );
     }
   }
 
@@ -232,16 +372,16 @@ class DriftOccurrenceWindowService {
         : RoutineScheduleId(row.scheduleId!),
     origin: RoutineOccurrenceOrigin.values.byName(row.origin),
     originalWindow: OccurrenceWindow(
-      scheduledFor: row.originalScheduledFor,
-      windowStartsAt: row.originalWindowStartsAt,
-      onTimeEndsAt: row.originalOnTimeEndsAt,
-      windowEndsAt: row.originalWindowEndsAt,
+      scheduledFor: row.originalScheduledFor.toUtc(),
+      windowStartsAt: row.originalWindowStartsAt.toUtc(),
+      onTimeEndsAt: row.originalOnTimeEndsAt.toUtc(),
+      windowEndsAt: row.originalWindowEndsAt.toUtc(),
     ),
     currentWindow: OccurrenceWindow(
-      scheduledFor: row.scheduledFor,
-      windowStartsAt: row.windowStartsAt,
-      onTimeEndsAt: row.onTimeEndsAt,
-      windowEndsAt: row.windowEndsAt,
+      scheduledFor: row.scheduledFor.toUtc(),
+      windowStartsAt: row.windowStartsAt.toUtc(),
+      onTimeEndsAt: row.onTimeEndsAt.toUtc(),
+      windowEndsAt: row.windowEndsAt.toUtc(),
     ),
     status: RoutineOccurrenceStatus.values.byName(row.status),
     originalClinicalDate: LocalDate.fromDateTime(
@@ -255,7 +395,4 @@ class DriftOccurrenceWindowService {
     expectationKind: ExpectationKind.values.byName(row.expectationKind),
     sequence: row.sequence,
   );
-
-  String _date(DateTime value) =>
-      '${value.year.toString().padLeft(4, '0')}-${value.month.toString().padLeft(2, '0')}-${value.day.toString().padLeft(2, '0')}';
 }

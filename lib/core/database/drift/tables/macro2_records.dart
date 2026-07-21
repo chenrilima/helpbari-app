@@ -17,6 +17,11 @@ mixin Macro2SyncColumns on Table {
   columns: {#userId, #prescriptionId, #revision},
   unique: true,
 )
+@TableIndex(
+  name: 'prescription_versions_source_processing_idx',
+  columns: {#userId, #sourceProcessingId},
+  unique: true,
+)
 class PrescriptionVersionRecords extends Table with Macro2SyncColumns {
   TextColumn get prescriptionId => text()();
   IntColumn get revision => integer()();

@@ -5,6 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 
 import '../../../../core/formatters/formatters.dart';
 import '../../../medical_exams/domain/entities/entities.dart';
+import '../../../smart_routines/domain/enums/routine_enums.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
@@ -344,17 +345,17 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
         pw.SizedBox(height: 10),
         _table(
           headers: ['Vitamina', 'Horário', 'Status'],
-          rows: snapshot.vitamins
+          rows: (snapshot.treatmentToday?.occurrences ?? const [])
+              .where(
+                (occurrence) =>
+                    occurrence.category == RoutineCategory.vitamin ||
+                    occurrence.category == RoutineCategory.supplement,
+              )
               .map(
-                (vitamin) => [
-                  vitamin.formattedName,
-                  vitamin.formattedTime,
-                  snapshot.vitaminLogs
-                          .where((log) => log.vitaminId == vitamin.id)
-                          .firstOrNull
-                          ?.status
-                          .label ??
-                      'Pendente',
+                (occurrence) => [
+                  occurrence.title,
+                  _time(occurrence.scheduledFor),
+                  _treatmentState(occurrence.state),
                 ],
               )
               .toList(),
@@ -377,18 +378,17 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
         pw.SizedBox(height: 10),
         _table(
           headers: ['Medicamento', 'Dose', 'Horário', 'Status'],
-          rows: snapshot.medications
+          rows: (snapshot.treatmentToday?.occurrences ?? const [])
+              .where(
+                (occurrence) =>
+                    occurrence.category == RoutineCategory.medication,
+              )
               .map(
-                (medication) => [
-                  medication.formattedName,
-                  medication.dosage ?? '-',
-                  medication.formattedTime,
-                  snapshot.medicationLogs
-                          .where((log) => log.medicationId == medication.id)
-                          .firstOrNull
-                          ?.status
-                          .label ??
-                      'Pendente',
+                (occurrence) => [
+                  occurrence.title,
+                  '-',
+                  _time(occurrence.scheduledFor),
+                  _treatmentState(occurrence.state),
                 ],
               )
               .toList(),
@@ -397,6 +397,21 @@ class PdfMedicalReportRepository implements MedicalReportRepository {
       ],
     );
   }
+
+  String _time(DateTime value) =>
+      '${value.hour.toString().padLeft(2, '0')}:'
+      '${value.minute.toString().padLeft(2, '0')}';
+
+  String _treatmentState(OccurrenceAdherenceState state) => switch (state) {
+    OccurrenceAdherenceState.pending => 'Pendente',
+    OccurrenceAdherenceState.missed => 'Não registrada',
+    OccurrenceAdherenceState.takenEarly => 'Tomada antecipada',
+    OccurrenceAdherenceState.takenOnTime => 'Tomada no horário',
+    OccurrenceAdherenceState.takenLate => 'Tomada com atraso',
+    OccurrenceAdherenceState.skipped => 'Ignorada',
+    OccurrenceAdherenceState.notApplicable => 'Não aplicável',
+    OccurrenceAdherenceState.inconsistent => 'Revisão necessária',
+  };
 
   pw.Widget _prescriptions(MedicalReportSnapshot snapshot) => _table(
     headers: ['Data', 'Profissional', 'Item', 'Dose/Frequência', 'Status'],

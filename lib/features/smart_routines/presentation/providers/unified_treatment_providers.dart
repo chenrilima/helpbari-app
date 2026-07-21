@@ -52,11 +52,13 @@ final treatmentAdherenceQueryServiceProvider =
       final delegate = DriftTreatmentAdherenceQueryService(
         database: database,
         userId: userId,
+        clock: ref.watch(clockServiceProvider),
       );
       return MaterializingTreatmentAdherenceQueryService(
         occurrences: DriftOccurrenceWindowService(
           database: database,
           userId: userId,
+          clock: ref.watch(clockServiceProvider),
         ),
         delegate: delegate,
       );
@@ -65,7 +67,8 @@ final treatmentAdherenceQueryServiceProvider =
 final notificationPlatformRepositoryProvider =
     FutureProvider<DriftNotificationPlatformRepository>((ref) async {
       return DriftNotificationPlatformRepository(
-        await ref.watch(appDatabaseProvider.future),
+        database: await ref.watch(appDatabaseProvider.future),
+        clock: ref.watch(clockServiceProvider),
       );
     });
 
@@ -75,6 +78,7 @@ final occurrenceWindowServiceProvider =
       return DriftOccurrenceWindowService(
         database: await ref.watch(appDatabaseProvider.future),
         userId: userId,
+        clock: ref.watch(clockServiceProvider),
       );
     });
 
@@ -98,5 +102,6 @@ final notificationActionHandlerProvider =
         inbox: repository,
         commands: repository,
         scheduler: ref.watch(notificationSchedulerProvider),
+        manifest: repository,
       );
     });

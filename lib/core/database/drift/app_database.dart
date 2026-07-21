@@ -263,6 +263,44 @@ class AppDatabase extends _$AppDatabase {
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
+      if (details.versionNow >= 20) {
+        await customStatement('''
+          CREATE TRIGGER IF NOT EXISTS prescription_versions_immutable
+          BEFORE UPDATE ON prescription_version_records
+          WHEN OLD.status IN ('confirmed', 'archived') AND NOT (
+            OLD.status = 'confirmed' AND NEW.status = 'archived' AND
+            NEW.snapshot_json = OLD.snapshot_json AND
+            NEW.prescription_id = OLD.prescription_id AND
+            NEW.revision = OLD.revision AND
+            NEW.source_processing_id IS OLD.source_processing_id AND
+            NEW.submitted_at IS OLD.submitted_at AND
+            NEW.confirmed_at IS OLD.confirmed_at AND
+            NEW.deleted_at IS OLD.deleted_at AND
+            NEW.created_at = OLD.created_at
+          ) AND NOT (
+            NEW.status = OLD.status AND
+            NEW.snapshot_json = OLD.snapshot_json AND
+            NEW.prescription_id = OLD.prescription_id AND
+            NEW.revision = OLD.revision AND
+            NEW.source_processing_id IS OLD.source_processing_id AND
+            NEW.submitted_at IS OLD.submitted_at AND
+            NEW.confirmed_at IS OLD.confirmed_at AND
+            NEW.deleted_at IS OLD.deleted_at AND
+            NEW.created_at = OLD.created_at
+          )
+          BEGIN SELECT RAISE(ABORT, 'immutable prescription version'); END
+        ''');
+        await customStatement('''
+          CREATE TRIGGER IF NOT EXISTS prescription_reviews_append_only
+          BEFORE UPDATE ON prescription_review_records
+          WHEN NEW.prescription_id != OLD.prescription_id OR
+            NEW.version_id != OLD.version_id OR
+            NEW.decision != OLD.decision OR NEW.actor != OLD.actor OR
+            NEW.field_decisions_json != OLD.field_decisions_json OR
+            NEW.note IS NOT OLD.note OR NEW.created_at != OLD.created_at
+          BEGIN SELECT RAISE(ABORT, 'append-only prescription review'); END
+        ''');
+      }
       if (details.versionNow >= 19) {
         await batch((batch) {
           final now = DateTime.now().toUtc();

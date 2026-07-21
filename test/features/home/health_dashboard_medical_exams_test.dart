@@ -161,4 +161,24 @@ class _TreatmentQuery implements TreatmentAdherenceQueryService {
         occurrences: const [],
         adherence: await summary(date, date),
       );
+
+  @override
+  Future<Map<String, TodayTreatmentReadModel>> days(
+    DateTime start,
+    DateTime end,
+  ) async {
+    final result = <String, TodayTreatmentReadModel>{};
+    for (
+      var date = start;
+      !date.isAfter(end);
+      date = date.add(const Duration(days: 1))
+    ) {
+      final key =
+          '${date.year.toString().padLeft(4, '0')}-'
+          '${date.month.toString().padLeft(2, '0')}-'
+          '${date.day.toString().padLeft(2, '0')}';
+      result[key] = await today(date);
+    }
+    return result;
+  }
 }

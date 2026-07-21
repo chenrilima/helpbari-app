@@ -65,4 +65,8 @@ class TodayTreatmentReadModel {
 abstract interface class TreatmentAdherenceQueryService {
   Future<TreatmentAdherenceSummary> summary(DateTime start, DateTime end);
   Future<TodayTreatmentReadModel> today(DateTime date);
+  Future<Map<String, TodayTreatmentReadModel>> days(
+    DateTime start,
+    DateTime end,
+  );
 }

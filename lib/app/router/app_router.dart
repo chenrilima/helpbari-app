@@ -356,14 +356,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               .where((value) => value.name == payload.action)
               .firstOrNull;
           if (action != null) {
-            final now = DateTime.now().toUtc();
+            final now = ref.read(clockServiceProvider).now().toUtc();
             final repository = await ref.read(
               notificationPlatformRepositoryProvider.future,
             );
             await repository.receive(
               NotificationActionEnvelope(
                 actionId:
-                    '${payload.userId}:${payload.entityId}:${payload.action}:${now.microsecondsSinceEpoch}',
+                    payload.data['actionId'] ??
+                    notificationActionId(payload, payload.action, null),
                 userId: payload.userId,
                 occurrenceId: payload.entityId,
                 action: action,
