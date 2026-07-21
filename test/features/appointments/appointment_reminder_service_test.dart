@@ -7,13 +7,10 @@ import 'package:helpbari/core/services/notifications/notifications.dart';
 import 'package:helpbari/features/appointments/application/appointment_reminder_service.dart';
 import 'package:helpbari/features/appointments/domain/entities/entities.dart';
 import 'package:helpbari/features/appointments/domain/value_objects/value_objects.dart';
-import 'package:helpbari/features/settings/domain/entities/entities.dart';
-import 'package:helpbari/features/settings/domain/repositories/repositories.dart';
-import 'package:helpbari/features/settings/domain/usecases/use_cases.dart';
 
 void main() {
   test(
-    'reconciles schedule idempotently and cancels inactive appointments',
+    'retires legacy appointment projection after every local commit',
     () async {
       final notifications = _Notifications();
       final scheduler = NotificationScheduler(
@@ -23,7 +20,6 @@ void main() {
       );
       await scheduler.restore(userId: 'user-a', schedules: const []);
       final service = AppointmentReminderService(
-        settingsUseCases: SettingsUseCases(_Settings()),
         scheduler: scheduler,
         userId: 'user-a',
       );
@@ -34,7 +30,8 @@ void main() {
       );
       await service.applyAfterCommit(appointment);
       await service.applyAfterCommit(appointment);
-      expect(notifications.updated, [
+      expect(notifications.updated, isEmpty);
+      expect(notifications.canceled, [
         'user-a:appointment:one',
         'user-a:appointment:one',
       ]);
@@ -44,13 +41,6 @@ void main() {
       expect(notifications.canceled.last, 'user-a:appointment:one');
     },
   );
-}
-
-class _Settings implements SettingsRepository {
-  @override
-  Future<AppSettings> getSettings() async => const AppSettings(id: 'settings');
-  @override
-  Future<void> saveSettings(AppSettings settings) async {}
 }
 
 class _Notifications implements LocalNotificationService {

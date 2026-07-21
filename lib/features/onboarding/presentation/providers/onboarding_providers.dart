@@ -46,7 +46,9 @@ final onboardingProgressRepositoryProvider =
 final onboardingProgressServiceProvider =
     FutureProvider<OnboardingProgressService>((ref) async {
       return OnboardingProgressService(
-        repository: await ref.watch(onboardingProgressRepositoryProvider.future),
+        repository: await ref.watch(
+          onboardingProgressRepositoryProvider.future,
+        ),
         legacy: ref.watch(onboardingUseCasesProvider),
         profile: ref.watch(profileUseCasesProvider),
         privacy: ref.watch(privacyUseCasesProvider),

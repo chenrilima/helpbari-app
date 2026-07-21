@@ -25,6 +25,8 @@ class SettingsRecords extends Table {
   BoolColumn get weightTrackingEnabled =>
       boolean().withDefault(const Constant(true))();
   TextColumn get weightUnit => text().withDefault(const Constant('kg'))();
+  TextColumn get notificationPreferencesJson =>
+      text().withDefault(const Constant(''))();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
   DateTimeColumn get deletedAt => dateTime().nullable()();

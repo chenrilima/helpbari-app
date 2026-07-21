@@ -2433,6 +2433,18 @@ class $SettingsRecordsTable extends SettingsRecords
     requiredDuringInsert: false,
     defaultValue: const Constant('kg'),
   );
+  static const VerificationMeta _notificationPreferencesJsonMeta =
+      const VerificationMeta('notificationPreferencesJson');
+  @override
+  late final GeneratedColumn<String> notificationPreferencesJson =
+      GeneratedColumn<String>(
+        'notification_preferences_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(''),
+      );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -2524,6 +2536,7 @@ class $SettingsRecordsTable extends SettingsRecords
     waterTrackingEnabled,
     weightTrackingEnabled,
     weightUnit,
+    notificationPreferencesJson,
     createdAt,
     updatedAt,
     deletedAt,
@@ -2633,6 +2646,15 @@ class $SettingsRecordsTable extends SettingsRecords
       context.handle(
         _weightUnitMeta,
         weightUnit.isAcceptableOrUnknown(data['weight_unit']!, _weightUnitMeta),
+      );
+    }
+    if (data.containsKey('notification_preferences_json')) {
+      context.handle(
+        _notificationPreferencesJsonMeta,
+        notificationPreferencesJson.isAcceptableOrUnknown(
+          data['notification_preferences_json']!,
+          _notificationPreferencesJsonMeta,
+        ),
       );
     }
     if (data.containsKey('created_at')) {
@@ -2745,6 +2767,10 @@ class $SettingsRecordsTable extends SettingsRecords
         DriftSqlType.string,
         data['${effectivePrefix}weight_unit'],
       )!,
+      notificationPreferencesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notification_preferences_json'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -2794,6 +2820,7 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
   final bool waterTrackingEnabled;
   final bool weightTrackingEnabled;
   final String weightUnit;
+  final String notificationPreferencesJson;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
@@ -2813,6 +2840,7 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     required this.waterTrackingEnabled,
     required this.weightTrackingEnabled,
     required this.weightUnit,
+    required this.notificationPreferencesJson,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
@@ -2841,6 +2869,9 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     map['water_tracking_enabled'] = Variable<bool>(waterTrackingEnabled);
     map['weight_tracking_enabled'] = Variable<bool>(weightTrackingEnabled);
     map['weight_unit'] = Variable<String>(weightUnit);
+    map['notification_preferences_json'] = Variable<String>(
+      notificationPreferencesJson,
+    );
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     if (!nullToAbsent || deletedAt != null) {
@@ -2870,6 +2901,7 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
       waterTrackingEnabled: Value(waterTrackingEnabled),
       weightTrackingEnabled: Value(weightTrackingEnabled),
       weightUnit: Value(weightUnit),
+      notificationPreferencesJson: Value(notificationPreferencesJson),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
       deletedAt: deletedAt == null && nullToAbsent
@@ -2917,6 +2949,9 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
         json['weightTrackingEnabled'],
       ),
       weightUnit: serializer.fromJson<String>(json['weightUnit']),
+      notificationPreferencesJson: serializer.fromJson<String>(
+        json['notificationPreferencesJson'],
+      ),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
@@ -2951,6 +2986,9 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
       'waterTrackingEnabled': serializer.toJson<bool>(waterTrackingEnabled),
       'weightTrackingEnabled': serializer.toJson<bool>(weightTrackingEnabled),
       'weightUnit': serializer.toJson<String>(weightUnit),
+      'notificationPreferencesJson': serializer.toJson<String>(
+        notificationPreferencesJson,
+      ),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
@@ -2973,6 +3011,7 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     bool? waterTrackingEnabled,
     bool? weightTrackingEnabled,
     String? weightUnit,
+    String? notificationPreferencesJson,
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
@@ -2996,6 +3035,8 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     waterTrackingEnabled: waterTrackingEnabled ?? this.waterTrackingEnabled,
     weightTrackingEnabled: weightTrackingEnabled ?? this.weightTrackingEnabled,
     weightUnit: weightUnit ?? this.weightUnit,
+    notificationPreferencesJson:
+        notificationPreferencesJson ?? this.notificationPreferencesJson,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
@@ -3039,6 +3080,9 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
       weightUnit: data.weightUnit.present
           ? data.weightUnit.value
           : this.weightUnit,
+      notificationPreferencesJson: data.notificationPreferencesJson.present
+          ? data.notificationPreferencesJson.value
+          : this.notificationPreferencesJson,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
@@ -3071,6 +3115,7 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
           ..write('waterTrackingEnabled: $waterTrackingEnabled, ')
           ..write('weightTrackingEnabled: $weightTrackingEnabled, ')
           ..write('weightUnit: $weightUnit, ')
+          ..write('notificationPreferencesJson: $notificationPreferencesJson, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
@@ -3095,6 +3140,7 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     waterTrackingEnabled,
     weightTrackingEnabled,
     weightUnit,
+    notificationPreferencesJson,
     createdAt,
     updatedAt,
     deletedAt,
@@ -3119,6 +3165,8 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
           other.waterTrackingEnabled == this.waterTrackingEnabled &&
           other.weightTrackingEnabled == this.weightTrackingEnabled &&
           other.weightUnit == this.weightUnit &&
+          other.notificationPreferencesJson ==
+              this.notificationPreferencesJson &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
@@ -3140,6 +3188,7 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
   final Value<bool> waterTrackingEnabled;
   final Value<bool> weightTrackingEnabled;
   final Value<String> weightUnit;
+  final Value<String> notificationPreferencesJson;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
@@ -3160,6 +3209,7 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     this.waterTrackingEnabled = const Value.absent(),
     this.weightTrackingEnabled = const Value.absent(),
     this.weightUnit = const Value.absent(),
+    this.notificationPreferencesJson = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
@@ -3181,6 +3231,7 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     this.waterTrackingEnabled = const Value.absent(),
     this.weightTrackingEnabled = const Value.absent(),
     this.weightUnit = const Value.absent(),
+    this.notificationPreferencesJson = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
     this.deletedAt = const Value.absent(),
@@ -3206,6 +3257,7 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     Expression<bool>? waterTrackingEnabled,
     Expression<bool>? weightTrackingEnabled,
     Expression<String>? weightUnit,
+    Expression<String>? notificationPreferencesJson,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
@@ -3234,6 +3286,8 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
       if (weightTrackingEnabled != null)
         'weight_tracking_enabled': weightTrackingEnabled,
       if (weightUnit != null) 'weight_unit': weightUnit,
+      if (notificationPreferencesJson != null)
+        'notification_preferences_json': notificationPreferencesJson,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
@@ -3258,6 +3312,7 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     Value<bool>? waterTrackingEnabled,
     Value<bool>? weightTrackingEnabled,
     Value<String>? weightUnit,
+    Value<String>? notificationPreferencesJson,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
@@ -3284,6 +3339,8 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
       weightTrackingEnabled:
           weightTrackingEnabled ?? this.weightTrackingEnabled,
       weightUnit: weightUnit ?? this.weightUnit,
+      notificationPreferencesJson:
+          notificationPreferencesJson ?? this.notificationPreferencesJson,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
@@ -3343,6 +3400,11 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     if (weightUnit.present) {
       map['weight_unit'] = Variable<String>(weightUnit.value);
     }
+    if (notificationPreferencesJson.present) {
+      map['notification_preferences_json'] = Variable<String>(
+        notificationPreferencesJson.value,
+      );
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -3384,6 +3446,7 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
           ..write('waterTrackingEnabled: $waterTrackingEnabled, ')
           ..write('weightTrackingEnabled: $weightTrackingEnabled, ')
           ..write('weightUnit: $weightUnit, ')
+          ..write('notificationPreferencesJson: $notificationPreferencesJson, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
@@ -45005,6 +45068,7 @@ typedef $$SettingsRecordsTableCreateCompanionBuilder =
       Value<bool> waterTrackingEnabled,
       Value<bool> weightTrackingEnabled,
       Value<String> weightUnit,
+      Value<String> notificationPreferencesJson,
       required DateTime createdAt,
       required DateTime updatedAt,
       Value<DateTime?> deletedAt,
@@ -45027,6 +45091,7 @@ typedef $$SettingsRecordsTableUpdateCompanionBuilder =
       Value<bool> waterTrackingEnabled,
       Value<bool> weightTrackingEnabled,
       Value<String> weightUnit,
+      Value<String> notificationPreferencesJson,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
@@ -45098,6 +45163,11 @@ class $$SettingsRecordsTableFilterComposer
 
   ColumnFilters<String> get weightUnit => $composableBuilder(
     column: $table.weightUnit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notificationPreferencesJson => $composableBuilder(
+    column: $table.notificationPreferencesJson,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -45201,6 +45271,11 @@ class $$SettingsRecordsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get notificationPreferencesJson => $composableBuilder(
+    column: $table.notificationPreferencesJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -45297,6 +45372,11 @@ class $$SettingsRecordsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get notificationPreferencesJson => $composableBuilder(
+    column: $table.notificationPreferencesJson,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
@@ -45375,6 +45455,8 @@ class $$SettingsRecordsTableTableManager
                 Value<bool> waterTrackingEnabled = const Value.absent(),
                 Value<bool> weightTrackingEnabled = const Value.absent(),
                 Value<String> weightUnit = const Value.absent(),
+                Value<String> notificationPreferencesJson =
+                    const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
@@ -45395,6 +45477,7 @@ class $$SettingsRecordsTableTableManager
                 waterTrackingEnabled: waterTrackingEnabled,
                 weightTrackingEnabled: weightTrackingEnabled,
                 weightUnit: weightUnit,
+                notificationPreferencesJson: notificationPreferencesJson,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
@@ -45417,6 +45500,8 @@ class $$SettingsRecordsTableTableManager
                 Value<bool> waterTrackingEnabled = const Value.absent(),
                 Value<bool> weightTrackingEnabled = const Value.absent(),
                 Value<String> weightUnit = const Value.absent(),
+                Value<String> notificationPreferencesJson =
+                    const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
                 Value<DateTime?> deletedAt = const Value.absent(),
@@ -45437,6 +45522,7 @@ class $$SettingsRecordsTableTableManager
                 waterTrackingEnabled: waterTrackingEnabled,
                 weightTrackingEnabled: weightTrackingEnabled,
                 weightUnit: weightUnit,
+                notificationPreferencesJson: notificationPreferencesJson,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,

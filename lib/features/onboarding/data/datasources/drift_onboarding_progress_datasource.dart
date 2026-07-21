@@ -31,7 +31,9 @@ final class DriftOnboardingProgressDatasource {
 
   Future<OnboardingProgressDto?> pendingById(String id) async {
     final row = await _dao.getByUser(userId);
-    if (row == null || row.id != id || row.syncStatus == SyncStatus.synced.name) {
+    if (row == null ||
+        row.id != id ||
+        row.syncStatus == SyncStatus.synced.name) {
       return null;
     }
     return _pendingDto(row);

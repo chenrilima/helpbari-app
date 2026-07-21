@@ -1,4 +1,5 @@
 import '../../../core/services/notifications/notifications.dart';
+import '../../settings/domain/entities/entities.dart';
 import 'routine_notification_projection.dart';
 
 enum NotificationManifestState { scheduled, failed, canceled }
@@ -90,6 +91,7 @@ class NotificationProjectionReconciler {
     required String userId,
     required Iterable<RoutineNotificationProjection> desired,
     required DateTime now,
+    NotificationPreferences? preferences,
   }) async {
     final current = {
       for (final entry in await manifest.entries(userId)) entry.key: entry,
@@ -99,12 +101,14 @@ class NotificationProjectionReconciler {
       ..sort(
         (left, right) => left.scheduleAtUtc.compareTo(right.scheduleAtUtc),
       );
-    for (final projection in prioritized.take(capacity)) {
+    for (final projection in prioritized) {
       if (projection.userId != userId ||
-          !projection.scheduleAtUtc.isAfter(now)) {
+          !projection.scheduleAtUtc.isAfter(now) ||
+          (preferences != null && !_enabled(preferences, projection))) {
         continue;
       }
-      wanted[keyFor(projection.userId, projection.occurrenceId)] = projection;
+      wanted[keyForProjection(projection)] = projection;
+      if (wanted.length >= capacity) break;
     }
     for (final entry in current.values.where(
       (entry) => !wanted.containsKey(entry.key),
@@ -122,7 +126,7 @@ class NotificationProjectionReconciler {
         continue;
       }
       final payload = LocalNotificationPayload(
-        source: NotificationSource.smartRoutineOccurrence,
+        source: projection.source,
         entityId: projection.occurrenceId,
         userId: userId,
       );
@@ -131,7 +135,7 @@ class NotificationProjectionReconciler {
           LocalNotificationSchedule(
             key: item.key,
             title: 'Lembrete do HelpBari',
-            body: 'Você tem um item da sua rotina para acompanhar.',
+            body: _genericBody(projection.category),
             scheduledAt: projection.scheduleAtUtc,
             payload: payload,
           ),
@@ -172,6 +176,37 @@ class NotificationProjectionReconciler {
 
   static String keyFor(String userId, String occurrenceId) =>
       '$userId:routineOccurrence:$occurrenceId:primary:$projectionVersion';
+
+  static String keyForProjection(RoutineNotificationProjection projection) =>
+      projection.category == NotificationCategory.treatment
+      ? keyFor(projection.userId, projection.occurrenceId)
+      : '${projection.userId}:${projection.category.name}:'
+            '${projection.occurrenceId}:${projection.timeId}:$projectionVersion';
+
+  static bool _enabled(
+    NotificationPreferences preferences,
+    RoutineNotificationProjection projection,
+  ) {
+    if (!preferences.itemEnabled(projection.category, projection.itemId)) {
+      return false;
+    }
+    final time = preferences.times
+        .where((item) => item.id == projection.timeId)
+        .firstOrNull;
+    return time?.enabled ?? true;
+  }
+
+  static String _genericBody(NotificationCategory category) =>
+      switch (category) {
+        NotificationCategory.treatment =>
+          'Você possui um item do tratamento programado.',
+        NotificationCategory.appointments =>
+          'Você possui um compromisso próximo.',
+        NotificationCategory.water ||
+        NotificationCategory.meals ||
+        NotificationCategory.weight =>
+          'Há uma atividade do HelpBari aguardando sua atenção.',
+      };
 }
 
 class NotificationActionHandler {

@@ -42,9 +42,9 @@ final class OnboardingProgressSupabaseDatasource
       if (updatedAfter != null) {
         request = request.gt('updated_at', updatedAfter.toIso8601String());
       }
-      return (await request.order('updated_at'))
-          .map(OnboardingProgressDto.fromSupabase)
-          .toList();
+      return (await request.order(
+        'updated_at',
+      )).map(OnboardingProgressDto.fromSupabase).toList();
     },
   );
 }

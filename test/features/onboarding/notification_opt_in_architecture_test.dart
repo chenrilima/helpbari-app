@@ -10,6 +10,17 @@ void main() {
     expect(bootstrap, isNot(contains('requestPermissions(')));
   });
 
+  test('concrete scheduler checks permission without requesting it', () {
+    final service = File(
+      'lib/core/services/notifications/app_local_notification_service.dart',
+    ).readAsStringSync();
+    final scheduleBody = service.substring(
+      service.indexOf('Future<void> _schedule'),
+    );
+    expect(scheduleBody, contains('permissionState()'));
+    expect(scheduleBody, isNot(contains('requestPermissions()')));
+  });
+
   test('onboarding requests permission only in the affirmative handler', () {
     final page = File(
       'lib/features/onboarding/presentation/pages/onboarding_page.dart',

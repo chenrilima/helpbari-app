@@ -32,4 +32,25 @@ void main() {
       isNull,
     );
   });
+
+  test(
+    'routes configurable tracking categories to their canonical screens',
+    () {
+      const sources = {
+        NotificationSource.water: '/water',
+        NotificationSource.meal: '/meals',
+        NotificationSource.weight: '/weight',
+      };
+      for (final entry in sources.entries) {
+        final location = notificationLocation(
+          LocalNotificationPayload(
+            source: entry.key,
+            entityId: 'configured-reminder',
+            userId: 'user-a',
+          ),
+        );
+        expect(Uri.parse(location!).path, entry.value);
+      }
+    },
+  );
 }

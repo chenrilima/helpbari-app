@@ -71,9 +71,7 @@ final class OnboardingProgress {
         : currentStepId ?? this.currentStepId,
     completedStepIds: completedStepIds ?? this.completedStepIds,
     startedAt: startedAt ?? this.startedAt,
-    completedAt: clearCompletedAt
-        ? null
-        : completedAt ?? this.completedAt,
+    completedAt: clearCompletedAt ? null : completedAt ?? this.completedAt,
     createdAt: createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt ?? this.deletedAt,

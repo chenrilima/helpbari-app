@@ -44,9 +44,8 @@ final class OnboardingProgressDto {
       );
 
   factory OnboardingProgressDto.fromSupabase(Map<String, dynamic> row) {
-    DateTime? optionalDate(String key) => row[key] == null
-        ? null
-        : DateTime.parse(row[key] as String).toUtc();
+    DateTime? optionalDate(String key) =>
+        row[key] == null ? null : DateTime.parse(row[key] as String).toUtc();
     final createdAt = DateTime.parse(row['created_at'] as String).toUtc();
     final updatedAt = DateTime.parse(row['updated_at'] as String).toUtc();
     return OnboardingProgressDto(
@@ -59,9 +58,10 @@ final class OnboardingProgressDto {
           orElse: () => OnboardingProgressStatus.needsReview,
         ),
         currentStepId: row['current_step_id'] as String?,
-        completedStepIds: (row['completed_step_ids'] as List<dynamic>? ?? const [])
-            .whereType<String>()
-            .toSet(),
+        completedStepIds:
+            (row['completed_step_ids'] as List<dynamic>? ?? const [])
+                .whereType<String>()
+                .toSet(),
         startedAt: optionalDate('started_at'),
         completedAt: optionalDate('completed_at'),
         createdAt: createdAt,
@@ -79,23 +79,22 @@ final class OnboardingProgressDto {
     );
   }
 
-  OnboardingStateRecordsCompanion toDrift() =>
-      OnboardingStateRecordsCompanion(
-        id: Value(progress.id),
-        userId: Value(progress.userId),
-        onboardingVersion: Value(progress.onboardingVersion),
-        status: Value(progress.status.name),
-        currentStepId: Value(progress.currentStepId),
-        completedStepIdsJson: Value(
-          jsonEncode(progress.completedStepIds.toList()..sort()),
-        ),
-        startedAt: Value(progress.startedAt),
-        completedAt: Value(progress.completedAt),
-        createdAt: Value(syncMetadata.createdAt),
-        updatedAt: Value(syncMetadata.updatedAt),
-        deletedAt: Value(syncMetadata.deletedAt),
-        syncStatus: Value(syncMetadata.syncStatus.name),
-      );
+  OnboardingStateRecordsCompanion toDrift() => OnboardingStateRecordsCompanion(
+    id: Value(progress.id),
+    userId: Value(progress.userId),
+    onboardingVersion: Value(progress.onboardingVersion),
+    status: Value(progress.status.name),
+    currentStepId: Value(progress.currentStepId),
+    completedStepIdsJson: Value(
+      jsonEncode(progress.completedStepIds.toList()..sort()),
+    ),
+    startedAt: Value(progress.startedAt),
+    completedAt: Value(progress.completedAt),
+    createdAt: Value(syncMetadata.createdAt),
+    updatedAt: Value(syncMetadata.updatedAt),
+    deletedAt: Value(syncMetadata.deletedAt),
+    syncStatus: Value(syncMetadata.syncStatus.name),
+  );
 
   Map<String, Object?> toSupabase() => {
     'id': progress.id,

@@ -232,3 +232,12 @@ do app é decidida por uma única máquina de estados que combina sessão, perfi
 consentimento legal e progresso canônico. Preferências de acompanhamento ficam
 em Settings e a permissão de notificações só é solicitada após opt-in explícito.
 Consulte `docs/ONBOARDING_V1_FOUNDATION.md` e `docs/PRODUCT_FREEZE_V1.md`.
+
+## Plataforma de Notificações V1
+
+Preferências globais, por categoria, item e horário são parte sincronizável de
+Settings. Permissão do SO, manifest, action inbox e IDs do plugin permanecem
+locais ao dispositivo. Smart Routines fornece exclusivamente as projeções de
+Tratamento; Appointments e horários explicitamente configurados fornecem as
+demais categorias. Um único reconciliador deduplica, atualiza e cancela as
+notificações concretas. Consulte `docs/NOTIFICATIONS_V1.md`.

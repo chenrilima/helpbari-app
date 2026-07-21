@@ -137,7 +137,7 @@ class AppLocalNotificationService implements LocalNotificationService {
   static const _channelId = 'helpbari_reminders';
   static const _channelName = 'Lembretes';
   static const _channelDescription =
-      'Lembretes de vitaminas, medicamentos e consultas.';
+      'Lembretes configurados pelo usuário no HelpBari.';
 
   final LoggerService _logger;
   final FlutterLocalNotificationsPlugin _plugin;
@@ -304,8 +304,8 @@ class AppLocalNotificationService implements LocalNotificationService {
   Future<void> _schedule(LocalNotificationSchedule schedule) async {
     await initialize();
 
-    final granted = await requestPermissions();
-    if (!granted) {
+    final permission = await permissionState();
+    if (permission != NotificationPermissionState.granted) {
       _logger.warning('Permissao de notificacao nao concedida.');
       return;
     }

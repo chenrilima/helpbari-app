@@ -87,6 +87,8 @@ class PrivacyExportService {
         'waterTrackingEnabled': settings.waterTrackingEnabled,
         'weightTrackingEnabled': settings.weightTrackingEnabled,
         'weightUnit': settings.weightUnit,
+        'notificationPreferences': settings.effectiveNotificationPreferences
+            .toJson(),
       },
       'water': [
         for (final record in snapshot.waterHistory)

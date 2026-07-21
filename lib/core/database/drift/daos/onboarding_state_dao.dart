@@ -10,16 +10,14 @@ class OnboardingStateDao extends DatabaseAccessor<AppDatabase>
     with _$OnboardingStateDaoMixin {
   OnboardingStateDao(super.attachedDatabase);
 
-  Future<OnboardingStateRecord?> getByUser(String userId) =>
-      (select(onboardingStateRecords)
-            ..where((row) => row.userId.equals(userId)))
-          .getSingleOrNull();
+  Future<OnboardingStateRecord?> getByUser(String userId) => (select(
+    onboardingStateRecords,
+  )..where((row) => row.userId.equals(userId))).getSingleOrNull();
 
   Future<List<OnboardingStateRecord>> getPending(String userId) =>
       (select(onboardingStateRecords)..where(
             (row) =>
-                row.userId.equals(userId) &
-                row.syncStatus.isNotValue('synced'),
+                row.userId.equals(userId) & row.syncStatus.isNotValue('synced'),
           ))
           .get();
 

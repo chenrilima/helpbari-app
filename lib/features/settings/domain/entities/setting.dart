@@ -1,4 +1,5 @@
 import '../../../../core/domain/entity.dart';
+import 'notification_preferences.dart';
 
 class AppSettings extends Entity {
   const AppSettings({
@@ -12,6 +13,7 @@ class AppSettings extends Entity {
     this.waterTrackingEnabled = true,
     this.weightTrackingEnabled = true,
     this.weightUnit = 'kg',
+    this.notificationPreferences,
   });
 
   @override
@@ -26,6 +28,15 @@ class AppSettings extends Entity {
   final bool waterTrackingEnabled;
   final bool weightTrackingEnabled;
   final String weightUnit;
+  final NotificationPreferences? notificationPreferences;
+
+  NotificationPreferences get effectiveNotificationPreferences =>
+      notificationPreferences ??
+      NotificationPreferences.legacy(
+        vitamins: vitaminRemindersEnabled,
+        medications: medicationRemindersEnabled,
+        appointments: appointmentRemindersEnabled,
+      );
 
   AppSettings copyWith({
     int? dailyWaterGoalMl,
@@ -37,6 +48,7 @@ class AppSettings extends Entity {
     bool? waterTrackingEnabled,
     bool? weightTrackingEnabled,
     String? weightUnit,
+    NotificationPreferences? notificationPreferences,
   }) {
     return AppSettings(
       id: id,
@@ -50,10 +62,12 @@ class AppSettings extends Entity {
       mealTrackingEnabled: mealTrackingEnabled ?? this.mealTrackingEnabled,
       treatmentTrackingEnabled:
           treatmentTrackingEnabled ?? this.treatmentTrackingEnabled,
-      waterTrackingEnabled:
-          waterTrackingEnabled ?? this.waterTrackingEnabled,
-      weightTrackingEnabled: weightTrackingEnabled ?? this.weightTrackingEnabled,
+      waterTrackingEnabled: waterTrackingEnabled ?? this.waterTrackingEnabled,
+      weightTrackingEnabled:
+          weightTrackingEnabled ?? this.weightTrackingEnabled,
       weightUnit: weightUnit ?? this.weightUnit,
+      notificationPreferences:
+          notificationPreferences ?? this.notificationPreferences,
     );
   }
 }

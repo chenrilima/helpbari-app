@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../../core/database/database.dart';
 import '../../../../core/database/drift/app_database.dart';
 import 'package:drift/drift.dart' show Value;
@@ -17,6 +19,7 @@ class SettingsDto {
     required this.weightTrackingEnabled,
     required this.weightUnit,
     required this.syncMetadata,
+    this.notificationPreferencesJson = '',
   });
 
   final String id;
@@ -30,8 +33,10 @@ class SettingsDto {
   final bool weightTrackingEnabled;
   final String weightUnit;
   final SyncMetadata syncMetadata;
+  final String notificationPreferencesJson;
 
   AppSettings toEntity() {
+    final decoded = _decodePreferences(notificationPreferencesJson);
     return AppSettings(
       id: id,
       dailyWaterGoalMl: dailyWaterGoalMl,
@@ -43,6 +48,13 @@ class SettingsDto {
       waterTrackingEnabled: waterTrackingEnabled,
       weightTrackingEnabled: weightTrackingEnabled,
       weightUnit: weightUnit,
+      notificationPreferences:
+          NotificationPreferences.fromJson(decoded) ??
+          NotificationPreferences.legacy(
+            vitamins: vitaminRemindersEnabled,
+            medications: medicationRemindersEnabled,
+            appointments: appointmentRemindersEnabled,
+          ),
     );
   }
 
@@ -59,6 +71,7 @@ class SettingsDto {
         'waterTrackingEnabled': waterTrackingEnabled,
         'weightTrackingEnabled': weightTrackingEnabled,
         'weightUnit': weightUnit,
+        'notificationPreferencesJson': notificationPreferencesJson,
       },
     );
   }
@@ -80,6 +93,9 @@ class SettingsDto {
       waterTrackingEnabled: settings.waterTrackingEnabled,
       weightTrackingEnabled: settings.weightTrackingEnabled,
       weightUnit: settings.weightUnit,
+      notificationPreferencesJson: jsonEncode(
+        settings.effectiveNotificationPreferences.toJson(),
+      ),
       syncMetadata: SyncMetadata(
         id: settings.id,
         userId: previousMetadata?.userId ?? userId,
@@ -101,6 +117,7 @@ class SettingsDto {
     waterTrackingEnabled: row.waterTrackingEnabled,
     weightTrackingEnabled: row.weightTrackingEnabled,
     weightUnit: row.weightUnit,
+    notificationPreferencesJson: row.notificationPreferencesJson,
     syncMetadata: SyncMetadata(
       id: row.id,
       userId: row.userId,
@@ -124,6 +141,7 @@ class SettingsDto {
         waterTrackingEnabled: Value(waterTrackingEnabled),
         weightTrackingEnabled: Value(weightTrackingEnabled),
         weightUnit: Value(weightUnit),
+        notificationPreferencesJson: Value(notificationPreferencesJson),
         createdAt: syncMetadata.createdAt,
         updatedAt: syncMetadata.updatedAt,
         deletedAt: Value(syncMetadata.deletedAt),
@@ -142,6 +160,7 @@ class SettingsDto {
     'water_tracking_enabled': waterTrackingEnabled,
     'weight_tracking_enabled': weightTrackingEnabled,
     'weight_unit': weightUnit,
+    'notification_preferences': _decodePreferences(notificationPreferencesJson),
     'created_at': syncMetadata.createdAt.toIso8601String(),
     'updated_at': syncMetadata.updatedAt.toIso8601String(),
     'deleted_at': syncMetadata.deletedAt?.toIso8601String(),
@@ -161,6 +180,9 @@ class SettingsDto {
       waterTrackingEnabled: row['water_tracking_enabled'] as bool? ?? true,
       weightTrackingEnabled: row['weight_tracking_enabled'] as bool? ?? true,
       weightUnit: row['weight_unit'] as String,
+      notificationPreferencesJson: jsonEncode(
+        row['notification_preferences'] ?? const <String, Object?>{},
+      ),
       syncMetadata: SyncMetadata(
         id: row['id'] as String,
         userId: row['user_id'] as String,
@@ -187,6 +209,8 @@ class SettingsDto {
       waterTrackingEnabled: data['waterTrackingEnabled'] as bool? ?? true,
       weightTrackingEnabled: data['weightTrackingEnabled'] as bool? ?? true,
       weightUnit: data['weightUnit'] as String,
+      notificationPreferencesJson:
+          data['notificationPreferencesJson'] as String? ?? '',
       syncMetadata: record.metadata,
     );
   }
@@ -200,5 +224,14 @@ class SettingsDto {
       SyncStatus.pendingUpdate => SyncStatus.pendingUpdate,
       null => SyncStatus.pendingCreate,
     };
+  }
+
+  static Object _decodePreferences(String encoded) {
+    if (encoded.isEmpty) return const <String, Object?>{};
+    try {
+      return jsonDecode(encoded) ?? const <String, Object?>{};
+    } on FormatException {
+      return const <String, Object?>{};
+    }
   }
 }

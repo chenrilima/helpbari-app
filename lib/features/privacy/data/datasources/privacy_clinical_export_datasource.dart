@@ -45,10 +45,7 @@ class PrivacyClinicalExportDatasource {
         'prescription_routine_link_records',
         userId,
       ),
-      'localNotificationOperations': <String, Object?>{
-        'manifest': await _rows('notification_manifest_records', userId),
-        'actionInbox': await _rows('notification_action_inbox_records', userId),
-      },
+      'localNotificationOperations': <String, Object?>{},
     };
   }
 

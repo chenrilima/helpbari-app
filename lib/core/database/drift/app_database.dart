@@ -132,7 +132,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? openHelpBariDatabase());
 
   @override
-  int get schemaVersion => 21;
+  int get schemaVersion => 22;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -277,6 +277,12 @@ class AppDatabase extends _$AppDatabase {
         await migrator.addColumn(
           settingsRecords,
           settingsRecords.weightTrackingEnabled,
+        );
+      }
+      if (from < 22) {
+        await migrator.addColumn(
+          settingsRecords,
+          settingsRecords.notificationPreferencesJson,
         );
       }
     },

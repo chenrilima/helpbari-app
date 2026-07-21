@@ -1,18 +1,10 @@
 import '../../../core/services/services.dart';
 import '../../appointments/application/appointment_reminder_service.dart';
 import '../../appointments/domain/usecases/use_cases.dart';
-import '../../medications/application/medication_reminder_service.dart';
-import '../../medications/domain/usecases/use_cases.dart';
-import '../../vitamins/application/vitamin_reminder_service.dart';
-import '../../vitamins/domain/usecases/vitamin_use_cases.dart';
 import '../domain/entities/entities.dart';
 
 class SettingsReminderSyncService {
   SettingsReminderSyncService({
-    required VitaminUseCases vitaminUseCases,
-    required VitaminReminderService vitaminReminders,
-    required MedicationUseCases medicationUseCases,
-    required MedicationReminderService medicationReminders,
     required AppointmentUseCases appointmentUseCases,
     required AppointmentReminderService appointmentReminders,
     required NotificationScheduler scheduler,
@@ -33,17 +25,9 @@ class SettingsReminderSyncService {
   }
 
   Future<void> restore(AppSettings settings) async {
-    final schedules = <LocalNotificationSchedule>[];
-    if (settings.appointmentRemindersEnabled) {
-      schedules.addAll(
-        (await _appointmentUseCases.getAll())
-            .where((appointment) => appointment.isUpcoming)
-            .map(_appointmentReminders.scheduleFor),
-      );
-    }
     await _scheduler.activateUser(_userId);
-    for (final schedule in schedules) {
-      await _scheduler.schedule(schedule);
+    for (final appointment in await _appointmentUseCases.getAll()) {
+      await _appointmentReminders.cancel(appointment.id);
     }
   }
 }

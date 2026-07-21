@@ -37,7 +37,7 @@ void main() {
   });
 
   test('schema 17 creates prescription indexes', () async {
-    expect(database.schemaVersion, 21);
+    expect(database.schemaVersion, 22);
     final rows = await database
         .customSelect("PRAGMA index_list('medical_prescription_records')")
         .get();

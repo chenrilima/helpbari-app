@@ -139,6 +139,7 @@ class DriftSettingsLocalDatasource {
       waterTrackingEnabled: dto.waterTrackingEnabled,
       weightTrackingEnabled: dto.weightTrackingEnabled,
       weightUnit: dto.weightUnit,
+      notificationPreferencesJson: dto.notificationPreferencesJson,
       syncMetadata: dto.syncMetadata.copyWith(
         syncStatus: SyncStatus.fromName(row.previousSyncStatus),
       ),
@@ -165,6 +166,7 @@ class DriftSettingsLocalDatasource {
     waterTrackingEnabled: Value(row.waterTrackingEnabled),
     weightTrackingEnabled: Value(row.weightTrackingEnabled),
     weightUnit: Value(row.weightUnit),
+    notificationPreferencesJson: Value(row.notificationPreferencesJson),
     createdAt: Value(row.createdAt),
     updatedAt: updatedAt.present ? updatedAt : Value(row.updatedAt),
     deletedAt: deletedAt.present ? deletedAt : Value(row.deletedAt),

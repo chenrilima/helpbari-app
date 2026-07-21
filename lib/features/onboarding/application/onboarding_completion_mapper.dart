@@ -106,6 +106,11 @@ abstract final class OnboardingCompletionMapper {
       vitaminRemindersEnabled: draft.notificationsEnabled,
       medicationRemindersEnabled: draft.notificationsEnabled,
       appointmentRemindersEnabled: draft.notificationsEnabled,
+      notificationPreferences: NotificationPreferences.legacy(
+        vitamins: draft.notificationsEnabled,
+        medications: draft.notificationsEnabled,
+        appointments: draft.notificationsEnabled,
+      ),
       treatmentTrackingEnabled: draft.trackTreatment,
       waterTrackingEnabled: draft.trackWater,
       mealTrackingEnabled: draft.trackMeals,

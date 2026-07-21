@@ -5,9 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'sync_bootstrap_provider.dart';
 import '../../core/services/service_providers.dart';
 import '../../core/services/notifications/app_local_notification_service.dart';
+import '../../core/sync/sync.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/settings/presentation/providers/setting_use_cases_provider.dart';
 import '../../features/settings/presentation/providers/settings_reminder_sync_provider.dart';
+import '../../features/settings/application/notification_preference_projection_service.dart';
+import '../../features/appointments/presentation/providers/appointment_use_cases_provider.dart';
 import '../../features/smart_routines/application/notification_platform.dart';
 import '../../features/smart_routines/presentation/providers/unified_treatment_providers.dart';
 
@@ -48,6 +51,13 @@ class NotificationBootstrapCoordinator {
         await _restore(next.id);
       });
     }, fireImmediately: true);
+    _ref.listen(syncManagerProvider, (previous, next) {
+      if (next.phase != SyncPhase.syncing &&
+          next.lastSyncAt != null &&
+          next.lastSyncAt != previous?.lastSyncAt) {
+        restoreAfterSync();
+      }
+    });
   }
 
   void onResumed() {
@@ -76,13 +86,21 @@ class NotificationBootstrapCoordinator {
       fromUtc: now.subtract(const Duration(hours: 12)),
       untilUtc: now.add(const Duration(days: 7)),
     );
+    final preferenceProjections =
+        const NotificationPreferenceProjectionService().project(
+          userId: userId,
+          preferences: settings.effectiveNotificationPreferences,
+          nowUtc: now,
+          appointments: await _ref.read(appointmentUseCasesProvider).getAll(),
+        );
     await _ref
         .read(notificationV2ReconcilerProvider.future)
         .then(
           (reconciler) => reconciler.reconcile(
             userId: userId,
-            desired: projections,
+            desired: [...projections, ...preferenceProjections],
             now: now,
+            preferences: settings.effectiveNotificationPreferences,
           ),
         );
     await _ref
