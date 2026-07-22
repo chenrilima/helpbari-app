@@ -38,4 +38,30 @@ void main() {
     expect(find.byType(FloatingActionButton), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('repeated child updates and removal do not throw', (
+    tester,
+  ) async {
+    final label = ValueNotifier<String>('first');
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ValueListenableBuilder<String>(
+          valueListenable: label,
+          builder: (_, value, _) => BariaGlobalOverlay(child: Text(value)),
+        ),
+      ),
+    );
+
+    for (final value in <String>['second', 'third', 'fourth']) {
+      label.value = value;
+      await tester.pump();
+      expect(find.text(value), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    }
+
+    await tester.pumpWidget(const MaterialApp(home: SizedBox.shrink()));
+    await tester.pump();
+    expect(tester.takeException(), isNull);
+    label.dispose();
+  });
 }

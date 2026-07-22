@@ -2,33 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../../design_system/design_system.dart';
 
-class BariaGlobalOverlay extends StatefulWidget {
+class BariaGlobalOverlay extends StatelessWidget {
   const BariaGlobalOverlay({required this.child, super.key});
 
   final Widget child;
 
   @override
-  State<BariaGlobalOverlay> createState() => _BariaGlobalOverlayState();
-}
-
-class _BariaGlobalOverlayState extends State<BariaGlobalOverlay> {
-  late final OverlayEntry _entry;
-
-  @override
-  void initState() {
-    super.initState();
-    _entry = OverlayEntry(builder: (_) => widget.child);
-  }
-
-  @override
-  void didUpdateWidget(BariaGlobalOverlay oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _entry.markNeedsBuild();
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      Overlay(initialEntries: <OverlayEntry>[_entry]);
+  Widget build(BuildContext context) => Overlay(
+    key: ObjectKey(child),
+    initialEntries: <OverlayEntry>[OverlayEntry(builder: (_) => child)],
+  );
 }
 
 class BariaFab extends StatelessWidget {

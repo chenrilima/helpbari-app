@@ -7,6 +7,7 @@ import '../../../../core/errors/presentation_error_mapper.dart';
 import '../../../../core/services/service_providers.dart';
 import '../../../../core/sync/sync.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../auth/domain/entities/auth_user.dart';
 import '../../../baria/presentation/providers/baria_view_model_provider.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../../privacy/presentation/providers/privacy_providers.dart';
@@ -26,6 +27,10 @@ import '../states/onboarding_state.dart';
 class OnboardingViewModel extends Notifier<OnboardingState> {
   OnboardingUseCases get _useCases => ref.read(onboardingUseCasesProvider);
   Completer<void>? _disposed;
+  Future<void>? _activeRefresh;
+  String? _activeRefreshUserId;
+  int _sessionGeneration = 0;
+  Future<bool>? _activeCompletion;
 
   @override
   OnboardingState build() {
@@ -35,18 +40,13 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       if (disposed != null && !disposed.isCompleted) disposed.complete();
     });
     final user = ref.watch(authSessionProvider);
-    final completed = user != null && _useCases.hasCompletedForUser(user.id);
     final consumed = user != null && _useCases.hasConsumedDraft(user.id);
     final resume = _useCases
         .getResumeStep(user?.id)
         .clamp(0, OnboardingStep.values.length - 1);
-    ref.listen(authSessionProvider, (previous, next) {
-      if (previous?.id != next?.id) Future.microtask(refreshForSession);
-    });
-    if (user != null) Future.microtask(refreshForSession);
-    return OnboardingState(
+    final initial = OnboardingState(
       introductionCompleted: _useCases.hasCompletedIntroduction(),
-      userCompleted: completed,
+      userCompleted: false,
       isAuthenticated: user != null,
       draft: consumed
           ? const OnboardingProfileDraft()
@@ -54,69 +54,147 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
       currentStep: OnboardingStep.values[resume],
       isResolvingSession: user != null,
     );
+    ref.listen<AuthUser?>(authSessionProvider, (previous, next) {
+      if (previous?.id == next?.id) return;
+      _sessionGeneration++;
+      _activeRefresh = null;
+      _activeRefreshUserId = null;
+      if (next == null) {
+        _publish(
+          state.copyWith(
+            isAuthenticated: false,
+            userCompleted: false,
+            isResolvingSession: false,
+            hasProfile: false,
+            hasCurrentLegalConsent: false,
+            requiresConsentReview: false,
+            resolutionFailed: false,
+            clearCanonicalProgress: true,
+            introductionCompleted: _useCases.hasCompletedIntroduction(),
+          ),
+        );
+      } else {
+        unawaited(refreshForSession());
+      }
+    }, fireImmediately: true);
+    return initial;
   }
 
   Future<void> refreshForSession({bool waitForRemote = true}) async {
     final user = ref.read(authSessionProvider);
     if (user == null) {
-      state = state.copyWith(
-        isAuthenticated: false,
-        userCompleted: false,
-        isResolvingSession: false,
-        hasProfile: false,
-        hasCurrentLegalConsent: false,
-        resolutionFailed: false,
-        introductionCompleted: _useCases.hasCompletedIntroduction(),
+      _sessionGeneration++;
+      _publish(
+        state.copyWith(
+          isAuthenticated: false,
+          userCompleted: false,
+          isResolvingSession: false,
+          hasProfile: false,
+          hasCurrentLegalConsent: false,
+          resolutionFailed: false,
+          requiresConsentReview: false,
+          clearCanonicalProgress: true,
+          introductionCompleted: _useCases.hasCompletedIntroduction(),
+        ),
       );
       return;
     }
     final userId = user.id;
-    final locallyCompleted = _useCases.hasCompletedForUser(userId);
-    state = state.copyWith(
-      isAuthenticated: true,
-      userCompleted: locallyCompleted,
-      isResolvingSession: true,
-      resolutionFailed: false,
-      clearError: true,
+    if (_activeRefreshUserId == userId && _activeRefresh != null) {
+      return _activeRefresh;
+    }
+    final generation = ++_sessionGeneration;
+    final operation = _resolveSession(
+      userId,
+      generation: generation,
+      waitForRemote: waitForRemote,
     );
+    _activeRefreshUserId = userId;
+    _activeRefresh = operation;
+    try {
+      await operation;
+    } finally {
+      if (identical(_activeRefresh, operation)) {
+        _activeRefresh = null;
+        _activeRefreshUserId = null;
+      }
+    }
+  }
+
+  Future<void> _resolveSession(
+    String userId, {
+    required int generation,
+    required bool waitForRemote,
+  }) async {
+    var localResolved = false;
     try {
       await _withSessionReadTimeout(_useCases.claimPreAuthDraft(userId));
-      if (waitForRemote) {
+      final service = await _withSessionReadTimeout(
+        ref.read(onboardingProgressServiceProvider.future),
+      );
+      var progress = await _withSessionReadTimeout(service.resolve(userId));
+      if (!_isCurrent(userId, generation)) return;
+      localResolved = true;
+      _publishProgress(userId, progress);
+      await _enrichLocalState(userId, generation, progress);
+
+      if (!waitForRemote || !_isCurrent(userId, generation)) return;
+      try {
         await ref
             .read(syncBootstrapProvider)
             .waitForInitialSync(userId, cancelled: _disposed?.future);
+        if (!_isCurrent(userId, generation)) return;
+        progress = await _withSessionReadTimeout(service.resolve(userId));
+        if (!_isCurrent(userId, generation)) return;
+        _publishProgress(userId, progress);
+        await _enrichLocalState(userId, generation, progress);
+      } catch (_) {
+        // Remote reconciliation is non-blocking after local resolution.
       }
-      if (!ref.mounted) return;
-      if (ref.read(authSessionProvider)?.id != userId) return;
+    } catch (error) {
+      if (!_isCurrent(userId, generation) || localResolved) return;
+      _publish(
+        state.copyWith(
+          isAuthenticated: true,
+          userCompleted: false,
+          isResolvingSession: false,
+          resolutionFailed: true,
+          errorMessage: PresentationErrorMapper.message(
+            error,
+            fallback:
+                'Não foi possível restaurar seu onboarding. Tente novamente.',
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _enrichLocalState(
+    String userId,
+    int generation,
+    OnboardingProgress progress,
+  ) async {
+    try {
       final profile = await _withSessionReadTimeout(
         ref.read(profileUseCasesProvider).getProfile(),
       );
       final hasConsent = await _withSessionReadTimeout(
         ref.read(privacyUseCasesProvider).hasCurrentConsent(),
       );
-      final progressService = await _withSessionReadTimeout(
-        ref.read(onboardingProgressServiceProvider.future),
-      );
-      final progress = await _withSessionReadTimeout(
-        progressService.resolve(userId),
-      );
-      if (progress.isCurrentCompleted && profile != null && hasConsent) {
+      if (!_isCurrent(userId, generation)) return;
+      if (progress.isCurrentCompleted) {
         await _useCases.completeForUser(userId);
         await _useCases.markDraftConsumed(userId);
         await _useCases.clearDraft(userId);
-        state = state.copyWith(
-          isAuthenticated: true,
-          userCompleted: true,
-          isResolvingSession: false,
-          hasProfile: true,
-          hasCurrentLegalConsent: true,
-          resolutionFailed: false,
-          currentStep: OnboardingStep.completion,
-          canonicalProgress: progress,
+        _publish(
+          state.copyWith(
+            hasProfile: profile != null,
+            hasCurrentLegalConsent: hasConsent,
+            requiresConsentReview: !hasConsent,
+          ),
         );
         return;
       }
-
       final consumed = _useCases.hasConsumedDraft(userId);
       var draft = consumed
           ? const OnboardingProfileDraft()
@@ -132,6 +210,8 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
             settings.vitaminRemindersEnabled &&
             settings.medicationRemindersEnabled &&
             settings.appointmentRemindersEnabled,
+        termsAccepted: false,
+        privacyPolicyAccepted: false,
       );
       final resume = _useCases
           .getResumeStep(userId)
@@ -139,37 +219,50 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
             OnboardingStep.initialData.index,
             OnboardingStep.documents.index,
           );
-      state = state.copyWith(
-        isAuthenticated: true,
-        userCompleted: false,
-        isResolvingSession: false,
-        hasProfile: profile != null,
-        hasCurrentLegalConsent: hasConsent,
-        resolutionFailed: false,
-        draft: draft.copyWith(
-          termsAccepted: false,
-          privacyPolicyAccepted: false,
-        ),
-        currentStep: profile != null && !hasConsent
-            ? OnboardingStep.documents
-            : _stepForId(progress.currentStepId, OnboardingStep.values[resume]),
-        canonicalProgress: progress,
-      );
-    } catch (error) {
-      if (!ref.mounted) return;
-      if (ref.read(authSessionProvider)?.id != userId) return;
-      state = state.copyWith(
-        isAuthenticated: true,
-        userCompleted: false,
-        isResolvingSession: false,
-        resolutionFailed: true,
-        errorMessage: PresentationErrorMapper.message(
-          error,
-          fallback:
-              'Não foi possível restaurar seu onboarding. Tente novamente.',
+      _publish(
+        state.copyWith(
+          hasProfile: profile != null,
+          hasCurrentLegalConsent: hasConsent,
+          requiresConsentReview: false,
+          draft: draft,
+          currentStep: profile != null && !hasConsent
+              ? OnboardingStep.documents
+              : _stepForId(
+                  progress.currentStepId,
+                  OnboardingStep.values[resume],
+                ),
         ),
       );
+    } catch (_) {
+      // A conclusão canônica local permanece válida mesmo se dados auxiliares
+      // estiverem temporariamente indisponíveis.
     }
+  }
+
+  void _publishProgress(String userId, OnboardingProgress progress) {
+    final completed = progress.isCurrentCompleted;
+    _publish(
+      state.copyWith(
+        isAuthenticated: true,
+        userCompleted: completed,
+        isResolvingSession: false,
+        resolutionFailed: false,
+        clearError: true,
+        currentStep: completed
+            ? OnboardingStep.completion
+            : _stepForId(progress.currentStepId, state.currentStep),
+        canonicalProgress: progress,
+      ),
+    );
+  }
+
+  bool _isCurrent(String userId, int generation) =>
+      ref.mounted &&
+      generation == _sessionGeneration &&
+      ref.read(authSessionProvider)?.id == userId;
+
+  void _publish(OnboardingState next) {
+    if (state != next) state = next;
   }
 
   Future<T> _withSessionReadTimeout<T>(Future<T> operation) {
@@ -244,14 +337,26 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
     state = state.copyWith(introductionCompleted: true);
   }
 
-  Future<bool> complete() async {
+  Future<bool> complete() {
+    if (state.userCompleted) return Future<bool>.value(true);
+    final active = _activeCompletion;
+    if (active != null) return active;
+    final operation = _completeOnce();
+    _activeCompletion = operation;
+    operation.whenComplete(() {
+      if (identical(_activeCompletion, operation)) _activeCompletion = null;
+    });
+    return operation;
+  }
+
+  Future<bool> _completeOnce() async {
     final user = ref.read(authSessionProvider);
     if (user == null) {
       await _useCases.completeIntroduction();
       state = state.copyWith(introductionCompleted: true);
       return true;
     }
-    state = state.copyWith(isSaving: true, clearError: true);
+    _publish(state.copyWith(isSaving: true, clearError: true));
     try {
       var draft = state.draft;
       if (draft.currentWeight.trim().isNotEmpty &&
@@ -291,22 +396,27 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
             .syncNow()
             .catchError((_) => null),
       );
-      state = state.copyWith(
-        userCompleted: true,
-        isSaving: false,
-        hasProfile: true,
-        hasCurrentLegalConsent: true,
-        resolutionFailed: false,
-        currentStep: OnboardingStep.completion,
-        canonicalProgress: completedProgress,
+      _publish(
+        state.copyWith(
+          userCompleted: true,
+          isSaving: false,
+          hasProfile: true,
+          hasCurrentLegalConsent: true,
+          resolutionFailed: false,
+          currentStep: OnboardingStep.completion,
+          canonicalProgress: completedProgress,
+        ),
       );
       return true;
     } catch (error) {
-      state = state.copyWith(
-        isSaving: false,
-        errorMessage: PresentationErrorMapper.message(
-          error,
-          fallback: 'Não foi possível concluir o onboarding. Tente novamente.',
+      _publish(
+        state.copyWith(
+          isSaving: false,
+          errorMessage: PresentationErrorMapper.message(
+            error,
+            fallback:
+                'Não foi possível concluir o onboarding. Tente novamente.',
+          ),
         ),
       );
       return false;

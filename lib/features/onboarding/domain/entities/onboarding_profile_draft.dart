@@ -185,4 +185,12 @@ final class OnboardingProfileDraft {
 
     return const OnboardingProfileDraft();
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OnboardingProfileDraft && encode() == other.encode();
+
+  @override
+  int get hashCode => encode().hashCode;
 }

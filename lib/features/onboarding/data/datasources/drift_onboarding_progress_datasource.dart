@@ -4,6 +4,7 @@ import '../../../../core/database/drift/app_database.dart';
 import '../../../../core/database/drift/daos/onboarding_state_dao.dart';
 import '../../../../core/sync/sync.dart';
 import '../dtos/onboarding_progress_dto.dart';
+import '../../domain/services/onboarding_progress_merge_policy.dart';
 
 final class DriftOnboardingProgressDatasource {
   const DriftOnboardingProgressDatasource({
@@ -42,9 +43,17 @@ final class DriftOnboardingProgressDatasource {
   Future<bool> applyRemote(OnboardingProgressDto remote) async {
     if (remote.progress.userId != userId || userId == 'anonymous') return false;
     final local = await _dao.getByUser(userId);
-    if (local != null &&
-        !remote.syncMetadata.updatedAt.isAfter(local.updatedAt)) {
-      return false;
+    if (local != null) {
+      final localDto = OnboardingProgressDto.fromDrift(local);
+      final merged = OnboardingProgressMergePolicy.merge(
+        localDto.progress,
+        remote.progress,
+      );
+      if (merged == localDto.progress) return false;
+      remote = OnboardingProgressDto(
+        progress: merged,
+        syncMetadata: remote.syncMetadata,
+      );
     }
     await _dao.upsert(remote.toDrift());
     return true;

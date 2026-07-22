@@ -67,13 +67,21 @@ class _HelpBariAppState extends ConsumerState<HelpBariApp>
               '/complete-profile',
               '/baria',
             };
+            const shellPaths = <String>{
+              '/home',
+              '/treatment',
+              '/progress',
+              '/more',
+            };
             return Stack(
               children: [
                 ?child,
                 if (isAuthenticated && !hiddenPaths.contains(path))
                   Positioned(
                     right: AppSpacing.lg,
-                    bottom: AppSpacing.lg,
+                    bottom: shellPaths.contains(path)
+                        ? kBottomNavigationBarHeight + AppSpacing.lg
+                        : AppSpacing.lg,
                     child: BariaFab(
                       onPressed: () {
                         final navigatorContext =

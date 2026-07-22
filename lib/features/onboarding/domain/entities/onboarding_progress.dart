@@ -76,4 +76,38 @@ final class OnboardingProgress {
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt ?? this.deletedAt,
   );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OnboardingProgress &&
+          id == other.id &&
+          userId == other.userId &&
+          onboardingVersion == other.onboardingVersion &&
+          status == other.status &&
+          currentStepId == other.currentStepId &&
+          _sameSteps(completedStepIds, other.completedStepIds) &&
+          startedAt == other.startedAt &&
+          completedAt == other.completedAt &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt &&
+          deletedAt == other.deletedAt;
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    onboardingVersion,
+    status,
+    currentStepId,
+    Object.hashAll(completedStepIds.toList()..sort()),
+    startedAt,
+    completedAt,
+    createdAt,
+    updatedAt,
+    deletedAt,
+  );
+
+  static bool _sameSteps(Set<String> first, Set<String> second) =>
+      first.length == second.length && first.containsAll(second);
 }

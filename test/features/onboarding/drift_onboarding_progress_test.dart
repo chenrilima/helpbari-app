@@ -60,6 +60,36 @@ void main() {
       );
     },
   );
+
+  test(
+    'newer incomplete remote state cannot regress local completion',
+    () async {
+      final datasource = _datasource(database, 'user-a');
+      await datasource.save(
+        _dto(
+          'state-a',
+          'user-a',
+          updatedAt: DateTime.utc(2026, 7, 21),
+          status: OnboardingProgressStatus.completed,
+        ),
+      );
+
+      expect(
+        await datasource.applyRemote(
+          _dto(
+            'state-a',
+            'user-a',
+            updatedAt: DateTime.utc(2026, 7, 22),
+            status: OnboardingProgressStatus.inProgress,
+          ),
+        ),
+        isFalse,
+      );
+      final progress = (await datasource.get())!.progress;
+      expect(progress.status, OnboardingProgressStatus.completed);
+      expect(progress.completedAt?.toUtc(), DateTime.utc(2026, 7, 21));
+    },
+  );
 }
 
 DriftOnboardingProgressDatasource _datasource(

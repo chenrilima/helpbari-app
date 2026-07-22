@@ -132,6 +132,116 @@ void main() {
       expect(fixture.state.userCompleted, isFalse);
     },
   );
+
+  test('three simultaneous refreshes share one active resolution', () async {
+    final fixture = _Fixture(
+      user: user,
+      profile: null,
+      consent: false,
+      blockProgressRead: true,
+    );
+    addTearDown(fixture.container.dispose);
+    fixture.container.read(onboardingViewModelProvider);
+    final notifier = fixture.container.read(
+      onboardingViewModelProvider.notifier,
+    );
+
+    final refreshes = <Future<void>>[
+      notifier.refreshForSession(),
+      notifier.refreshForSession(),
+      notifier.refreshForSession(),
+    ];
+    await Future<void>.delayed(Duration.zero);
+    expect(fixture.progressRepository.activeReads, 1);
+    expect(fixture.progressRepository.maxConcurrentReads, 1);
+
+    fixture.progressRepository.release();
+    await Future.wait(refreshes);
+    expect(fixture.progressRepository.maxConcurrentReads, 1);
+  });
+
+  test('completed onboarding keeps separate consent review state', () async {
+    final fixture = _Fixture(user: user, profile: _profile(), consent: false);
+    final now = DateTime.utc(2026, 7, 20);
+    fixture.progressRepository.value = OnboardingProgress(
+      id: 'state-a',
+      userId: user.id,
+      onboardingVersion: OnboardingV1Contract.version,
+      status: OnboardingProgressStatus.completed,
+      completedStepIds: OnboardingV1Contract.stepIds.toSet(),
+      completedAt: now,
+      createdAt: now,
+      updatedAt: now,
+    );
+    await fixture.resolve();
+
+    expect(fixture.state.userCompleted, isTrue);
+    expect(fixture.state.requiresConsentReview, isTrue);
+    expect(fixture.state.entryStatus, AppEntryStatus.authenticatedReady);
+  });
+
+  test(
+    'complete is a no-op success when progress is already completed',
+    () async {
+      final fixture = _Fixture(user: user, profile: _profile(), consent: true);
+      final now = DateTime.utc(2026, 7, 20);
+      fixture.progressRepository.value = OnboardingProgress(
+        id: 'state-a',
+        userId: user.id,
+        onboardingVersion: OnboardingV1Contract.version,
+        status: OnboardingProgressStatus.completed,
+        completedStepIds: OnboardingV1Contract.stepIds.toSet(),
+        completedAt: now,
+        createdAt: now,
+        updatedAt: now,
+      );
+      await fixture.resolve();
+      final notifier = fixture.container.read(
+        onboardingViewModelProvider.notifier,
+      );
+
+      expect(await notifier.complete(), isTrue);
+      expect(await notifier.complete(), isTrue);
+      expect(fixture.progressRepository.value!.completedAt, now);
+    },
+  );
+
+  test(
+    'local completion is published before slow remote reconciliation',
+    () async {
+      final fixture = _Fixture(
+        user: user,
+        profile: _profile(),
+        consent: true,
+        blockRemoteSync: true,
+      );
+      addTearDown(fixture.container.dispose);
+      final now = DateTime.utc(2026, 7, 20);
+      fixture.progressRepository.value = OnboardingProgress(
+        id: 'state-a',
+        userId: user.id,
+        onboardingVersion: OnboardingV1Contract.version,
+        status: OnboardingProgressStatus.completed,
+        completedStepIds: OnboardingV1Contract.stepIds.toSet(),
+        completedAt: now,
+        createdAt: now,
+        updatedAt: now,
+      );
+
+      fixture.container.read(onboardingViewModelProvider);
+      for (
+        var attempt = 0;
+        attempt < 10 && !fixture.state.userCompleted;
+        attempt++
+      ) {
+        await Future<void>.delayed(Duration.zero);
+      }
+
+      expect(fixture.state.userCompleted, isTrue);
+      expect(fixture.syncBootstrap.isWaiting, isTrue);
+      fixture.syncBootstrap.release();
+    },
+  );
 }
 
 class _Fixture {
@@ -142,17 +252,23 @@ class _Fixture {
     bool failProfileRead = false,
     bool hangProfileRead = false,
     Duration? sessionReadTimeout,
+    bool blockProgressRead = false,
+    bool blockRemoteSync = false,
   }) : _profileRepository = _ProfileRepository(
          profile,
          failRead: failProfileRead,
          hangRead: hangProfileRead,
        ),
        _privacyRepository = _PrivacyRepository(consent),
-       repository = LocalOnboardingRepository(_Storage()) {
+       repository = LocalOnboardingRepository(_Storage()),
+       progressRepository = _OnboardingProgressRepository(
+         blockReads: blockProgressRead,
+       ),
+       syncBootstrap = _SyncBootstrap(block: blockRemoteSync) {
     container = ProviderContainer(
       overrides: [
         authSessionProvider.overrideWithValue(user),
-        syncBootstrapProvider.overrideWithValue(_SyncBootstrap()),
+        syncBootstrapProvider.overrideWithValue(syncBootstrap),
         if (sessionReadTimeout != null)
           onboardingSessionReadTimeoutProvider.overrideWithValue(
             sessionReadTimeout,
@@ -161,7 +277,7 @@ class _Fixture {
           OnboardingUseCases(repository),
         ),
         onboardingProgressRepositoryProvider.overrideWith(
-          (ref) async => _OnboardingProgressRepository(),
+          (ref) async => progressRepository,
         ),
         profileUseCasesProvider.overrideWithValue(
           ProfileUseCases(
@@ -185,6 +301,8 @@ class _Fixture {
   final LocalOnboardingRepository repository;
   final _ProfileRepository _profileRepository;
   final _PrivacyRepository _privacyRepository;
+  final _OnboardingProgressRepository progressRepository;
+  final _SyncBootstrap syncBootstrap;
   late final ProviderContainer container;
 
   OnboardingState get state => container.read(onboardingViewModelProvider);
@@ -199,13 +317,30 @@ class _Fixture {
 }
 
 class _OnboardingProgressRepository implements OnboardingProgressRepository {
+  _OnboardingProgressRepository({bool blockReads = false})
+    : _readGate = blockReads ? Completer<void>() : null;
+
   OnboardingProgress? value;
+  final Completer<void>? _readGate;
+  int activeReads = 0;
+  int maxConcurrentReads = 0;
 
   @override
-  Future<OnboardingProgress?> getForUser() async => value;
+  Future<OnboardingProgress?> getForUser() async {
+    activeReads++;
+    if (activeReads > maxConcurrentReads) maxConcurrentReads = activeReads;
+    await _readGate?.future;
+    activeReads--;
+    return value;
+  }
 
   @override
   Future<void> save(OnboardingProgress progress) async => value = progress;
+
+  void release() {
+    final gate = _readGate;
+    if (gate != null && !gate.isCompleted) gate.complete();
+  }
 }
 
 Profile _profile() => Profile(
@@ -221,6 +356,12 @@ Profile _profile() => Profile(
 );
 
 class _SyncBootstrap implements SyncBootstrapCoordinator {
+  _SyncBootstrap({bool block = false})
+    : _gate = block ? Completer<void>() : null;
+
+  final Completer<void>? _gate;
+  bool isWaiting = false;
+
   @override
   Future<void> dispose() async {}
   @override
@@ -236,7 +377,18 @@ class _SyncBootstrap implements SyncBootstrapCoordinator {
     String userId, {
     Duration timeout = const Duration(seconds: 4),
     Future<void>? cancelled,
-  }) async {}
+  }) async {
+    final gate = _gate;
+    if (gate == null) return;
+    isWaiting = true;
+    await gate.future;
+    isWaiting = false;
+  }
+
+  void release() {
+    final gate = _gate;
+    if (gate != null && !gate.isCompleted) gate.complete();
+  }
 }
 
 class _Storage implements LocalStorageService {

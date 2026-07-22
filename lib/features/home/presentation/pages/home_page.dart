@@ -259,12 +259,6 @@ class _HomePageState extends ConsumerState<HomePage>
   Widget _content(TodayDashboardReadModel model, bool isSigningOut) {
     return HBScaffold(
       appBar: _appBar(isSigningOut),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Conversar com a BarIA',
-        onPressed: () => _openRoute(AppRoutes.baria),
-        child: const Icon(Icons.auto_awesome_outlined),
-      ),
-      floatingActionButtonLocation: const _RaisedEndFloatLocation(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -294,20 +288,6 @@ class _HomePageState extends ConsumerState<HomePage>
         ],
       ),
     );
-  }
-}
-
-class _RaisedEndFloatLocation extends FloatingActionButtonLocation {
-  const _RaisedEndFloatLocation(this.offset);
-
-  final double offset;
-
-  @override
-  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
-    final base = FloatingActionButtonLocation.endFloat.getOffset(
-      scaffoldGeometry,
-    );
-    return base.translate(0, -offset);
   }
 }
 

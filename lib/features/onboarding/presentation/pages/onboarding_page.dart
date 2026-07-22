@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
-import '../../../../app/router/app_routes.dart';
 import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/validators/app_validators.dart';
 import '../../../../core/services/service_providers.dart';
@@ -142,9 +139,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage>
     final viewModel = ref.read(onboardingViewModelProvider.notifier);
 
     ref.listen(onboardingViewModelProvider, (previous, next) {
-      if (previous?.hasCompleted == false && next.hasCompleted) {
-        context.go(next.isAuthenticated ? AppRoutes.home : AppRoutes.login);
-      }
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
         HBSnackBar.error(context, message: next.errorMessage!);

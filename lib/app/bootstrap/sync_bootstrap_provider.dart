@@ -76,8 +76,14 @@ class SyncBootstrapCoordinator {
 
   Future<void> _ensureInitialSync(String userId) =>
       _initialSyncs.putIfAbsent(userId, () async {
-        await _ref.read(syncManagerProvider.notifier).loadState();
-        await _ref.read(syncManagerProvider.notifier).syncNow();
+        try {
+          if (_ref.read(authSessionProvider)?.id != userId) return;
+          await _ref.read(syncManagerProvider.notifier).loadState();
+          if (_ref.read(authSessionProvider)?.id != userId) return;
+          await _ref.read(syncManagerProvider.notifier).syncNow();
+        } on SyncSessionRevokedException {
+          // Session replacement/logout is cancellation, not a bootstrap error.
+        }
       });
 
   Future<void> retry() async {
@@ -85,6 +91,8 @@ class SyncBootstrapCoordinator {
     if (userId == null) return;
     try {
       await _ref.read(syncManagerProvider.notifier).syncNow();
+    } on SyncSessionRevokedException {
+      // Expected if the active account changes while retry is starting.
     } catch (error, stackTrace) {
       // Manual retry preserves the offline-first UI on infrastructure errors.
       AppLogger.error(

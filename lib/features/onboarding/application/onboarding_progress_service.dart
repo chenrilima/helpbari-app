@@ -28,10 +28,11 @@ final class OnboardingProgressService {
 
   Future<OnboardingProgress> resolve(String userId) async {
     final existing = await _repository.getForUser();
-    final profile = await _profile.getProfile();
-    final hasConsent = await _privacy.hasCurrentConsent();
     if (existing != null) {
       final validated = _validate(existing);
+      if (validated.isCurrentCompleted) return validated;
+      final profile = await _profile.getProfile();
+      final hasConsent = await _privacy.hasCurrentConsent();
       if (validated.onboardingVersion < OnboardingV1Contract.version) {
         final migrated = validated.copyWith(
           onboardingVersion: OnboardingV1Contract.version,
@@ -55,19 +56,11 @@ final class OnboardingProgressService {
         await _repository.save(migrated);
         return migrated;
       }
-      if (validated.isCurrentCompleted && (profile == null || !hasConsent)) {
-        final reviewed = validated.copyWith(
-          status: OnboardingProgressStatus.needsReview,
-          currentStepId: profile == null ? 'basicProfile' : 'legalConsents',
-          clearCompletedAt: true,
-          updatedAt: _now().toUtc(),
-        );
-        await _repository.save(reviewed);
-        return reviewed;
-      }
       return validated;
     }
 
+    final profile = await _profile.getProfile();
+    final hasConsent = await _privacy.hasCurrentConsent();
     final now = _now().toUtc();
     final legacyStepId = _legacyStepId(_legacy.getResumeStep(userId));
     final hasDraft = !_legacy.getDraft(userId).isEmpty;
@@ -131,6 +124,7 @@ final class OnboardingProgressService {
   }
 
   Future<OnboardingProgress> complete(OnboardingProgress progress) async {
+    if (progress.isCurrentCompleted) return progress;
     final now = _now().toUtc();
     final updated = progress.copyWith(
       onboardingVersion: OnboardingV1Contract.version,
