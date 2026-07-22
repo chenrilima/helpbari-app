@@ -37,7 +37,11 @@ abstract final class AppRedirectResolver {
       AppEntryPhase.authenticatedResolvingAccount =>
         location == AppRoutes.splash ? null : AppRoutes.splash,
       AppEntryPhase.unauthenticated || AppEntryPhase.sessionExpired =>
-        isPublic(location) ? null : AppRoutes.login,
+        location == AppRoutes.login ||
+                location == AppRoutes.signUp ||
+                location == AppRoutes.resetPassword
+            ? null
+            : AppRoutes.login,
       AppEntryPhase.onboardingRequired || AppEntryPhase.fatalRecovery =>
         location == AppRoutes.onboarding ? null : AppRoutes.onboarding,
       AppEntryPhase.ready =>

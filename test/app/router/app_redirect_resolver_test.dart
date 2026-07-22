@@ -10,6 +10,25 @@ import 'package:helpbari/features/profile/presentation/states/profile_state.dart
 void main() {
   const user = AuthUser(id: 'user-a', email: 'ana@example.com');
 
+  test('sends an unauthenticated initial session from splash to login', () {
+    const onboarding = OnboardingState(
+      introductionCompleted: false,
+      userCompleted: false,
+      isAuthenticated: false,
+      draft: OnboardingProfileDraft(),
+    );
+
+    final redirect = AppRedirectResolver.resolve(
+      location: AppRoutes.splash,
+      session: null,
+      authState: const AuthUnauthenticated(),
+      onboardingState: onboarding,
+      profileState: const ProfileState(),
+    );
+
+    expect(redirect, AppRoutes.login);
+  });
+
   test('keeps splash stable while auth restoration is loading', () {
     const onboarding = OnboardingState(
       introductionCompleted: true,
