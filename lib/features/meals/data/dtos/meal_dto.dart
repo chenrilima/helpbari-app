@@ -123,8 +123,8 @@ class MealDto {
       deletedAt: row['deleted_at'] == null
           ? null
           : DateTime.parse(row['deleted_at'] as String),
-        syncStatus: SyncStatus.synced,
-        serverRevision: row['server_revision'] as int?,
+      syncStatus: SyncStatus.synced,
+      serverRevision: row['server_revision'] as int?,
     ),
   );
 
