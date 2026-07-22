@@ -21,6 +21,32 @@ class PrivacyConsentDao extends DatabaseAccessor<AppDatabase>
             ..where((row) => row.userId.equals(userId) & row.id.equals(id)))
           .getSingleOrNull();
 
+  Future<PrivacyConsentRecord?> getByUserAndVersions(
+    String userId,
+    String termsVersion,
+    String privacyVersion,
+  ) =>
+      (select(privacyConsentRecords)..where(
+            (row) =>
+                row.userId.equals(userId) &
+                row.termsVersion.equals(termsVersion) &
+                row.privacyVersion.equals(privacyVersion),
+          ))
+          .getSingleOrNull();
+
+  Future<void> replaceVersion(PrivacyConsentRecordsCompanion value) =>
+      transaction(() async {
+        await (delete(privacyConsentRecords)..where(
+              (row) =>
+                  row.userId.equals(value.userId.value) &
+                  row.termsVersion.equals(value.termsVersion.value) &
+                  row.privacyVersion.equals(value.privacyVersion.value) &
+                  row.id.isNotValue(value.id.value),
+            ))
+            .go();
+        await upsert(value);
+      });
+
   Future<List<PrivacyConsentRecord>> getPending(String userId) =>
       userId == 'anonymous'
       ? Future.value(const [])

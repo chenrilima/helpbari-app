@@ -325,7 +325,15 @@ class IntelligentQuickActionsSection extends StatelessWidget {
     if (id.contains('water')) return Icons.water_drop_outlined;
     if (id.contains('meal')) return Icons.restaurant_outlined;
     if (id.contains('weight')) return Icons.monitor_weight_outlined;
-    if (id.contains('prescription')) return Icons.receipt_long_outlined;
+    if (id.contains('vitamin')) return Icons.medication_liquid_outlined;
+    if (id.contains('exam')) return Icons.science_outlined;
+    if (id.contains('progress')) return Icons.trending_up_outlined;
+    if (id.contains('profile')) return Icons.account_circle_outlined;
+    if (id.contains('document')) return Icons.folder_outlined;
+    if (id.contains('report')) return Icons.picture_as_pdf_outlined;
+    if (id.contains('bioimpedance')) return Icons.monitor_heart_outlined;
+    if (id.contains('academy')) return Icons.menu_book_outlined;
+    if (id.contains('settings')) return Icons.settings_outlined;
     if (id.contains('treatment')) return Icons.medication_outlined;
     return Icons.calendar_month_outlined;
   }

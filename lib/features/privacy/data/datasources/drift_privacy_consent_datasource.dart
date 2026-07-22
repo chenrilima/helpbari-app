@@ -40,7 +40,16 @@ class DriftPrivacyConsentDatasource {
         !remote.syncMetadata.updatedAt.isAfter(local.updatedAt)) {
       return false;
     }
-    await _dao.upsert(remote.toDrift());
+    final sameVersion = await _dao.getByUserAndVersions(
+      userId,
+      remote.consent.termsVersion,
+      remote.consent.privacyVersion,
+    );
+    if (sameVersion != null &&
+        !remote.syncMetadata.updatedAt.isAfter(sameVersion.updatedAt)) {
+      return false;
+    }
+    await _dao.replaceVersion(remote.toDrift());
     return true;
   }
 

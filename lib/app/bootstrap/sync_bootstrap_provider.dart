@@ -28,8 +28,8 @@ class SyncBootstrapCoordinator {
       ..listen(_ref.read(syncConnectivityChangesProvider));
 
     _ref.listen(authSessionProvider, (previous, next) {
+      if (previous?.id != next?.id) _initialSyncs.clear();
       if (next == null) {
-        _initialSyncs.clear();
         return;
       }
       unawaited(
@@ -37,10 +37,12 @@ class SyncBootstrapCoordinator {
           Object error,
           StackTrace stack,
         ) {
-          AppLogger.error(
-            'Initial sync failed (${error.runtimeType}).',
-            stackTrace: stack,
-          );
+          if (error is! SyncSessionRevokedException) {
+            AppLogger.error(
+              'Initial sync failed (${error.runtimeType}).',
+              stackTrace: stack,
+            );
+          }
         }),
       );
     }, fireImmediately: true);
@@ -59,6 +61,8 @@ class SyncBootstrapCoordinator {
         timedOut.future,
         ?cancelled,
       ]);
+    } on SyncSessionRevokedException {
+      // Expected when authentication changes while bootstrap is running.
     } catch (error, stackTrace) {
       // Sync errors are represented by SyncResult; bootstrap must remain usable.
       AppLogger.error(

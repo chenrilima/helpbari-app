@@ -2,6 +2,7 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/database/drift/app_database.dart';
 import 'package:helpbari/core/services/services.dart';
+import 'package:helpbari/core/sync/sync.dart';
 import 'package:helpbari/features/privacy/data/datasources/drift_privacy_consent_datasource.dart';
 import 'package:helpbari/features/privacy/data/datasources/privacy_supabase_datasource.dart';
 import 'package:helpbari/features/privacy/data/dtos/privacy_consent_dto.dart';
@@ -41,6 +42,45 @@ void main() {
     expect(userA.single.userId, 'user-a');
     expect(userB.single.userId, 'user-b');
   });
+
+  test(
+    'remote consent replaces a local id for the same document version',
+    () async {
+      final repository = _repository(database, 'user-a');
+      await repository.acceptCurrentDocuments();
+      final local = DriftPrivacyConsentDatasource(
+        dao: database.privacyConsentDao,
+        userId: 'user-a',
+      );
+      final remoteTime = DateTime.utc(2026, 7, 16, 13);
+
+      final applied = await local.applyRemote(
+        PrivacyConsentDto(
+          consent: PrivacyConsent(
+            id: 'remote-consent',
+            userId: 'user-a',
+            termsVersion: PrivacyDocuments.termsVersion,
+            privacyVersion: PrivacyDocuments.privacyVersion,
+            acceptedAt: remoteTime,
+            deviceId: 'remote-device',
+            timezone: 'America/Sao_Paulo',
+          ),
+          syncMetadata: SyncMetadata(
+            id: 'remote-consent',
+            userId: 'user-a',
+            createdAt: remoteTime,
+            updatedAt: remoteTime,
+            syncStatus: SyncStatus.synced,
+          ),
+        ),
+      );
+
+      final history = await repository.getConsentHistory();
+      expect(applied, isTrue);
+      expect(history, hasLength(1));
+      expect(history.single.id, 'remote-consent');
+    },
+  );
 
   test('anonymous cannot register legal acceptance', () async {
     await expectLater(

@@ -10,6 +10,7 @@ class HBScaffold extends StatelessWidget {
     this.padding = const EdgeInsets.all(AppSpacing.lg),
     this.appBar,
     this.floatingActionButton,
+    this.floatingActionButtonLocation,
     this.resizeToAvoidBottomInset,
     this.scrollable = true,
   });
@@ -19,6 +20,7 @@ class HBScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final PreferredSizeWidget? appBar;
   final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
   final bool? resizeToAvoidBottomInset;
   final bool scrollable;
 
@@ -28,6 +30,7 @@ class HBScaffold extends StatelessWidget {
       backgroundColor: backgroundColor,
       appBar: appBar,
       floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       body: HBResponsivePage(
         padding: padding,

@@ -34,6 +34,7 @@ class _HomePageState extends ConsumerState<HomePage>
   Timer? _dayRefreshTimer;
   DateTime? _snapshotDate;
   String? _snapshotTimeZone;
+  bool _dashboardReady = false;
 
   @override
   void initState() {
@@ -41,6 +42,9 @@ class _HomePageState extends ConsumerState<HomePage>
     WidgetsBinding.instance.addObserver(this);
     Future.microtask(_refreshAfterSync);
     Future.microtask(_scheduleDayRefresh);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() => _dashboardReady = true);
+    });
   }
 
   Future<void> _refreshAfterSync() async {
@@ -194,7 +198,6 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final dashboard = ref.watch(todayDashboardProvider);
     final authState = ref.watch(authViewModelProvider);
 
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
@@ -202,6 +205,14 @@ class _HomePageState extends ConsumerState<HomePage>
         HBSnackBar.error(context, message: message);
       }
     });
+
+    if (!_dashboardReady) {
+      return const HBPage(
+        children: [HBLoading(message: 'Carregando dados do aparelho...')],
+      );
+    }
+
+    final dashboard = ref.watch(todayDashboardProvider);
 
     return HBLoadingOverlay(
       isLoading: authState is AuthLoading,
@@ -253,6 +264,7 @@ class _HomePageState extends ConsumerState<HomePage>
         onPressed: () => _openRoute(AppRoutes.baria),
         child: const Icon(Icons.auto_awesome_outlined),
       ),
+      floatingActionButtonLocation: const _RaisedEndFloatLocation(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -282,6 +294,20 @@ class _HomePageState extends ConsumerState<HomePage>
         ],
       ),
     );
+  }
+}
+
+class _RaisedEndFloatLocation extends FloatingActionButtonLocation {
+  const _RaisedEndFloatLocation(this.offset);
+
+  final double offset;
+
+  @override
+  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
+    final base = FloatingActionButtonLocation.endFloat.getOffset(
+      scaffoldGeometry,
+    );
+    return base.translate(0, -offset);
   }
 }
 

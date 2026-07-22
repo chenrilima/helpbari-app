@@ -40,7 +40,8 @@ class _TreatmentPageState extends ConsumerState<TreatmentPage> {
   Future<void> _refresh() async {
     await ref.read(treatmentViewModelProvider.notifier).load();
     if (!mounted) return;
-    setState(() => _today = _loadToday());
+    final today = _loadToday();
+    setState(() => _today = today);
   }
 
   Future<void> _addItem() async {

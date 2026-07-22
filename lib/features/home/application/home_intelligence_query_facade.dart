@@ -566,8 +566,87 @@ class HomeIntelligenceQueryFacade {
         accessibilityLabel: 'Adicionar consulta',
       ),
     );
+    actions.addAll(const [
+      QuickActionReadModel(
+        id: 'quick:weight',
+        title: 'Peso',
+        kind: HomeActionKind.route,
+        deepLink: '/weight',
+        accessibilityLabel: 'Abrir acompanhamento de peso',
+      ),
+      QuickActionReadModel(
+        id: 'quick:vitamins',
+        title: 'Vitaminas',
+        kind: HomeActionKind.route,
+        deepLink: '/vitamins',
+        accessibilityLabel: 'Abrir vitaminas',
+      ),
+      QuickActionReadModel(
+        id: 'quick:exams',
+        title: 'Exames',
+        kind: HomeActionKind.route,
+        deepLink: '/exams',
+        accessibilityLabel: 'Abrir exames',
+      ),
+      QuickActionReadModel(
+        id: 'quick:progress',
+        title: 'Evolução',
+        kind: HomeActionKind.route,
+        deepLink: '/progress',
+        accessibilityLabel: 'Abrir evolução',
+      ),
+      QuickActionReadModel(
+        id: 'quick:profile',
+        title: 'Perfil',
+        kind: HomeActionKind.route,
+        deepLink: '/profile',
+        accessibilityLabel: 'Abrir perfil',
+      ),
+      QuickActionReadModel(
+        id: 'quick:medications',
+        title: 'Medicamentos',
+        kind: HomeActionKind.route,
+        deepLink: '/medications',
+        accessibilityLabel: 'Abrir medicamentos',
+      ),
+      QuickActionReadModel(
+        id: 'quick:documents',
+        title: 'Documentos',
+        kind: HomeActionKind.route,
+        deepLink: '/documents',
+        accessibilityLabel: 'Abrir central de documentos',
+      ),
+      QuickActionReadModel(
+        id: 'quick:reports',
+        title: 'Relatórios',
+        kind: HomeActionKind.route,
+        deepLink: '/medical-reports',
+        accessibilityLabel: 'Abrir relatórios médicos',
+      ),
+      QuickActionReadModel(
+        id: 'quick:bioimpedance',
+        title: 'Bioimpedância',
+        kind: HomeActionKind.route,
+        deepLink: '/bioimpedance',
+        accessibilityLabel: 'Abrir avaliações de bioimpedância',
+      ),
+      QuickActionReadModel(
+        id: 'quick:academy',
+        title: 'Academia',
+        kind: HomeActionKind.route,
+        deepLink: '/academy',
+        accessibilityLabel: 'Abrir academia de conteúdo',
+      ),
+      QuickActionReadModel(
+        id: 'quick:settings',
+        title: 'Configurações',
+        kind: HomeActionKind.route,
+        deepLink: '/settings',
+        accessibilityLabel: 'Abrir configurações',
+      ),
+    ]);
     return QuickActionsReadModel(
-      fixed: actions.take(4),
+      fixed: actions,
       dynamic: const [],
       status: HomeSectionStatus(
         state: HomeSectionState.ready,
