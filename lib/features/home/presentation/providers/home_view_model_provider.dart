@@ -145,41 +145,40 @@ final homePrescriptionReviewCountProvider = FutureProvider<int>((ref) async {
 
 final todayAgendaProvider = FutureProvider<AgendaReadModel>((ref) async {
   final context = ref.watch(_homeRequestContextProvider);
+  final facade = ref.watch(homeIntelligenceQueryFacadeProvider);
   final values = await Future.wait<Object>([
     ref.watch(homeTreatmentSourceProvider.future),
     ref.watch(homeAppointmentSourceProvider.future),
   ]);
-  return ref
-      .watch(homeIntelligenceQueryFacadeProvider)
-      .composeAgenda(
-        now: context.now,
-        start: context.date,
-        end: context.end,
-        treatmentDays: values[0] as Map<String, TodayTreatmentReadModel>,
-        appointments: values[1] as List<Appointment>,
-        freshness: context.freshness,
-        pendingSync: context.pendingSync,
-      );
+  return facade.composeAgenda(
+    now: context.now,
+    start: context.date,
+    end: context.end,
+    treatmentDays: values[0] as Map<String, TodayTreatmentReadModel>,
+    appointments: values[1] as List<Appointment>,
+    freshness: context.freshness,
+    pendingSync: context.pendingSync,
+  );
 });
 
 final treatmentSummaryProvider = FutureProvider<TreatmentSummaryReadModel>((
   ref,
 ) async {
   final context = ref.watch(_homeRequestContextProvider);
+  final facade = ref.watch(homeIntelligenceQueryFacadeProvider);
   final days = await ref.watch(homeTreatmentSourceProvider.future);
-  return ref
-      .watch(homeIntelligenceQueryFacadeProvider)
-      .composeTreatmentSummary(
-        days[_dateKey(context.date)],
-        context.freshness,
-        context.pendingSync,
-      );
+  return facade.composeTreatmentSummary(
+    days[_dateKey(context.date)],
+    context.freshness,
+    context.pendingSync,
+  );
 });
 
 final dailyProgressProvider = FutureProvider<ProgressSummaryReadModel>((
   ref,
 ) async {
   final context = ref.watch(_homeRequestContextProvider);
+  final facade = ref.watch(homeIntelligenceQueryFacadeProvider);
   final values = await Future.wait<Object?>([
     ref.watch(homeHealthSourceProvider.future),
     ref.watch(treatmentSummaryProvider.future),
@@ -192,91 +191,87 @@ final dailyProgressProvider = FutureProvider<ProgressSummaryReadModel>((
       : ProteinCalculator.goalForWeightKg(
           latestWeight ?? profile.initialWeight.value,
         );
-  return ref
-      .watch(homeIntelligenceQueryFacadeProvider)
-      .composeProgress(
-        health: health,
-        treatment: values[1] as TreatmentSummaryReadModel,
-        proteinGoal: proteinGoal,
-        freshness: context.freshness,
-        pendingSync: context.pendingSync,
-      );
+  return facade.composeProgress(
+    health: health,
+    treatment: values[1] as TreatmentSummaryReadModel,
+    proteinGoal: proteinGoal,
+    freshness: context.freshness,
+    pendingSync: context.pendingSync,
+  );
 });
 
 final nextActionsProvider = FutureProvider<NextActionsReadModel>((ref) async {
   final context = ref.watch(_homeRequestContextProvider);
+  final facade = ref.watch(homeIntelligenceQueryFacadeProvider);
   final values = await Future.wait<Object>([
     ref.watch(todayAgendaProvider.future),
     ref.watch(homePrescriptionReviewCountProvider.future),
   ]);
-  return ref
-      .watch(homeIntelligenceQueryFacadeProvider)
-      .composeNextActions(
-        now: context.now,
-        agenda: values[0] as AgendaReadModel,
-        prescriptionsAwaitingReview: values[1] as int,
-        freshness: context.freshness,
-        pendingSync: context.pendingSync,
-      );
+  return facade.composeNextActions(
+    now: context.now,
+    agenda: values[0] as AgendaReadModel,
+    prescriptionsAwaitingReview: values[1] as int,
+    freshness: context.freshness,
+    pendingSync: context.pendingSync,
+  );
 });
 
 final homeInsightsProvider = FutureProvider<InsightFeedReadModel>((ref) async {
   final context = ref.watch(_homeRequestContextProvider);
+  final facade = ref.watch(homeIntelligenceQueryFacadeProvider);
   final values = await Future.wait<Object?>([
     ref.watch(homeHealthSourceProvider.future),
     ref.watch(treatmentSummaryProvider.future),
     ref.watch(todayAgendaProvider.future),
     ref.watch(homePrescriptionReviewCountProvider.future),
   ]);
-  return ref
-      .watch(homeIntelligenceQueryFacadeProvider)
-      .composeInsights(
-        now: context.now,
-        health: values[0] as HealthDashboardAggregate?,
-        treatment: values[1] as TreatmentSummaryReadModel,
-        agenda: values[2] as AgendaReadModel,
-        prescriptionsAwaitingReview: values[3] as int,
-        freshness: context.freshness,
-        pendingSync: context.pendingSync,
-      );
+  return facade.composeInsights(
+    now: context.now,
+    health: values[0] as HealthDashboardAggregate?,
+    treatment: values[1] as TreatmentSummaryReadModel,
+    agenda: values[2] as AgendaReadModel,
+    prescriptionsAwaitingReview: values[3] as int,
+    freshness: context.freshness,
+    pendingSync: context.pendingSync,
+  );
 });
 
 final quickActionsProvider = FutureProvider<QuickActionsReadModel>((ref) async {
   final context = ref.watch(_homeRequestContextProvider);
+  final facade = ref.watch(homeIntelligenceQueryFacadeProvider);
   final values = await Future.wait<Object>([
     ref.watch(todayAgendaProvider.future),
     ref.watch(settingsUseCasesProvider).getSettings(),
   ]);
-  return ref
-      .watch(homeIntelligenceQueryFacadeProvider)
-      .composeQuickActions(
-        agenda: values[0] as AgendaReadModel,
-        settings: values[1] as AppSettings,
-        freshness: context.freshness,
-        pendingSync: context.pendingSync,
-      );
+  return facade.composeQuickActions(
+    agenda: values[0] as AgendaReadModel,
+    settings: values[1] as AppSettings,
+    freshness: context.freshness,
+    pendingSync: context.pendingSync,
+  );
 });
 
 final quickStatsProvider = FutureProvider<QuickStatsReadModel>((ref) async {
   final context = ref.watch(_homeRequestContextProvider);
+  final facade = ref.watch(homeIntelligenceQueryFacadeProvider);
   final values = await Future.wait<Object?>([
     ref.watch(homeHealthSourceProvider.future),
     ref.watch(treatmentSummaryProvider.future),
   ]);
-  return ref
-      .watch(homeIntelligenceQueryFacadeProvider)
-      .composeQuickStats(
-        values[0] as HealthDashboardAggregate?,
-        values[1] as TreatmentSummaryReadModel,
-        context.freshness,
-        context.pendingSync,
-      );
+  return facade.composeQuickStats(
+    values[0] as HealthDashboardAggregate?,
+    values[1] as TreatmentSummaryReadModel,
+    context.freshness,
+    context.pendingSync,
+  );
 });
 
 final todayDashboardProvider = FutureProvider<TodayDashboardReadModel>((
   ref,
 ) async {
   final context = ref.watch(_homeRequestContextProvider);
+  final currentUserId = ref.watch(authSessionProvider)?.id;
+  final timeZone = ref.watch(notificationSchedulerProvider).state.timeZone;
   final values = await Future.wait<Object?>([
     ref.watch(homeHealthSourceProvider.future),
     ref.watch(nextActionsProvider.future),
@@ -289,13 +284,13 @@ final todayDashboardProvider = FutureProvider<TodayDashboardReadModel>((
   ]);
   const HomeSessionRequestGuard().ensureCurrent(
     expectedUserId: context.userId,
-    currentUserId: ref.read(authSessionProvider)?.id,
+    currentUserId: currentUserId,
   );
   final health = values[0] as HealthDashboardAggregate?;
   return TodayDashboardReadModel(
     userId: context.userId,
     clinicalDate: context.date,
-    timeZone: ref.read(notificationSchedulerProvider).state.timeZone ?? 'UTC',
+    timeZone: timeZone ?? 'UTC',
     userName: health?.profile?.name,
     nextActions: values[1] as NextActionsReadModel,
     agenda: values[2] as AgendaReadModel,

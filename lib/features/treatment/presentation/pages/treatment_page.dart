@@ -41,13 +41,16 @@ class _TreatmentPageState extends ConsumerState<TreatmentPage> {
     await ref.read(treatmentViewModelProvider.notifier).load();
     if (!mounted) return;
     final today = _loadToday();
-    setState(() => _today = today);
+    setState(() {
+      _today = today;
+    });
   }
 
   Future<void> _addItem() async {
     await context.pushAndRefresh<bool>(
       AppRoutes.registerTreatment,
       onRefresh: _refresh,
+      shouldRefresh: (result) => result == true,
     );
   }
 
@@ -121,18 +124,18 @@ class _TreatmentPageState extends ConsumerState<TreatmentPage> {
               _TreatmentItemCard(
                 item: item,
                 onOpen: () async {
-                  await context.push<bool>(
+                  final changed = await context.push<bool>(
                     AppRoutes.treatmentDetail,
                     extra: item,
                   );
-                  await _refresh();
+                  if (changed == true && mounted) await _refresh();
                 },
                 onEdit: () async {
-                  await context.push<bool>(
+                  final changed = await context.push<bool>(
                     AppRoutes.registerTreatment,
                     extra: item,
                   );
-                  await _refresh();
+                  if (changed == true && mounted) await _refresh();
                 },
                 onPause: () => _confirmLifecycle(item, _Lifecycle.pause),
                 onResume: () => _confirmLifecycle(item, _Lifecycle.resume),

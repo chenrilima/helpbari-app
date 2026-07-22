@@ -5,6 +5,25 @@ import '../tables/smart_routine_records.dart';
 
 part 'smart_routine_dao.g.dart';
 
+final class SmartRoutineIntegrityException implements Exception {
+  const SmartRoutineIntegrityException({
+    required this.code,
+    required this.entity,
+    required this.entityId,
+    required this.fields,
+  });
+
+  final String code;
+  final String entity;
+  final String entityId;
+  final List<String> fields;
+
+  @override
+  String toString() =>
+      'SmartRoutineIntegrityException(code: $code, entity: $entity, '
+      'id: $entityId, fields: ${fields.join(',')})';
+}
+
 @DriftAccessor(
   tables: [
     SmartRoutineRecords,
@@ -30,11 +49,24 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
       into(smartRoutineRecords).insertOnConflictUpdate(row);
   Future<void> upsertPlan(RoutinePlanRecordsCompanion row) async {
     final routine = await getRoutine(row.userId.value, row.routineId.value);
-    if (routine == null) throw StateError('routine_plan_parent_missing');
+    if (routine == null) {
+      throw SmartRoutineIntegrityException(
+        code: 'routine_plan_parent_missing',
+        entity: 'routine_plans',
+        entityId: row.id.value,
+        fields: const ['routine_id'],
+      );
+    }
     final current = await getPlan(row.userId.value, row.id.value);
     if (current != null) {
-      if (!_samePlanClinicalPayload(current, row)) {
-        throw StateError('routine_plan_payload_conflict');
+      final differences = _planClinicalPayloadDifferences(current, row);
+      if (differences.isNotEmpty) {
+        throw SmartRoutineIntegrityException(
+          code: 'routine_plan_payload_conflict',
+          entity: 'routine_plans',
+          entityId: row.id.value,
+          fields: differences,
+        );
       }
       if (current.replacedAt == null && row.replacedAt.value != null) {
         await (update(routinePlanRecords)..where(
@@ -329,35 +361,86 @@ class SmartRoutineDao extends DatabaseAccessor<AppDatabase>
         ),
       );
 
-  bool _samePlanClinicalPayload(
+  List<String> _planClinicalPayloadDifferences(
     RoutinePlanRecord current,
     RoutinePlanRecordsCompanion row,
-  ) =>
-      current.routineId == row.routineId.value &&
-      current.revision == row.revision.value &&
-      current.category == row.category.value &&
-      current.mode == row.mode.value &&
-      current.durationType == row.durationType.value &&
-      current.effectiveFrom == row.effectiveFrom.value &&
-      current.effectiveUntil == row.effectiveUntil.value &&
-      current.doseValue == row.doseValue.value &&
-      current.doseUnit == row.doseUnit.value &&
-      current.doseOriginalText == row.doseOriginalText.value &&
-      current.route == row.route.value &&
-      current.clinicalInstructions == row.clinicalInstructions.value &&
-      current.activatedAt == row.activatedAt.value &&
-      (current.replacedAt == row.replacedAt.value ||
-          (current.replacedAt == null && row.replacedAt.value != null)) &&
-      current.previousPlanId == row.previousPlanId.value &&
-      current.provenanceOrigin == row.provenanceOrigin.value &&
-      current.validationStatus == row.validationStatus.value &&
-      current.provenancePrescriptionId == row.provenancePrescriptionId.value &&
-      current.provenancePrescriptionItemId ==
-          row.provenancePrescriptionItemId.value &&
-      current.provenanceDocumentId == row.provenanceDocumentId.value &&
-      current.provenanceProfessionalReference ==
-          row.provenanceProfessionalReference.value &&
-      current.temporalPrecision == row.temporalPrecision.value;
+  ) {
+    final differences = <String>[];
+    void compare(String field, Object? left, Object? right) {
+      if (left != right) differences.add(field);
+    }
+
+    compare('routine_id', current.routineId, row.routineId.value);
+    compare('revision', current.revision, row.revision.value);
+    compare('category', current.category, row.category.value);
+    compare('mode', current.mode, row.mode.value);
+    compare('duration_type', current.durationType, row.durationType.value);
+    compare('effective_from', current.effectiveFrom, row.effectiveFrom.value);
+    compare(
+      'effective_until',
+      current.effectiveUntil,
+      row.effectiveUntil.value,
+    );
+    compare('dose_value', current.doseValue, row.doseValue.value);
+    compare('dose_unit', current.doseUnit, row.doseUnit.value);
+    compare(
+      'dose_original_text',
+      current.doseOriginalText,
+      row.doseOriginalText.value,
+    );
+    compare('route', current.route, row.route.value);
+    compare(
+      'clinical_instructions',
+      current.clinicalInstructions,
+      row.clinicalInstructions.value,
+    );
+    compare('activated_at', current.activatedAt, row.activatedAt.value);
+    if (!(current.replacedAt == row.replacedAt.value ||
+        (current.replacedAt == null && row.replacedAt.value != null))) {
+      differences.add('replaced_at');
+    }
+    compare(
+      'previous_plan_id',
+      current.previousPlanId,
+      row.previousPlanId.value,
+    );
+    compare(
+      'provenance_origin',
+      current.provenanceOrigin,
+      row.provenanceOrigin.value,
+    );
+    compare(
+      'validation_status',
+      current.validationStatus,
+      row.validationStatus.value,
+    );
+    compare(
+      'provenance_prescription_id',
+      current.provenancePrescriptionId,
+      row.provenancePrescriptionId.value,
+    );
+    compare(
+      'provenance_prescription_item_id',
+      current.provenancePrescriptionItemId,
+      row.provenancePrescriptionItemId.value,
+    );
+    compare(
+      'provenance_document_id',
+      current.provenanceDocumentId,
+      row.provenanceDocumentId.value,
+    );
+    compare(
+      'provenance_professional_reference',
+      current.provenanceProfessionalReference,
+      row.provenanceProfessionalReference.value,
+    );
+    compare(
+      'temporal_precision',
+      current.temporalPrecision,
+      row.temporalPrecision.value,
+    );
+    return differences;
+  }
 
   bool _sameScheduleClinicalPayload(
     RoutineScheduleRecord current,

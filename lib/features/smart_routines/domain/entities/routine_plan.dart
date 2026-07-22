@@ -240,7 +240,8 @@ final class RoutinePlan extends Entity {
           createdAt == other.createdAt &&
           activatedAt == other.activatedAt &&
           replacedAt == other.replacedAt &&
-          previousPlanId == other.previousPlanId;
+          previousPlanId == other.previousPlanId &&
+          provenance == other.provenance;
 
   @override
   int get hashCode => Object.hash(

@@ -1,6 +1,7 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpbari/core/database/drift/app_database.dart';
+import 'package:helpbari/core/database/drift/daos/smart_routine_dao.dart';
 import 'package:helpbari/features/smart_routines/data/datasources/drift_smart_routine_datasource.dart';
 import 'package:helpbari/features/smart_routines/data/datasources/smart_routine_supabase_datasource.dart';
 import 'package:helpbari/features/smart_routines/data/repositories/smart_routines_sync_repository.dart';
@@ -269,6 +270,77 @@ void main() {
     );
   });
 
+  test('empty remote dose fields are idempotent on retry', () async {
+    final database = AppDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final datasource = DriftSmartRoutineDatasource(
+      dao: database.smartRoutineDao,
+      userId: userId,
+    );
+    final timestamp = DateTime.utc(2026, 7, 20, 12);
+    final records = _validRoutineAndPlan(userId, timestamp);
+
+    await datasource.applyRemoteBatch(records, {
+      'smart_routines': timestamp,
+      'routine_plans': timestamp,
+    });
+    await datasource.applyRemoteBatch(records, {
+      'smart_routines': timestamp,
+      'routine_plans': timestamp,
+    });
+
+    expect(
+      await database.select(database.routinePlanRecords).get(),
+      hasLength(1),
+    );
+  });
+
+  test('plan conflict identifies record and divergent fields', () async {
+    final database = AppDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final datasource = DriftSmartRoutineDatasource(
+      dao: database.smartRoutineDao,
+      userId: userId,
+    );
+    final timestamp = DateTime.utc(2026, 7, 20, 12);
+    final records = _validRoutineAndPlan(userId, timestamp);
+    await datasource.applyRemoteBatch(records, {
+      'smart_routines': timestamp,
+      'routine_plans': timestamp,
+    });
+    final changed = records
+        .map(
+          (record) => record.table == 'routine_plans'
+              ? SmartRoutineLocalRecord(record.table, {
+                  ...record.row,
+                  'provenance_origin': 'prescriptionImport',
+                })
+              : record,
+        )
+        .toList();
+
+    await expectLater(
+      datasource.applyRemoteBatch(changed, {
+        'smart_routines': timestamp.add(const Duration(minutes: 1)),
+        'routine_plans': timestamp.add(const Duration(minutes: 1)),
+      }),
+      throwsA(
+        isA<SmartRoutineIntegrityException>()
+            .having((error) => error.entityId, 'entityId', _planId)
+            .having(
+              (error) => error.fields,
+              'fields',
+              contains('provenance_origin'),
+            ),
+      ),
+    );
+    final cursor = await database.smartRoutineDao.getSyncCursor(
+      userId,
+      'smart_routines:routine_plans',
+    );
+    expect(cursor?.toUtc(), timestamp);
+  });
+
   test('real Drift pending rows serialize Unix millisecond dates', () async {
     final database = AppDatabase(NativeDatabase.memory());
     addTearDown(database.close);
@@ -356,6 +428,59 @@ void main() {
     },
   );
 }
+
+const _routineId = '20000000-0000-4000-8000-000000000009';
+const _planId = '30000000-0000-4000-8000-000000000009';
+
+List<SmartRoutineLocalRecord> _validRoutineAndPlan(
+  String userId,
+  DateTime timestamp,
+) => [
+  SmartRoutineLocalRecord('smart_routines', {
+    'id': _routineId,
+    'user_id': userId,
+    'category': 'vitamin',
+    'display_name': 'B12',
+    'status': 'active',
+    'source': 'manual',
+    'prescription_id': null,
+    'prescription_item_id': null,
+    'personal_notes': null,
+    'icon_key': null,
+    'created_at': timestamp.toIso8601String(),
+    'updated_at': timestamp.toIso8601String(),
+    'deleted_at': null,
+  }),
+  SmartRoutineLocalRecord('routine_plans', {
+    'id': _planId,
+    'user_id': userId,
+    'routine_id': _routineId,
+    'revision': 1,
+    'category': 'vitamin',
+    'mode': 'scheduled',
+    'duration_type': 'continuous',
+    'effective_from': '2026-07-20',
+    'effective_until': null,
+    'dose_value': '',
+    'dose_unit': '',
+    'dose_original_text': '',
+    'route': null,
+    'clinical_instructions': null,
+    'activated_at': null,
+    'replaced_at': null,
+    'previous_plan_id': null,
+    'provenance_origin': 'manual',
+    'validation_status': 'confirmed',
+    'provenance_prescription_id': null,
+    'provenance_prescription_item_id': null,
+    'provenance_document_id': null,
+    'provenance_professional_reference': null,
+    'temporal_precision': 'exact',
+    'created_at': timestamp.toIso8601String(),
+    'updated_at': timestamp.toIso8601String(),
+    'deleted_at': null,
+  }),
+];
 
 SmartRoutinesSyncRepository _repository(
   _FakeLocal local,
