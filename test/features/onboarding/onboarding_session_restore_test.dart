@@ -39,6 +39,38 @@ void main() {
   });
 
   test(
+    'current incomplete row is backfilled before publishing when legacy proof exists',
+    () async {
+      final fixture = _Fixture(user: user, profile: _profile(), consent: true);
+      final now = DateTime.utc(2026, 7, 20);
+      fixture.progressRepository.value = OnboardingProgress(
+        id: 'state-a',
+        userId: user.id,
+        onboardingVersion: OnboardingV1Contract.version,
+        status: OnboardingProgressStatus.inProgress,
+        currentStepId: 'reminderPreference',
+        completedStepIds: const {'welcome'},
+        startedAt: now,
+        createdAt: now,
+        updatedAt: now,
+      );
+
+      await fixture.resolve();
+
+      expect(fixture.state.entryStatus, AppEntryStatus.authenticatedReady);
+      expect(
+        fixture.progressRepository.value!.status,
+        OnboardingProgressStatus.completed,
+      );
+      expect(fixture.progressRepository.value!.currentStepId, isNull);
+      expect(
+        fixture.progressRepository.value!.completedStepIds,
+        OnboardingV1Contract.stepIds.toSet(),
+      );
+    },
+  );
+
+  test(
     'new user without local or remote data remains pending safely',
     () async {
       final fixture = _Fixture(user: user, profile: null, consent: false);

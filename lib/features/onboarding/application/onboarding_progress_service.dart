@@ -33,24 +33,31 @@ final class OnboardingProgressService {
       if (validated.isCurrentCompleted) return validated;
       final profile = await _profile.getProfile();
       final hasConsent = await _privacy.hasCurrentConsent();
+      // Compatibility backfill is also required when a previous app version
+      // created the V1 row before it persisted the terminal status. Profile
+      // plus current legal consent are the approved legacy completion proof.
+      if (profile != null && hasConsent) {
+        final now = _now().toUtc();
+        final completed = validated.copyWith(
+          onboardingVersion: OnboardingV1Contract.version,
+          status: OnboardingProgressStatus.completed,
+          clearCurrentStep: true,
+          completedStepIds: OnboardingV1Contract.stepIds.toSet(),
+          startedAt: validated.startedAt ?? now,
+          completedAt: validated.completedAt ?? now,
+          updatedAt: now,
+        );
+        await _repository.save(completed);
+        return completed;
+      }
       if (validated.onboardingVersion < OnboardingV1Contract.version) {
         final migrated = validated.copyWith(
           onboardingVersion: OnboardingV1Contract.version,
-          status: profile != null && hasConsent
-              ? OnboardingProgressStatus.completed
-              : OnboardingProgressStatus.needsReview,
-          currentStepId: profile == null
-              ? 'basicProfile'
-              : hasConsent
-              ? null
-              : 'legalConsents',
-          completedStepIds: profile != null && hasConsent
-              ? OnboardingV1Contract.stepIds.toSet()
-              : validated.completedStepIds,
-          completedAt: profile != null && hasConsent
-              ? _now().toUtc()
-              : validated.completedAt,
-          clearCompletedAt: profile == null || !hasConsent,
+          status: OnboardingProgressStatus.needsReview,
+          currentStepId: profile == null ? 'basicProfile' : 'legalConsents',
+          completedStepIds: validated.completedStepIds,
+          completedAt: validated.completedAt,
+          clearCompletedAt: true,
           updatedAt: _now().toUtc(),
         );
         await _repository.save(migrated);

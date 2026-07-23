@@ -65,11 +65,10 @@ final class OnboardingState {
     if (isResolvingSession) return AppEntryStatus.loading;
     if (userCompleted) return AppEntryStatus.authenticatedReady;
     if (resolutionFailed) return AppEntryStatus.failure;
-    if (!hasProfile) return AppEntryStatus.authenticatedOnboardingPending;
-    if (!hasCurrentLegalConsent) {
+    if (hasProfile && !hasCurrentLegalConsent) {
       return AppEntryStatus.authenticatedLegalAcceptancePending;
     }
-    return AppEntryStatus.authenticatedReady;
+    return AppEntryStatus.authenticatedOnboardingPending;
   }
 
   OnboardingState copyWith({

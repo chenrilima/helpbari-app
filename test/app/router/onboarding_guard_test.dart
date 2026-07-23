@@ -127,6 +127,20 @@ void main() {
     );
   });
 
+  test('profile and consent never bypass incomplete canonical progress', () {
+    final state = _state(hasProfile: true, hasCurrentLegalConsent: true);
+
+    expect(state.entryStatus, AppEntryStatus.authenticatedOnboardingPending);
+    expect(
+      OnboardingGuard.redirect(
+        location: AppRoutes.home,
+        session: user,
+        state: state,
+      ),
+      AppRoutes.onboarding,
+    );
+  });
+
   test('resolution failure is safe and never grants Home', () {
     final state = _state(resolutionFailed: true);
     expect(
