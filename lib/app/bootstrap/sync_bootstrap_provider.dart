@@ -9,6 +9,7 @@ import '../../features/auth/presentation/providers/auth_providers.dart';
 final syncBootstrapProvider = Provider<SyncBootstrapCoordinator>((ref) {
   final coordinator = SyncBootstrapCoordinator(ref);
   coordinator.initialize();
+  ref.onDispose(coordinator.dispose);
   return coordinator;
 });
 
@@ -17,15 +18,18 @@ class SyncBootstrapCoordinator {
 
   final Ref _ref;
   final Map<String, Future<void>> _initialSyncs = {};
+  late final SyncConnectivityTrigger _connectivity;
   bool _initialized = false;
 
   void initialize() {
     if (_initialized) return;
     _initialized = true;
+    _connectivity = SyncConnectivityTrigger(onRecovered: retry)
+      ..listen(_ref.read(syncConnectivityChangesProvider));
 
     _ref.listen(authSessionProvider, (previous, next) {
+      if (previous?.id != next?.id) _initialSyncs.clear();
       if (next == null) {
-        _initialSyncs.clear();
         return;
       }
       unawaited(
@@ -33,10 +37,12 @@ class SyncBootstrapCoordinator {
           Object error,
           StackTrace stack,
         ) {
-          AppLogger.error(
-            'Initial sync failed (${error.runtimeType}).',
-            stackTrace: stack,
-          );
+          if (error is! SyncSessionRevokedException) {
+            AppLogger.error(
+              'Initial sync failed (${error.runtimeType}).',
+              stackTrace: stack,
+            );
+          }
         }),
       );
     }, fireImmediately: true);
@@ -55,6 +61,8 @@ class SyncBootstrapCoordinator {
         timedOut.future,
         ?cancelled,
       ]);
+    } on SyncSessionRevokedException {
+      // Expected when authentication changes while bootstrap is running.
     } catch (error, stackTrace) {
       // Sync errors are represented by SyncResult; bootstrap must remain usable.
       AppLogger.error(
@@ -68,8 +76,14 @@ class SyncBootstrapCoordinator {
 
   Future<void> _ensureInitialSync(String userId) =>
       _initialSyncs.putIfAbsent(userId, () async {
-        await _ref.read(syncManagerProvider.notifier).loadState();
-        await _ref.read(syncManagerProvider.notifier).syncNow();
+        try {
+          if (_ref.read(authSessionProvider)?.id != userId) return;
+          await _ref.read(syncManagerProvider.notifier).loadState();
+          if (_ref.read(authSessionProvider)?.id != userId) return;
+          await _ref.read(syncManagerProvider.notifier).syncNow();
+        } on SyncSessionRevokedException {
+          // Session replacement/logout is cancellation, not a bootstrap error.
+        }
       });
 
   Future<void> retry() async {
@@ -77,6 +91,8 @@ class SyncBootstrapCoordinator {
     if (userId == null) return;
     try {
       await _ref.read(syncManagerProvider.notifier).syncNow();
+    } on SyncSessionRevokedException {
+      // Expected if the active account changes while retry is starting.
     } catch (error, stackTrace) {
       // Manual retry preserves the offline-first UI on infrastructure errors.
       AppLogger.error(
@@ -87,7 +103,12 @@ class SyncBootstrapCoordinator {
   }
 
   void onResumed() {
+    _connectivity.setForeground(true);
     final userId = _ref.read(authSessionProvider)?.id;
     if (userId != null) unawaited(retry());
   }
+
+  void onBackgrounded() => _connectivity.setForeground(false);
+
+  Future<void> dispose() => _connectivity.dispose();
 }

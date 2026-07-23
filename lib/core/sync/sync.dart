@@ -1,5 +1,6 @@
 export 'sync_metadata.dart';
 export 'sync_conflict.dart';
+export 'sync_connectivity_trigger.dart';
 export 'sync_engine.dart';
 export 'sync_error.dart';
 export 'sync_manager.dart';
@@ -7,6 +8,8 @@ export 'sync_operation.dart';
 export 'sync_providers.dart';
 export 'sync_queue.dart';
 export 'sync_result.dart';
+export 'sync_session.dart';
+export 'sync_version_store.dart';
 export 'sync_state.dart';
 export 'sync_state_repository.dart';
 export 'sync_status.dart';

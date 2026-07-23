@@ -1,10 +1,18 @@
 import '../../features/auth/domain/entities/auth_user.dart';
-import '../../features/auth/presentation/guards/auth_guard.dart';
 import '../../features/auth/presentation/states/auth_state.dart';
 import '../../features/onboarding/presentation/states/onboarding_state.dart';
-import '../../features/profile/presentation/guards/profile_guard.dart';
 import '../../features/profile/presentation/states/profile_state.dart';
-import 'onboarding_guard.dart';
+import 'app_routes.dart';
+
+enum AppEntryPhase {
+  initializing,
+  unauthenticated,
+  authenticatedResolvingAccount,
+  onboardingRequired,
+  ready,
+  sessionExpired,
+  fatalRecovery,
+}
 
 abstract final class AppRedirectResolver {
   static String? resolve({
@@ -14,31 +22,64 @@ abstract final class AppRedirectResolver {
     required OnboardingState onboardingState,
     required ProfileState profileState,
   }) {
-    final hasAuthenticatedState =
-        authState is AuthAuthenticated || authState is AuthPasswordUpdated;
-    if (hasAuthenticatedState &&
-        onboardingState.entryStatus == AppEntryStatus.loading) {
-      return null;
+    if (authState is AuthPasswordRecoveryReady) {
+      return location == AppRoutes.resetPassword
+          ? null
+          : AppRoutes.resetPassword;
     }
-
-    final authRedirect = AuthGuard.redirect(
-      location: location,
-      authState: authState,
-    );
-    if (authRedirect != null) return authRedirect;
-
-    // While authentication is being restored, the current splash route must
-    // remain stable until AuthState reaches a definitive value.
-    if (authState is AuthInitial || authState is AuthLoading) return null;
-
-    final onboardingRedirect = OnboardingGuard.redirect(
-      location: location,
+    final phase = phaseFor(
       session: session,
-      state: onboardingState,
+      authState: authState,
+      onboardingState: onboardingState,
     );
-    if (onboardingRedirect != null) return onboardingRedirect;
-
-    if (session == null) return null;
-    return ProfileGuard.redirect(location: location, state: profileState);
+    return switch (phase) {
+      AppEntryPhase.initializing ||
+      AppEntryPhase.authenticatedResolvingAccount =>
+        location == AppRoutes.splash ? null : AppRoutes.splash,
+      AppEntryPhase.unauthenticated || AppEntryPhase.sessionExpired =>
+        location == AppRoutes.login ||
+                location == AppRoutes.signUp ||
+                location == AppRoutes.resetPassword
+            ? null
+            : AppRoutes.login,
+      AppEntryPhase.onboardingRequired || AppEntryPhase.fatalRecovery =>
+        location == AppRoutes.onboarding ? null : AppRoutes.onboarding,
+      AppEntryPhase.ready =>
+        isPublic(location) || location == AppRoutes.onboarding
+            ? AppRoutes.home
+            : null,
+    };
   }
+
+  static AppEntryPhase phaseFor({
+    required AuthUser? session,
+    required AuthState authState,
+    required OnboardingState onboardingState,
+  }) {
+    if (authState is AuthInitial || authState is AuthLoading) {
+      return AppEntryPhase.initializing;
+    }
+    if (session == null) {
+      return authState is AuthFailure
+          ? AppEntryPhase.sessionExpired
+          : AppEntryPhase.unauthenticated;
+    }
+    return switch (onboardingState.entryStatus) {
+      AppEntryStatus.loading => AppEntryPhase.authenticatedResolvingAccount,
+      AppEntryStatus.authenticatedOnboardingPending ||
+      AppEntryStatus.authenticatedLegalAcceptancePending =>
+        AppEntryPhase.onboardingRequired,
+      AppEntryStatus.authenticatedReady => AppEntryPhase.ready,
+      AppEntryStatus.failure => AppEntryPhase.fatalRecovery,
+      AppEntryStatus.unauthenticated =>
+        AppEntryPhase.authenticatedResolvingAccount,
+    };
+  }
+
+  static bool isPublic(String location) => const {
+    AppRoutes.splash,
+    AppRoutes.login,
+    AppRoutes.signUp,
+    AppRoutes.resetPassword,
+  }.contains(location);
 }

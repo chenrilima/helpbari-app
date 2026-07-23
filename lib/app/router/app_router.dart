@@ -26,6 +26,11 @@ import '../../features/medical_exams/presentation/pages/medical_exam_details_pag
 import '../../features/medical_exams/presentation/pages/medical_exams_page.dart';
 import '../../features/medical_exams/presentation/pages/register_medical_exam_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/more/presentation/pages/more_page.dart';
+import '../../features/treatment/presentation/pages/treatment_page.dart';
+import '../../features/treatment/presentation/pages/register_treatment_page.dart';
+import '../../features/treatment/presentation/pages/treatment_detail_page.dart';
+import '../../features/smart_routines/application/unified_treatment_store.dart';
 import '../../features/meals/presentation/pages/register_meal_page.dart';
 import '../../features/medical_reports/presentation/pages/medical_reports_page.dart';
 import '../../features/medical_prescriptions/domain/entities/entities.dart';
@@ -35,7 +40,6 @@ import '../../features/medical_prescriptions/presentation/pages/medical_prescrip
 import '../../features/medical_prescriptions/presentation/pages/medical_prescription_route_page.dart';
 import '../../features/medical_prescriptions/presentation/pages/register_medical_prescription_page.dart';
 import '../../features/document_intelligence/presentation/pages/document_center_page.dart';
-import '../../features/medications/presentation/pages/medications_page.dart';
 import '../../features/medications/presentation/pages/register_medication_page.dart';
 import '../../features/medications/domain/entities/medication.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
@@ -58,7 +62,6 @@ import '../../features/auth/presentation/pages/sign_up_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/vitamins/presentation/pages/register_vitamin_page.dart';
-import '../../features/vitamins/presentation/pages/vitamins_page.dart';
 import '../../features/vitamins/domain/entities/vitamin.dart';
 import '../../features/water/presentation/pages/register_water_page.dart';
 import '../../features/water/presentation/pages/water_page.dart';
@@ -71,10 +74,13 @@ import '../../features/bioimpedance/domain/entities/entities.dart'
 import 'app_routes.dart';
 import 'app_redirect_resolver.dart';
 import 'notification_navigation.dart';
+import '../shell/main_shell.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouterProvider = Provider<GoRouter>((ref) {
+  String? pendingDestination;
+  String? pendingUserId;
   final refreshListenable = _GoRouterRefreshStream(
     ref.watch(sessionManagerProvider).authStateChanges,
   );
@@ -107,13 +113,50 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final location = state.uri.path;
       final onboardingState = ref.read(onboardingViewModelProvider);
       final session = ref.read(authSessionProvider);
-      return AppRedirectResolver.resolve(
+      final authState = ref.read(authViewModelProvider);
+      final phase = AppRedirectResolver.phaseFor(
+        session: session,
+        authState: authState,
+        onboardingState: onboardingState,
+      );
+      final isProtectedDestination =
+          !AppRedirectResolver.isPublic(location) &&
+          location != AppRoutes.onboarding;
+      if (isProtectedDestination && phase != AppEntryPhase.ready) {
+        pendingDestination = state.uri.toString();
+        pendingUserId = session?.id;
+      }
+      if (session == null && pendingUserId != null) {
+        pendingDestination = null;
+        pendingUserId = null;
+      } else if (session != null &&
+          pendingUserId != null &&
+          pendingUserId != session.id) {
+        pendingDestination = null;
+        pendingUserId = null;
+      } else if (session != null && pendingDestination != null) {
+        pendingUserId ??= session.id;
+      }
+
+      final resolved = AppRedirectResolver.resolve(
         location: location,
         session: session,
         onboardingState: onboardingState,
-        authState: ref.read(authViewModelProvider),
+        authState: authState,
         profileState: ref.read(profileViewModelProvider),
       );
+      if (phase == AppEntryPhase.ready &&
+          pendingUserId == session?.id &&
+          pendingDestination != null &&
+          (resolved == AppRoutes.home ||
+              location == AppRoutes.home ||
+              AppRedirectResolver.isPublic(location))) {
+        final destination = pendingDestination;
+        pendingDestination = null;
+        pendingUserId = null;
+        return destination;
+      }
+      return resolved;
     },
     routes: [
       GoRoute(
@@ -128,9 +171,56 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.login,
         builder: (context, state) => const LoginPage(),
       ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            MainShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.home,
+                builder: (context, state) => const HomePage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.treatment,
+                builder: (context, state) => const TreatmentPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.progress,
+                builder: (context, state) => const ProgressPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.more,
+                builder: (context, state) => const MorePage(),
+              ),
+            ],
+          ),
+        ],
+      ),
       GoRoute(
-        path: AppRoutes.home,
-        builder: (context, state) => const HomePage(),
+        path: AppRoutes.registerTreatment,
+        builder: (_, state) => RegisterTreatmentPage(
+          item: state.extra is TreatmentItemSnapshot
+              ? state.extra! as TreatmentItemSnapshot
+              : null,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.treatmentDetail,
+        builder: (_, state) =>
+            TreatmentDetailPage(item: state.extra! as TreatmentItemSnapshot),
       ),
       GoRoute(
         path: AppRoutes.signUp,
@@ -174,7 +264,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.baria, builder: (_, _) => const BariaPage()),
       GoRoute(
         path: AppRoutes.vitamins,
-        builder: (context, state) => const VitaminsPage(),
+        redirect: (_, _) => AppRoutes.treatment,
       ),
       GoRoute(
         path: AppRoutes.registerVitamin,
@@ -210,12 +300,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             MedicalExamDetailsPage(exam: state.extra! as MedicalExam),
       ),
       GoRoute(
-        path: AppRoutes.progress,
-        builder: (context, state) => const ProgressPage(),
-      ),
-      GoRoute(
         path: AppRoutes.medications,
-        builder: (context, state) => const MedicationsPage(),
+        redirect: (_, _) => AppRoutes.treatment,
       ),
       GoRoute(
         path: AppRoutes.registerMedication,

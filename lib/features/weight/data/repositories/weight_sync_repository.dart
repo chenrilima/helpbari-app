@@ -1,3 +1,4 @@
+import '../../../../core/supabase/database/supabase_database.dart';
 import '../../../../core/sync/sync.dart';
 import '../datasources/drift_weight_local_datasource.dart';
 import '../datasources/weight_supabase_datasource.dart';
@@ -6,8 +7,10 @@ import '../dtos/weight_record_dto.dart';
 class WeightSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
-        AtomicRemoteSyncRepository {
+        AtomicRemoteSyncRepository,
+        VersionedPushSyncRepository {
   const WeightSyncRepository({
     required Future<DriftWeightLocalDatasource> Function() local,
     required WeightSupabaseDatasource remote,
@@ -44,11 +47,42 @@ class WeightSyncRepository
   }
 
   @override
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  }) async {
+    try {
+      final remote = await _remote.upsertVersioned(
+        _dto(operation),
+        userId: _userId,
+        baseRevision: baseRevision,
+      );
+      await (await _local()).applyRemote(remote);
+      return _operation(remote);
+    } on SupabaseRevisionConflictException catch (error) {
+      throw SyncRevisionConflictException(
+        _operation(WeightRecordDto.fromSupabaseRow(error.remoteRow)),
+      );
+    }
+  }
+
+  @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async =>
       (await _remote.pull(
         userId: _userId,
         updatedAfter: updatedAfter,
       )).map(_operation).toList();
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _remote
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_operation).toList(growable: false));
   @override
   Future<void> applyRemote(SyncOperation operation) async =>
       (await _local()).applyRemote(_dto(operation));
@@ -79,6 +113,7 @@ class WeightSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: dto.syncMetadata.userId ?? _userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: {
       'weight': dto.weight,
       'recordedAt': dto.recordedAt.toIso8601String(),

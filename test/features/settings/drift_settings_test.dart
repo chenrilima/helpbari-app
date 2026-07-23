@@ -18,16 +18,6 @@ import 'package:helpbari/features/settings/data/repositories/drift_settings_repo
 import 'package:helpbari/features/settings/data/dtos/settings_dto.dart';
 import 'package:helpbari/features/settings/application/settings_reminder_sync_service.dart';
 import 'package:helpbari/features/settings/domain/entities/entities.dart';
-import 'package:helpbari/features/settings/domain/repositories/repositories.dart';
-import 'package:helpbari/features/settings/domain/usecases/use_cases.dart';
-import 'package:helpbari/features/vitamins/application/vitamin_reminder_service.dart';
-import 'package:helpbari/features/vitamins/domain/entities/entities.dart';
-import 'package:helpbari/features/vitamins/domain/repositories/repositories.dart';
-import 'package:helpbari/features/vitamins/domain/usecases/vitamin_use_cases.dart';
-import 'package:helpbari/features/medications/application/medication_reminder_service.dart';
-import 'package:helpbari/features/medications/domain/entities/entities.dart';
-import 'package:helpbari/features/medications/domain/repositories/repositories.dart';
-import 'package:helpbari/features/medications/domain/usecases/medication_use_cases.dart';
 import 'package:helpbari/features/appointments/application/appointment_reminder_service.dart';
 import 'package:helpbari/features/appointments/domain/entities/entities.dart';
 import 'package:helpbari/features/appointments/domain/repositories/repositories.dart';
@@ -48,6 +38,13 @@ void main() {
     final first = _datasource(database, 'user-a');
     final second = _datasource(database, 'user-b');
     expect((await first.getSettings()).dailyWaterGoalMl, 2000);
+    expect(
+      (await first.getSettings())
+          .toEntity()
+          .effectiveNotificationPreferences
+          .categoryEnabled(NotificationCategory.water),
+      isFalse,
+    );
     await first.save(_dto('user-a', 2500));
     await second.save(_dto('user-b', 3000));
 
@@ -133,7 +130,6 @@ void main() {
   });
 
   test('post-commit reminder application is idempotent', () async {
-    final settingsUseCases = SettingsUseCases(_SettingsRepository());
     final notifications = _Notifications();
     final scheduler = NotificationScheduler(
       notifications: notifications,
@@ -141,23 +137,8 @@ void main() {
       logger: _Logger(),
     );
     final service = SettingsReminderSyncService(
-      vitaminUseCases: VitaminUseCases(_VitaminRepository()),
-      vitaminReminders: VitaminReminderService(
-        settingsUseCases: settingsUseCases,
-        scheduler: scheduler,
-        clock: const _Clock(),
-        userId: 'user-a',
-      ),
-      medicationUseCases: MedicationUseCases(_MedicationRepository()),
-      medicationReminders: MedicationReminderService(
-        settingsUseCases: settingsUseCases,
-        scheduler: scheduler,
-        clock: const _Clock(),
-        userId: 'user-a',
-      ),
       appointmentUseCases: AppointmentUseCases(_AppointmentRepository()),
       appointmentReminders: AppointmentReminderService(
-        settingsUseCases: settingsUseCases,
         scheduler: scheduler,
         userId: 'user-a',
       ),
@@ -317,6 +298,9 @@ SettingsDto _dto(
     medicationRemindersEnabled: true,
     appointmentRemindersEnabled: true,
     mealTrackingEnabled: true,
+    treatmentTrackingEnabled: true,
+    waterTrackingEnabled: true,
+    weightTrackingEnabled: true,
     weightUnit: 'kg',
     syncMetadata: SyncMetadata(
       id: userId,
@@ -345,35 +329,6 @@ class _Storage implements LocalStorageService {
   Future<void> setBool(String key, bool value) async => values[key] = value;
   @override
   Future<void> setString(String key, String value) async => values[key] = value;
-}
-
-class _SettingsRepository implements SettingsRepository {
-  @override
-  Future<AppSettings> getSettings() async => const AppSettings(id: 'user-a');
-  @override
-  Future<void> saveSettings(AppSettings settings) async {}
-}
-
-class _VitaminRepository implements VitaminRepository {
-  @override
-  Future<List<Vitamin>> getAll() async => [];
-  @override
-  Future<void> delete(String id) async {}
-  @override
-  Future<void> save(Vitamin vitamin) async {}
-  @override
-  Future<void> update(Vitamin vitamin) async {}
-}
-
-class _MedicationRepository implements MedicationRepository {
-  @override
-  Future<List<Medication>> getAll() async => [];
-  @override
-  Future<void> delete(String id) async {}
-  @override
-  Future<void> save(Medication medication) async {}
-  @override
-  Future<void> update(Medication medication) async {}
 }
 
 class _AppointmentRepository implements AppointmentRepository {

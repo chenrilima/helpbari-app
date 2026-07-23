@@ -395,12 +395,6 @@ final class DriftSmartRoutineDatasource implements SmartRoutineLocalStore {
         return;
       case 'routine_plans':
         final incoming = RoutinePlanDto.fromRow(row);
-        final current = await dao.getPlan(userId, incoming.entity.planId.value);
-        if (current != null &&
-            RoutinePlanDto.fromRow(_remoteMap(current.toJson())).entity !=
-                incoming.entity) {
-          throw StateError('routine_plan_payload_conflict');
-        }
         await savePlan(incoming);
         return;
       case 'routine_schedules':

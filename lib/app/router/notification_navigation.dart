@@ -4,9 +4,12 @@ import 'app_routes.dart';
 String? notificationLocation(LocalNotificationPayload payload) {
   final route = switch (payload.source) {
     NotificationSource.appointment => AppRoutes.appointments,
-    NotificationSource.vitamin => AppRoutes.vitamins,
-    NotificationSource.medication => AppRoutes.medications,
-    NotificationSource.smartRoutineOccurrence => AppRoutes.home,
+    NotificationSource.water => AppRoutes.water,
+    NotificationSource.meal => AppRoutes.meals,
+    NotificationSource.weight => AppRoutes.weight,
+    NotificationSource.vitamin => AppRoutes.treatment,
+    NotificationSource.medication => AppRoutes.treatment,
+    NotificationSource.smartRoutineOccurrence => AppRoutes.treatment,
     NotificationSource.push => null,
   };
   if (route == null) return null;

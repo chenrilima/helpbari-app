@@ -5,6 +5,10 @@ abstract final class AppRoutes {
   static const signUp = '/sign-up';
   static const resetPassword = '/reset-password';
   static const home = '/home';
+  static const treatment = '/treatment';
+  static const registerTreatment = '/treatment/item';
+  static const treatmentDetail = '/treatment/detail';
+  static const more = '/more';
   static const showcase = '/showcase';
   static const profile = '/profile';
   static const completeProfile = '/complete-profile';

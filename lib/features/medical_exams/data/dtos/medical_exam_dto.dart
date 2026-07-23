@@ -76,6 +76,7 @@ class MedicalExamDto {
           ? null
           : DateTime.parse(exam['deleted_at'] as String),
       syncStatus: SyncStatus.synced,
+      serverRevision: exam['server_revision'] as int?,
     );
     final resultDtos = results
         .map(MedicalExamResultDto.fromSupabaseRow)

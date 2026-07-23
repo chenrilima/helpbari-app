@@ -79,6 +79,7 @@ class PrivacyConsentDto {
         updatedAt: date('updated_at'),
         deletedAt: row['deleted_at'] == null ? null : date('deleted_at'),
         syncStatus: SyncStatus.synced,
+        serverRevision: row['server_revision'] as int?,
       ),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../services/service_providers.dart';
 import '../database/drift/drift_database_providers.dart';
+import '../database/drift/drift_sync_version_store.dart';
 import '../supabase/database/supabase_database_provider.dart';
 import '../supabase/supabase_client_provider.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
@@ -22,6 +24,9 @@ import '../../features/privacy/data/datasources/drift_privacy_consent_datasource
 import '../../features/privacy/data/repositories/privacy_consent_sync_repository.dart';
 import '../../features/privacy/presentation/providers/privacy_providers.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
+import '../../features/onboarding/data/datasources/drift_onboarding_progress_datasource.dart';
+import '../../features/onboarding/data/datasources/onboarding_progress_supabase_datasource.dart';
+import '../../features/onboarding/data/repositories/onboarding_progress_sync_repository.dart';
 import '../../features/medical_reports/presentation/providers/medical_report_providers.dart';
 import '../../features/water/data/datasources/drift_water_local_datasource.dart';
 import '../../features/water/data/datasources/water_supabase_datasource.dart';
@@ -71,10 +76,17 @@ import '../../features/progress/presentation/providers/progress_view_model_provi
 import '../../features/baria/presentation/providers/baria_view_model_provider.dart';
 import 'sync_engine.dart';
 import 'sync_result.dart';
+import 'sync_session.dart';
 import 'sync_manager.dart';
 import 'sync_state.dart';
 import 'sync_state_repository.dart';
 import 'syncable_repository.dart';
+
+final syncConnectivityChangesProvider = Provider<Stream<bool>>((ref) {
+  return Connectivity().onConnectivityChanged.map(
+    (results) => results.any((result) => result != ConnectivityResult.none),
+  );
+});
 
 final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
   final user = ref.watch(authSessionProvider);
@@ -89,6 +101,16 @@ final syncableRepositoriesProvider = Provider<List<SyncableRepository>>((ref) {
   }
 
   return [
+    OnboardingProgressSyncRepository(
+      local: () async => DriftOnboardingProgressDatasource(
+        dao: (await ref.read(appDatabaseProvider.future)).onboardingStateDao,
+        userId: user.id,
+      ),
+      remote: OnboardingProgressSupabaseDatasource(
+        ref.watch(supabaseDatabaseProvider),
+      ),
+      userId: user.id,
+    ),
     PrivacyConsentSyncRepository(
       local: () async => DriftPrivacyConsentDatasource(
         dao: (await ref.read(appDatabaseProvider.future)).privacyConsentDao,
@@ -272,6 +294,16 @@ final syncUserIdProvider = Provider<String?>((ref) {
   return ref.watch(authSessionProvider)?.id;
 });
 
+final syncSessionRegistryProvider = Provider<SyncSessionRegistry>((ref) {
+  final registry = SyncSessionRegistry();
+  ref.listen(
+    authSessionProvider,
+    (previous, next) => registry.activate(next?.id),
+    fireImmediately: true,
+  );
+  return registry;
+});
+
 final syncStateRepositoryProvider = Provider<SyncStateRepository>((ref) {
   return LocalSyncStateRepository(
     storage: ref.watch(localStorageServiceProvider),
@@ -279,10 +311,18 @@ final syncStateRepositoryProvider = Provider<SyncStateRepository>((ref) {
   );
 });
 
+final syncServerNowProvider = Provider<Future<DateTime> Function()>((ref) {
+  return () => ref.read(supabaseDatabaseProvider).serverNow();
+});
+
 final syncEngineProvider = Provider<SyncEngine>((ref) {
   return SyncEngine(
     stateRepository: ref.watch(syncStateRepositoryProvider),
     clock: ref.watch(clockServiceProvider),
+    versionStore: DriftSyncVersionStore(
+      () => ref.read(appDatabaseProvider.future),
+    ),
+    serverNow: ref.watch(syncServerNowProvider),
   );
 });
 
@@ -380,12 +420,21 @@ final syncDataRefreshProvider = Provider<Future<void> Function(SyncResult)>((
       if (domains.contains(SyncDomain.privacy)) {
         ref.invalidate(privacyViewModelProvider);
       }
+      if (domains.contains(SyncDomain.onboarding)) {
+        ref.invalidate(onboardingProgressRepositoryProvider);
+        ref.invalidate(onboardingProgressServiceProvider);
+        await ref
+            .read(onboardingViewModelProvider.notifier)
+            .refreshForSession(waitForRemote: false);
+      }
       if (homeAreas.contains(HomeRefreshArea.dashboard)) {
         ref.invalidate(todayDashboardProvider);
       }
       return;
     }
     ref.invalidate(settingsUseCasesProvider);
+    ref.invalidate(onboardingProgressRepositoryProvider);
+    ref.invalidate(onboardingProgressServiceProvider);
     ref.invalidate(dailyWaterGoalProvider);
     ref.invalidate(todayDashboardProvider);
     ref.invalidate(healthDashboardUseCasesProvider);

@@ -5,6 +5,9 @@ import 'package:helpbari/core/database/drift/app_database.dart';
 import 'package:helpbari/core/services/clock_service.dart';
 import 'package:helpbari/core/time/iana_timezone_bootstrap.dart';
 import 'package:helpbari/features/smart_routines/application/unified_treatment_store.dart';
+import 'package:helpbari/features/smart_routines/domain/enums/routine_enums.dart';
+import 'package:helpbari/features/smart_routines/domain/value_objects/local_date.dart';
+import 'package:helpbari/features/smart_routines/domain/value_objects/routine_values.dart';
 
 void main() {
   setUpAll(IanaTimezoneBootstrap.initialize);
@@ -221,6 +224,171 @@ void main() {
       );
     },
   );
+
+  test(
+    'advanced write preserves revisions and supports multiple weekdays',
+    () async {
+      const treatmentId = '61111111-1111-4111-8111-111111111111';
+      final start = LocalDate(year: 2026, month: 7, day: 21);
+      await store.write(
+        TreatmentWriteCommand(
+          id: treatmentId,
+          name: 'Suplemento A',
+          category: RoutineCategory.supplement,
+          mode: RoutinePlanMode.scheduled,
+          durationType: PlanDurationType.unknown,
+          effectiveFrom: start,
+          weekdays: const {DateTime.monday, DateTime.wednesday},
+          schedules: [
+            TreatmentScheduleInput(time: TimeOfDayValue(hour: 8, minute: 0)),
+            TreatmentScheduleInput(
+              time: TimeOfDayValue(hour: 20, minute: 0),
+              reminderEnabled: false,
+            ),
+          ],
+        ),
+      );
+      await store.write(
+        TreatmentWriteCommand(
+          id: treatmentId,
+          name: 'Suplemento A',
+          category: RoutineCategory.supplement,
+          mode: RoutinePlanMode.scheduled,
+          durationType: PlanDurationType.continuous,
+          effectiveFrom: start.addDays(1),
+          schedules: [
+            TreatmentScheduleInput(time: TimeOfDayValue(hour: 9, minute: 0)),
+          ],
+        ),
+      );
+
+      final plans = await database.select(database.routinePlanRecords).get();
+      expect(plans, hasLength(2));
+      expect(plans.first.replacedAt, isNot(null));
+      expect(plans.last.previousPlanId, plans.first.id);
+      final item = (await store.listItems()).single;
+      expect(item.category, RoutineCategory.supplement);
+      expect(item.durationType, PlanDurationType.continuous);
+      expect(item.schedules.single.time, TimeOfDayValue(hour: 9, minute: 0));
+    },
+  );
+
+  test(
+    'PRN creates no recurring times and lifecycle preserves history',
+    () async {
+      const treatmentId = '71111111-1111-4111-8111-111111111111';
+      await store.write(
+        TreatmentWriteCommand(
+          id: treatmentId,
+          name: 'Uso quando necessário',
+          category: RoutineCategory.other,
+          mode: RoutinePlanMode.asNeeded,
+          durationType: PlanDurationType.unknown,
+          effectiveFrom: LocalDate(year: 2026, month: 7, day: 21),
+          schedules: const [],
+        ),
+      );
+
+      expect((await store.listItems()).single.schedules, isEmpty);
+      await store.pause(treatmentId);
+      expect((await store.listItems()).single.status, RoutineStatus.paused);
+      await store.resume(treatmentId);
+      expect((await store.listItems()).single.status, RoutineStatus.active);
+      expect(
+        await database.select(database.routinePauseRecords).get(),
+        hasLength(1),
+      );
+      await store.complete(treatmentId);
+      expect((await store.listItems()).single.status, RoutineStatus.completed);
+      await store.softDelete(treatmentId);
+      expect(await store.listItems(), isEmpty);
+      expect(
+        await database.select(database.routinePlanRecords).get(),
+        isNotEmpty,
+      );
+    },
+  );
+
+  test('PRN use stores ad hoc occurrence, used time and observation', () async {
+    const treatmentId = '81111111-1111-4111-8111-111111111111';
+    await store.write(
+      TreatmentWriteCommand(
+        id: treatmentId,
+        name: 'Uso eventual',
+        category: RoutineCategory.medication,
+        mode: RoutinePlanMode.asNeeded,
+        durationType: PlanDurationType.unknown,
+        effectiveFrom: LocalDate(year: 2026, month: 7, day: 20),
+        schedules: const [],
+      ),
+    );
+    final usedAt = DateTime.utc(2026, 7, 20, 9, 45);
+
+    await store.registerPrnUse(
+      routineId: treatmentId,
+      occurredAt: usedAt,
+      note: 'Observação do uso',
+    );
+
+    final occurrence =
+        (await database.select(database.routineOccurrenceRecords).get()).single;
+    final event =
+        (await database.select(database.routineAdherenceEventRecords).get())
+            .single;
+    expect(occurrence.origin, RoutineOccurrenceOrigin.adHocAsNeeded.name);
+    expect(occurrence.expectationKind, 'asNeeded');
+    expect(event.occurredAtUtc.toUtc(), usedAt.toUtc());
+    expect(event.note, 'Observação do uso');
+    final detail = await store.detail(treatmentId);
+    expect(detail.events.single.note, 'Observação do uso');
+    expect(detail.conflicts, isEmpty);
+  });
+
+  test('conflicting terminal events require explicit resolution', () async {
+    const treatmentId = '91111111-1111-4111-8111-111111111111';
+    await store.write(
+      TreatmentWriteCommand(
+        id: treatmentId,
+        name: 'Uso eventual',
+        category: RoutineCategory.other,
+        mode: RoutinePlanMode.asNeeded,
+        durationType: PlanDurationType.unknown,
+        effectiveFrom: LocalDate(year: 2026, month: 7, day: 20),
+        schedules: const [],
+      ),
+    );
+    await store.registerPrnUse(routineId: treatmentId, occurredAt: now);
+    final taken =
+        (await database.select(database.routineAdherenceEventRecords).get())
+            .single;
+    await database
+        .into(database.routineAdherenceEventRecords)
+        .insert(
+          taken
+              .toCompanion(true)
+              .copyWith(
+                id: const Value('92222222-2222-4222-8222-222222222222'),
+                type: const Value('skipped'),
+                syncStatus: const Value('synced'),
+              ),
+        );
+
+    final conflicted = await store.detail(treatmentId);
+    expect(conflicted.conflicts, hasLength(1));
+    expect(conflicted.conflicts.single.versions, hasLength(2));
+
+    await store.resolveConflict(
+      occurrenceId: taken.occurrenceId,
+      keepEventId: taken.id,
+    );
+
+    final resolved = await store.detail(treatmentId);
+    expect(resolved.conflicts, isEmpty);
+    expect(
+      resolved.events.where((event) => event.type == 'correction'),
+      hasLength(1),
+    );
+  });
 }
 
 final class _FixedClock implements ClockService {

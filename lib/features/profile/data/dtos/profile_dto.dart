@@ -227,6 +227,7 @@ class ProfileDto {
           ? null
           : DateTime.parse(json['deleted_at'] as String),
       syncStatus: SyncStatus.synced,
+      serverRevision: json['server_revision'] as int?,
     ),
   );
 

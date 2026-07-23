@@ -4,6 +4,7 @@ import 'package:helpbari/core/services/logger_service.dart';
 import 'package:helpbari/core/services/notifications/notifications.dart';
 import 'package:helpbari/features/smart_routines/application/routine_notification_projection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:helpbari/features/settings/domain/entities/entities.dart';
 
 void main() {
   test(
@@ -108,6 +109,97 @@ void main() {
     expect(notifications.scheduledKeys.single, contains(':snooze:delivery-a'));
     expect(inbox.completed, isTrue);
   });
+
+  test(
+    'category, item and time preferences cancel obsolete projections',
+    () async {
+      final notifications = _Notifications();
+      final scheduler = NotificationScheduler(
+        notifications: notifications,
+        clock: const _Clock(),
+        logger: const _Logger(),
+      );
+      await scheduler.activateUser('user-a');
+      final manifest = _Manifest();
+      final reconciler = NotificationProjectionReconciler(
+        manifest: manifest,
+        scheduler: scheduler,
+      );
+      final now = DateTime.utc(2026, 7, 21, 12);
+      final projection = RoutineNotificationProjection(
+        occurrenceId: 'water:morning:2026-07-22',
+        scheduleAtUtc: now.add(const Duration(hours: 20)),
+        userId: 'user-a',
+        actions: const {},
+        category: NotificationCategory.water,
+        itemId: 'water',
+        timeId: 'morning',
+        source: NotificationSource.water,
+      );
+      const enabled = NotificationPreferences(
+        globalEnabled: true,
+        categories: {NotificationCategory.water: true},
+      );
+
+      await reconciler.reconcile(
+        userId: 'user-a',
+        desired: [projection, projection],
+        now: now,
+        preferences: enabled,
+      );
+      expect(manifest.values, hasLength(1));
+
+      await reconciler.reconcile(
+        userId: 'user-a',
+        desired: [projection],
+        now: now,
+        preferences: enabled.setItem(
+          NotificationCategory.water,
+          'water',
+          false,
+        ),
+      );
+      expect(manifest.values, isEmpty);
+      expect(notifications.canceledKeys, isNotEmpty);
+    },
+  );
+
+  test(
+    'denied OS permission never records a concrete notification as scheduled',
+    () async {
+      final notifications = _Notifications(permissionGranted: false);
+      final scheduler = NotificationScheduler(
+        notifications: notifications,
+        clock: const _Clock(),
+        logger: const _Logger(),
+      );
+      await scheduler.activateUser('user-a');
+      final manifest = _Manifest();
+      final now = DateTime.utc(2026, 7, 21, 12);
+
+      await NotificationProjectionReconciler(
+        manifest: manifest,
+        scheduler: scheduler,
+      ).reconcile(
+        userId: 'user-a',
+        desired: [
+          RoutineNotificationProjection(
+            occurrenceId: 'occurrence-a',
+            scheduleAtUtc: now.add(const Duration(hours: 1)),
+            userId: 'user-a',
+            actions: const {},
+          ),
+        ],
+        now: now,
+      );
+
+      expect(
+        manifest.values.values.single.state,
+        NotificationManifestState.failed,
+      );
+      expect(notifications.scheduledKeys, isEmpty);
+    },
+  );
 }
 
 class _Inbox implements NotificationActionInbox {
@@ -159,6 +251,8 @@ class _Manifest implements NotificationManifestRepository {
 }
 
 class _Notifications implements LocalNotificationService {
+  _Notifications({this.permissionGranted = true});
+  final bool permissionGranted;
   final Set<String> scheduledKeys = {};
   final Set<String> canceledKeys = {};
 
@@ -185,10 +279,12 @@ class _Notifications implements LocalNotificationService {
 
   @override
   Future<NotificationPermissionState> permissionState() async =>
-      NotificationPermissionState.granted;
+      permissionGranted
+      ? NotificationPermissionState.granted
+      : NotificationPermissionState.denied;
 
   @override
-  Future<bool> requestPermissions() async => true;
+  Future<bool> requestPermissions() async => permissionGranted;
 
   @override
   Future<void> reschedule(Iterable<LocalNotificationSchedule> schedules) async {

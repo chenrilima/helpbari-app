@@ -28,7 +28,9 @@ class DriftPrimaryProfileRepository implements ProfileRepository {
       return (await (await _resolve()).getProfile())?.toEntity();
     } catch (error) {
       if (hasCutoverMirror()) rethrow;
-      AppLogger.info('Profile Drift unavailable before cutover: $error');
+      AppLogger.info(
+        'Profile Drift unavailable before cutover (${error.runtimeType}).',
+      );
       return (await fallback.getProfile())?.toEntity();
     }
   }

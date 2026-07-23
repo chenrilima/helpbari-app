@@ -79,6 +79,7 @@ class MedicalPrescriptionSyncRepository
     updatedAt: dto.metadata.updatedAt,
     deletedAt: dto.metadata.deletedAt,
     userId: dto.prescription.userId,
+    serverRevision: dto.metadata.serverRevision,
     payload: {
       'prescription': dto.toSupabasePrescriptionRow(),
       'items': dto.toSupabaseItemRows(),

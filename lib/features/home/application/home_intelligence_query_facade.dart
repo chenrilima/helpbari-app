@@ -4,6 +4,7 @@ import '../../../core/sync/sync_state.dart';
 import '../../appointments/domain/entities/entities.dart';
 import '../../appointments/domain/usecases/use_cases.dart';
 import '../../medical_prescriptions/domain/usecases/use_cases.dart';
+import '../../settings/domain/entities/setting.dart';
 import '../../weight/domain/usecases/use_cases.dart';
 import '../../smart_routines/domain/enums/routine_enums.dart';
 import '../../smart_routines/domain/services/treatment_query_models.dart';
@@ -144,7 +145,6 @@ class HomeIntelligenceQueryFacade {
     );
     final quickActions = composeQuickActions(
       agenda: agenda,
-      prescriptionsAwaitingReview: prescriptionsAwaitingReview,
       freshness: freshness,
       pendingSync: pendingSync,
     );
@@ -519,69 +519,135 @@ class HomeIntelligenceQueryFacade {
 
   QuickActionsReadModel composeQuickActions({
     required AgendaReadModel agenda,
-    required int prescriptionsAwaitingReview,
+    AppSettings settings = const AppSettings(id: 'home-default'),
     required FreshnessReadModel freshness,
     required bool pendingSync,
   }) {
-    final dynamic = <QuickActionReadModel>[];
-    final open = agenda.items.where(
-      (item) => item.type == AgendaItemType.treatment && item.isActionable,
-    );
-    if (open.isNotEmpty) {
-      dynamic.add(
-        QuickActionReadModel(
-          id: 'quick:treatment:${open.first.sourceId}',
-          title: 'Registrar rotina',
-          kind: HomeActionKind.treatmentCommand,
-          deepLink: open.first.deepLink,
-          sourceId: open.first.sourceId,
-          accessibilityLabel: 'Registrar ocorrência aberta da rotina',
-        ),
-      );
-    }
-    if (prescriptionsAwaitingReview > 0) {
-      dynamic.add(
+    final actions = <QuickActionReadModel>[];
+    if (settings.waterTrackingEnabled) {
+      actions.add(
         const QuickActionReadModel(
-          id: 'quick:prescription-review',
-          title: 'Revisar prescrição',
-          kind: HomeActionKind.route,
-          deepLink: '/prescriptions',
-          accessibilityLabel: 'Revisar prescrição pendente',
-        ),
-      );
-    }
-    return QuickActionsReadModel(
-      fixed: const [
-        QuickActionReadModel(
           id: 'quick:water',
-          title: 'Água',
+          title: 'Registrar água',
           kind: HomeActionKind.route,
           deepLink: '/water',
-          accessibilityLabel: 'Abrir acompanhamento de água',
+          accessibilityLabel: 'Abrir acompanhamento para registrar água',
         ),
-        QuickActionReadModel(
+      );
+    }
+    if (settings.mealTrackingEnabled) {
+      actions.add(
+        const QuickActionReadModel(
           id: 'quick:meal',
-          title: 'Refeição',
+          title: 'Registrar refeição',
           kind: HomeActionKind.route,
           deepLink: '/mealsRegister',
-          accessibilityLabel: 'Registrar refeição e proteína',
+          accessibilityLabel: 'Registrar refeição',
         ),
-        QuickActionReadModel(
-          id: 'quick:weight',
-          title: 'Peso',
+      );
+    }
+    if (settings.treatmentTrackingEnabled) {
+      actions.add(
+        const QuickActionReadModel(
+          id: 'quick:treatment',
+          title: 'Ver tratamento',
           kind: HomeActionKind.route,
-          deepLink: '/register-weight',
-          accessibilityLabel: 'Registrar peso',
+          deepLink: '/treatment',
+          accessibilityLabel: 'Abrir tratamento',
         ),
-        QuickActionReadModel(
-          id: 'quick:agenda',
-          title: 'Agenda',
-          kind: HomeActionKind.route,
-          deepLink: '/appointments',
-          accessibilityLabel: 'Abrir agenda',
-        ),
-      ],
-      dynamic: dynamic,
+      );
+    }
+    actions.add(
+      const QuickActionReadModel(
+        id: 'quick:agenda',
+        title: 'Adicionar consulta',
+        kind: HomeActionKind.route,
+        deepLink: '/register-appointment',
+        accessibilityLabel: 'Adicionar consulta',
+      ),
+    );
+    actions.addAll(const [
+      QuickActionReadModel(
+        id: 'quick:weight',
+        title: 'Peso',
+        kind: HomeActionKind.route,
+        deepLink: '/weight',
+        accessibilityLabel: 'Abrir acompanhamento de peso',
+      ),
+      QuickActionReadModel(
+        id: 'quick:vitamins',
+        title: 'Vitaminas',
+        kind: HomeActionKind.route,
+        deepLink: '/vitamins',
+        accessibilityLabel: 'Abrir vitaminas',
+      ),
+      QuickActionReadModel(
+        id: 'quick:exams',
+        title: 'Exames',
+        kind: HomeActionKind.route,
+        deepLink: '/exams',
+        accessibilityLabel: 'Abrir exames',
+      ),
+      QuickActionReadModel(
+        id: 'quick:progress',
+        title: 'Evolução',
+        kind: HomeActionKind.route,
+        deepLink: '/progress',
+        accessibilityLabel: 'Abrir evolução',
+      ),
+      QuickActionReadModel(
+        id: 'quick:profile',
+        title: 'Perfil',
+        kind: HomeActionKind.route,
+        deepLink: '/profile',
+        accessibilityLabel: 'Abrir perfil',
+      ),
+      QuickActionReadModel(
+        id: 'quick:medications',
+        title: 'Medicamentos',
+        kind: HomeActionKind.route,
+        deepLink: '/medications',
+        accessibilityLabel: 'Abrir medicamentos',
+      ),
+      QuickActionReadModel(
+        id: 'quick:documents',
+        title: 'Documentos',
+        kind: HomeActionKind.route,
+        deepLink: '/documents',
+        accessibilityLabel: 'Abrir central de documentos',
+      ),
+      QuickActionReadModel(
+        id: 'quick:reports',
+        title: 'Relatórios',
+        kind: HomeActionKind.route,
+        deepLink: '/medical-reports',
+        accessibilityLabel: 'Abrir relatórios médicos',
+      ),
+      QuickActionReadModel(
+        id: 'quick:bioimpedance',
+        title: 'Bioimpedância',
+        kind: HomeActionKind.route,
+        deepLink: '/bioimpedance',
+        accessibilityLabel: 'Abrir avaliações de bioimpedância',
+      ),
+      QuickActionReadModel(
+        id: 'quick:academy',
+        title: 'Academia',
+        kind: HomeActionKind.route,
+        deepLink: '/academy',
+        accessibilityLabel: 'Abrir academia de conteúdo',
+      ),
+      QuickActionReadModel(
+        id: 'quick:settings',
+        title: 'Configurações',
+        kind: HomeActionKind.route,
+        deepLink: '/settings',
+        accessibilityLabel: 'Abrir configurações',
+      ),
+    ]);
+    return QuickActionsReadModel(
+      fixed: actions,
+      dynamic: const [],
       status: HomeSectionStatus(
         state: HomeSectionState.ready,
         freshness: freshness,

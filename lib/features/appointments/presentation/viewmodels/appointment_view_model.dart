@@ -15,6 +15,7 @@ import '../../../medical_reports/presentation/providers/medical_report_providers
 import '../../../baria/presentation/providers/baria_view_model_provider.dart';
 import '../../../charts/presentation/providers/chart_series_providers.dart';
 import '../../../../core/sync/sync.dart';
+import '../../../../app/bootstrap/notification_bootstrap_provider.dart';
 
 class AppointmentViewModel extends Notifier<AppointmentState> {
   UuidService get _uuidService => ref.read(uuidServiceProvider);
@@ -106,6 +107,7 @@ class AppointmentViewModel extends Notifier<AppointmentState> {
     try {
       await operation();
       await _applyReminderBestEffort(value, deleted: deleted);
+      ref.read(notificationBootstrapProvider).restoreAfterSync();
       _invalidate();
       await loadAppointments();
       unawaited(ref.read(syncManagerProvider.notifier).syncNow());

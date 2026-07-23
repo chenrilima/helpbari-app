@@ -1,3 +1,4 @@
+import '../../../../core/supabase/database/supabase_database.dart';
 import '../../../../core/sync/sync.dart';
 import '../../domain/value_objects/value_objects.dart';
 import '../datasources/appointment_supabase_datasource.dart';
@@ -10,8 +11,10 @@ typedef AppointmentAfterRemoteCommit =
 class AppointmentSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
-        AtomicRemoteSyncRepository {
+        AtomicRemoteSyncRepository,
+        VersionedPushSyncRepository {
   const AppointmentSyncRepository({
     required Future<DriftAppointmentLocalDatasource> Function() local,
     required AppointmentSupabaseDatasource remote,
@@ -44,11 +47,42 @@ class AppointmentSyncRepository
   Future<void> push(SyncOperation operation) async => (await _local())
       .applyRemote(await _remote.upsert(_dto(operation), userId: _userId));
   @override
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  }) async {
+    try {
+      final remote = await _remote.upsertVersioned(
+        _dto(operation),
+        userId: _userId,
+        baseRevision: baseRevision,
+      );
+      await (await _local()).applyRemote(remote);
+      return _operation(remote);
+    } on SupabaseRevisionConflictException catch (error) {
+      throw SyncRevisionConflictException(
+        _operation(AppointmentDto.fromSupabaseRow(error.remoteRow)),
+      );
+    }
+  }
+
+  @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async =>
       (await _remote.pull(
         userId: _userId,
         updatedAfter: updatedAfter,
       )).map(_operation).toList();
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _remote
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_operation).toList(growable: false));
   @override
   Future<void> applyRemote(SyncOperation operation) async {
     final dto = _dto(operation);
@@ -87,6 +121,7 @@ class AppointmentSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: dto.syncMetadata.userId ?? _userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: {
       'title': dto.title,
       'date': dto.date.toIso8601String(),

@@ -4,6 +4,9 @@ enum NotificationSource {
   vitamin,
   medication,
   appointment,
+  water,
+  meal,
+  weight,
   smartRoutineOccurrence,
   push;
 

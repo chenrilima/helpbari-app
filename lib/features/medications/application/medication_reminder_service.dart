@@ -8,33 +8,18 @@ class MedicationReminderService {
     required NotificationScheduler scheduler,
     required ClockService clock,
     required String userId,
-  }) : _settingsUseCases = settingsUseCases,
-       _scheduler = scheduler,
-       _clock = clock,
+  }) : _scheduler = scheduler,
        _userId = userId;
 
-  final SettingsUseCases _settingsUseCases;
   final NotificationScheduler _scheduler;
-  final ClockService _clock;
   final String _userId;
 
   Future<void> scheduleIfEnabled(Medication medication) async {
-    final settings = await _settingsUseCases.getSettings();
-
-    if (!settings.medicationRemindersEnabled) return;
-
-    await _scheduler.schedule(_medicationSchedule(medication));
+    await cancel(medication.id);
   }
 
   Future<void> rescheduleIfEnabled(Medication medication) async {
-    final settings = await _settingsUseCases.getSettings();
-
-    if (!settings.medicationRemindersEnabled) {
-      await cancel(medication.id);
-      return;
-    }
-
-    await _scheduler.schedule(_medicationSchedule(medication));
+    await cancel(medication.id);
   }
 
   Future<void> cancel(String medicationId) {
@@ -46,20 +31,4 @@ class MedicationReminderService {
       ),
     );
   }
-
-  LocalNotificationSchedule _medicationSchedule(Medication medication) {
-    return NotificationSchedules.dailyReminder(
-      source: NotificationSource.medication,
-      userId: _userId,
-      entityId: medication.id,
-      title: 'Hora do medicamento',
-      body: 'Registre ${medication.formattedName}.',
-      hour: medication.scheduleTime.hour,
-      minute: medication.scheduleTime.minute,
-      now: _clock.now(),
-    );
-  }
-
-  LocalNotificationSchedule scheduleFor(Medication medication) =>
-      _medicationSchedule(medication);
 }

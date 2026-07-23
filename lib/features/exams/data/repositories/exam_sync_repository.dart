@@ -1,3 +1,4 @@
+import '../../../../core/supabase/database/supabase_database.dart';
 import '../../../../core/sync/sync.dart';
 import '../datasources/drift_exam_local_datasource.dart';
 import '../datasources/exam_supabase_datasource.dart';
@@ -6,8 +7,10 @@ import '../dtos/exam_dto.dart';
 class ExamSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
-        AtomicRemoteSyncRepository {
+        AtomicRemoteSyncRepository,
+        VersionedPushSyncRepository {
   const ExamSyncRepository({
     required Future<DriftExamLocalDatasource> Function() local,
     required ExamSupabaseDatasource remote,
@@ -38,11 +41,42 @@ class ExamSyncRepository
     await _remote.upsert(_dto(o), userId: _userId),
   );
   @override
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  }) async {
+    try {
+      final remote = await _remote.upsertVersioned(
+        _dto(operation),
+        userId: _userId,
+        baseRevision: baseRevision,
+      );
+      await (await _local()).applyRemote(remote);
+      return _operation(remote);
+    } on SupabaseRevisionConflictException catch (error) {
+      throw SyncRevisionConflictException(
+        _operation(ExamDto.fromSupabaseRow(error.remoteRow)),
+      );
+    }
+  }
+
+  @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async =>
       (await _remote.pull(
         userId: _userId,
         updatedAfter: updatedAfter,
       )).map(_operation).toList();
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _remote
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_operation).toList(growable: false));
   @override
   Future<void> applyRemote(SyncOperation o) async =>
       (await _local()).applyRemote(_dto(o));
@@ -72,6 +106,7 @@ class ExamSyncRepository
     updatedAt: d.syncMetadata.updatedAt,
     deletedAt: d.syncMetadata.deletedAt,
     userId: d.syncMetadata.userId ?? _userId,
+    serverRevision: d.syncMetadata.serverRevision,
     payload: {
       'name': d.name,
       'examDate': d.examDate.toIso8601String(),

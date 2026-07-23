@@ -13,51 +13,48 @@ import 'package:helpbari/features/vitamins/domain/entities/entities.dart';
 import 'package:helpbari/features/vitamins/domain/value_objects/value_objects.dart';
 
 void main() {
-  test('medication and vitamin project and cancel local schedules', () async {
-    final notifications = _Notifications();
-    final scheduler = _scheduler(notifications);
-    await scheduler.restore(userId: 'user-a', schedules: const []);
-    final settings = SettingsUseCases(
-      _Settings(const AppSettings(id: 'user-a')),
-    );
-    final medicationService = MedicationReminderService(
-      settingsUseCases: settings,
-      scheduler: scheduler,
-      clock: const _Clock(),
-      userId: 'user-a',
-    );
-    final vitaminService = VitaminReminderService(
-      settingsUseCases: settings,
-      scheduler: scheduler,
-      clock: const _Clock(),
-      userId: 'user-a',
-    );
-    final medication = Medication(
-      id: 'med-1',
-      name: MedicationName.create('Omeprazol')!,
-      scheduleTime: const MedicationScheduleTime(hour: 8, minute: 30),
-    );
-    final vitamin = Vitamin(
-      id: 'vit-1',
-      name: VitaminName.create('Vitamina B12')!,
-      scheduleTime: const VitaminScheduleTime(hour: 9, minute: 0),
-    );
+  test(
+    'legacy medication and vitamin services never create parallel schedules',
+    () async {
+      final notifications = _Notifications();
+      final scheduler = _scheduler(notifications);
+      await scheduler.restore(userId: 'user-a', schedules: const []);
+      final settings = SettingsUseCases(
+        _Settings(const AppSettings(id: 'user-a')),
+      );
+      final medicationService = MedicationReminderService(
+        settingsUseCases: settings,
+        scheduler: scheduler,
+        clock: const _Clock(),
+        userId: 'user-a',
+      );
+      final vitaminService = VitaminReminderService(
+        settingsUseCases: settings,
+        scheduler: scheduler,
+        clock: const _Clock(),
+        userId: 'user-a',
+      );
+      final medication = Medication(
+        id: 'med-1',
+        name: MedicationName.create('Omeprazol')!,
+        scheduleTime: const MedicationScheduleTime(hour: 8, minute: 30),
+      );
+      final vitamin = Vitamin(
+        id: 'vit-1',
+        name: VitaminName.create('Vitamina B12')!,
+        scheduleTime: const VitaminScheduleTime(hour: 9, minute: 0),
+      );
 
-    await medicationService.scheduleIfEnabled(medication);
-    await vitaminService.scheduleIfEnabled(vitamin);
+      await medicationService.scheduleIfEnabled(medication);
+      await vitaminService.scheduleIfEnabled(vitamin);
 
-    expect(
-      notifications.pending.keys,
-      containsAll(<String>['user-a:medication:med-1', 'user-a:vitamin:vit-1']),
-    );
-    final encodedPayload = notifications.pending.values.first.payload.encode();
-    expect(encodedPayload, isNot(contains('Omeprazol')));
-    expect(notifications.pending.values.first.payload.data, isEmpty);
+      expect(notifications.pending, isEmpty);
 
-    await medicationService.cancel(medication.id);
-    await vitaminService.cancel(vitamin.id);
-    expect(notifications.pending, isEmpty);
-  });
+      await medicationService.cancel(medication.id);
+      await vitaminService.cancel(vitamin.id);
+      expect(notifications.pending, isEmpty);
+    },
+  );
 
   test('disabled settings prevent concrete local schedules', () async {
     final notifications = _Notifications();

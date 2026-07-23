@@ -5,8 +5,9 @@ import 'package:helpbari/core/services/notifications/notifications.dart';
 void main() {
   for (final entry in <NotificationSource, String>{
     NotificationSource.appointment: '/appointments',
-    NotificationSource.vitamin: '/vitamins',
-    NotificationSource.medication: '/medications',
+    NotificationSource.vitamin: '/treatment',
+    NotificationSource.medication: '/treatment',
+    NotificationSource.smartRoutineOccurrence: '/treatment',
   }.entries) {
     test('routes ${entry.key.name} payload to its entity list', () {
       final location = notificationLocation(
@@ -32,4 +33,25 @@ void main() {
       isNull,
     );
   });
+
+  test(
+    'routes configurable tracking categories to their canonical screens',
+    () {
+      const sources = {
+        NotificationSource.water: '/water',
+        NotificationSource.meal: '/meals',
+        NotificationSource.weight: '/weight',
+      };
+      for (final entry in sources.entries) {
+        final location = notificationLocation(
+          LocalNotificationPayload(
+            source: entry.key,
+            entityId: 'configured-reminder',
+            userId: 'user-a',
+          ),
+        );
+        expect(Uri.parse(location!).path, entry.value);
+      }
+    },
+  );
 }

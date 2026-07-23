@@ -209,6 +209,13 @@ O rollout usa flags persistidas e cutover por usuário. Sync remoto de Smart
 Routines permanece independente do cutover local e começa desabilitado até a
 migration remota ser confirmada. Consulte `docs/UNIFIED_TREATMENT_ENGINE.md`.
 
+A experiência V1 escreve por uma única intenção de aplicação,
+`TreatmentWriteCommand`. O comando cria ou revisa o agregado canônico e nunca
+expõe tabelas à apresentação. Mudanças de programação geram revisão futura;
+pausa, retomada, conclusão e tombstone preservam planos, ocorrências e eventos
+anteriores. As fachadas Medication/Vitamin permanecem apenas como
+compatibilidade.
+
 ## Home Intelligence Platform
 
 A Home é uma projeção local, read-only e reconstruível. Ela compõe read models
@@ -223,3 +230,45 @@ determinístico, com linguagem não prescritiva. Consulte
 `docs/HOME_INTELLIGENCE_PLATFORM.md`.
 
 Feature Flags não fazem parte da Macro 3 e permanecem reservadas à Macro 6.
+
+## Onboarding V1 e entrada canônica
+
+O onboarding possui estado versionado offline-first em Drift, sincronizado pelo
+Sync Engine existente e espelhado em `onboarding_states` no Supabase. A entrada
+do app é decidida por uma única máquina de estados que combina sessão, perfil,
+consentimento legal e progresso canônico. Preferências de acompanhamento ficam
+em Settings e a permissão de notificações só é solicitada após opt-in explícito.
+Consulte `docs/ONBOARDING_V1_FOUNDATION.md` e `docs/PRODUCT_FREEZE_V1.md`.
+
+## Plataforma de Notificações V1
+
+Preferências globais, por categoria, item e horário são parte sincronizável de
+Settings. Permissão do SO, manifest, action inbox e IDs do plugin permanecem
+locais ao dispositivo. Smart Routines fornece exclusivamente as projeções de
+Tratamento; Appointments e horários explicitamente configurados fornecem as
+demais categorias. Um único reconciliador deduplica, atualiza e cancela as
+notificações concretas. Consulte `docs/NOTIFICATIONS_V1.md`.
+
+## Fechamento de Tratamento V1
+
+Detalhe, registro PRN e revisão de conflitos reutilizam
+`UnifiedTreatmentStore`. PRN cria occurrence `adHocAsNeeded` e event append-only
+sem schedule recorrente. Conflitos preservam os events e só são resolvidos por
+corrections explícitas que invalidam a versão rejeitada.
+
+## Confiabilidade do Sync — auditoria de 21/07/2026
+
+`SyncManager` captura uma geração de sessão por execução. `SyncEngine` verifica
+essa geração antes e depois de cada efeito relevante; respostas, retries e
+cursores da conta revogada tornam-se inofensivos. Um novo usuário recebe um
+passe serializado próprio, sem compartilhar o Future antigo.
+
+Recuperação de transporte em foreground é um gatilho com debounce, não prova de
+internet. Timeout, retry e backoff continuam centralizados no mesmo engine.
+Water, Weight, Meals, Appointments, Exams e Bioimpedance usam pull keyset
+`(updated_at,id)` em páginas. Os agregados restantes ainda precisam aderir ao
+contrato; consulte `docs/SYNC_RELIABILITY_V1.md`.
+
+Não há worker Android periódico nem versão monotônica confirmada pelo servidor.
+Esses limites são explícitos e impedem promover o candidato enquanto conflito
+por clock e paginação transversal não forem concluídos.

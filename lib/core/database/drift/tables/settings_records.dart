@@ -18,7 +18,15 @@ class SettingsRecords extends Table {
       boolean().withDefault(const Constant(true))();
   BoolColumn get mealTrackingEnabled =>
       boolean().withDefault(const Constant(true))();
+  BoolColumn get treatmentTrackingEnabled =>
+      boolean().withDefault(const Constant(true))();
+  BoolColumn get waterTrackingEnabled =>
+      boolean().withDefault(const Constant(true))();
+  BoolColumn get weightTrackingEnabled =>
+      boolean().withDefault(const Constant(true))();
   TextColumn get weightUnit => text().withDefault(const Constant('kg'))();
+  TextColumn get notificationPreferencesJson =>
+      text().withDefault(const Constant(''))();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
   DateTimeColumn get deletedAt => dateTime().nullable()();

@@ -13,6 +13,7 @@ class PrivacyClinicalExportDatasource {
     }
 
     return <String, Object?>{
+      'onboardingState': await _rows('onboarding_state_records', userId),
       'documents': await _rows('document_input_records', userId),
       'documentProcessings': await _rows('document_processing_records', userId),
       'extractedDocumentFields': await _rows('extracted_field_records', userId),
@@ -44,10 +45,7 @@ class PrivacyClinicalExportDatasource {
         'prescription_routine_link_records',
         userId,
       ),
-      'localNotificationOperations': <String, Object?>{
-        'manifest': await _rows('notification_manifest_records', userId),
-        'actionInbox': await _rows('notification_action_inbox_records', userId),
-      },
+      'localNotificationOperations': <String, Object?>{},
     };
   }
 

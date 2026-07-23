@@ -83,7 +83,12 @@ class PrivacyExportService {
         'medicationRemindersEnabled': settings.medicationRemindersEnabled,
         'appointmentRemindersEnabled': settings.appointmentRemindersEnabled,
         'mealTrackingEnabled': settings.mealTrackingEnabled,
+        'treatmentTrackingEnabled': settings.treatmentTrackingEnabled,
+        'waterTrackingEnabled': settings.waterTrackingEnabled,
+        'weightTrackingEnabled': settings.weightTrackingEnabled,
         'weightUnit': settings.weightUnit,
+        'notificationPreferences': settings.effectiveNotificationPreferences
+            .toJson(),
       },
       'water': [
         for (final record in snapshot.waterHistory)

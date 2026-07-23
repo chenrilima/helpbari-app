@@ -72,6 +72,7 @@ class MedicationLogSyncRepository
     updatedAt: d.syncMetadata.updatedAt,
     deletedAt: d.syncMetadata.deletedAt,
     userId: d.syncMetadata.userId ?? _userId,
+    serverRevision: d.syncMetadata.serverRevision,
     payload: {
       'medicationId': d.medicationId,
       'date': d.date.toIso8601String(),

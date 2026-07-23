@@ -31,10 +31,29 @@ class NotificationScheduler {
     (payload) => _state.userId == null || payload.userId == _state.userId,
   );
 
-  Future<bool> requestPermissions() => _notifications.requestPermissions();
+  Future<bool> requestPermissions() async {
+    final granted = await _notifications.requestPermissions();
+    final userId = _state.userId;
+    if (userId != null) await activateUser(userId);
+    return granted;
+  }
 
   Future<void> schedule(LocalNotificationSchedule schedule) async {
     _requireCurrentUser(schedule.payload.userId);
+    final permission = await _notifications.permissionState();
+    if (permission != NotificationPermissionState.granted) {
+      _setState(
+        NotificationSchedulerState(
+          scheduled: _state.scheduled,
+          failures: _state.failures,
+          lastRestoreAt: _state.lastRestoreAt,
+          permission: permission,
+          timeZone: _state.timeZone,
+          userId: _state.userId,
+        ),
+      );
+      throw StateError('Notification permission is not granted.');
+    }
     await _retry(() => _notifications.update(schedule));
     await _refreshScheduledCount();
   }

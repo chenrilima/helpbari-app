@@ -1,4 +1,5 @@
 import '../../../../core/sync/sync.dart';
+import '../../../../core/supabase/database/supabase_database.dart';
 import '../datasources/drift_water_local_datasource.dart';
 import '../datasources/water_supabase_datasource.dart';
 import '../dtos/water_record_dto.dart';
@@ -6,8 +7,10 @@ import '../dtos/water_record_dto.dart';
 class WaterSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
-        AtomicRemoteSyncRepository {
+        AtomicRemoteSyncRepository,
+        VersionedPushSyncRepository {
   const WaterSyncRepository({
     required Future<DriftWaterLocalDatasource> Function() localDatasource,
     required WaterSupabaseDatasource supabaseDatasource,
@@ -65,6 +68,26 @@ class WaterSyncRepository
   }
 
   @override
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  }) async {
+    try {
+      final remote = await _supabaseDatasource.upsertVersioned(
+        _dtoFromOperation(operation),
+        userId: _userId,
+        baseRevision: baseRevision,
+      );
+      await (await _localDatasource()).applyRemote(remote);
+      return _operationFromDto(remote);
+    } on SupabaseRevisionConflictException catch (error) {
+      throw SyncRevisionConflictException(
+        _operationFromDto(WaterRecordDto.fromSupabaseRow(error.remoteRow)),
+      );
+    }
+  }
+
+  @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async {
     final records = await _supabaseDatasource.pull(
       userId: _userId,
@@ -73,6 +96,18 @@ class WaterSyncRepository
 
     return records.map(_operationFromDto).toList();
   }
+
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _supabaseDatasource
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_operationFromDto).toList(growable: false));
 
   @override
   Future<void> applyRemote(SyncOperation operation) async {
@@ -122,6 +157,7 @@ class WaterSyncRepository
       updatedAt: metadata.updatedAt,
       deletedAt: metadata.deletedAt,
       userId: metadata.userId ?? _userId,
+      serverRevision: metadata.serverRevision,
       payload: {
         'amountInMl': record.amountInMl,
         'recordedAt': record.recordedAt.toIso8601String(),

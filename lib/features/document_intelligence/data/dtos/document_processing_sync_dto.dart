@@ -86,6 +86,7 @@ class DocumentProcessingSyncDto {
           _ => null,
         },
         syncStatus: SyncStatus.synced,
+        serverRevision: processing['server_revision'] as int?,
       ),
     );
   }

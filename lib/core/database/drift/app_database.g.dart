@@ -1177,6 +1177,336 @@ class SyncCursorsCompanion extends UpdateCompanion<SyncCursor> {
   }
 }
 
+class $SyncRecordVersionsTable extends SyncRecordVersions
+    with TableInfo<$SyncRecordVersionsTable, SyncRecordVersion> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncRecordVersionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _repositoryKeyMeta = const VerificationMeta(
+    'repositoryKey',
+  );
+  @override
+  late final GeneratedColumn<String> repositoryKey = GeneratedColumn<String>(
+    'repository_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordIdMeta = const VerificationMeta(
+    'recordId',
+  );
+  @override
+  late final GeneratedColumn<String> recordId = GeneratedColumn<String>(
+    'record_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _serverRevisionMeta = const VerificationMeta(
+    'serverRevision',
+  );
+  @override
+  late final GeneratedColumn<int> serverRevision = GeneratedColumn<int>(
+    'server_revision',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    userId,
+    repositoryKey,
+    recordId,
+    serverRevision,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_record_versions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncRecordVersion> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('repository_key')) {
+      context.handle(
+        _repositoryKeyMeta,
+        repositoryKey.isAcceptableOrUnknown(
+          data['repository_key']!,
+          _repositoryKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_repositoryKeyMeta);
+    }
+    if (data.containsKey('record_id')) {
+      context.handle(
+        _recordIdMeta,
+        recordId.isAcceptableOrUnknown(data['record_id']!, _recordIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordIdMeta);
+    }
+    if (data.containsKey('server_revision')) {
+      context.handle(
+        _serverRevisionMeta,
+        serverRevision.isAcceptableOrUnknown(
+          data['server_revision']!,
+          _serverRevisionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_serverRevisionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, repositoryKey, recordId};
+  @override
+  SyncRecordVersion map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncRecordVersion(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      repositoryKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}repository_key'],
+      )!,
+      recordId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}record_id'],
+      )!,
+      serverRevision: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_revision'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncRecordVersionsTable createAlias(String alias) {
+    return $SyncRecordVersionsTable(attachedDatabase, alias);
+  }
+}
+
+class SyncRecordVersion extends DataClass
+    implements Insertable<SyncRecordVersion> {
+  final String userId;
+  final String repositoryKey;
+  final String recordId;
+  final int serverRevision;
+  const SyncRecordVersion({
+    required this.userId,
+    required this.repositoryKey,
+    required this.recordId,
+    required this.serverRevision,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['repository_key'] = Variable<String>(repositoryKey);
+    map['record_id'] = Variable<String>(recordId);
+    map['server_revision'] = Variable<int>(serverRevision);
+    return map;
+  }
+
+  SyncRecordVersionsCompanion toCompanion(bool nullToAbsent) {
+    return SyncRecordVersionsCompanion(
+      userId: Value(userId),
+      repositoryKey: Value(repositoryKey),
+      recordId: Value(recordId),
+      serverRevision: Value(serverRevision),
+    );
+  }
+
+  factory SyncRecordVersion.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncRecordVersion(
+      userId: serializer.fromJson<String>(json['userId']),
+      repositoryKey: serializer.fromJson<String>(json['repositoryKey']),
+      recordId: serializer.fromJson<String>(json['recordId']),
+      serverRevision: serializer.fromJson<int>(json['serverRevision']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'repositoryKey': serializer.toJson<String>(repositoryKey),
+      'recordId': serializer.toJson<String>(recordId),
+      'serverRevision': serializer.toJson<int>(serverRevision),
+    };
+  }
+
+  SyncRecordVersion copyWith({
+    String? userId,
+    String? repositoryKey,
+    String? recordId,
+    int? serverRevision,
+  }) => SyncRecordVersion(
+    userId: userId ?? this.userId,
+    repositoryKey: repositoryKey ?? this.repositoryKey,
+    recordId: recordId ?? this.recordId,
+    serverRevision: serverRevision ?? this.serverRevision,
+  );
+  SyncRecordVersion copyWithCompanion(SyncRecordVersionsCompanion data) {
+    return SyncRecordVersion(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      repositoryKey: data.repositoryKey.present
+          ? data.repositoryKey.value
+          : this.repositoryKey,
+      recordId: data.recordId.present ? data.recordId.value : this.recordId,
+      serverRevision: data.serverRevision.present
+          ? data.serverRevision.value
+          : this.serverRevision,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncRecordVersion(')
+          ..write('userId: $userId, ')
+          ..write('repositoryKey: $repositoryKey, ')
+          ..write('recordId: $recordId, ')
+          ..write('serverRevision: $serverRevision')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(userId, repositoryKey, recordId, serverRevision);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncRecordVersion &&
+          other.userId == this.userId &&
+          other.repositoryKey == this.repositoryKey &&
+          other.recordId == this.recordId &&
+          other.serverRevision == this.serverRevision);
+}
+
+class SyncRecordVersionsCompanion extends UpdateCompanion<SyncRecordVersion> {
+  final Value<String> userId;
+  final Value<String> repositoryKey;
+  final Value<String> recordId;
+  final Value<int> serverRevision;
+  final Value<int> rowid;
+  const SyncRecordVersionsCompanion({
+    this.userId = const Value.absent(),
+    this.repositoryKey = const Value.absent(),
+    this.recordId = const Value.absent(),
+    this.serverRevision = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncRecordVersionsCompanion.insert({
+    required String userId,
+    required String repositoryKey,
+    required String recordId,
+    required int serverRevision,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       repositoryKey = Value(repositoryKey),
+       recordId = Value(recordId),
+       serverRevision = Value(serverRevision);
+  static Insertable<SyncRecordVersion> custom({
+    Expression<String>? userId,
+    Expression<String>? repositoryKey,
+    Expression<String>? recordId,
+    Expression<int>? serverRevision,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (repositoryKey != null) 'repository_key': repositoryKey,
+      if (recordId != null) 'record_id': recordId,
+      if (serverRevision != null) 'server_revision': serverRevision,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncRecordVersionsCompanion copyWith({
+    Value<String>? userId,
+    Value<String>? repositoryKey,
+    Value<String>? recordId,
+    Value<int>? serverRevision,
+    Value<int>? rowid,
+  }) {
+    return SyncRecordVersionsCompanion(
+      userId: userId ?? this.userId,
+      repositoryKey: repositoryKey ?? this.repositoryKey,
+      recordId: recordId ?? this.recordId,
+      serverRevision: serverRevision ?? this.serverRevision,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (repositoryKey.present) {
+      map['repository_key'] = Variable<String>(repositoryKey.value);
+    }
+    if (recordId.present) {
+      map['record_id'] = Variable<String>(recordId.value);
+    }
+    if (serverRevision.present) {
+      map['server_revision'] = Variable<int>(serverRevision.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncRecordVersionsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('repositoryKey: $repositoryKey, ')
+          ..write('recordId: $recordId, ')
+          ..write('serverRevision: $serverRevision, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SyncDevicesTable extends SyncDevices
     with TableInfo<$SyncDevicesTable, SyncDevice> {
   @override
@@ -2377,6 +2707,50 @@ class $SettingsRecordsTable extends SettingsRecords
     ),
     defaultValue: const Constant(true),
   );
+  static const VerificationMeta _treatmentTrackingEnabledMeta =
+      const VerificationMeta('treatmentTrackingEnabled');
+  @override
+  late final GeneratedColumn<bool> treatmentTrackingEnabled =
+      GeneratedColumn<bool>(
+        'treatment_tracking_enabled',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("treatment_tracking_enabled" IN (0, 1))',
+        ),
+        defaultValue: const Constant(true),
+      );
+  static const VerificationMeta _waterTrackingEnabledMeta =
+      const VerificationMeta('waterTrackingEnabled');
+  @override
+  late final GeneratedColumn<bool> waterTrackingEnabled = GeneratedColumn<bool>(
+    'water_tracking_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("water_tracking_enabled" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _weightTrackingEnabledMeta =
+      const VerificationMeta('weightTrackingEnabled');
+  @override
+  late final GeneratedColumn<bool> weightTrackingEnabled =
+      GeneratedColumn<bool>(
+        'weight_tracking_enabled',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("weight_tracking_enabled" IN (0, 1))',
+        ),
+        defaultValue: const Constant(true),
+      );
   static const VerificationMeta _weightUnitMeta = const VerificationMeta(
     'weightUnit',
   );
@@ -2389,6 +2763,18 @@ class $SettingsRecordsTable extends SettingsRecords
     requiredDuringInsert: false,
     defaultValue: const Constant('kg'),
   );
+  static const VerificationMeta _notificationPreferencesJsonMeta =
+      const VerificationMeta('notificationPreferencesJson');
+  @override
+  late final GeneratedColumn<String> notificationPreferencesJson =
+      GeneratedColumn<String>(
+        'notification_preferences_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(''),
+      );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -2476,7 +2862,11 @@ class $SettingsRecordsTable extends SettingsRecords
     medicationRemindersEnabled,
     appointmentRemindersEnabled,
     mealTrackingEnabled,
+    treatmentTrackingEnabled,
+    waterTrackingEnabled,
+    weightTrackingEnabled,
     weightUnit,
+    notificationPreferencesJson,
     createdAt,
     updatedAt,
     deletedAt,
@@ -2555,10 +2945,46 @@ class $SettingsRecordsTable extends SettingsRecords
         ),
       );
     }
+    if (data.containsKey('treatment_tracking_enabled')) {
+      context.handle(
+        _treatmentTrackingEnabledMeta,
+        treatmentTrackingEnabled.isAcceptableOrUnknown(
+          data['treatment_tracking_enabled']!,
+          _treatmentTrackingEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('water_tracking_enabled')) {
+      context.handle(
+        _waterTrackingEnabledMeta,
+        waterTrackingEnabled.isAcceptableOrUnknown(
+          data['water_tracking_enabled']!,
+          _waterTrackingEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('weight_tracking_enabled')) {
+      context.handle(
+        _weightTrackingEnabledMeta,
+        weightTrackingEnabled.isAcceptableOrUnknown(
+          data['weight_tracking_enabled']!,
+          _weightTrackingEnabledMeta,
+        ),
+      );
+    }
     if (data.containsKey('weight_unit')) {
       context.handle(
         _weightUnitMeta,
         weightUnit.isAcceptableOrUnknown(data['weight_unit']!, _weightUnitMeta),
+      );
+    }
+    if (data.containsKey('notification_preferences_json')) {
+      context.handle(
+        _notificationPreferencesJsonMeta,
+        notificationPreferencesJson.isAcceptableOrUnknown(
+          data['notification_preferences_json']!,
+          _notificationPreferencesJsonMeta,
+        ),
       );
     }
     if (data.containsKey('created_at')) {
@@ -2655,9 +3081,25 @@ class $SettingsRecordsTable extends SettingsRecords
         DriftSqlType.bool,
         data['${effectivePrefix}meal_tracking_enabled'],
       )!,
+      treatmentTrackingEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}treatment_tracking_enabled'],
+      )!,
+      waterTrackingEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}water_tracking_enabled'],
+      )!,
+      weightTrackingEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}weight_tracking_enabled'],
+      )!,
       weightUnit: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}weight_unit'],
+      )!,
+      notificationPreferencesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notification_preferences_json'],
       )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
@@ -2704,7 +3146,11 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
   final bool medicationRemindersEnabled;
   final bool appointmentRemindersEnabled;
   final bool mealTrackingEnabled;
+  final bool treatmentTrackingEnabled;
+  final bool waterTrackingEnabled;
+  final bool weightTrackingEnabled;
   final String weightUnit;
+  final String notificationPreferencesJson;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
@@ -2720,7 +3166,11 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     required this.medicationRemindersEnabled,
     required this.appointmentRemindersEnabled,
     required this.mealTrackingEnabled,
+    required this.treatmentTrackingEnabled,
+    required this.waterTrackingEnabled,
+    required this.weightTrackingEnabled,
     required this.weightUnit,
+    required this.notificationPreferencesJson,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
@@ -2743,7 +3193,15 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
       appointmentRemindersEnabled,
     );
     map['meal_tracking_enabled'] = Variable<bool>(mealTrackingEnabled);
+    map['treatment_tracking_enabled'] = Variable<bool>(
+      treatmentTrackingEnabled,
+    );
+    map['water_tracking_enabled'] = Variable<bool>(waterTrackingEnabled);
+    map['weight_tracking_enabled'] = Variable<bool>(weightTrackingEnabled);
     map['weight_unit'] = Variable<String>(weightUnit);
+    map['notification_preferences_json'] = Variable<String>(
+      notificationPreferencesJson,
+    );
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     if (!nullToAbsent || deletedAt != null) {
@@ -2769,7 +3227,11 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
       medicationRemindersEnabled: Value(medicationRemindersEnabled),
       appointmentRemindersEnabled: Value(appointmentRemindersEnabled),
       mealTrackingEnabled: Value(mealTrackingEnabled),
+      treatmentTrackingEnabled: Value(treatmentTrackingEnabled),
+      waterTrackingEnabled: Value(waterTrackingEnabled),
+      weightTrackingEnabled: Value(weightTrackingEnabled),
       weightUnit: Value(weightUnit),
+      notificationPreferencesJson: Value(notificationPreferencesJson),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
       deletedAt: deletedAt == null && nullToAbsent
@@ -2807,7 +3269,19 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
       mealTrackingEnabled: serializer.fromJson<bool>(
         json['mealTrackingEnabled'],
       ),
+      treatmentTrackingEnabled: serializer.fromJson<bool>(
+        json['treatmentTrackingEnabled'],
+      ),
+      waterTrackingEnabled: serializer.fromJson<bool>(
+        json['waterTrackingEnabled'],
+      ),
+      weightTrackingEnabled: serializer.fromJson<bool>(
+        json['weightTrackingEnabled'],
+      ),
       weightUnit: serializer.fromJson<String>(json['weightUnit']),
+      notificationPreferencesJson: serializer.fromJson<String>(
+        json['notificationPreferencesJson'],
+      ),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
@@ -2836,7 +3310,15 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
         appointmentRemindersEnabled,
       ),
       'mealTrackingEnabled': serializer.toJson<bool>(mealTrackingEnabled),
+      'treatmentTrackingEnabled': serializer.toJson<bool>(
+        treatmentTrackingEnabled,
+      ),
+      'waterTrackingEnabled': serializer.toJson<bool>(waterTrackingEnabled),
+      'weightTrackingEnabled': serializer.toJson<bool>(weightTrackingEnabled),
       'weightUnit': serializer.toJson<String>(weightUnit),
+      'notificationPreferencesJson': serializer.toJson<String>(
+        notificationPreferencesJson,
+      ),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
@@ -2855,7 +3337,11 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     bool? medicationRemindersEnabled,
     bool? appointmentRemindersEnabled,
     bool? mealTrackingEnabled,
+    bool? treatmentTrackingEnabled,
+    bool? waterTrackingEnabled,
+    bool? weightTrackingEnabled,
     String? weightUnit,
+    String? notificationPreferencesJson,
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
@@ -2874,7 +3360,13 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     appointmentRemindersEnabled:
         appointmentRemindersEnabled ?? this.appointmentRemindersEnabled,
     mealTrackingEnabled: mealTrackingEnabled ?? this.mealTrackingEnabled,
+    treatmentTrackingEnabled:
+        treatmentTrackingEnabled ?? this.treatmentTrackingEnabled,
+    waterTrackingEnabled: waterTrackingEnabled ?? this.waterTrackingEnabled,
+    weightTrackingEnabled: weightTrackingEnabled ?? this.weightTrackingEnabled,
     weightUnit: weightUnit ?? this.weightUnit,
+    notificationPreferencesJson:
+        notificationPreferencesJson ?? this.notificationPreferencesJson,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
@@ -2906,9 +3398,21 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
       mealTrackingEnabled: data.mealTrackingEnabled.present
           ? data.mealTrackingEnabled.value
           : this.mealTrackingEnabled,
+      treatmentTrackingEnabled: data.treatmentTrackingEnabled.present
+          ? data.treatmentTrackingEnabled.value
+          : this.treatmentTrackingEnabled,
+      waterTrackingEnabled: data.waterTrackingEnabled.present
+          ? data.waterTrackingEnabled.value
+          : this.waterTrackingEnabled,
+      weightTrackingEnabled: data.weightTrackingEnabled.present
+          ? data.weightTrackingEnabled.value
+          : this.weightTrackingEnabled,
       weightUnit: data.weightUnit.present
           ? data.weightUnit.value
           : this.weightUnit,
+      notificationPreferencesJson: data.notificationPreferencesJson.present
+          ? data.notificationPreferencesJson.value
+          : this.notificationPreferencesJson,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
@@ -2937,7 +3441,11 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
           ..write('medicationRemindersEnabled: $medicationRemindersEnabled, ')
           ..write('appointmentRemindersEnabled: $appointmentRemindersEnabled, ')
           ..write('mealTrackingEnabled: $mealTrackingEnabled, ')
+          ..write('treatmentTrackingEnabled: $treatmentTrackingEnabled, ')
+          ..write('waterTrackingEnabled: $waterTrackingEnabled, ')
+          ..write('weightTrackingEnabled: $weightTrackingEnabled, ')
           ..write('weightUnit: $weightUnit, ')
+          ..write('notificationPreferencesJson: $notificationPreferencesJson, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
@@ -2958,7 +3466,11 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
     medicationRemindersEnabled,
     appointmentRemindersEnabled,
     mealTrackingEnabled,
+    treatmentTrackingEnabled,
+    waterTrackingEnabled,
+    weightTrackingEnabled,
     weightUnit,
+    notificationPreferencesJson,
     createdAt,
     updatedAt,
     deletedAt,
@@ -2979,7 +3491,12 @@ class SettingsRecord extends DataClass implements Insertable<SettingsRecord> {
           other.appointmentRemindersEnabled ==
               this.appointmentRemindersEnabled &&
           other.mealTrackingEnabled == this.mealTrackingEnabled &&
+          other.treatmentTrackingEnabled == this.treatmentTrackingEnabled &&
+          other.waterTrackingEnabled == this.waterTrackingEnabled &&
+          other.weightTrackingEnabled == this.weightTrackingEnabled &&
           other.weightUnit == this.weightUnit &&
+          other.notificationPreferencesJson ==
+              this.notificationPreferencesJson &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
@@ -2997,7 +3514,11 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
   final Value<bool> medicationRemindersEnabled;
   final Value<bool> appointmentRemindersEnabled;
   final Value<bool> mealTrackingEnabled;
+  final Value<bool> treatmentTrackingEnabled;
+  final Value<bool> waterTrackingEnabled;
+  final Value<bool> weightTrackingEnabled;
   final Value<String> weightUnit;
+  final Value<String> notificationPreferencesJson;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
@@ -3014,7 +3535,11 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     this.medicationRemindersEnabled = const Value.absent(),
     this.appointmentRemindersEnabled = const Value.absent(),
     this.mealTrackingEnabled = const Value.absent(),
+    this.treatmentTrackingEnabled = const Value.absent(),
+    this.waterTrackingEnabled = const Value.absent(),
+    this.weightTrackingEnabled = const Value.absent(),
     this.weightUnit = const Value.absent(),
+    this.notificationPreferencesJson = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
@@ -3032,7 +3557,11 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     this.medicationRemindersEnabled = const Value.absent(),
     this.appointmentRemindersEnabled = const Value.absent(),
     this.mealTrackingEnabled = const Value.absent(),
+    this.treatmentTrackingEnabled = const Value.absent(),
+    this.waterTrackingEnabled = const Value.absent(),
+    this.weightTrackingEnabled = const Value.absent(),
     this.weightUnit = const Value.absent(),
+    this.notificationPreferencesJson = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
     this.deletedAt = const Value.absent(),
@@ -3054,7 +3583,11 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     Expression<bool>? medicationRemindersEnabled,
     Expression<bool>? appointmentRemindersEnabled,
     Expression<bool>? mealTrackingEnabled,
+    Expression<bool>? treatmentTrackingEnabled,
+    Expression<bool>? waterTrackingEnabled,
+    Expression<bool>? weightTrackingEnabled,
     Expression<String>? weightUnit,
+    Expression<String>? notificationPreferencesJson,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
@@ -3076,7 +3609,15 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
         'appointment_reminders_enabled': appointmentRemindersEnabled,
       if (mealTrackingEnabled != null)
         'meal_tracking_enabled': mealTrackingEnabled,
+      if (treatmentTrackingEnabled != null)
+        'treatment_tracking_enabled': treatmentTrackingEnabled,
+      if (waterTrackingEnabled != null)
+        'water_tracking_enabled': waterTrackingEnabled,
+      if (weightTrackingEnabled != null)
+        'weight_tracking_enabled': weightTrackingEnabled,
       if (weightUnit != null) 'weight_unit': weightUnit,
+      if (notificationPreferencesJson != null)
+        'notification_preferences_json': notificationPreferencesJson,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
@@ -3097,7 +3638,11 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     Value<bool>? medicationRemindersEnabled,
     Value<bool>? appointmentRemindersEnabled,
     Value<bool>? mealTrackingEnabled,
+    Value<bool>? treatmentTrackingEnabled,
+    Value<bool>? waterTrackingEnabled,
+    Value<bool>? weightTrackingEnabled,
     Value<String>? weightUnit,
+    Value<String>? notificationPreferencesJson,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
@@ -3118,7 +3663,14 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
       appointmentRemindersEnabled:
           appointmentRemindersEnabled ?? this.appointmentRemindersEnabled,
       mealTrackingEnabled: mealTrackingEnabled ?? this.mealTrackingEnabled,
+      treatmentTrackingEnabled:
+          treatmentTrackingEnabled ?? this.treatmentTrackingEnabled,
+      waterTrackingEnabled: waterTrackingEnabled ?? this.waterTrackingEnabled,
+      weightTrackingEnabled:
+          weightTrackingEnabled ?? this.weightTrackingEnabled,
       weightUnit: weightUnit ?? this.weightUnit,
+      notificationPreferencesJson:
+          notificationPreferencesJson ?? this.notificationPreferencesJson,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
@@ -3160,8 +3712,28 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
     if (mealTrackingEnabled.present) {
       map['meal_tracking_enabled'] = Variable<bool>(mealTrackingEnabled.value);
     }
+    if (treatmentTrackingEnabled.present) {
+      map['treatment_tracking_enabled'] = Variable<bool>(
+        treatmentTrackingEnabled.value,
+      );
+    }
+    if (waterTrackingEnabled.present) {
+      map['water_tracking_enabled'] = Variable<bool>(
+        waterTrackingEnabled.value,
+      );
+    }
+    if (weightTrackingEnabled.present) {
+      map['weight_tracking_enabled'] = Variable<bool>(
+        weightTrackingEnabled.value,
+      );
+    }
     if (weightUnit.present) {
       map['weight_unit'] = Variable<String>(weightUnit.value);
+    }
+    if (notificationPreferencesJson.present) {
+      map['notification_preferences_json'] = Variable<String>(
+        notificationPreferencesJson.value,
+      );
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -3200,7 +3772,11 @@ class SettingsRecordsCompanion extends UpdateCompanion<SettingsRecord> {
           ..write('medicationRemindersEnabled: $medicationRemindersEnabled, ')
           ..write('appointmentRemindersEnabled: $appointmentRemindersEnabled, ')
           ..write('mealTrackingEnabled: $mealTrackingEnabled, ')
+          ..write('treatmentTrackingEnabled: $treatmentTrackingEnabled, ')
+          ..write('waterTrackingEnabled: $waterTrackingEnabled, ')
+          ..write('weightTrackingEnabled: $weightTrackingEnabled, ')
           ..write('weightUnit: $weightUnit, ')
+          ..write('notificationPreferencesJson: $notificationPreferencesJson, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
@@ -42158,11 +42734,916 @@ class NotificationActionInboxRecordsCompanion
   }
 }
 
+class $OnboardingStateRecordsTable extends OnboardingStateRecords
+    with TableInfo<$OnboardingStateRecordsTable, OnboardingStateRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OnboardingStateRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _onboardingVersionMeta = const VerificationMeta(
+    'onboardingVersion',
+  );
+  @override
+  late final GeneratedColumn<int> onboardingVersion = GeneratedColumn<int>(
+    'onboarding_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _currentStepIdMeta = const VerificationMeta(
+    'currentStepId',
+  );
+  @override
+  late final GeneratedColumn<String> currentStepId = GeneratedColumn<String>(
+    'current_step_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _completedStepIdsJsonMeta =
+      const VerificationMeta('completedStepIdsJson');
+  @override
+  late final GeneratedColumn<String> completedStepIdsJson =
+      GeneratedColumn<String>(
+        'completed_step_ids_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _startedAtMeta = const VerificationMeta(
+    'startedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startedAt = GeneratedColumn<DateTime>(
+    'started_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _previousSyncStatusMeta =
+      const VerificationMeta('previousSyncStatus');
+  @override
+  late final GeneratedColumn<String> previousSyncStatus =
+      GeneratedColumn<String>(
+        'previous_sync_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _syncAttemptsMeta = const VerificationMeta(
+    'syncAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> syncAttempts = GeneratedColumn<int>(
+    'sync_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastSyncErrorMeta = const VerificationMeta(
+    'lastSyncError',
+  );
+  @override
+  late final GeneratedColumn<String> lastSyncError = GeneratedColumn<String>(
+    'last_sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    onboardingVersion,
+    status,
+    currentStepId,
+    completedStepIdsJson,
+    startedAt,
+    completedAt,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'onboarding_state_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<OnboardingStateRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('onboarding_version')) {
+      context.handle(
+        _onboardingVersionMeta,
+        onboardingVersion.isAcceptableOrUnknown(
+          data['onboarding_version']!,
+          _onboardingVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_onboardingVersionMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('current_step_id')) {
+      context.handle(
+        _currentStepIdMeta,
+        currentStepId.isAcceptableOrUnknown(
+          data['current_step_id']!,
+          _currentStepIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('completed_step_ids_json')) {
+      context.handle(
+        _completedStepIdsJsonMeta,
+        completedStepIdsJson.isAcceptableOrUnknown(
+          data['completed_step_ids_json']!,
+          _completedStepIdsJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completedStepIdsJsonMeta);
+    }
+    if (data.containsKey('started_at')) {
+      context.handle(
+        _startedAtMeta,
+        startedAt.isAcceptableOrUnknown(data['started_at']!, _startedAtMeta),
+      );
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('previous_sync_status')) {
+      context.handle(
+        _previousSyncStatusMeta,
+        previousSyncStatus.isAcceptableOrUnknown(
+          data['previous_sync_status']!,
+          _previousSyncStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sync_attempts')) {
+      context.handle(
+        _syncAttemptsMeta,
+        syncAttempts.isAcceptableOrUnknown(
+          data['sync_attempts']!,
+          _syncAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_sync_error')) {
+      context.handle(
+        _lastSyncErrorMeta,
+        lastSyncError.isAcceptableOrUnknown(
+          data['last_sync_error']!,
+          _lastSyncErrorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, id};
+  @override
+  OnboardingStateRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return OnboardingStateRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      onboardingVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}onboarding_version'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      currentStepId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}current_step_id'],
+      ),
+      completedStepIdsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}completed_step_ids_json'],
+      )!,
+      startedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}started_at'],
+      ),
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      previousSyncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}previous_sync_status'],
+      ),
+      syncAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_attempts'],
+      )!,
+      lastSyncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_sync_error'],
+      ),
+    );
+  }
+
+  @override
+  $OnboardingStateRecordsTable createAlias(String alias) {
+    return $OnboardingStateRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class OnboardingStateRecord extends DataClass
+    implements Insertable<OnboardingStateRecord> {
+  final String id;
+  final String userId;
+  final int onboardingVersion;
+  final String status;
+  final String? currentStepId;
+  final String completedStepIdsJson;
+  final DateTime? startedAt;
+  final DateTime? completedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String syncStatus;
+  final String? previousSyncStatus;
+  final int syncAttempts;
+  final String? lastSyncError;
+  const OnboardingStateRecord({
+    required this.id,
+    required this.userId,
+    required this.onboardingVersion,
+    required this.status,
+    this.currentStepId,
+    required this.completedStepIdsJson,
+    this.startedAt,
+    this.completedAt,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.syncStatus,
+    this.previousSyncStatus,
+    required this.syncAttempts,
+    this.lastSyncError,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['onboarding_version'] = Variable<int>(onboardingVersion);
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || currentStepId != null) {
+      map['current_step_id'] = Variable<String>(currentStepId);
+    }
+    map['completed_step_ids_json'] = Variable<String>(completedStepIdsJson);
+    if (!nullToAbsent || startedAt != null) {
+      map['started_at'] = Variable<DateTime>(startedAt);
+    }
+    if (!nullToAbsent || completedAt != null) {
+      map['completed_at'] = Variable<DateTime>(completedAt);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || previousSyncStatus != null) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus);
+    }
+    map['sync_attempts'] = Variable<int>(syncAttempts);
+    if (!nullToAbsent || lastSyncError != null) {
+      map['last_sync_error'] = Variable<String>(lastSyncError);
+    }
+    return map;
+  }
+
+  OnboardingStateRecordsCompanion toCompanion(bool nullToAbsent) {
+    return OnboardingStateRecordsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      onboardingVersion: Value(onboardingVersion),
+      status: Value(status),
+      currentStepId: currentStepId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentStepId),
+      completedStepIdsJson: Value(completedStepIdsJson),
+      startedAt: startedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startedAt),
+      completedAt: completedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(completedAt),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      syncStatus: Value(syncStatus),
+      previousSyncStatus: previousSyncStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousSyncStatus),
+      syncAttempts: Value(syncAttempts),
+      lastSyncError: lastSyncError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSyncError),
+    );
+  }
+
+  factory OnboardingStateRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return OnboardingStateRecord(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      onboardingVersion: serializer.fromJson<int>(json['onboardingVersion']),
+      status: serializer.fromJson<String>(json['status']),
+      currentStepId: serializer.fromJson<String?>(json['currentStepId']),
+      completedStepIdsJson: serializer.fromJson<String>(
+        json['completedStepIdsJson'],
+      ),
+      startedAt: serializer.fromJson<DateTime?>(json['startedAt']),
+      completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      previousSyncStatus: serializer.fromJson<String?>(
+        json['previousSyncStatus'],
+      ),
+      syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      lastSyncError: serializer.fromJson<String?>(json['lastSyncError']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'onboardingVersion': serializer.toJson<int>(onboardingVersion),
+      'status': serializer.toJson<String>(status),
+      'currentStepId': serializer.toJson<String?>(currentStepId),
+      'completedStepIdsJson': serializer.toJson<String>(completedStepIdsJson),
+      'startedAt': serializer.toJson<DateTime?>(startedAt),
+      'completedAt': serializer.toJson<DateTime?>(completedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'previousSyncStatus': serializer.toJson<String?>(previousSyncStatus),
+      'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'lastSyncError': serializer.toJson<String?>(lastSyncError),
+    };
+  }
+
+  OnboardingStateRecord copyWith({
+    String? id,
+    String? userId,
+    int? onboardingVersion,
+    String? status,
+    Value<String?> currentStepId = const Value.absent(),
+    String? completedStepIdsJson,
+    Value<DateTime?> startedAt = const Value.absent(),
+    Value<DateTime?> completedAt = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? syncStatus,
+    Value<String?> previousSyncStatus = const Value.absent(),
+    int? syncAttempts,
+    Value<String?> lastSyncError = const Value.absent(),
+  }) => OnboardingStateRecord(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    onboardingVersion: onboardingVersion ?? this.onboardingVersion,
+    status: status ?? this.status,
+    currentStepId: currentStepId.present
+        ? currentStepId.value
+        : this.currentStepId,
+    completedStepIdsJson: completedStepIdsJson ?? this.completedStepIdsJson,
+    startedAt: startedAt.present ? startedAt.value : this.startedAt,
+    completedAt: completedAt.present ? completedAt.value : this.completedAt,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    syncStatus: syncStatus ?? this.syncStatus,
+    previousSyncStatus: previousSyncStatus.present
+        ? previousSyncStatus.value
+        : this.previousSyncStatus,
+    syncAttempts: syncAttempts ?? this.syncAttempts,
+    lastSyncError: lastSyncError.present
+        ? lastSyncError.value
+        : this.lastSyncError,
+  );
+  OnboardingStateRecord copyWithCompanion(
+    OnboardingStateRecordsCompanion data,
+  ) {
+    return OnboardingStateRecord(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      onboardingVersion: data.onboardingVersion.present
+          ? data.onboardingVersion.value
+          : this.onboardingVersion,
+      status: data.status.present ? data.status.value : this.status,
+      currentStepId: data.currentStepId.present
+          ? data.currentStepId.value
+          : this.currentStepId,
+      completedStepIdsJson: data.completedStepIdsJson.present
+          ? data.completedStepIdsJson.value
+          : this.completedStepIdsJson,
+      startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      previousSyncStatus: data.previousSyncStatus.present
+          ? data.previousSyncStatus.value
+          : this.previousSyncStatus,
+      syncAttempts: data.syncAttempts.present
+          ? data.syncAttempts.value
+          : this.syncAttempts,
+      lastSyncError: data.lastSyncError.present
+          ? data.lastSyncError.value
+          : this.lastSyncError,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OnboardingStateRecord(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('onboardingVersion: $onboardingVersion, ')
+          ..write('status: $status, ')
+          ..write('currentStepId: $currentStepId, ')
+          ..write('completedStepIdsJson: $completedStepIdsJson, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    onboardingVersion,
+    status,
+    currentStepId,
+    completedStepIdsJson,
+    startedAt,
+    completedAt,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    syncStatus,
+    previousSyncStatus,
+    syncAttempts,
+    lastSyncError,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is OnboardingStateRecord &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.onboardingVersion == this.onboardingVersion &&
+          other.status == this.status &&
+          other.currentStepId == this.currentStepId &&
+          other.completedStepIdsJson == this.completedStepIdsJson &&
+          other.startedAt == this.startedAt &&
+          other.completedAt == this.completedAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.syncStatus == this.syncStatus &&
+          other.previousSyncStatus == this.previousSyncStatus &&
+          other.syncAttempts == this.syncAttempts &&
+          other.lastSyncError == this.lastSyncError);
+}
+
+class OnboardingStateRecordsCompanion
+    extends UpdateCompanion<OnboardingStateRecord> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<int> onboardingVersion;
+  final Value<String> status;
+  final Value<String?> currentStepId;
+  final Value<String> completedStepIdsJson;
+  final Value<DateTime?> startedAt;
+  final Value<DateTime?> completedAt;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> syncStatus;
+  final Value<String?> previousSyncStatus;
+  final Value<int> syncAttempts;
+  final Value<String?> lastSyncError;
+  final Value<int> rowid;
+  const OnboardingStateRecordsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.onboardingVersion = const Value.absent(),
+    this.status = const Value.absent(),
+    this.currentStepId = const Value.absent(),
+    this.completedStepIdsJson = const Value.absent(),
+    this.startedAt = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  OnboardingStateRecordsCompanion.insert({
+    required String id,
+    required String userId,
+    required int onboardingVersion,
+    required String status,
+    this.currentStepId = const Value.absent(),
+    required String completedStepIdsJson,
+    this.startedAt = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
+    required String syncStatus,
+    this.previousSyncStatus = const Value.absent(),
+    this.syncAttempts = const Value.absent(),
+    this.lastSyncError = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       onboardingVersion = Value(onboardingVersion),
+       status = Value(status),
+       completedStepIdsJson = Value(completedStepIdsJson),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt),
+       syncStatus = Value(syncStatus);
+  static Insertable<OnboardingStateRecord> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<int>? onboardingVersion,
+    Expression<String>? status,
+    Expression<String>? currentStepId,
+    Expression<String>? completedStepIdsJson,
+    Expression<DateTime>? startedAt,
+    Expression<DateTime>? completedAt,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? syncStatus,
+    Expression<String>? previousSyncStatus,
+    Expression<int>? syncAttempts,
+    Expression<String>? lastSyncError,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (onboardingVersion != null) 'onboarding_version': onboardingVersion,
+      if (status != null) 'status': status,
+      if (currentStepId != null) 'current_step_id': currentStepId,
+      if (completedStepIdsJson != null)
+        'completed_step_ids_json': completedStepIdsJson,
+      if (startedAt != null) 'started_at': startedAt,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (previousSyncStatus != null)
+        'previous_sync_status': previousSyncStatus,
+      if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (lastSyncError != null) 'last_sync_error': lastSyncError,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  OnboardingStateRecordsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<int>? onboardingVersion,
+    Value<String>? status,
+    Value<String?>? currentStepId,
+    Value<String>? completedStepIdsJson,
+    Value<DateTime?>? startedAt,
+    Value<DateTime?>? completedAt,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? syncStatus,
+    Value<String?>? previousSyncStatus,
+    Value<int>? syncAttempts,
+    Value<String?>? lastSyncError,
+    Value<int>? rowid,
+  }) {
+    return OnboardingStateRecordsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      onboardingVersion: onboardingVersion ?? this.onboardingVersion,
+      status: status ?? this.status,
+      currentStepId: currentStepId ?? this.currentStepId,
+      completedStepIdsJson: completedStepIdsJson ?? this.completedStepIdsJson,
+      startedAt: startedAt ?? this.startedAt,
+      completedAt: completedAt ?? this.completedAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
+      previousSyncStatus: previousSyncStatus ?? this.previousSyncStatus,
+      syncAttempts: syncAttempts ?? this.syncAttempts,
+      lastSyncError: lastSyncError ?? this.lastSyncError,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (onboardingVersion.present) {
+      map['onboarding_version'] = Variable<int>(onboardingVersion.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (currentStepId.present) {
+      map['current_step_id'] = Variable<String>(currentStepId.value);
+    }
+    if (completedStepIdsJson.present) {
+      map['completed_step_ids_json'] = Variable<String>(
+        completedStepIdsJson.value,
+      );
+    }
+    if (startedAt.present) {
+      map['started_at'] = Variable<DateTime>(startedAt.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (previousSyncStatus.present) {
+      map['previous_sync_status'] = Variable<String>(previousSyncStatus.value);
+    }
+    if (syncAttempts.present) {
+      map['sync_attempts'] = Variable<int>(syncAttempts.value);
+    }
+    if (lastSyncError.present) {
+      map['last_sync_error'] = Variable<String>(lastSyncError.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OnboardingStateRecordsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('onboardingVersion: $onboardingVersion, ')
+          ..write('status: $status, ')
+          ..write('currentStepId: $currentStepId, ')
+          ..write('completedStepIdsJson: $completedStepIdsJson, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('previousSyncStatus: $previousSyncStatus, ')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('lastSyncError: $lastSyncError, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $WaterRecordsTable waterRecords = $WaterRecordsTable(this);
   late final $SyncCursorsTable syncCursors = $SyncCursorsTable(this);
+  late final $SyncRecordVersionsTable syncRecordVersions =
+      $SyncRecordVersionsTable(this);
   late final $SyncDevicesTable syncDevices = $SyncDevicesTable(this);
   late final $LocalMigrationsTable localMigrations = $LocalMigrationsTable(
     this,
@@ -42251,6 +43732,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $NotificationManifestRecordsTable(this);
   late final $NotificationActionInboxRecordsTable
   notificationActionInboxRecords = $NotificationActionInboxRecordsTable(this);
+  late final $OnboardingStateRecordsTable onboardingStateRecords =
+      $OnboardingStateRecordsTable(this);
   late final Index waterUserDeletedRecordedIdx = Index(
     'water_user_deleted_recorded_idx',
     'CREATE INDEX water_user_deleted_recorded_idx ON water_records (user_id, deleted_at, recorded_at)',
@@ -42551,6 +44034,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'notification_action_inbox_pending_idx',
     'CREATE INDEX notification_action_inbox_pending_idx ON notification_action_inbox_records (user_id, state, received_at_utc)',
   );
+  late final Index onboardingStateUserActiveUniqueIdx = Index(
+    'onboarding_state_user_active_unique_idx',
+    'CREATE UNIQUE INDEX onboarding_state_user_active_unique_idx ON onboarding_state_records (user_id)',
+  );
+  late final Index onboardingStateUserSyncUpdatedIdx = Index(
+    'onboarding_state_user_sync_updated_idx',
+    'CREATE INDEX onboarding_state_user_sync_updated_idx ON onboarding_state_records (user_id, sync_status, updated_at)',
+  );
   late final WaterDao waterDao = WaterDao(this as AppDatabase);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
@@ -42579,6 +44070,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final MedicalPrescriptionDao medicalPrescriptionDao =
       MedicalPrescriptionDao(this as AppDatabase);
+  late final OnboardingStateDao onboardingStateDao = OnboardingStateDao(
+    this as AppDatabase,
+  );
   late final SmartRoutineDao smartRoutineDao = SmartRoutineDao(
     this as AppDatabase,
   );
@@ -42589,6 +44083,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     waterRecords,
     syncCursors,
+    syncRecordVersions,
     syncDevices,
     localMigrations,
     waterCutovers,
@@ -42635,6 +44130,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     prescriptionRoutineLinkRecords,
     notificationManifestRecords,
     notificationActionInboxRecords,
+    onboardingStateRecords,
     waterUserDeletedRecordedIdx,
     waterUserSyncUpdatedIdx,
     settingsUserUniqueIdx,
@@ -42710,6 +44206,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     prescriptionRoutineLinksItemIdx,
     notificationManifestUserScheduleIdx,
     notificationActionInboxPendingIdx,
+    onboardingStateUserActiveUniqueIdx,
+    onboardingStateUserSyncUpdatedIdx,
   ];
 }
 
@@ -43283,6 +44781,204 @@ typedef $$SyncCursorsTableProcessedTableManager =
         BaseReferences<_$AppDatabase, $SyncCursorsTable, SyncCursor>,
       ),
       SyncCursor,
+      PrefetchHooks Function()
+    >;
+typedef $$SyncRecordVersionsTableCreateCompanionBuilder =
+    SyncRecordVersionsCompanion Function({
+      required String userId,
+      required String repositoryKey,
+      required String recordId,
+      required int serverRevision,
+      Value<int> rowid,
+    });
+typedef $$SyncRecordVersionsTableUpdateCompanionBuilder =
+    SyncRecordVersionsCompanion Function({
+      Value<String> userId,
+      Value<String> repositoryKey,
+      Value<String> recordId,
+      Value<int> serverRevision,
+      Value<int> rowid,
+    });
+
+class $$SyncRecordVersionsTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncRecordVersionsTable> {
+  $$SyncRecordVersionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get repositoryKey => $composableBuilder(
+    column: $table.repositoryKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recordId => $composableBuilder(
+    column: $table.recordId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverRevision => $composableBuilder(
+    column: $table.serverRevision,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SyncRecordVersionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncRecordVersionsTable> {
+  $$SyncRecordVersionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get repositoryKey => $composableBuilder(
+    column: $table.repositoryKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recordId => $composableBuilder(
+    column: $table.recordId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get serverRevision => $composableBuilder(
+    column: $table.serverRevision,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncRecordVersionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncRecordVersionsTable> {
+  $$SyncRecordVersionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get repositoryKey => $composableBuilder(
+    column: $table.repositoryKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get recordId =>
+      $composableBuilder(column: $table.recordId, builder: (column) => column);
+
+  GeneratedColumn<int> get serverRevision => $composableBuilder(
+    column: $table.serverRevision,
+    builder: (column) => column,
+  );
+}
+
+class $$SyncRecordVersionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncRecordVersionsTable,
+          SyncRecordVersion,
+          $$SyncRecordVersionsTableFilterComposer,
+          $$SyncRecordVersionsTableOrderingComposer,
+          $$SyncRecordVersionsTableAnnotationComposer,
+          $$SyncRecordVersionsTableCreateCompanionBuilder,
+          $$SyncRecordVersionsTableUpdateCompanionBuilder,
+          (
+            SyncRecordVersion,
+            BaseReferences<
+              _$AppDatabase,
+              $SyncRecordVersionsTable,
+              SyncRecordVersion
+            >,
+          ),
+          SyncRecordVersion,
+          PrefetchHooks Function()
+        > {
+  $$SyncRecordVersionsTableTableManager(
+    _$AppDatabase db,
+    $SyncRecordVersionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncRecordVersionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncRecordVersionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncRecordVersionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<String> repositoryKey = const Value.absent(),
+                Value<String> recordId = const Value.absent(),
+                Value<int> serverRevision = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncRecordVersionsCompanion(
+                userId: userId,
+                repositoryKey: repositoryKey,
+                recordId: recordId,
+                serverRevision: serverRevision,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required String repositoryKey,
+                required String recordId,
+                required int serverRevision,
+                Value<int> rowid = const Value.absent(),
+              }) => SyncRecordVersionsCompanion.insert(
+                userId: userId,
+                repositoryKey: repositoryKey,
+                recordId: recordId,
+                serverRevision: serverRevision,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SyncRecordVersionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncRecordVersionsTable,
+      SyncRecordVersion,
+      $$SyncRecordVersionsTableFilterComposer,
+      $$SyncRecordVersionsTableOrderingComposer,
+      $$SyncRecordVersionsTableAnnotationComposer,
+      $$SyncRecordVersionsTableCreateCompanionBuilder,
+      $$SyncRecordVersionsTableUpdateCompanionBuilder,
+      (
+        SyncRecordVersion,
+        BaseReferences<
+          _$AppDatabase,
+          $SyncRecordVersionsTable,
+          SyncRecordVersion
+        >,
+      ),
+      SyncRecordVersion,
       PrefetchHooks Function()
     >;
 typedef $$SyncDevicesTableCreateCompanionBuilder =
@@ -43899,7 +45595,11 @@ typedef $$SettingsRecordsTableCreateCompanionBuilder =
       Value<bool> medicationRemindersEnabled,
       Value<bool> appointmentRemindersEnabled,
       Value<bool> mealTrackingEnabled,
+      Value<bool> treatmentTrackingEnabled,
+      Value<bool> waterTrackingEnabled,
+      Value<bool> weightTrackingEnabled,
       Value<String> weightUnit,
+      Value<String> notificationPreferencesJson,
       required DateTime createdAt,
       required DateTime updatedAt,
       Value<DateTime?> deletedAt,
@@ -43918,7 +45618,11 @@ typedef $$SettingsRecordsTableUpdateCompanionBuilder =
       Value<bool> medicationRemindersEnabled,
       Value<bool> appointmentRemindersEnabled,
       Value<bool> mealTrackingEnabled,
+      Value<bool> treatmentTrackingEnabled,
+      Value<bool> waterTrackingEnabled,
+      Value<bool> weightTrackingEnabled,
       Value<String> weightUnit,
+      Value<String> notificationPreferencesJson,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
@@ -43973,8 +45677,28 @@ class $$SettingsRecordsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<bool> get treatmentTrackingEnabled => $composableBuilder(
+    column: $table.treatmentTrackingEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get waterTrackingEnabled => $composableBuilder(
+    column: $table.waterTrackingEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get weightTrackingEnabled => $composableBuilder(
+    column: $table.weightTrackingEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get weightUnit => $composableBuilder(
     column: $table.weightUnit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notificationPreferencesJson => $composableBuilder(
+    column: $table.notificationPreferencesJson,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -44058,8 +45782,28 @@ class $$SettingsRecordsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get treatmentTrackingEnabled => $composableBuilder(
+    column: $table.treatmentTrackingEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get waterTrackingEnabled => $composableBuilder(
+    column: $table.waterTrackingEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get weightTrackingEnabled => $composableBuilder(
+    column: $table.weightTrackingEnabled,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get weightUnit => $composableBuilder(
     column: $table.weightUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notificationPreferencesJson => $composableBuilder(
+    column: $table.notificationPreferencesJson,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -44139,8 +45883,28 @@ class $$SettingsRecordsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<bool> get treatmentTrackingEnabled => $composableBuilder(
+    column: $table.treatmentTrackingEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get waterTrackingEnabled => $composableBuilder(
+    column: $table.waterTrackingEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get weightTrackingEnabled => $composableBuilder(
+    column: $table.weightTrackingEnabled,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get weightUnit => $composableBuilder(
     column: $table.weightUnit,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get notificationPreferencesJson => $composableBuilder(
+    column: $table.notificationPreferencesJson,
     builder: (column) => column,
   );
 
@@ -44218,7 +45982,12 @@ class $$SettingsRecordsTableTableManager
                 Value<bool> medicationRemindersEnabled = const Value.absent(),
                 Value<bool> appointmentRemindersEnabled = const Value.absent(),
                 Value<bool> mealTrackingEnabled = const Value.absent(),
+                Value<bool> treatmentTrackingEnabled = const Value.absent(),
+                Value<bool> waterTrackingEnabled = const Value.absent(),
+                Value<bool> weightTrackingEnabled = const Value.absent(),
                 Value<String> weightUnit = const Value.absent(),
+                Value<String> notificationPreferencesJson =
+                    const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
@@ -44235,7 +46004,11 @@ class $$SettingsRecordsTableTableManager
                 medicationRemindersEnabled: medicationRemindersEnabled,
                 appointmentRemindersEnabled: appointmentRemindersEnabled,
                 mealTrackingEnabled: mealTrackingEnabled,
+                treatmentTrackingEnabled: treatmentTrackingEnabled,
+                waterTrackingEnabled: waterTrackingEnabled,
+                weightTrackingEnabled: weightTrackingEnabled,
                 weightUnit: weightUnit,
+                notificationPreferencesJson: notificationPreferencesJson,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
@@ -44254,7 +46027,12 @@ class $$SettingsRecordsTableTableManager
                 Value<bool> medicationRemindersEnabled = const Value.absent(),
                 Value<bool> appointmentRemindersEnabled = const Value.absent(),
                 Value<bool> mealTrackingEnabled = const Value.absent(),
+                Value<bool> treatmentTrackingEnabled = const Value.absent(),
+                Value<bool> waterTrackingEnabled = const Value.absent(),
+                Value<bool> weightTrackingEnabled = const Value.absent(),
                 Value<String> weightUnit = const Value.absent(),
+                Value<String> notificationPreferencesJson =
+                    const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
                 Value<DateTime?> deletedAt = const Value.absent(),
@@ -44271,7 +46049,11 @@ class $$SettingsRecordsTableTableManager
                 medicationRemindersEnabled: medicationRemindersEnabled,
                 appointmentRemindersEnabled: appointmentRemindersEnabled,
                 mealTrackingEnabled: mealTrackingEnabled,
+                treatmentTrackingEnabled: treatmentTrackingEnabled,
+                waterTrackingEnabled: waterTrackingEnabled,
+                weightTrackingEnabled: weightTrackingEnabled,
                 weightUnit: weightUnit,
+                notificationPreferencesJson: notificationPreferencesJson,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
@@ -62265,6 +64047,431 @@ typedef $$NotificationActionInboxRecordsTableProcessedTableManager =
       NotificationActionInboxRecord,
       PrefetchHooks Function()
     >;
+typedef $$OnboardingStateRecordsTableCreateCompanionBuilder =
+    OnboardingStateRecordsCompanion Function({
+      required String id,
+      required String userId,
+      required int onboardingVersion,
+      required String status,
+      Value<String?> currentStepId,
+      required String completedStepIdsJson,
+      Value<DateTime?> startedAt,
+      Value<DateTime?> completedAt,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
+      required String syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+typedef $$OnboardingStateRecordsTableUpdateCompanionBuilder =
+    OnboardingStateRecordsCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<int> onboardingVersion,
+      Value<String> status,
+      Value<String?> currentStepId,
+      Value<String> completedStepIdsJson,
+      Value<DateTime?> startedAt,
+      Value<DateTime?> completedAt,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> syncStatus,
+      Value<String?> previousSyncStatus,
+      Value<int> syncAttempts,
+      Value<String?> lastSyncError,
+      Value<int> rowid,
+    });
+
+class $$OnboardingStateRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $OnboardingStateRecordsTable> {
+  $$OnboardingStateRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get onboardingVersion => $composableBuilder(
+    column: $table.onboardingVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currentStepId => $composableBuilder(
+    column: $table.currentStepId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get completedStepIdsJson => $composableBuilder(
+    column: $table.completedStepIdsJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$OnboardingStateRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $OnboardingStateRecordsTable> {
+  $$OnboardingStateRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get onboardingVersion => $composableBuilder(
+    column: $table.onboardingVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currentStepId => $composableBuilder(
+    column: $table.currentStepId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get completedStepIdsJson => $composableBuilder(
+    column: $table.completedStepIdsJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$OnboardingStateRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $OnboardingStateRecordsTable> {
+  $$OnboardingStateRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<int> get onboardingVersion => $composableBuilder(
+    column: $table.onboardingVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get currentStepId => $composableBuilder(
+    column: $table.currentStepId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get completedStepIdsJson => $composableBuilder(
+    column: $table.completedStepIdsJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get startedAt =>
+      $composableBuilder(column: $table.startedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get previousSyncStatus => $composableBuilder(
+    column: $table.previousSyncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get syncAttempts => $composableBuilder(
+    column: $table.syncAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lastSyncError => $composableBuilder(
+    column: $table.lastSyncError,
+    builder: (column) => column,
+  );
+}
+
+class $$OnboardingStateRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $OnboardingStateRecordsTable,
+          OnboardingStateRecord,
+          $$OnboardingStateRecordsTableFilterComposer,
+          $$OnboardingStateRecordsTableOrderingComposer,
+          $$OnboardingStateRecordsTableAnnotationComposer,
+          $$OnboardingStateRecordsTableCreateCompanionBuilder,
+          $$OnboardingStateRecordsTableUpdateCompanionBuilder,
+          (
+            OnboardingStateRecord,
+            BaseReferences<
+              _$AppDatabase,
+              $OnboardingStateRecordsTable,
+              OnboardingStateRecord
+            >,
+          ),
+          OnboardingStateRecord,
+          PrefetchHooks Function()
+        > {
+  $$OnboardingStateRecordsTableTableManager(
+    _$AppDatabase db,
+    $OnboardingStateRecordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$OnboardingStateRecordsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$OnboardingStateRecordsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$OnboardingStateRecordsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<int> onboardingVersion = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String?> currentStepId = const Value.absent(),
+                Value<String> completedStepIdsJson = const Value.absent(),
+                Value<DateTime?> startedAt = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => OnboardingStateRecordsCompanion(
+                id: id,
+                userId: userId,
+                onboardingVersion: onboardingVersion,
+                status: status,
+                currentStepId: currentStepId,
+                completedStepIdsJson: completedStepIdsJson,
+                startedAt: startedAt,
+                completedAt: completedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required int onboardingVersion,
+                required String status,
+                Value<String?> currentStepId = const Value.absent(),
+                required String completedStepIdsJson,
+                Value<DateTime?> startedAt = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String syncStatus,
+                Value<String?> previousSyncStatus = const Value.absent(),
+                Value<int> syncAttempts = const Value.absent(),
+                Value<String?> lastSyncError = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => OnboardingStateRecordsCompanion.insert(
+                id: id,
+                userId: userId,
+                onboardingVersion: onboardingVersion,
+                status: status,
+                currentStepId: currentStepId,
+                completedStepIdsJson: completedStepIdsJson,
+                startedAt: startedAt,
+                completedAt: completedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                syncStatus: syncStatus,
+                previousSyncStatus: previousSyncStatus,
+                syncAttempts: syncAttempts,
+                lastSyncError: lastSyncError,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$OnboardingStateRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $OnboardingStateRecordsTable,
+      OnboardingStateRecord,
+      $$OnboardingStateRecordsTableFilterComposer,
+      $$OnboardingStateRecordsTableOrderingComposer,
+      $$OnboardingStateRecordsTableAnnotationComposer,
+      $$OnboardingStateRecordsTableCreateCompanionBuilder,
+      $$OnboardingStateRecordsTableUpdateCompanionBuilder,
+      (
+        OnboardingStateRecord,
+        BaseReferences<
+          _$AppDatabase,
+          $OnboardingStateRecordsTable,
+          OnboardingStateRecord
+        >,
+      ),
+      OnboardingStateRecord,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -62273,6 +64480,8 @@ class $AppDatabaseManager {
       $$WaterRecordsTableTableManager(_db, _db.waterRecords);
   $$SyncCursorsTableTableManager get syncCursors =>
       $$SyncCursorsTableTableManager(_db, _db.syncCursors);
+  $$SyncRecordVersionsTableTableManager get syncRecordVersions =>
+      $$SyncRecordVersionsTableTableManager(_db, _db.syncRecordVersions);
   $$SyncDevicesTableTableManager get syncDevices =>
       $$SyncDevicesTableTableManager(_db, _db.syncDevices);
   $$LocalMigrationsTableTableManager get localMigrations =>
@@ -62423,5 +64632,10 @@ class $AppDatabaseManager {
       $$NotificationActionInboxRecordsTableTableManager(
         _db,
         _db.notificationActionInboxRecords,
+      );
+  $$OnboardingStateRecordsTableTableManager get onboardingStateRecords =>
+      $$OnboardingStateRecordsTableTableManager(
+        _db,
+        _db.onboardingStateRecords,
       );
 }

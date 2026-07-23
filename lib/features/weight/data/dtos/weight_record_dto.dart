@@ -97,6 +97,7 @@ class WeightRecordDto {
             ? null
             : DateTime.parse(row['deleted_at'] as String),
         syncStatus: SyncStatus.synced,
+        serverRevision: row['server_revision'] as int?,
       ),
     );
   }

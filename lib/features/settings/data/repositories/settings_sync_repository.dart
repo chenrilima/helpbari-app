@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../../core/sync/sync.dart';
 import '../datasources/drift_settings_local_datasource.dart';
 import '../datasources/settings_supabase_datasource.dart';
@@ -89,6 +91,7 @@ class SettingsSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: {
       ...dto.toSupabase(userId),
       'createdAt': dto.syncMetadata.createdAt.toIso8601String(),
@@ -106,7 +109,15 @@ class SettingsSyncRepository
       appointmentRemindersEnabled:
           payload['appointment_reminders_enabled'] as bool,
       mealTrackingEnabled: payload['meal_tracking_enabled'] as bool,
+      treatmentTrackingEnabled:
+          payload['treatment_tracking_enabled'] as bool? ?? true,
+      waterTrackingEnabled: payload['water_tracking_enabled'] as bool? ?? true,
+      weightTrackingEnabled:
+          payload['weight_tracking_enabled'] as bool? ?? true,
       weightUnit: payload['weight_unit'] as String,
+      notificationPreferencesJson: _encodedPreferences(
+        payload['notification_preferences'],
+      ),
       syncMetadata: SyncMetadata(
         id: operation.recordId,
         userId: userId,
@@ -118,5 +129,10 @@ class SettingsSyncRepository
         syncStatus: operation.syncStatus,
       ),
     );
+  }
+
+  static String _encodedPreferences(Object? value) {
+    if (value is String) return value;
+    return jsonEncode(value ?? const <String, Object?>{});
   }
 }

@@ -6,7 +6,6 @@ import '../../../../core/database/drift/drift_database_providers.dart';
 import '../../../../core/database/drift/cutover/appointment_cutover_service.dart';
 import '../../../../core/database/drift/migrations/appointment_legacy_service.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
-import '../../../settings/presentation/providers/setting_use_cases_provider.dart';
 import '../../application/appointment_reminder_service.dart';
 import '../../data/datasources/local_appointment_datasource.dart';
 import '../../data/datasources/drift_appointment_local_datasource.dart';
@@ -53,7 +52,6 @@ final appointmentReminderServiceProvider = Provider<AppointmentReminderService>(
     final userId =
         ref.watch(authSessionProvider)?.id ?? anonymousAppointmentUserId;
     return AppointmentReminderService(
-      settingsUseCases: ref.read(settingsUseCasesProvider),
       scheduler: ref.read(notificationSchedulerProvider),
       userId: userId,
     );

@@ -68,10 +68,11 @@ abstract final class OnboardingCompletionMapper {
         message: 'Revise os campos obrigatórios do perfil.',
       );
     }
-    if (!draft.waterGoalConfirmed ||
-        waterGoal == null ||
-        waterGoal < 500 ||
-        waterGoal > 6000) {
+    if (draft.trackWater &&
+        (!draft.waterGoalConfirmed ||
+            waterGoal == null ||
+            waterGoal < 500 ||
+            waterGoal > 6000)) {
       throw const AppException(
         code: 'onboarding.invalid_water_goal',
         message: 'Confirme uma meta de água entre 500 e 6000 ml.',
@@ -99,10 +100,21 @@ abstract final class OnboardingCompletionMapper {
       photoStoragePath: existingProfile?.photoStoragePath,
     );
     final settings = currentSettings.copyWith(
-      dailyWaterGoalMl: waterGoal,
+      dailyWaterGoalMl: draft.trackWater
+          ? waterGoal
+          : currentSettings.dailyWaterGoalMl,
       vitaminRemindersEnabled: draft.notificationsEnabled,
       medicationRemindersEnabled: draft.notificationsEnabled,
       appointmentRemindersEnabled: draft.notificationsEnabled,
+      notificationPreferences: NotificationPreferences.legacy(
+        vitamins: draft.notificationsEnabled,
+        medications: draft.notificationsEnabled,
+        appointments: draft.notificationsEnabled,
+      ),
+      treatmentTrackingEnabled: draft.trackTreatment,
+      waterTrackingEnabled: draft.trackWater,
+      mealTrackingEnabled: draft.trackMeals,
+      weightTrackingEnabled: draft.trackWeight,
     );
     final weight = currentValue == null
         ? null

@@ -10,6 +10,8 @@ import '../states/setting_state.dart';
 import '../../../home/presentation/providers/home_view_model_provider.dart';
 import '../../../charts/presentation/providers/chart_series_providers.dart';
 import '../../../medical_reports/presentation/providers/medical_report_providers.dart';
+import '../../domain/entities/entities.dart';
+import '../../../../app/bootstrap/notification_bootstrap_provider.dart';
 
 class SettingsViewModel extends Notifier<SettingsState> {
   bool _isMutating = false;
@@ -66,6 +68,43 @@ class SettingsViewModel extends Notifier<SettingsState> {
     );
   }
 
+  Future<void> setGlobalNotifications(bool enabled) => _mutate(
+    () => ref.read(settingsUseCasesProvider).setGlobalNotifications(enabled),
+  );
+
+  Future<void> setNotificationCategory(
+    NotificationCategory category,
+    bool enabled,
+  ) => _mutate(
+    () => ref
+        .read(settingsUseCasesProvider)
+        .setNotificationCategory(category, enabled),
+  );
+
+  Future<void> putNotificationTime(NotificationTimePreference preference) =>
+      _mutate(
+        () =>
+            ref.read(settingsUseCasesProvider).putNotificationTime(preference),
+      );
+
+  Future<void> updateTrackingPreferences({
+    required bool treatment,
+    required bool water,
+    required bool meals,
+    required bool weight,
+  }) async {
+    await _mutate(
+      () => ref
+          .read(settingsUseCasesProvider)
+          .updateTrackingPreferences(
+            treatment: treatment,
+            water: water,
+            meals: meals,
+            weight: weight,
+          ),
+    );
+  }
+
   Future<void> _mutate(Future<void> Function() persistLocally) async {
     if (_isMutating) return;
     _isMutating = true;
@@ -80,6 +119,7 @@ class SettingsViewModel extends Notifier<SettingsState> {
         await ref
             .read(settingsReminderSyncServiceProvider)
             .applyAfterCommit(settings);
+        ref.read(notificationBootstrapProvider).restoreAfterSync();
       } catch (error) {
         ref
             .read(loggerServiceProvider)

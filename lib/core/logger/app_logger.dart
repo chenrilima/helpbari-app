@@ -19,8 +19,8 @@ abstract final class AppLogger {
     developer.log(
       message,
       name: 'HelpBari',
-      error: error,
-      stackTrace: stackTrace,
+      error: Environment.isDev ? error : null,
+      stackTrace: Environment.isDev ? stackTrace : null,
       level: 800,
     );
   }
@@ -29,8 +29,8 @@ abstract final class AppLogger {
     developer.log(
       message,
       name: 'HelpBari',
-      error: error,
-      stackTrace: stackTrace,
+      error: Environment.isDev ? error : null,
+      stackTrace: Environment.isDev ? stackTrace : null,
       level: 1000,
     );
   }

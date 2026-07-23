@@ -16,11 +16,8 @@ import '../../../smart_routines/presentation/providers/unified_treatment_provide
 import '../../domain/models/home_intelligence_models.dart';
 import '../../application/home_runtime_guard.dart';
 import '../providers/home_view_model_provider.dart';
-import '../widgets/health_score_overview_section.dart';
 import '../widgets/home_header.dart';
 import '../widgets/home_intelligence_sections.dart';
-import '../widgets/quick_actions_section.dart';
-import '../widgets/today_task_card.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -37,6 +34,7 @@ class _HomePageState extends ConsumerState<HomePage>
   Timer? _dayRefreshTimer;
   DateTime? _snapshotDate;
   String? _snapshotTimeZone;
+  bool _dashboardReady = false;
 
   @override
   void initState() {
@@ -44,6 +42,9 @@ class _HomePageState extends ConsumerState<HomePage>
     WidgetsBinding.instance.addObserver(this);
     Future.microtask(_refreshAfterSync);
     Future.microtask(_scheduleDayRefresh);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() => _dashboardReady = true);
+    });
   }
 
   Future<void> _refreshAfterSync() async {
@@ -95,8 +96,6 @@ class _HomePageState extends ConsumerState<HomePage>
       _scheduleDayRefresh();
     }
   }
-
-  Future<void> _signOut() => ref.read(authViewModelProvider.notifier).signOut();
 
   Future<void> _retry() async {
     ref.invalidate(todayDashboardProvider);
@@ -199,7 +198,6 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final dashboard = ref.watch(todayDashboardProvider);
     final authState = ref.watch(authViewModelProvider);
 
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
@@ -207,6 +205,14 @@ class _HomePageState extends ConsumerState<HomePage>
         HBSnackBar.error(context, message: message);
       }
     });
+
+    if (!_dashboardReady) {
+      return const HBPage(
+        children: [HBLoading(message: 'Carregando dados do aparelho...')],
+      );
+    }
+
+    final dashboard = ref.watch(todayDashboardProvider);
 
     return HBLoadingOverlay(
       isLoading: authState is AuthLoading,
@@ -240,55 +246,47 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 
   PreferredSizeWidget _appBar(bool isSigningOut) => HBAppBar(
-    title: 'HelpBari',
+    title: 'Hoje',
     actions: [
       IconButton(
-        tooltip: 'Sair',
-        onPressed: isSigningOut ? null : _signOut,
-        icon: const Icon(Icons.logout_rounded),
+        tooltip: 'Abrir perfil',
+        onPressed: isSigningOut ? null : () => _openRoute(AppRoutes.profile),
+        icon: const Icon(Icons.account_circle_outlined),
       ),
     ],
   );
 
   Widget _content(TodayDashboardReadModel model, bool isSigningOut) {
-    return HBPage(
+    return HBScaffold(
       appBar: _appBar(isSigningOut),
-      children: [
-        HomeHeader(userName: model.userName ?? 'Olá'),
-        const HBGap.lg(),
-        HomeFreshnessBanner(status: model.status),
-        if (model.status.freshness.isStale || model.status.hasPendingSync)
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          HomeHeader(userName: model.userName ?? 'Olá'),
           const HBGap.lg(),
-        _NextActionsConsumer(onAction: _runNextAction),
-        const HBGap.xl(),
-        _AgendaConsumer(todayOnly: true, onItem: _runAgendaItem),
-        const HBGap.xl(),
-        _ProgressConsumer(),
-        const HBGap.xl(),
-        _InsightsConsumer(onOpen: (value) => _openRoute(value.deepLink)),
-        const HBGap.xl(),
-        QuickActionsSection(onOpen: _openFeature),
-        const HBGap.xl(),
-        _AgendaConsumer(todayOnly: false, onItem: _runAgendaItem),
-        if (model.healthScore?.hasData == true) ...[
+          HomeFreshnessBanner(status: model.status),
+          if (model.status.freshness.isStale || model.status.hasPendingSync)
+            const HBGap.lg(),
+          _NextActionsConsumer(onAction: _runNextAction),
           const HBGap.xl(),
-          HealthScoreOverviewSection(healthScore: model.healthScore!),
+          _AgendaConsumer(onItem: _runAgendaItem),
+          const HBGap.xl(),
+          _ProgressConsumer(),
+          const HBGap.xl(),
+          _InsightsConsumer(onOpen: (value) => _openRoute(value.deepLink)),
+          const HBGap.xl(),
+          _QuickActionsConsumer(
+            onAction: (action) {
+              if (action.kind == HomeActionKind.treatmentCommand &&
+                  action.sourceId != null) {
+                _recordOccurrence(action.sourceId!);
+              } else {
+                _openFeature(action.deepLink ?? AppRoutes.home);
+              }
+            },
+          ),
         ],
-        const HBGap.xl(),
-        TodayTaskCard(
-          icon: Icons.auto_awesome_outlined,
-          title: 'BarIA',
-          subtitle: 'Entenda seu acompanhamento com contexto minimizado.',
-          onTap: () => _openRoute(AppRoutes.baria),
-        ),
-        const HBGap.xl(),
-        TodayTaskCard(
-          icon: Icons.trending_up_outlined,
-          title: 'Evolução e conteúdos',
-          subtitle: 'Acesse históricos, gráficos e recursos complementares.',
-          onTap: () => _openRoute(AppRoutes.progress),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -311,24 +309,34 @@ class _NextActionsConsumer extends ConsumerWidget {
 }
 
 class _AgendaConsumer extends ConsumerWidget {
-  const _AgendaConsumer({required this.todayOnly, required this.onItem});
-  final bool todayOnly;
+  const _AgendaConsumer({required this.onItem});
   final ValueChanged<AgendaItemReadModel> onItem;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => ref
       .watch(todayAgendaProvider)
       .when(
-        data: (value) => IntelligentAgendaSection(
-          model: value,
-          todayOnly: todayOnly,
-          onItem: onItem,
-        ),
+        data: (value) => IntelligentAgendaSection(model: value, onItem: onItem),
         loading: () => const HBLoading(message: 'Carregando agenda local...'),
         error: (_, _) => const HBEmptyState(
           title: 'Agenda indisponível',
           description: 'Tente atualizar somente esta seção.',
         ),
+      );
+}
+
+class _QuickActionsConsumer extends ConsumerWidget {
+  const _QuickActionsConsumer({required this.onAction});
+  final ValueChanged<QuickActionReadModel> onAction;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => ref
+      .watch(quickActionsProvider)
+      .when(
+        data: (value) =>
+            IntelligentQuickActionsSection(model: value, onAction: onAction),
+        loading: () => const HBLoading(message: 'Carregando ações...'),
+        error: (_, _) => const SizedBox.shrink(),
       );
 }
 

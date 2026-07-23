@@ -101,6 +101,7 @@ class MedicalPrescriptionDto {
         updatedAt: entity.updatedAt,
         deletedAt: entity.deletedAt,
         syncStatus: status,
+        serverRevision: prescription['server_revision'] as int?,
       ),
     );
   }

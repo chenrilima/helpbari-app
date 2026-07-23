@@ -1,12 +1,29 @@
 import '../../../../core/supabase/database/supabase_database.dart';
+import '../../../../core/supabase/database/versioned_remote_datasource.dart';
 import '../dtos/water_record_dto.dart';
 
-class WaterSupabaseDatasource {
+class WaterSupabaseDatasource
+    implements VersionedRemoteDatasource<WaterRecordDto> {
   const WaterSupabaseDatasource(this._database);
 
   static const table = 'water_records';
 
   final SupabaseDatabase _database;
+
+  @override
+  Future<WaterRecordDto> upsertVersioned(
+    WaterRecordDto record, {
+    required String userId,
+    required int? baseRevision,
+  }) async => WaterRecordDto.fromSupabaseRow(
+    await _database.versionedUpsert(
+      table: table,
+      userId: userId,
+      recordId: record.id,
+      row: record.toSupabaseInsert(userId: userId),
+      baseRevision: baseRevision,
+    ),
+  );
 
   Future<WaterRecordDto> insert(
     WaterRecordDto record, {
@@ -60,23 +77,24 @@ class WaterSupabaseDatasource {
   Future<List<WaterRecordDto>> pull({
     required String userId,
     DateTime? updatedAfter,
-  }) {
-    return _database.run(
-      operation: 'select',
-      table: table,
-      request: (query) async {
-        var request = query.select().eq('user_id', userId);
+  }) async => [
+    await for (final page in pullPages(
+      userId: userId,
+      updatedAfter: updatedAfter,
+    ))
+      ...page,
+  ];
 
-        if (updatedAfter != null) {
-          request = request.gt('updated_at', updatedAfter.toIso8601String());
-        }
-
-        final response = await request.order('updated_at');
-
-        return response
-            .map((row) => WaterRecordDto.fromSupabaseRow(row))
-            .toList();
-      },
-    );
-  }
+  Stream<List<WaterRecordDto>> pullPages({
+    required String userId,
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _database
+      .pullUpdatedPages(
+        table: table,
+        userId: userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((rows) => rows.map(WaterRecordDto.fromSupabaseRow).toList());
 }

@@ -72,6 +72,7 @@ class MedicalExamResultDto {
           ? null
           : DateTime.parse(row['deleted_at'] as String),
       syncStatus: SyncStatus.synced,
+      serverRevision: row['server_revision'] as int?,
     );
     return MedicalExamResultDto(
       result: _result(row, metadata),
@@ -87,6 +88,7 @@ class MedicalExamResultDto {
       updatedAt: _date(row['updated_at'])!,
       deletedAt: _date(row['deleted_at']),
       syncStatus: SyncStatus.fromName(row['sync_status'] as String?),
+      serverRevision: row['server_revision'] as int?,
     );
     return _result(row, metadata);
   }

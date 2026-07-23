@@ -1,6 +1,6 @@
 import 'sync_operation.dart';
 
-enum SyncConflictResolution { latestUpdatedAtWins }
+enum SyncConflictResolution { explicitRevisionConflict }
 
 class SyncConflict {
   const SyncConflict({
@@ -9,7 +9,7 @@ class SyncConflict {
     required this.local,
     required this.remote,
     required this.winner,
-    this.resolution = SyncConflictResolution.latestUpdatedAtWins,
+    this.resolution = SyncConflictResolution.explicitRevisionConflict,
   });
 
   final String repositoryKey;

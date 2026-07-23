@@ -35,7 +35,11 @@ final loggerServiceProvider = Provider<LoggerService>((ref) {
 final localNotificationServiceProvider = Provider<LocalNotificationService>((
   ref,
 ) {
-  return AppLocalNotificationService(logger: ref.read(loggerServiceProvider));
+  final service = AppLocalNotificationService(
+    logger: ref.read(loggerServiceProvider),
+  );
+  ref.onDispose(service.dispose);
+  return service;
 });
 
 final notificationSchedulerProvider = Provider<NotificationScheduler>((ref) {

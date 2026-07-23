@@ -1,10 +1,27 @@
 import '../../../../core/supabase/database/supabase_database.dart';
+import '../../../../core/supabase/database/versioned_remote_datasource.dart';
 import '../dtos/bioimpedance_record_dto.dart';
 
-class BioimpedanceSupabaseDatasource {
+class BioimpedanceSupabaseDatasource
+    implements VersionedRemoteDatasource<BioimpedanceRecordDto> {
   const BioimpedanceSupabaseDatasource(this._database);
   static const table = 'bioimpedance_records';
   final SupabaseDatabase _database;
+
+  @override
+  Future<BioimpedanceRecordDto> upsertVersioned(
+    BioimpedanceRecordDto value, {
+    required String userId,
+    required int? baseRevision,
+  }) async => BioimpedanceRecordDto.fromSupabaseRow(
+    await _database.versionedUpsert(
+      table: table,
+      userId: userId,
+      recordId: value.record.id,
+      row: value.toSupabaseRow(userId: userId),
+      baseRevision: baseRevision,
+    ),
+  );
 
   Future<BioimpedanceRecordDto> upsert(
     BioimpedanceRecordDto record, {
@@ -25,19 +42,24 @@ class BioimpedanceSupabaseDatasource {
   Future<List<BioimpedanceRecordDto>> pull({
     required String userId,
     DateTime? updatedAfter,
-  }) => _database.run(
-    operation: 'select',
-    table: table,
-    request: (query) async {
-      var request = query.select().eq('user_id', userId);
-      if (updatedAfter != null) {
-        request = request.gt(
-          'updated_at',
-          updatedAfter.toUtc().toIso8601String(),
-        );
-      }
-      final rows = await request.order('updated_at');
-      return rows.map(BioimpedanceRecordDto.fromSupabaseRow).toList();
-    },
-  );
+  }) async => [
+    await for (final page in pullPages(
+      userId: userId,
+      updatedAfter: updatedAfter,
+    ))
+      ...page,
+  ];
+
+  Stream<List<BioimpedanceRecordDto>> pullPages({
+    required String userId,
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _database
+      .pullUpdatedPages(
+        table: table,
+        userId: userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((rows) => rows.map(BioimpedanceRecordDto.fromSupabaseRow).toList());
 }

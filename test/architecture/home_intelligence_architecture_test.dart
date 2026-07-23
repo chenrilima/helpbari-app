@@ -47,8 +47,39 @@ void main() {
     ).readAsStringSync();
 
     expect('QuickActionsSection('.allMatches(page), hasLength(1));
-    expect(page, isNot(contains('IntelligentQuickActionsSection(')));
+    expect(page, contains('IntelligentQuickActionsSection('));
+    expect(page, isNot(contains('QuickActionsSection(onOpen:')));
     expect(model, isNot(contains('quickWater')));
+  });
+
+  test('Home quick actions expose the V1 catalog without prescriptions', () {
+    final source = File(
+      'lib/features/home/application/home_intelligence_query_facade.dart',
+    ).readAsStringSync();
+    final start = source.indexOf('QuickActionsReadModel composeQuickActions');
+    final end = source.indexOf('QuickStatsReadModel composeQuickStats', start);
+    final quickActions = source.substring(start, end);
+
+    for (final id in const [
+      'water',
+      'meal',
+      'treatment',
+      'agenda',
+      'weight',
+      'vitamins',
+      'exams',
+      'progress',
+      'profile',
+      'medications',
+      'documents',
+      'reports',
+      'bioimpedance',
+      'academy',
+      'settings',
+    ]) {
+      expect(quickActions, contains("id: 'quick:$id'"));
+    }
+    expect(quickActions, isNot(contains("id: 'quick:prescription")));
   });
 
   test('Reports uses bounded clinical histories', () {

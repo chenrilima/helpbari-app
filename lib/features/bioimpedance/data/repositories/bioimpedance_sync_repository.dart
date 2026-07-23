@@ -1,3 +1,4 @@
+import '../../../../core/supabase/database/supabase_database.dart';
 import '../../../../core/sync/sync.dart';
 import '../datasources/bioimpedance_supabase_datasource.dart';
 import '../datasources/drift_bioimpedance_local_datasource.dart';
@@ -6,8 +7,10 @@ import '../dtos/bioimpedance_record_dto.dart';
 class BioimpedanceSyncRepository
     implements
         SyncableRepository,
+        PagedPullSyncRepository,
         RepositorySyncCursor,
-        AtomicRemoteSyncRepository {
+        AtomicRemoteSyncRepository,
+        VersionedPushSyncRepository {
   const BioimpedanceSyncRepository({
     required Future<DriftBioimpedanceLocalDatasource> Function() local,
     required BioimpedanceSupabaseDatasource remote,
@@ -41,11 +44,43 @@ class BioimpedanceSyncRepository
   }
 
   @override
+  Future<SyncOperation> pushVersioned(
+    SyncOperation operation, {
+    required int? baseRevision,
+  }) async {
+    try {
+      final remote = await _remote.upsertVersioned(
+        _dto(operation),
+        userId: _userId,
+        baseRevision: baseRevision,
+      );
+      await (await _local()).applyRemote(remote);
+      return _op(remote);
+    } on SupabaseRevisionConflictException catch (error) {
+      throw SyncRevisionConflictException(
+        _op(BioimpedanceRecordDto.fromSupabaseRow(error.remoteRow)),
+      );
+    }
+  }
+
+  @override
   Future<List<SyncOperation>> pull({DateTime? updatedAfter}) async =>
       (await _remote.pull(
         userId: _userId,
         updatedAfter: updatedAfter,
       )).map(_op).toList();
+
+  @override
+  Stream<List<SyncOperation>> pullPages({
+    DateTime? updatedAfter,
+    int pageSize = 500,
+  }) => _remote
+      .pullPages(
+        userId: _userId,
+        updatedAfter: updatedAfter,
+        pageSize: pageSize,
+      )
+      .map((records) => records.map(_op).toList(growable: false));
 
   @override
   Future<void> applyRemote(SyncOperation operation) async =>
@@ -86,6 +121,7 @@ class BioimpedanceSyncRepository
     updatedAt: dto.syncMetadata.updatedAt,
     deletedAt: dto.syncMetadata.deletedAt,
     userId: dto.syncMetadata.userId ?? _userId,
+    serverRevision: dto.syncMetadata.serverRevision,
     payload: dto.toSupabaseRow(userId: _userId),
   );
 

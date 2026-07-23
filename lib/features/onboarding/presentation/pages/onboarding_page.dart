@@ -2,12 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../../../../app/router/app_routes.dart';
 import '../../../../core/formatters/app_input_formatters.dart';
 import '../../../../core/validators/app_validators.dart';
+import '../../../../core/services/service_providers.dart';
 import '../../../../design_system/design_system.dart';
 import '../../../profile/domain/value_objects/value_objects.dart';
 import '../../../privacy/domain/entities/entities.dart';
@@ -142,9 +139,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage>
     final viewModel = ref.read(onboardingViewModelProvider.notifier);
 
     ref.listen(onboardingViewModelProvider, (previous, next) {
-      if (previous?.hasCompleted == false && next.hasCompleted) {
-        context.go(next.isAuthenticated ? AppRoutes.home : AppRoutes.login);
-      }
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
         HBSnackBar.error(context, message: next.errorMessage!);
@@ -255,10 +249,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage>
         onChanged: _handleNotificationPermission,
       ),
       OnboardingStep.goals => _GoalsStep(
-        selectedObjectives: state.draft.objectives,
-        onToggle: ref
-            .read(onboardingViewModelProvider.notifier)
-            .toggleObjective,
+        draft: state.draft,
+        onToggle: ref.read(onboardingViewModelProvider.notifier).toggleTracking,
       ),
       OnboardingStep.initialData => _InitialDataStep(
         nameController: _nameController,
@@ -362,16 +354,12 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage>
   }
 
   Future<void> _handleNotificationPermission(bool value) async {
-    var isEnabled = value;
-
     if (value) {
-      final status = await Permission.notification.request();
-      isEnabled = status.isGranted || status.isLimited;
+      await ref.read(notificationSchedulerProvider).requestPermissions();
     }
-
     await ref
         .read(onboardingViewModelProvider.notifier)
-        .setNotificationsEnabled(isEnabled);
+        .setNotificationsEnabled(value);
   }
 }
 
@@ -541,22 +529,28 @@ class _PermissionsStep extends StatelessWidget {
 }
 
 class _GoalsStep extends StatelessWidget {
-  const _GoalsStep({required this.selectedObjectives, required this.onToggle});
+  const _GoalsStep({required this.draft, required this.onToggle});
 
-  final List<String> selectedObjectives;
+  final OnboardingProfileDraft draft;
   final ValueChanged<String> onToggle;
 
-  static const _objectives = [
+  static const _tracking = [
     (
-      id: 'hydration',
-      label: 'Beber mais água',
-      description: 'Acompanhar volume diário e lembretes.',
+      id: 'treatment',
+      label: 'Tratamento',
+      description: 'Organizar o que você precisa tomar ou acompanhar.',
+      icon: AppIcons.vitamin,
+    ),
+    (
+      id: 'water',
+      label: 'Água',
+      description: 'Acompanhar volume e meta diária.',
       icon: AppIcons.water,
     ),
     (
-      id: 'protein',
-      label: 'Bater proteína',
-      description: 'Registrar refeições com foco nutricional.',
+      id: 'meals',
+      label: 'Alimentação',
+      description: 'Registrar refeições e proteína quando informada.',
       icon: AppIcons.meal,
     ),
     (
@@ -565,35 +559,37 @@ class _GoalsStep extends StatelessWidget {
       description: 'Ver histórico e tendência de progresso.',
       icon: AppIcons.weight,
     ),
-    (
-      id: 'routine',
-      label: 'Organizar rotina',
-      description: 'Manter exames, consultas e suplementos em dia.',
-      icon: AppIcons.calendar,
-    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return OnboardingStepContent(
       icon: AppIcons.dashboard,
-      title: 'Quais objetivos importam agora?',
+      title: 'O que você deseja acompanhar?',
       description:
-          'Escolha uma ou mais prioridades para personalizar sua experiência inicial.',
+          'Você pode alterar essas escolhas depois. Desativar um acompanhamento não apaga seu histórico.',
       children: [
-        for (final objective in _objectives) ...[
+        for (final item in _tracking) ...[
           OnboardingOptionTile(
-            label: objective.label,
-            description: objective.description,
-            icon: objective.icon,
-            isSelected: selectedObjectives.contains(objective.id),
-            onTap: () => onToggle(objective.id),
+            label: item.label,
+            description: item.description,
+            icon: item.icon,
+            isSelected: _selected(item.id),
+            onTap: () => onToggle(item.id),
           ),
           const HBGap.sm(),
         ],
       ],
     );
   }
+
+  bool _selected(String id) => switch (id) {
+    'treatment' => draft.trackTreatment,
+    'water' => draft.trackWater,
+    'meals' => draft.trackMeals,
+    'weight' => draft.trackWeight,
+    _ => false,
+  };
 }
 
 class _InitialDataStep extends StatelessWidget {
@@ -757,24 +753,26 @@ class _InitialDataStep extends StatelessWidget {
                 },
               ),
               const HBGap.md(),
-              HBTextField(
-                controller: waterGoalController,
-                label: 'Meta de água',
-                hint: 'ml por dia',
-                keyboardType: TextInputType.number,
-                inputFormatters: AppInputFormatters.digits(maxLength: 4),
-                textInputAction: TextInputAction.done,
-                prefixIcon: AppIcons.water,
-                validator: AppValidators.waterGoal,
-              ),
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                value: draft.waterGoalConfirmed,
-                title: const Text('Confirmo esta meta diária de água'),
-                onChanged: (value) => onDraftChanged(
-                  draft.copyWith(waterGoalConfirmed: value ?? false),
+              if (draft.trackWater) ...[
+                HBTextField(
+                  controller: waterGoalController,
+                  label: 'Meta de água',
+                  hint: 'ml por dia',
+                  keyboardType: TextInputType.number,
+                  inputFormatters: AppInputFormatters.digits(maxLength: 4),
+                  textInputAction: TextInputAction.done,
+                  prefixIcon: AppIcons.water,
+                  validator: AppValidators.waterGoal,
                 ),
-              ),
+                CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: draft.waterGoalConfirmed,
+                  title: const Text('Confirmo esta meta diária de água'),
+                  onChanged: (value) => onDraftChanged(
+                    draft.copyWith(waterGoalConfirmed: value ?? false),
+                  ),
+                ),
+              ],
               CheckboxListTile(
                 contentPadding: EdgeInsets.zero,
                 value: draft.notificationsConfirmed,

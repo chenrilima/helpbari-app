@@ -16,6 +16,7 @@ enum SyncDomain {
   bioimpedance,
   documents,
   privacy,
+  onboarding,
   unknown;
 
   static SyncDomain fromRepositoryKey(String key) => switch (key) {
@@ -33,6 +34,7 @@ enum SyncDomain {
     'bioimpedance' => bioimpedance,
     'document_processings' => documents,
     'privacy_consents' => privacy,
+    'onboarding_states' => onboarding,
     _ => unknown,
   };
 }
@@ -66,7 +68,8 @@ class SyncResult {
   int get remoteChanges => pulled;
   int get localPromotions => pushed;
 
-  bool get isSuccess => repositoriesProcessed > 0 && errors.isEmpty;
+  bool get isSuccess =>
+      repositoriesProcessed > 0 && errors.isEmpty && conflicts.isEmpty;
   bool get hasConflicts => conflicts.isNotEmpty;
   bool belongsTo(String? currentUserId) =>
       userId != null && userId == currentUserId;

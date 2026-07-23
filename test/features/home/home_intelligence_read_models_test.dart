@@ -20,7 +20,7 @@ void main() {
     expect(agenda.groupedByDate[DateTime(2026, 7, 21)]?.single.id, 'a');
   });
 
-  test('next actions enforce the maximum of three', () {
+  test('next actions enforce the V1 maximum of one', () {
     final model = NextActionsReadModel(
       actions: List.generate(
         5,
@@ -38,7 +38,7 @@ void main() {
       status: status,
     );
 
-    expect(model.actions, hasLength(3));
+    expect(model.actions, hasLength(1));
   });
 
   test('coverage unavailable has no fabricated rate', () {

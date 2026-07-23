@@ -8,6 +8,7 @@ class SyncMetadata {
     required this.syncStatus,
     this.userId,
     this.deletedAt,
+    this.serverRevision,
   });
 
   final String id;
@@ -15,6 +16,7 @@ class SyncMetadata {
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
+  final int? serverRevision;
   final SyncStatus syncStatus;
 
   bool get isDeleted => deletedAt != null;
@@ -25,6 +27,7 @@ class SyncMetadata {
     DateTime? updatedAt,
     DateTime? deletedAt,
     SyncStatus? syncStatus,
+    int? serverRevision,
   }) {
     return SyncMetadata(
       id: id,
@@ -33,6 +36,7 @@ class SyncMetadata {
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
       syncStatus: syncStatus ?? this.syncStatus,
+      serverRevision: serverRevision ?? this.serverRevision,
     );
   }
 
@@ -44,6 +48,7 @@ class SyncMetadata {
       'updatedAt': updatedAt.toIso8601String(),
       'deletedAt': deletedAt?.toIso8601String(),
       'syncStatus': syncStatus.name,
+      'serverRevision': serverRevision,
     };
   }
 
@@ -58,6 +63,7 @@ class SyncMetadata {
         _ => null,
       },
       syncStatus: SyncStatus.fromName(json['syncStatus'] as String?),
+      serverRevision: json['serverRevision'] as int?,
     );
   }
 }
